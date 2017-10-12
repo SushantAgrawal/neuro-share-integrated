@@ -8,7 +8,7 @@ import { MdButtonModule,MdMenuModule, MdCheckboxModule, MdSelectModule, MdInputM
 //Custom Components, Services etc
 import { GraphPanelComponent } from './graph-panel/graph-panel.component';
 import { NeuroRelatedComponent } from './neuro-related/neuro-related.component';
-import { PatientConcernsComponent } from './patient-concerns/patient-concerns.component';
+// import { PatientConcernsComponent } from './patient-concerns/patient-concerns.component';
 import { NeuroGraphBoxComponent } from './neuro-graph-box/neuro-graph-box.component';
 import { BrokerModule } from "./broker/broker.module";
 import { NeuroGraphService } from './neuro-graph.service';
@@ -45,7 +45,7 @@ export const ROUTES: Routes = [];
   declarations: [
     GraphPanelComponent,
     NeuroRelatedComponent,
-    PatientConcernsComponent,
+    // PatientConcernsComponent,
     NeuroGraphBoxComponent,
     MedicationsComponent,
     CdsComponent,
@@ -60,8 +60,8 @@ export const ROUTES: Routes = [];
     NeuroGraphBoxComponent,
     CdsComponent,
     GraphPanelComponent,
-    NeuroRelatedComponent,
-    PatientConcernsComponent
+    NeuroRelatedComponent//,
+    // PatientConcernsComponent
   ],
   providers: [NeuroGraphService],
   bootstrap: [InfoPopupComponent]
