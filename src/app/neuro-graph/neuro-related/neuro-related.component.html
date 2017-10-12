@@ -14,7 +14,11 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-dmt-theme">
-          <md-checkbox [checked]="true" (change)='changed($event,"dmt")'>DMT</md-checkbox>
+          <md-checkbox [checked]="true" (change)='changed($event,"dmt")' evalEvent [evalData]="{
+            label:'DMT',
+            data: checked,
+            type: 'checkbox'
+            }">DMT</md-checkbox>
         </li>
         <li class="ns-othermeds-theme">
           <md-checkbox (change)='changed($event,"otherMeds")'>Other Meds</md-checkbox>
@@ -35,7 +39,11 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-edss-theme">
-          <md-checkbox [checked]="true" (change)='changed($event,"edss")'>EDSS</md-checkbox><span class="plus-icon" (click)="openDialog('edss')">+</span></li>
+          <md-checkbox [checked]="true" (change)='changed($event,"edss")' evalEvent [evalData]="{
+            label:'EDSS',
+            data: checked,
+            type: 'checkbox'
+            }">EDSS</md-checkbox><span class="plus-icon" (click)="openDialog('edss')">+</span></li>
         <li class="ns-25walk-theme">
           <md-checkbox (change)='changed($event,"walk25Feet")'>25' Walk</md-checkbox>
         </li>
@@ -57,7 +65,11 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-labs-theme">
-          <md-checkbox [checked]="true" (change)='changed($event,"labs")'>Labs</md-checkbox>
+          <md-checkbox [checked]="true" (change)='changed($event,"labs")' evalEvent [evalData]="{
+            label:'Labs',
+            data: checked,
+            type: 'checkbox'
+            }">Labs</md-checkbox>
         </li>
         <li class="ns-vaccinations-theme">
           <md-checkbox (change)='changed($event,"vaccinations")'>Vaccinations</md-checkbox>
