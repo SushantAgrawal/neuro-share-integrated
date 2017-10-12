@@ -82,12 +82,12 @@ label {
 /*-------- Action Buttons ----------------*/
 .action-buttons{
     @include border-radius(5px);
-    font-size: 22pt;
+    font-size: 24pt;
     width: 35px;
     height: 35px;
     cursor: pointer;
     line-height: 35px;
-    color: #808080;
+    color: #959595;
     display: inline-block;
     border: solid 1px $buttonBorder;
     text-align: center;
@@ -184,8 +184,8 @@ label {
     text-align:center;
     font-weight: 700;
     margin-left: 8px;
-    font-size: 18pt;
-    line-height: 23px;
+    font-size: 12pt;
+    line-height: 22px;
     color: #333333; 
     border: solid 1px #F15A24; 
     background-color: #ffffff;
@@ -451,7 +451,7 @@ label {
     text-align: center;
     cursor: pointer;
     color: #bfbfbf;
-    font-size:14pt;
+    font-size:21pt;
     padding-top: 5px;
   }
 }

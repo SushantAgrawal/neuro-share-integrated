@@ -16,10 +16,8 @@
                 <div class="ns-imaging-col">{{imaging.displayName}}</div>
                 <div class="ns-imaging-col">{{imaging.orderFormatDate}}</div>
                 <div class="ns-imaging-icon" *ngIf="i == 0">
-                    <span *ngIf="hasReportIcon==true" class="neuro-icon-mri">
-                    <span *ngIf="hasReportIcon==true" class="path1"></span>
-                    </span>
-                    <span *ngIf="hasBrainIcon==true" class="neuro-icon-memo" style="cursor:pointer;" (click)="showResult()"></span>
+                    <span *ngIf="hasReportIcon==true" class="icon-brainneuroshare"></span>
+                    <span *ngIf="hasBrainIcon==true" class="icon-documentneuroshare" style="cursor:pointer;" (click)="showResult()"></span>
                 </div>
             </div>
         </div>

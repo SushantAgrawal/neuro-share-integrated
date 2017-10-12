@@ -1,3 +1,24 @@
+/*------- Imaging ------------------*/
+.imaging-container{padding: 10px;}
+.ns-imaging-row{ margin-bottom: 7px;}
+.ns-imaging-header{ margin-bottom: 10px;}
+
+.ns-imaging-col{ width: 35%; float: left; padding-right: 10px;}
+.ns-imaging-data{width: 20%; float:right; text-align:center; }
+.ns-imaging-icon{
+    font-size: 24pt;
+    color: #aaaaaa;
+    text-align:center;
+    float: left;
+}
+.ns-imaging-row:after, .ns-imaging-header:after {
+    clear: both;
+    content: '';
+    display: block;
+}
+
+
+
 .ns-imaging-header-study{
 background-color: #efe4f4; padding: 5px;
 margin-bottom: 10px;

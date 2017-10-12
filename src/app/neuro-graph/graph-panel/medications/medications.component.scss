@@ -93,22 +93,5 @@
     padding: 10px 5px 10px 0px;
 }
 
-/*------- Imaging ------------------*/
-.imaging-container{padding: 10px;}
-.ns-imaging-row{ margin-bottom: 7px;}
-.ns-imaging-header{ margin-bottom: 10px;}
-
-.ns-imaging-col{ width: 35%; float: left; padding-right: 10px;}
-.ns-imaging-data{width: 20%; float:right; text-align:center; }
-.ns-imaging-icon{
-    font-size: 20pt;
-    color: #aaaaaa;
-    text-align:center;
-}
-.ns-imaging-row:after, .ns-imaging-header:after {
-    clear: both;
-    content: '';
-    display: block;
-}
 
 
