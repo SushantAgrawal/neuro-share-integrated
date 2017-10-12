@@ -1,0 +1,25 @@
+#graph-container {
+    .custom-x-domain {
+        fill: #EBEBEB;
+    }
+    .x-axis-arrow {
+        fill: #C8C8C8;
+        cursor: pointer;
+    }
+    .x-axis line {
+        stroke: #7D7D7D;
+        stroke-width: 1px;
+    }
+    .grid-lines line {
+        stroke: #E4E4E4;
+        stroke-width: 1px;
+    }
+    .horizontal-grid-lines line {
+        stroke: rgb(240, 240, 240);
+        stroke-width: 1px;
+    }
+    .x-axis .tick:first-child,
+    .grid-lines .tick:first-child {
+        display: none !important;
+    }
+}

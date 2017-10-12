@@ -1,0 +1,23 @@
+.virtual-caseload-info .mat-dialog-container{
+    padding: 0px;
+}
+.virtual-caseload-header{
+    border-bottom: 1px solid #bfbfbf;
+    padding: 7px 7px 5px 15px;
+    height: 38px;
+    line-height: 38px;
+    font-weight: 700;
+    color: #7e7e7e;
+    font-size: 14pt;
+}
+.virtual-caseload-title{ float: left;}
+.virtual-caseload-close{ float: right;}
+.virtual-caseload-close i{ font-size: 10pt; cursor: pointer;}
+.virtual-caseload-content{
+    padding: 10px 15px 15px 15px;
+}
+.virtual-caseload-info:after{
+    clear: both;
+    content: '';
+    display: block;
+}

@@ -1,0 +1,88 @@
+<div class="header-area">
+  <span class="header-text">MS Related</span>
+</div>
+<div class="ms-related-panel">
+  <div class="related-add-today">
+    <div class="related-add-today-label">
+          Add<br/>Today
+    </div>
+  </div>
+  <div class="related-panel">
+    <div class="related-treatments">
+      <div class="related-rotate-text">TREATMENTS</div>
+    </div>
+    <div class="related-items">
+      <ul class="related-items-ul">
+        <li class="ns-dmt-theme">
+          <md-checkbox [checked]="true" (change)='changed($event,"dmt")'>DMT</md-checkbox>
+        </li>
+        <li class="ns-othermeds-theme">
+          <md-checkbox (change)='changed($event,"otherMeds")'>Other Meds</md-checkbox>
+        </li>
+        <li class="ns-vitaminD-theme">
+          <md-checkbox (change)='changed($event,"vitaminD")'>Vitamin D</md-checkbox>
+        </li>
+        <li class="ns-referrals-theme">
+          <md-checkbox (change)='changed($event,"referrals")'>Referrals</md-checkbox>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="related-panel">
+    <div class="related-outcomes">
+      <div class="related-rotate-text">OUTCOMES</div>
+    </div>
+    <div class="related-items">
+      <ul class="related-items-ul">
+        <li class="ns-edss-theme">
+          <md-checkbox [checked]="true" (change)='changed($event,"edss")'>EDSS</md-checkbox><span class="plus-icon" (click)="openDialog('edss')">+</span></li>
+        <li class="ns-25walk-theme">
+          <md-checkbox (change)='changed($event,"walk25Feet")'>25' Walk</md-checkbox>
+        </li>
+        <li class="ns-relapses-theme">
+          <md-checkbox (change)='changed($event,"relapses")'>Relapses</md-checkbox><span class="plus-icon" (click)="openDialog('relapses')">+</span></li>
+        <li class="ns-images-theme">
+          <md-checkbox (change)='changed($event,"imaging")'>Imaging</md-checkbox>
+        </li>
+        <li class="ns-symptoms-theme">
+          <md-checkbox (change)='changed($event,"symptoms")'>Symptoms</md-checkbox>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="related-panel">
+    <div class="related-monitoring">
+      <div class="related-rotate-text">MONITORING</div>
+    </div>
+    <div class="related-items">
+      <ul class="related-items-ul">
+        <li class="ns-labs-theme">
+          <md-checkbox [checked]="true" (change)='changed($event,"labs")'>Labs</md-checkbox>
+        </li>
+        <li class="ns-vaccinations-theme">
+          <md-checkbox (change)='changed($event,"vaccinations")'>Vaccinations</md-checkbox>
+        </li>
+        <li class="ns-dme-theme">
+          <md-checkbox (change)='changed($event,"dme")'>DME</md-checkbox><span class="plus-icon">+</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="related-panel">
+    <div class="related-encounters">
+      <div class="related-rotate-text">ENCOUNTERS</div>
+    </div>
+    <div class="related-items">
+      <ul class="related-items-ul">
+        <li class="ns-encounters-theme">
+          <md-checkbox (change)='changed($event,"office")'>Office</md-checkbox>
+        </li>
+        <li class="ns-encounters-theme">
+          <md-checkbox (change)='changed($event,"mho")'>MHO</md-checkbox>
+        </li>
+        <li class="ns-encounters-theme">
+          <md-checkbox (change)='changed($event,"phone")'>Phone</md-checkbox>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

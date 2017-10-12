@@ -1,0 +1,207 @@
+@import 'neuro-graph.icons.scss';
+// Plus imports for other components in your app.
+
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+@import 'neuro-graph.colorpalette.scss';
+
+// Define the EDSS Theme
+$ns-edss-primary: mat-palette($ns-edss-base-color, 500);
+$ns-edss-accent: mat-palette($ns-edss-base-color, 500);
+$ns-edss-warn: mat-palette($ns-edss-base-color, 900);
+$ns-edss-theme: mat-light-theme($ns-edss-primary, $ns-edss-accent, $ns-edss-warn);
+
+// Define the 25’ Walk Theme
+$ns-walk-primary: mat-palette($ns-walk-base-color, 500);
+$ns-walk-accent: mat-palette($ns-walk-base-color, 500);
+$ns-walk-warn: mat-palette($ns-walk-base-color, 900);
+$ns-walk-theme: mat-light-theme($ns-walk-primary, $ns-walk-accent, $ns-walk-warn);
+
+// Define the Relapses Theme
+$ns-relapses-primary: mat-palette($ns-relapses-base-color, 500);
+$ns-relapses-accent: mat-palette($ns-relapses-base-color, 500);
+$ns-relapses-warn: mat-palette($ns-relapses-base-color, 900);
+$ns-relapses-theme: mat-light-theme($ns-relapses-primary, $ns-relapses-accent, $ns-relapses-warn);
+
+// Define the Images Theme
+$ns-images-primary: mat-palette($ns-images-base-color, 500);
+$ns-images-accent: mat-palette($ns-images-base-color, 500);
+$ns-images-warn: mat-palette($ns-images-base-color, 900);
+$ns-images-theme: mat-light-theme($ns-images-primary, $ns-images-accent, $ns-images-warn);
+
+// Define the Referrals Theme
+$ns-referrals-primary: mat-palette($ns-referrals-base-color, 500);
+$ns-referrals-accent: mat-palette($ns-referrals-base-color, 500);
+$ns-referrals-warn: mat-palette($ns-referrals-base-color, 900);
+$ns-referrals-theme: mat-light-theme($ns-referrals-primary, $ns-referrals-accent, $ns-referrals-warn);
+
+// Define the vaccinations Theme
+$ns-vaccinations-primary: mat-palette($ns-vaccinations-base-color, 500);
+$ns-vaccinations-accent: mat-palette($ns-vaccinations-base-color, 500);
+$ns-vaccinations-warn: mat-palette($ns-vaccinations-base-color, 900);
+$ns-vaccinations-theme: mat-light-theme($ns-vaccinations-primary, $ns-vaccinations-accent, $ns-vaccinations-warn);
+
+// Define the Labs Theme
+$ns-labs-primary: mat-palette($ns-labs-base-color, 500);
+$ns-labs-accent: mat-palette($ns-labs-base-color, 500);
+$ns-labs-warn: mat-palette($ns-labs-base-color, 900);
+$ns-labs-theme: mat-light-theme($ns-labs-primary, $ns-labs-accent, $ns-labs-warn);
+
+// Define the Symptoms Theme
+$ns-symptoms-primary: mat-palette($ns-symptoms-base-color, 500);
+$ns-symptoms-accent: mat-palette($ns-symptoms-base-color, 500);
+$ns-symptoms-warn: mat-palette($ns-symptoms-base-color, 900);
+$ns-symptoms-theme: mat-light-theme($ns-symptoms-primary, $ns-symptoms-accent, $ns-symptoms-warn);
+
+
+// Define the DME Theme
+$ns-dme-primary: mat-palette($ns-dme-base-color, 500);
+$ns-dme-accent: mat-palette($ns-dme-base-color, 500);
+$ns-dme-warn: mat-palette($ns-dme-base-color, 900);
+$ns-dme-theme: mat-light-theme($ns-dme-primary, $ns-dme-accent, $ns-dme-warn);
+
+// Define the DMT Theme
+$ns-dmt-primary: mat-palette($ns-dmt-base-color, 500);
+$ns-dmt-accent: mat-palette($ns-dmt-base-color, 500);
+$ns-dmt-warn: mat-palette($ns-dmt-base-color, 900);
+$ns-dmt-theme: mat-light-theme($ns-dmt-primary, $ns-dmt-accent, $ns-dmt-warn);
+
+// Define the DMT Other Meds Theme
+$ns-othermeds-primary: mat-palette($ns-othermeds-base-color, 500);
+$ns-othermeds-accent: mat-palette($ns-othermeds-base-color, 500);
+$ns-othermeds-warn: mat-palette($ns-othermeds-base-color, 900);
+$ns-othermeds-theme: mat-light-theme($ns-othermeds-primary, $ns-othermeds-accent, $ns-othermeds-warn);
+
+// Define the Vitamin-D Theme
+$ns-vitaminD-primary: mat-palette($ns-vitaminD-base-color, 500);
+$ns-vitaminD-accent: mat-palette($ns-vitaminD-base-color, 500);
+$ns-vitaminD-warn: mat-palette($ns-vitaminD-base-color, 900);
+$ns-vitaminD-theme: mat-light-theme($ns-vitaminD-primary, $ns-vitaminD-accent, $ns-vitaminD-warn);
+
+// Define the Encounters Theme
+$ns-encounters-primary: mat-palette($ns-encounters-base-color, 500);
+$ns-encounters-accent: mat-palette($ns-encounters-base-color, 500);
+$ns-encounters-warn: mat-palette($ns-encounters-base-color, 900);
+$ns-encounters-theme: mat-light-theme($ns-encounters-primary, $ns-encounters-accent, $ns-encounters-warn);
+
+
+// Define the Default Theme
+$ns-default-primary: mat-palette($ns-default, 500);
+$ns-default-accent: mat-palette($ns-default, 500);
+$ns-default-warn: mat-palette($ns-default, 900);
+$ns-default-theme: mat-light-theme($ns-default-primary, $ns-default-accent, $ns-default-warn);
+
+
+@mixin applyCustomStyles($theme) {
+    .mat-dialog-container {
+        padding: 0px;
+        border: solid 1px mat-color($theme);
+    }
+    .modal-header {
+        padding: 2px 10px;
+        .modal-title {
+            font-size: 10pt;
+            font-weight: 700;
+            color: mat-color($theme);
+        }
+    }
+    .mat-option.mat-selected{
+        border-bottom:solid 1px mat-color($theme)!important;
+    }
+    .mat-select-trigger {
+            background-color: #ececec; 
+            .mat-select-underline {
+                background-color: mat-color($theme);
+            }
+            .mat-select-arrow {
+                color: mat-color($theme);
+            }
+        }
+   
+    .call-out-buttons{
+        border: solid 1px mat-color($theme);
+    } 
+}
+
+@include angular-material-theme($ns-default-theme);
+
+//EDSS Parent class
+.ns-edss-theme{
+    @include angular-material-theme($ns-edss-theme);
+    @include applyCustomStyles($ns-edss-accent);
+    
+}
+
+//25’ Walk Parent class
+.ns-25walk-theme{
+    @include angular-material-theme($ns-walk-theme);
+    @include applyCustomStyles($ns-walk-accent);
+}
+
+//Relapses Parent class
+.ns-relapses-theme{
+    @include angular-material-theme($ns-relapses-theme);
+    @include applyCustomStyles($ns-relapses-accent);
+}
+
+//Images Parent class
+.ns-images-theme{
+    @include angular-material-theme($ns-images-theme);
+    @include applyCustomStyles($ns-images-accent);
+}
+
+//Referrals Parent class
+.ns-referrals-theme{
+    @include angular-material-theme($ns-referrals-theme);
+    @include applyCustomStyles($ns-referrals-accent);
+}
+
+//vaccinations Parent class
+.ns-vaccinations-theme{
+    @include angular-material-theme($ns-vaccinations-theme);
+    @include applyCustomStyles($ns-vaccinations-accent);
+}
+
+//Labs Parent class
+.ns-labs-theme{
+    @include angular-material-theme($ns-labs-theme);
+    @include applyCustomStyles($ns-labs-accent);
+}
+
+//Symptoms Parent class
+.ns-symptoms-theme{
+    @include angular-material-theme($ns-symptoms-theme);
+    @include applyCustomStyles($ns-symptoms-accent);
+}
+
+//DME Parent class
+.ns-dme-theme{
+    @include angular-material-theme($ns-dme-theme);
+    @include applyCustomStyles($ns-dme-accent);
+}
+
+//DMT Parent class
+.ns-dmt-theme{
+    @include angular-material-theme($ns-dmt-theme);
+    @include applyCustomStyles($ns-dmt-accent);
+}
+
+//DMT Other Meds Parent class
+.ns-othermeds-theme{
+    @include angular-material-theme($ns-othermeds-theme);
+    @include applyCustomStyles($ns-othermeds-accent);
+}
+
+//Vitamin-D Parent class
+.ns-vitaminD-theme{
+    @include angular-material-theme($ns-vitaminD-theme);
+    @include applyCustomStyles($ns-vitaminD-accent);
+}
+
+//Encounters Parent class
+.ns-encounters-theme{
+    @include angular-material-theme($ns-encounters-theme);
+    @include applyCustomStyles($ns-encounters-accent);
+}

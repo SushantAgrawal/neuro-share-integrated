@@ -1,0 +1,95 @@
+<div class="header-area">
+  <span class="header-text">MS Related Care</span>
+  <div class="right-float action-buttons"><span class="neuro-icon-nav-note" (click)="buttonclicked('book')"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></span></div>
+</div>
+<div class="cds-panel">
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_relapses")' [(ngModel)]='cdsState.review_relapses.checked'>Review relapses</md-checkbox>
+    </div>
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_relapses')">info_outline</i>
+    </div>
+  </div>
+
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_mri_images")' [(ngModel)]='cdsState.review_mri_images.checked'>Review MRI images</md-checkbox>
+    </div>
+
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_mri_images')">info_outline</i>
+    </div>
+  </div>
+
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_symptom_status")' [(ngModel)]='cdsState.review_symptom_status.checked'> Review symptom status </md-checkbox>
+    </div>
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_symptom_status')">info_outline</i>
+    </div>
+  </div>
+
+
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_ms_type_status")' [(ngModel)]='cdsState.review_ms_type_status.checked'> Review MS type/status </md-checkbox>
+    </div>
+
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_ms_type_status')">info_outline</i>
+    </div>
+  </div>
+
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_dmts")' [(ngModel)]='cdsState.review_dmts.checked'> Review DMTs </md-checkbox>
+    </div>
+
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_dmts')">info_outline</i>
+     </div>
+  </div>
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_monitoring_labs")' [(ngModel)]='cdsState.review_monitoring_labs.checked'> Review monitoring labs </md-checkbox>
+    </div>
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_monitoring_labs')">info_outline</i>
+    </div>
+  </div>
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_vitamin_d")' [(ngModel)]='cdsState.review_vitamin_d.checked'> Review Vitamin D </md-checkbox>
+    </div>
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_vitamin_d')">info_outline</i>
+    </div>
+  </div>
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_other_meds")' [(ngModel)]='cdsState.review_other_meds.checked'> Review other related meds </md-checkbox>
+    </div>
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_other_meds')">info_outline</i>
+    </div>
+  </div>
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_symptoms_referrals")' [(ngModel)]='cdsState.review_symptoms_referrals.checked'>
+      Review symptoms referrals </md-checkbox>
+    </div>
+    <div class="cds-items-info">
+        <i class="material-icons" (click)="openDialog($event,'review_symptoms_referrals')">info_outline</i>
+    </div>
+  </div>
+  <div class="cds-items">
+    <div class="cds-items-checkbox">
+      <md-checkbox (change)='changed($event,"review_vaccinations")' [(ngModel)]='cdsState.review_vaccinations.checked'> Review vaccinations </md-checkbox>
+    </div>
+    <div class="cds-items-info">
+        <i class="material-icons"  (click)="openDialog($event,'review_vaccinations')">info_outline</i>
+    </div>
+  </div>
+</div>

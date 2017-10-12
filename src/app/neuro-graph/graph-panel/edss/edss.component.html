@@ -1,0 +1,55 @@
+<ng-template #edssSecondLevelTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title">EDSS</h4>
+        <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body">
+        <div class="edss-container">
+
+        <div class="ns-row-edss">
+            <div class="ns-edss-col">Score:</div>
+            <div *ngIf="!edssScoreDetail.allowEdit" class="ns-edss-value">{{edssScoreDetail.scoreValue}}</div>
+            <div *ngIf="edssScoreDetail.allowEdit" class="ns-edss-value">
+                <input type="text" class="ns-edss-value-bg" (click)="openScoreChartForUpdate()" [(ngModel)]="edssScoreDetail.scoreValue" />
+            </div>
+        </div>
+        <div class="ns-row-edss">
+            <div class="ns-edss-col">Reported By:</div>
+            <div class="ns-edss-value">{{edssScoreDetail.reportedBy}}</div>
+        </div>
+        <div class="ns-row-edss">
+            <div class="ns-edss-col">Reported:</div>
+            <div class="ns-edss-value">{{edssScoreDetail.lastUpdatedDate | date:'MM/dd/yyyy'}}</div>
+        </div>
+        <div class="ns-row-edss" *ngIf="edssScoreDetail.allowEdit && edssScoreDetail.showUpdate">
+            <div class="ns-edss-update">
+                <button class="call-out-buttons" (click)="updateEdssScore()">Update</button>
+            </div>
+        </div>
+
+     </div>
+    </div>
+</ng-template>
+<ng-template #edssSecondLevelAddTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Select EDSS Score</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="scoreChartDialogRef.close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <table class="questionContainer">
+            <tr *ngFor="let question of edssPopupQuestions; let idx=index">
+                <td><input type="radio" name="edssPopupGroup" (click)="selectEdssScore(idx)"></td>
+                <td>{{question.score}}</td>
+                <td>{{question.title}}</td>
+            </tr>
+        </table>
+        <div class="buttonContainer">
+            <button class="call-out-buttons" *ngIf="scoreChartOpType=='Add'" (click)="submitEdssScore($event)">Add</button>
+            <button class="call-out-buttons" *ngIf="scoreChartOpType=='Update'" (click)="submitEdssScore($event)">Select</button>
+        </div>
+    </div>
+</ng-template>

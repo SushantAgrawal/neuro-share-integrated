@@ -1,0 +1,522 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i');
+@import '../neuro-graph.themes.scss';
+
+$font-Loto : 'Lato', sans-serif;
+$full-graph-maxwidth : 1316px;
+$background : #F2F2F2;
+$panel-background : #FFFFFF;
+$buttonBorder : #F15A24;
+$headerBottomBorder : #bfbfbf;
+
+* {
+    padding: 0px;
+    margin: 0px;
+    border: none;
+}
+*:focus {
+    outline: none;
+}
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+body {
+    font-family: $font-Loto;
+    background-color: $background;
+    font-weight: 400;
+    font-size: 12pt;
+    color: #333333;
+    line-height: normal;
+}
+
+label {
+    font-weight: 300;
+}
+.mat-select, .mat-form-field, .mat-option{font-family: $font-Loto;}
+.mat-option{
+    line-height:25px!important;
+    height: 25px!important;
+    font-size: 12px!important;
+}
+.mat-checkbox-layout .mat-checkbox-label{
+    line-height:normal;
+}
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius!important;
+    -moz-border-radius: $radius!important;
+    -ms-border-radius: $radius!important;
+    border-radius: $radius!important;
+}
+.left-float{
+    float: left;
+}
+.right-float{
+    float: right;
+}
+.clearBoth{
+    clear: both;
+    content: '';
+    display: block;
+}
+/*-------- Action Buttons ----------------*/
+.action-buttons{
+    @include border-radius(5px);
+    font-size: 22pt;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    line-height: 35px;
+    color: #808080;
+    display: inline-block;
+    border: solid 1px $buttonBorder;
+    text-align: center;
+    margin-left: 10px;
+    &:hover {
+        -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
+        box-shadow: 2px 2px 2px 1px #9c9c9c;
+    }
+    &.selected {
+        background-color: #999999;
+        color: #ffffff;
+        -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
+        box-shadow: 2px 2px 2px 1px #9c9c9c;
+    }
+    &.disabled {
+        background-color: #ffffff;
+        color: #aaaaaa;
+        border: solid 1px #aaaaaa;
+        pointer-events: none;
+        -webkit-box-shadow: 0px 0px 0px 0px #9c9c9c;
+        box-shadow: 0px 0px 0px 0px #9c9c9c;
+    }
+}
+
+/*-------- Call out boxes ----------------*/
+.call-out-buttons{
+    @include border-radius(5px);
+    font-size: 12pt;
+    height: 25px;
+    width: 61px;
+    cursor: pointer;
+    color: #808080;
+    text-align: center;
+    background-color: #ffffff;
+    &:hover {
+        -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
+        box-shadow: 2px 2px 2px 1px #9c9c9c;
+    }
+    &.selected {
+        background-color: #999999;
+        color: #ffffff;
+        -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
+        box-shadow: 2px 2px 2px 1px #9c9c9c;
+    }
+    &.disabled {
+        background-color: #ffffff;
+        color: #aaaaaa;
+        border: solid 1px #aaaaaa;
+        pointer-events: none;
+        -webkit-box-shadow: 0px 0px 0px 0px #9c9c9c;
+        box-shadow: 0px 0px 0px 0px #9c9c9c;
+    }
+}
+/*-------- Virtual Caseload ----------------*/
+.virtual-buttons{
+    @include border-radius(5px);
+    font-family: $font-Loto; height: 25px!important;
+    color: #808080!important;
+    border: solid 1px $buttonBorder !important;
+    text-align: center;
+   .mat-button-wrapper{
+        font-weight: 400;
+        font-size: 12pt;
+    }
+    &.mat-button{
+        line-height: 22px;
+    }
+    &:not([disabled]):hover {
+        background: #ffffff!important;
+        -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
+        box-shadow: 2px 2px 2px 1px #9c9c9c;
+    }
+    
+    .mat-button-focus-overlay {
+        background-color: rgba(0,0,0,0);
+    }
+
+    &.selected{
+        background-color: #999999;
+        color: #ffffff;
+        -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
+        box-shadow: 2px 2px 2px 1px #9c9c9c;
+    }
+    &[disabled]{
+        background-color: #ffffff;
+        color: #aaaaaa;
+        border: solid 1px #aaaaaa !important;
+   }
+}
+.btn-info{ 
+    width: 23px; 
+    height: 23px; 
+    display: inline-block; 
+    text-align:center;
+    font-weight: 700;
+    margin-left: 8px;
+    font-size: 18pt;
+    line-height: 23px;
+    color: #333333; 
+    border: solid 1px #F15A24; 
+    background-color: #ffffff;
+    margin-top: 7px;
+    cursor: pointer;
+    @include border-radius(50%);
+    &:not([disabled]):hover {
+        border: solid 1px #F15A24; 
+        background: #ffffff!important;
+        -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
+        box-shadow: 2px 2px 2px 1px #9c9c9c;
+        color: #333333; 
+    }
+}
+.graph-container {
+    overflow: hidden;
+}
+
+.neuro-graph {
+    width: $full-graph-maxwidth;
+}
+
+.neuro-related {
+    @extend .left-float;
+    width: 200px;
+    height: 698px;
+    margin: 10px 0px 10px 10px;
+    background-color: $panel-background;
+}
+
+.graph-panel {
+    @extend .left-float;
+    width: 746px;
+    height: 698px;
+    margin: 10px 0px 10px 10px;
+    background-color: $panel-background;
+}
+.right-panel {
+    @extend .left-float;
+    width: 330px;
+    margin: 10px 10px 10px 10px;
+    background-color: $background;
+}
+
+.patient-concerns-container{
+    margin-right: 0px!important;
+    margin-top: 0px!important;
+}
+.patient-concerns {
+    height: 330px;
+    margin-bottom: 10px;
+    background-color: $panel-background;
+    display: block!important;
+    overflow: hidden!important;
+}
+.neuro-related-care {
+    height: 358px;
+    background-color: $panel-background;
+}
+
+/*--------------- Panel Header -----------------*/
+
+.header-area {
+    border-bottom: 1px solid $headerBottomBorder;
+    padding: 7px 7px 5px 15px;
+    height: 38px;
+    line-height: 38px;
+    .header-text {
+        font-weight: 700;
+        color: #7e7e7e;
+        font-size: 14pt;
+        @extend .left-float;
+    }
+    .edss-caseload{
+        @extend .left-float;
+    }
+}
+.header-area:after {
+    @extend .clearBoth;
+}
+.modal-header{
+    border-bottom: 1px solid $headerBottomBorder;
+    .modal-title{
+        @extend .left-float;
+        }
+    .close{
+        @extend .right-float;
+        font-size: 12pt;
+        color: #bfbfbf;
+        background-color: transparent;
+        cursor: pointer;
+        
+    }
+} 
+.modal-header:after {
+    @extend .clearBoth;
+}
+.modal-body {
+    font-size: 10pt;
+    .call-out-buttons{
+        font-size: 10pt;
+    }
+}
+
+/*------------ Neuro Related Care ---------------------*/
+.cds-panel {
+    padding: 10px;
+}
+.cds-panel .cds-items{
+    margin-bottom: 2px;
+
+}
+.cds-items:after {
+    @extend .clearBoth;
+}
+.cds-items-checkbox {
+    @extend .left-float;
+}
+.cds-items-checkbox label {
+    margin-bottom: 2px;
+}
+.cds-items-checkbox input {
+    margin-right: 5px;
+}
+.cds-items-info {
+    @extend .right-float;
+    padding-right: 5px;
+}
+.cds-items-info .material-icons {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    color:#a5a5a5;
+}
+/*------------  Neuro Related ---------------------*/
+
+.grouping-checkboxes {
+    margin-top: 38px;
+}
+.ms-related-panel {
+	padding: 15px;
+}
+.related-panel {
+    margin-bottom: 20px;
+}
+.related-label {
+    background-color: $background;
+    float: left;
+    border: solid 1px #e9e9e9;
+    margin-right: 10px;
+}
+.related-text-rotate {
+    font-size: 10pt;
+    color: #7e7e7e;
+    font-weight: 700;
+    text-align: center;
+    width: 20px;
+    -ms-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    transform: rotate(270deg);
+    -ms-transform-origin: top middle 0;
+    -moz-transform-origin: top middle 0;
+    -webkit-transform-origin: top middle 0;
+    transform-origin: top middle 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.related-items {
+    padding: 10px 0px;
+}
+
+.related-items-ul {
+	padding : 0px;
+	margin : 0px;
+	list-style-type : none;
+}
+.related-items-ul li{ margin-bottom: 5px;}
+
+.related-items-ul .plus-icon {
+        display: block;
+        cursor: pointer;
+        width: 10px;
+        height: 10px;
+        float: right;
+}
+/*===========TREATMENTS=============*/
+
+.related-treatments {
+    @extend .related-label;
+    height: 130px;
+
+    .related-rotate-text {
+         @extend .related-text-rotate;
+         margin-top: 89px;
+    }
+}
+
+/*===========OUTCOMES=============*/
+.related-outcomes {
+    @extend .related-label;
+    height: 161px;
+    .related-rotate-text {
+         @extend .related-text-rotate;
+         margin-top: 99px;
+    }
+}
+/*===========MONITORING=============*/
+.related-monitoring {
+    @extend .related-label;
+    height: 102px;
+    .related-rotate-text {
+         @extend .related-text-rotate;
+         margin-top: 76px;
+    }
+}
+/*===========ENCOUNTERS=============*/
+.related-encounters {
+    @extend .related-label;
+    height: 102px;
+    .related-rotate-text {
+         @extend .related-text-rotate;
+         margin-top: 76px;
+    }
+}
+.related-items li a {
+    float: right;
+}
+
+.related-panel:after {
+    @extend .clearBoth;
+}
+
+/*-------------------  Neuro Graph ---------------------*/
+.mat-checkbox-background, .mat-checkbox-frame{
+    @include border-radius(5px);
+}
+.fake-disabled {
+  pointer-events: none;
+  background-color: #F2F2F2;
+}
+
+#graph-panel-wrapper {
+  padding-top: 1px;
+  height: 520px;
+  width: 740px;
+  margin: 0px auto;
+  background-color: $panel-background;
+  position: relative;
+}
+
+#graph-container {
+  margin: 0px 24px 0px 5px;
+  min-height: 560px;
+}
+#graph-control {
+  width: 20px;
+  position: absolute;
+  top: 0px;
+  right: 4px;
+  .control-button {
+    margin-bottom: 5px;
+    text-align: center;
+    cursor: pointer;
+    color: #bfbfbf;
+    font-size:14pt;
+    padding-top: 5px;
+  }
+}
+.header-wrapper {
+    border-bottom: 1px solid gray;
+    height: 40px; 
+}
+.header-button {
+    margin: 14px;
+}
+
+.left-content {
+   float:left;
+}
+
+.right-content {
+    float: right;
+}
+
+.header-info-button {
+    margin: -5px;
+}
+
+#graph-panel-wrapper {
+  padding-top: 1px;
+  height: 520px;
+  width: 740px;
+  margin: 0px auto;
+  background-color: #FFF;
+  position: relative;
+}
+
+#graph-container {
+  margin: 0px 24px 0px 5px;
+  min-height: 560px;
+}
+
+.tooltipCss{
+    background-color: #fff !important;
+    color: #565656 !important;
+    font-style: normal;
+    font-size: 10pt;
+    font-weight: 400;
+    border: 1px solid #a9a9a9 !important;
+    box-shadow: 5px 5px 2.5px #eee;
+}
+.header{
+    border: 1px solid orange;
+    width: 100%;
+}
+
+.questionContainer{
+    font-size: 9pt;
+}
+
+.buttonContainer{
+    float: right;
+    margin-top: 10px;
+    margin-right: 15px;
+}
+
+.questionContainer tr:nth-child(even){
+  background-color: #fceadb;
+}
+.questionContainer tr td{
+    padding: 4px 5px 4px 10px;
+}
+.ns-edss-theme .modal-body{ padding: 0px;}

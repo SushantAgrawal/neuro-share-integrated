@@ -1,0 +1,85 @@
+<md-toolbar class="md-toolbar" color="primary" layout="row" layout-align="center center">
+    <app-version [appConfig]="appConfig"></app-version>
+    <div class="flex-container demographic-data" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center" fxLayoutAlign.xs="start"
+        fxFlex="100%">
+        <div>
+            <div class="title">Patient</div>
+            <div class="bold truncate" *ngIf="data.name">{{data.name.first}} {{data.name.last}}</div>
+        </div>
+        <div>
+            <div class="title">Sex</div>
+            <div class="bold">{{data.sex}}</div>
+        </div>
+        <div>
+            <div class="title">Age</div>
+            <div class="bold">{{age}}</div>
+        </div>
+        <div>
+            <div class="title">Marital Status</div>
+            <div class="bold">{{data.maritalStatus}}</div>
+        </div>
+        <div>
+            <div class="title">Insurance</div>
+            <div class="bold truncate" mdTooltip="{{data.insurance}}">{{data.insurance}}</div>
+        </div>
+        <div>
+            <div class="title">Age of Onset</div>
+            <md-input-container>
+                <input class="age-onset pointer" mdInput type="number" [(ngModel)]="activity.age" (change)="updateActivity()" evalEvent [evalData]="{
+                            label:'Age of Onset',
+                            data: activity.age,
+                            type: 'button'
+                            }">
+            </md-input-container>
+        </div>
+        <div>
+            <div class="title select">MS Type</div>
+            <md-select [(ngModel)]="activity.diseaseType" (change)="updateActivity()" >
+                <!--mdTooltip="{{activity.diseaseType}}"-->
+                <md-option *ngFor="let type of typesArray" [value]="type.name" evalEvent [evalData]="{
+                            label:'MS Type',
+                            data: type.name,
+                            type: 'button'
+                            }">
+                    <!-- mdTooltip="{{type.value}}"-->
+                    {{ type.name }}
+                </md-option>
+            </md-select>
+        </div>
+        <div class="status">
+            <div class="title select">MS Status
+                <span class="fa-stack info-icon pointer" (click)="toggleTooltip()">
+                    <i class="fa fa-circle-thin fa-stack-2x"></i>
+                    <i class="fa fa-info fa-stack-1x"></i>
+                </span>
+                <div class="info-tooltip" [ngClass]="{'show' : showTooltip}">{{information}}</div>
+                <!--<div  [mdTooltipClass]="'info-tooltip'" mdTooltip="{{information}}" #tooltip="mdTooltip"></div>-->
+            </div>
+            <md-select [(ngModel)]="activity.statusDisease" (change)="updateStatus()">
+                <md-option *ngFor="let status of statusDisease" [value]="status.name" evalEvent [evalData]="{
+                            label:'MS Status (1)',
+                            data: status.name,
+                            type: 'button'
+                            }">
+                    {{ status.name }}
+                </md-option>
+            </md-select>
+            <md-select [(ngModel)]="activity.statusType" (change)="updateStatus()">
+                <md-option *ngFor="let status of statusType" [value]="status.name" evalEvent [evalData]="{
+                            label:'MS Status (2)',
+                            data: status.name,
+                            type: 'button'
+                            }">
+                    {{ status.name }}
+                </md-option>
+            </md-select>
+        </div>
+        <div>
+            <div class="title">Last Visit with Me</div>
+            <div class="bold pointer truncate" *ngIf="lastAppointmentWhitMe">{{lastAppointmentWhitMe.date}}</div>
+            <div class="bold pointer truncate" *ngIf="!lastAppointmentWhitMe">-</div>
+        </div>
+    </div>
+    <span class="filler"></span>
+    <app-user-data-bar class="user-data" [userObject]="userObject" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="right center" fxLayoutAlign.xs="end"></app-user-data-bar>
+</md-toolbar>

@@ -1,0 +1,21 @@
+@import "themes/sutter/theme";
+
+//Fonts
+
+$main-font: 'Lato', sans-serif;
+
+//Colors
+$white: #FFF;
+$primary-color:  mat-color($palette-primary, 600);
+$warn-color: mat-color($palette-warn, 300);
+$light-warn-color: mat-color($palette-warn, 900);
+$light-primary-color: mat-color($palette-primary, 50);
+$light-gray-color:mat-color($palette-accent, 100);
+$medium-gray-color: mat-color($palette-accent, 500);
+$white-gray-color: mat-color($palette-accent, 50);
+//Background Colors
+$dark-bg: mat-color($palette-accent);
+$light-bg: mat-color($palette-accent,400);
+
+//Sizes
+$font-size-h4: 18px;
