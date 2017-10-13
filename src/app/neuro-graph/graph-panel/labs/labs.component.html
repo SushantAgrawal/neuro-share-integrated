@@ -1,3 +1,87 @@
-<p>
-  labs works!
-</p>
+<ng-template #labSecondLevelTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">Labs</h4>
+    <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="labs-container">
+      <div>
+        <div class="ns-labs-study-vsmall"> </div>
+        <div class="ns-labs-study-40">Ordered Labs</div>
+        <div class="ns-labs-study-small"></div>
+        <div class="ns-labs-study-trend">Trend</div>
+        <div class="ns-labs-study">Range</div>
+      </div>
+
+      <div *ngFor="let labs of labsDataDetails; let i = index;">
+
+        <div *ngIf="labs.component!=null">
+         
+          <div class="ns-labs-study-vsmall ns-labs-red-no-pad" *ngIf="labs.abnormal== true ">
+
+          </div>
+          <div class="ns-labs-study-vsmall ns-labs-green-no-pad" *ngIf="labs.abnormal== false ">
+
+          </div>
+          <div class="ns-labs-study-vsmall ns-labs-grey-no-pad" *ngIf="labs.dates.resultDate=='' ">
+
+          </div>
+          <div class="ns-labs-study-40 ns-labs-sub-header">
+
+            <div class="ns-labs-back">
+              <div>{{labs.component.name}}</div>
+              <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate==''">
+                <div>Ordered {{labs.dates.orderDate}}</div>
+              </div>
+              <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate!=''">
+                <div>Resulted {{labs.dates.resultDate}}</div>
+              </div>
+
+            </div>
+
+          </div>
+          <div class="ns-labs-study-small" *ngIf="labs.component.referenceLow== ''">
+            <div>{{labs.component.value}}</div>
+          </div>
+          <div class="ns-labs-study-small ns-labs-red" *ngIf="labs.abnormal== true && labs.component.referenceLow!= ''">
+            <div>{{labs.component.value}}</div>
+          </div>
+          <div class="ns-labs-study-small ns-labs-green" *ngIf="labs.abnormal== false && labs.component.referenceLow!= ''">
+            <div>{{labs.component.value}}</div>
+          </div>
+          <div class="ns-labs-study-small ns-labs-grey" *ngIf="labs.dates.resultDate=='' && labs.component.referenceLow!= ''">
+            <div>{{labs.component.value}}</div>
+          </div>
+          <div class="ns-labs-study-trend"></div>
+          <div class="ns-labs-study">
+            <div *ngIf="labs.component.referenceLow!= ''">
+              <div class="ns-labs-back ns-labs-study-30">
+                <div>{{labs.component.referenceLow}} - {{labs.component.referenceHigh}}</div>
+
+              </div>
+              <div class="ns-labs-study-30">{{labs.component.referenceUnits}}</div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="labs.component==null">
+            <div class="ns-labs-study-vsmall ns-labs-grey-no-pad" *ngIf="labs.dates.resultDate=='' "></div>
+                <div class="ns-labs-study-40 ns-labs-back">
+                    <div>{{labs.name}}</div>
+                    <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate==''">
+                      <div>Ordered {{labs.dates.orderDate}}</div>
+                    </div>
+                    <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate!=''">
+                      <div>Resulted {{labs.dates.resultDate}}</div>
+                    </div>
+      
+                  </div>
+                  <div class="ns-labs-study-small"></div>
+                  <div class="ns-labs-study-trend"></div>
+                  <div class="ns-labs-study"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
