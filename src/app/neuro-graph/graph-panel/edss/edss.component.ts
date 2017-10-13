@@ -109,7 +109,7 @@ export class EdssComponent implements OnInit {
         let dialogConfig = { hasBackdrop: true, panelClass: 'ns-edss-theme', width: '670px', height: '650px' };
         this.scoreChartDialogRef = this.dialog.open(this.edssSecondLevelAddTemplate, dialogConfig);
         this.scoreChartDialogRef.updatePosition({ top: '55px', left: '55px' });
-        
+
       })();
     })
     let sub4 = virtualCaseLoad.subscribe(d => {
@@ -242,6 +242,19 @@ export class EdssComponent implements OnInit {
           .style('font-size', '1.2em')
           .style('font-weight', 'bold');
       });
+
+    //Axis text
+    let axisText = svg.append('text')
+      .attr('y', GRAPH_SETTINGS.edss.chartHeight)
+      .style('font-size', '10px');
+    axisText.append('tspan')
+      .attr('x', -GRAPH_SETTINGS.panel.marginLeft)
+      .attr('dy', 0)
+      .text('EDSS')
+    axisText.append('tspan')
+      .attr('x', -GRAPH_SETTINGS.panel.marginLeft)
+      .attr('dy', 10)
+      .text('Score')
 
     //Grid Lines
     svg.append('g')
