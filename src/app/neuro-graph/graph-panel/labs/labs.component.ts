@@ -36,7 +36,6 @@ private datasetC: Array<any> =[];
     .brokerService
     .filterOn(allHttpMessages.httpGetLabs)
     .subscribe(d => {
-    // debugger;
       d.error
         ? console.log(d.error)
         : (() => {
@@ -58,12 +57,10 @@ private datasetC: Array<any> =[];
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             //make api call
              this
             .brokerService
             .httpGet(allHttpMessages.httpGetLabs);
-           // this.createChart();
           })();
       });
 
@@ -73,7 +70,6 @@ private datasetC: Array<any> =[];
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             this.removeChart();
           })();
       })

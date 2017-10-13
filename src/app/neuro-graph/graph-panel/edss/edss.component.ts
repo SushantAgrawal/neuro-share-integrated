@@ -38,67 +38,7 @@ export class EdssComponent implements OnInit {
   private datasetArea2: Array<any> = [];
   private datasetMean: Array<any> = [];
   private questionnaireEdssData: Array<any> = [];
-  //Questionnaire static
-  // questionnaireEdssData = [
-  //   {
-  //     "id": "7",
-  //     "os": "",
-  //     "qx_started_at": "2017-08-16 12:50:00",
-  //     "status": "COMPLETED",
-  //     "type": "Full",
-  //     "id_type": "PatientID",
-  //     "qx_id": "8010",
-  //     "qx_name": "MS-SHARE-QX",
-  //     "browser": "",
-  //     "qx_completed_at": "2017-08-17 12:52:57",
-  //     "edss_score": "2.5",
-  //     "pom_id": "82043"
-  //   },
-  //   {
-  //     "id": "6",
-  //     "os": "",
-  //     "qx_started_at": "2017-02-13 12:50:00",
-  //     "status": "COMPLETED",
-  //     "type": "Full",
-  //     "id_type": "PatientID",
-  //     "qx_id": "7625",
-  //     "qx_name": "MS-SHARE-QX",
-  //     "browser": "",
-  //     "qx_completed_at": "2017-02-15 12:52:57",
-  //     "edss_score": "2.0",
-  //     "pom_id": "82043"
-  //   },
-  //   {
-  //     "id": "5",
-  //     "os": "",
-  //     "qx_started_at": "2016-08-11 12:50:00",
-  //     "status": "COMPLETED",
-  //     "type": "Full",
-  //     "id_type": "PatientID",
-  //     "qx_id": "5081",
-  //     "qx_name": "MS-SHARE-QX",
-  //     "browser": "",
-  //     "qx_completed_at": "2016-08-12 12:52:57",
-  //     "edss_score": "3",
-  //     "pom_id": "82043"
-  //   },
-  //   {
-  //     "id": "4",
-  //     "os": "",
-  //     "qx_started_at": "2016-01-05 12:50:00",
-  //     "status": "COMPLETED",
-  //     "type": "Full",
-  //     "id_type": "PatientID",
-  //     "qx_id": "5081",
-  //     "qx_name": "MS-SHARE-QX",
-  //     "browser": "",
-  //     "qx_completed_at": "2016-01-05 12:52:57",
-  //     "edss_score": "2",
-  //     "pom_id": "82043"
-  //   }
-  // ]
-
-
+  
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
 
   }

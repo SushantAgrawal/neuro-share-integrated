@@ -6,7 +6,6 @@ import {Observable} from 'rxjs/Observable';
 import {messages} from './broker.config';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/observable/forkJoin';
-// import {IQuery, IQuery1} from './model';
 
 @Injectable()
 export class BrokerService {
@@ -19,6 +18,7 @@ export class BrokerService {
   init(urlMaps) {
     this.urlMaps = urlMaps;
   }
+
   //application wide events
   emit(id : string, options?: any) {
     this
@@ -90,8 +90,6 @@ export class BrokerService {
           .subject
           .next({id: id, error: messages.idNotMappedToUrl})
       }
-      //this.httpGetMany("test",[{urlId:"test",queryParams:null,headers:[{name:"",valu
-      //e:""}]}])
     } catch (err) {
       this
         .subject

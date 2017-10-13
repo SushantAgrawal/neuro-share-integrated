@@ -2,14 +2,10 @@ import {Injectable} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {urlMaps} from './neuro-graph.config';
 import {BrokerService} from './broker/broker.service';
-// import {envs} from '../app.config';
 @Injectable()
 export class NeuroGraphService {
   global : any = {};
   constructor(private activatedRoute : ActivatedRoute, private brokerService : BrokerService) {
-    // let baseUrl = envs[envs.selectedEnv]; this.set('baseUrl', baseUrl); Object
-    // .keys(urlMaps)   .map(key => urlMaps[key] = baseUrl.concat('/',
-    // urlMaps[key]));
     this.set('urlMaps', urlMaps);
     this.brokerService.init(urlMaps);
     // Comment out following self executable function in production or when actual
