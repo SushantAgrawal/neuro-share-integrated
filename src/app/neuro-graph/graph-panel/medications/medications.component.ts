@@ -386,7 +386,12 @@ export class MedicationsComponent implements OnInit {
     return capitalize + ' ...';
   }
 
-  drawChart(dataset: Array<any>, containterId, barColor, onClickCallback) {
+  drawChart(allData: Array<any>, containterId, barColor, onClickCallback) {
+    let dataset = allData.filter(d => {
+      let dt = new Date(Date.parse(d.date.orderDate));
+      return dt >= this.chartState.xDomain.currentMinValue && dt <= this.chartState.xDomain.currentMaxValue;
+    });
+
     //temporary fix to avoid overwrite
     d3.selectAll('#' + containterId).selectAll("*").remove();
 
