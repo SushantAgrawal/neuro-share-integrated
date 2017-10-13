@@ -239,7 +239,7 @@ private dialogRef: any;
         return returnColor;
       })
       .on('click', d => {
-        this.showSecondLevel(d);
+        //this.showSecondLevel(d);
       })
 
     this.chart.append("text")
