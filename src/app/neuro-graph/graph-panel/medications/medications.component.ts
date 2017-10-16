@@ -47,7 +47,6 @@ export class MedicationsComponent implements OnInit {
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) { }
 
   ngOnInit() {
-    console.log('medication ngOnInit');
     this.subscriptions = this
       .brokerService
       .filterOn(allHttpMessages.httpGetMedications)
@@ -126,19 +125,6 @@ export class MedicationsComponent implements OnInit {
     let otherMedsIds = medication.otherMeds.ids;
     let mappedCodes = medication.otherMeds.mappedCodes;
 
-    //Commented due to limited support 
-    // medicationOrders.forEach(x => {
-    //   if (x.medication && genericNames.includes(x.medication.simple_generic_name.toLowerCase())) {
-    //     x.type = this.medType.dmt //m.medication.id
-    //   } else if (x.medication && vitaminDIds.includes(x.medication.id)) {
-    //     x.type = this.medType.vitaminD
-    //   } else if (x.medication && otherMedsIds.includes(x.medication.id)) {
-    //     x.type = this.medType.otherMeds
-    //   } else if (searchObject(x, 'mapped_code', mappedCodes).length > 0) {
-    //     x.type = this.medType.otherMeds
-    //   }
-    // });
-
     medicationOrders.forEach(x => {
       if (x.medication && genericNames.find(gn => gn === x.medication.simple_generic_name.toLowerCase())) {
         x.type = this.medType.dmt
@@ -186,7 +172,6 @@ export class MedicationsComponent implements OnInit {
         if (dtParts.length == 2) {
           model.patientReportedStartDateMonth = parseInt(dtParts[0]);
           model.patientReportedStartDateYear = parseInt(dtParts[1]);
-          debugger;
           model.patientReportedStartDateMonthName = this.months[model.patientReportedStartDateMonth - 1];
         }
       }
@@ -297,26 +282,6 @@ export class MedicationsComponent implements OnInit {
           })();
         });
       }
-
-
-      // this.brokerService.httpGetMany(manyHttpMessages.httpGetInitialApiCall, [
-      //   { urlId: allHttpMessages.httpGetDmt },
-      //   { urlId: allHttpMessages.httpGetAllQuestionnaire }
-      // ]);
-      // dmtSubscription = this.brokerService.filterOn(manyHttpMessages.httpGetInitialApiCall).subscribe(d => {
-      //   d.error ? console.log(d) : (() => {
-      //     let dmtResponse = d.data[0][allHttpMessages.httpGetDmt];
-      //     let quesResponse = d.data[1][allHttpMessages.httpGetAllQuestionnaire];
-      //     //console.log(quesResponse);
-      //     let dmt = dmtResponse.DMTs.find(x => x.dmt_order_id === selectedData.orderIdentifier.toString());
-      //     this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.dmt, dmt);
-      //     console.log(this.medSecondLayerModel);
-      //     this.dialogRef = this.dialog.open(this.dmtSecondLevelTemplate, config);
-      //     dmtSubscription && dmtSubscription.unsubscribe();
-      //     debugger;
-      //   })();
-      // });
-
     };
     this.drawChart(this.dmtArray, this.medType.dmt, GRAPH_SETTINGS.medications.dmtColor, openSecondLayer);
   }
@@ -324,7 +289,6 @@ export class MedicationsComponent implements OnInit {
   drawVitaminD() {
     let config = { hasBackdrop: true, panelClass: 'ns-vitaminD-theme', width: '300px' };
     let openSecondLayer = (selectedData) => {
-      console.log(selectedData);
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.vitaminD, false);
       this.dialogRef = this.dialog.open(this.vitaminDSecondLevelTemplate, config);
     };
@@ -386,14 +350,18 @@ export class MedicationsComponent implements OnInit {
     return capitalize + ' ...';
   }
 
-  drawChart(dataset: Array<any>, containterId, barColor, onClickCallback) {
+  drawChart(allData: Array<any>, containterId, barColor, onClickCallback) {
+    let dataset = allData.filter(d => {
+      let dt = new Date(Date.parse(d.date.orderDate));
+      return dt >= this.chartState.xDomain.currentMinValue && dt <= this.chartState.xDomain.currentMaxValue;
+    });
+
     //temporary fix to avoid overwrite
     d3.selectAll('#' + containterId).selectAll("*").remove();
 
     let svg = d3
       .select('#' + containterId)
       .attr('class', containterId + '-elements-wrapper')
-      //.attr('transform', 'translate(' + GRAPH_SETTINGS.panel.marginLeft + ', 5)');
       .attr('transform', 'translate(0, 5)');
 
 

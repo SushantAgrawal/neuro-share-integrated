@@ -89,7 +89,6 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             //make api call
             this
               .brokerService
@@ -102,7 +101,6 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             this.removeChart();
           })();
       })
@@ -111,7 +109,6 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             if (typeof this.relapsesData != "undefined" && this.relapsesData != null) {
               this.relapsesDetail = this.relapsesData[0];
               this.relapsesDetail.month = "January";
@@ -182,7 +179,6 @@ export class RelapsesComponent implements OnInit {
       "qx_id": "",
       "clinician_confirmed": true,
       "relapseaxis": "2.0"
-      //"relapse_cnt":""
     }
 
     this.relapsesData.push(obj);

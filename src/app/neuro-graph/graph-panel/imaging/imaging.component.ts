@@ -62,7 +62,6 @@ export class ImagingComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             //make api call
             this
               .brokerService
@@ -76,7 +75,6 @@ export class ImagingComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             this.removeChart();
           })();
       })
