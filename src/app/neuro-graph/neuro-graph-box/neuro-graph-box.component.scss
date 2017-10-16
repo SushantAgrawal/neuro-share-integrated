@@ -82,11 +82,11 @@ label {
 /*-------- Action Buttons ----------------*/
 .action-buttons{
     @include border-radius(5px);
-    font-size: 24pt;
+    font-size: 25pt;
     width: 35px;
     height: 35px;
     cursor: pointer;
-    line-height: 35px;
+    line-height:normal;
     color: #959595;
     display: inline-block;
     border: solid 1px $buttonBorder;
