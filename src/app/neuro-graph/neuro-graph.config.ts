@@ -277,17 +277,17 @@ export const GRAPH_SETTINGS = {
         color: "#EA700D"
     },
     relapse: {
-        positionTop: 265,
+        positionTop: 260,
         chartHeight: 30,
         color: "#E53935"
     },
     imaging: {
-        positionTop: 240,
+        positionTop: 220,
         chartHeight: 30,
         color: "#BE90D4"
     },
     labs: {
-        positionTop: 200,
+        positionTop: 180,
         chartHeight: 30,
         color: "#00AAA5"
     }
