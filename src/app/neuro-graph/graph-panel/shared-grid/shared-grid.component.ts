@@ -32,11 +32,11 @@ export class SharedGridComponent implements OnInit {
   };
   updatePrev()
   {
-    //this.menuClicked.emit('Prev');
+    
   }
   updateNext()
   {
-    //this.menuClicked.emit('Next');
+    
   }
   drawScrollArrows(nodeSelection, dimension) {
     let arc = d3.symbol().type(d3.symbolTriangle).size(100);

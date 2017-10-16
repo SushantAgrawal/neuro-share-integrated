@@ -3,9 +3,6 @@ import {BrokerService} from '../broker/broker.service';
 import {NeuroGraphService} from '../neuro-graph.service';
 import {Observable} from 'rxjs/Observable';
 import {MdDialog} from '@angular/material';
-// import moment from 'moment/src/moment.js';
-// import * as moment from 'moment';
-// import * as _ from 'lodash';
 import {cdsMap, allMessages, manyHttpMessages, allHttpMessages} from '../neuro-graph.config';
 import {InfoPopupComponent} from './info-popup/info-popup.component'
 
@@ -18,14 +15,6 @@ export class CdsComponent implements OnInit {
   cdsState : Object = {};
   csnState : any = {};
   constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
-
-    // {   "review_relapses": "Yes",   "review_mri_images": "No",
-    // "review_symptom_status": "Yes",   "review_ms_type_status": "No",
-    // "review_dmts": "Yes",   "review_mointoring_labs": "No",   "review_vitamin_d":
-    // "No",   "review_other_meds": "No",   "review_symptoms_referrals": "Yes",
-    // "review_vaccinations": "No",   "provider_id": "G00123",   "encounter_csn":
-    // "865482572",   "updated_instant": "08/31/2017 10:41:05" }
-
     this.cdsState = {
       review_relapses: {
         checked: false
@@ -61,7 +50,6 @@ export class CdsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('cds ngOnInit');
     this.subscriptions = this
       .brokerService
       .filterOn(allMessages.neuroRelated)

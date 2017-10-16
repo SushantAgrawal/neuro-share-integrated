@@ -30,17 +30,18 @@ export class LabsComponent implements OnInit {
 
   ngOnInit() {
     this.subscriptions = this
-      .brokerService
-      .filterOn(allHttpMessages.httpGetLabs)
-      .subscribe(d => {
-        // debugger;
-        d.error
-          ? console.log(d.error)
-          : (() => {
-            this.labsData = d.data.EPIC.labOrder;
-            this.createChart();
-          })();
-      })
+    .brokerService
+    .filterOn(allHttpMessages.httpGetLabs)
+    .subscribe(d => {
+      d.error
+        ? console.log(d.error)
+        : (() => {
+          
+          this.labsData = d.data.EPIC.labOrder;
+          this.createChart();
+        })();
+    })
+
 
     let labs = this
       .brokerService
@@ -53,12 +54,10 @@ export class LabsComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             //make api call
-            this
-              .brokerService
-              .httpGet(allHttpMessages.httpGetLabs);
-            // this.createChart();
+             this
+            .brokerService
+            .httpGet(allHttpMessages.httpGetLabs);
           })();
       });
 
@@ -68,7 +67,6 @@ export class LabsComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             this.removeChart();
           })();
       })

@@ -13,11 +13,6 @@
           <div class="ns-relapse-month">{{relapsesDetail.month}}</div>
           <div class="ns-relapse-year">{{relapsesDetail.year}}</div>
       </div>
-      <!-- <div class="row" style="margin-top:3px;">
-          <div class="col-xs-6"># of Relapses</div>
-          <div class="col-xs-6">{{relapsesDetail.relapse_cnt}}</div>
-          
-      </div> -->
       <div class="ns-relapse-row">
           <div class="ns-relapse-confirmed">Clinician<br/> Confirmed</div>
           <div class="ns-relapse-checkboxY" > Y <md-checkbox disabled  [checked]="relapsesDetail.confirm" ></md-checkbox> </div>
@@ -54,12 +49,6 @@
           <div class="ns-relapse-update" *ngIf="isEditSelected"><button class="call-out-buttons" (click)="updateChart()">Update</button></div>
          
       </div>
-      <!-- <div class="row" style="margin-top:6px;">
-          <div class="col-xs-1"></div>
-          <div class="col-xs-4" ># of Relapses</div>
-          <div class="col-xs-5"> <input mdInput class="inputCss" [(ngModel)]="relapsesDetail.relapse_cnt" type="number" min="0" value="{{relapsesDetail.relapse_cnt}}"></div>
-          
-      </div> -->
       <div class="ns-relapse-row">
           <div class="ns-relapse-confirmed">Clinician Confirmed</div>
           <div class="ns-relapse-checkboxY" > Y <md-checkbox  (change)="checkChge()"  [checked]="relapsesDetail.confirm" ></md-checkbox> </div>
