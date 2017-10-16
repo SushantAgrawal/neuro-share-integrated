@@ -13,75 +13,61 @@
         <div class="ns-labs-trend">Trend</div>
         <div class="ns-labs-range">Range</div>
       </div>
+      <div class="ns-labs-items-container">
+        <div class="ns-labs-row" *ngFor="let labs of labsDataDetails; let i = index;">
+          <!-- <div class="ns-sub-labs-items" *ngIf="labs.component!=null"> -->
+          <div  *ngIf="labs.component!=null">
+            <div class="ns-labs-icon-plus"><i class="material-icons">add</i></div>
+            <div class="ns-small-bar ns-labs-red" *ngIf="labs.abnormal== true "></div>
+            <div class="ns-small-bar ns-labs-green" *ngIf="labs.abnormal== false "></div>
+            <div class="ns-small-bar ns-labs-grey" *ngIf="labs.dates.resultDate=='' "></div>
 
-      <div class="ns-labs-row" *ngFor="let labs of labsDataDetails; let i = index;">
-<div class="ns-labs-icon-plus"><i class="material-icons">add</i></div>
-        <div *ngIf="labs.component!=null">
-
-          <div class="ns-small-bar ns-labs-red" *ngIf="labs.abnormal== true "></div>
-          <div class="ns-small-bar ns-labs-green" *ngIf="labs.abnormal== false "></div>
-          <div class=" ns-small-bar ns-labs-grey" *ngIf="labs.dates.resultDate=='' "></div>
-
-          <div class="ns-order-labs-box">
-
-            <div class="ns-labs-back">
-              {{labs.component.name}}
-              <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate==''">
-               Ordered {{labs.dates.orderDate}}
+            <div class="ns-order-labs-box">
+              <span class="ns-labs-name">{{labs.component.name}}</span>
+              <div class="ns-labs-orderDate" *ngIf="labs.dates.resultDate==''">
+                Ordered {{labs.dates.orderDate}}
               </div>
-              <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate!=''">
+              <div class="ns-labs-resultDate" *ngIf="labs.dates.resultDate!=''">
                 Resulted {{labs.dates.resultDate}}
               </div>
-
             </div>
-
-          </div>
-
-          <div class="ns-small-box" *ngIf="labs.component.referenceLow== ''">
-            {{labs.component.value}}
-          </div>
-          <div class="ns-small-box ns-labs-red" *ngIf="labs.abnormal== true && labs.component.referenceLow!= ''">
-            {{labs.component.value}}
-          </div>
-          <div class="ns-small-box ns-labs-green" *ngIf="labs.abnormal== false && labs.component.referenceLow!= ''">
-            {{labs.component.value}}
-          </div>
-          <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && labs.component.referenceLow!= ''">
-            {{labs.component.value}}
-          </div>
-
-          <div class="ns-labs-trend-box"></div>
-
-          
+            <div class="ns-small-box" *ngIf="labs.component.referenceLow== ''">
+              {{labs.component.value}}
+            </div>
+            <div class="ns-small-box ns-labs-red" *ngIf="labs.abnormal== true && labs.component.referenceLow!= ''">
+              {{labs.component.value}}
+            </div>
+            <div class="ns-small-box ns-labs-green" *ngIf="labs.abnormal== false && labs.component.referenceLow!= ''">
+              {{labs.component.value}}
+            </div>
+            <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && labs.component.referenceLow!= ''">
+              {{labs.component.value}}
+            </div>
+            <div class="ns-labs-trend-box"></div>
             <div class="ns-labs-range-unit" *ngIf="labs.component.referenceLow!= ''">
               <div class="ns-range-value">
-               {{labs.component.referenceLow}} - {{labs.component.referenceHigh}}
-
+                {{labs.component.referenceLow}} - {{labs.component.referenceHigh}}
               </div>
-              <div class="ns-range-unit">{{labs.component.referenceUnits}}</div>
+              <div class="ns-range-unit">({{labs.component.referenceUnits}})</div>
             </div>
-          
-          
-        </div>
-
-        <div *ngIf="labs.component==null">
-            <div class="ns-labs-study-vsmall ns-labs-grey-no-pad" *ngIf="labs.dates.resultDate=='' "></div>
-                <div class="ns-labs-study-40 ns-labs-back">
-                    <div>{{labs.name}}</div>
-                    <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate==''">
-                      <div>Ordered {{labs.dates.orderDate}}</div>
-                    </div>
-                    <div class="ns-labs-small-font" *ngIf="labs.dates.resultDate!=''">
-                      <div>Resulted {{labs.dates.resultDate}}</div>
-                    </div>
-      
-                  </div>
-                  <div class="ns-labs-study-small"></div>
-                  <div class="ns-labs-study-trend"></div>
-                  <div class="ns-labs-study"></div>
+          </div>
+          <div class="ns-labs-null" *ngIf="labs.component==null">
+            <div class="ns-small-bar ns-labs-grey" *ngIf="labs.dates.resultDate=='' "></div>
+            <div class="ns-order-labs-box">
+              <div class="ns-labs-name">{{labs.name}}</div>
+              <div class="ns-labs-date" *ngIf="labs.dates.resultDate==''">
+                Ordered {{labs.dates.orderDate}}
+              </div>
+              <div class="ns-labs-date" *ngIf="labs.dates.resultDate!=''">
+                Resulted {{labs.dates.resultDate}}
+              </div>
+            </div>
+            <div class="ns-small-box ns-labs-grey"></div>
+            <div class="ns-labs-trend-box"></div>
+            <div class="ns-labs-range-unit"></div>
+          </div>
         </div>
       </div>
-      
     </div>
   </div>
 </ng-template>
