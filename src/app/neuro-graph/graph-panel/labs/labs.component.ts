@@ -83,7 +83,7 @@ export class LabsComponent implements OnInit {
 
   showSecondLevel(data) {
     this.labsDataDetails = data.orderDetails;
-    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-labs-theme', width: '700px', height: '450px' };
+    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-labs-theme', width: '730px' };
     this.dialogRef = this.dialog.open(this.labSecondLevelTemplate, dialogConfig);
   }
 
@@ -195,7 +195,7 @@ export class LabsComponent implements OnInit {
         return returnColor;
       })
       .on('click', d => {
-        //this.showSecondLevel(d);
+       // this.showSecondLevel(d);
       })
 
     this.chart.append("text")
