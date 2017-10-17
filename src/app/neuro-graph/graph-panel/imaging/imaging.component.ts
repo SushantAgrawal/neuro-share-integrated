@@ -97,11 +97,10 @@ export class ImagingComponent implements OnInit {
   }
 
   showResult() {
-    setTimeout(() => {
+      this.dialog.openDialogs.pop();
       let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-images-theme', width: '490px', height: '600px' };
       this.reportDialogRef = this.dialog.open(this.imagingThirdLevelTemplate, dialogConfig);
       this.reportDialogRef.updatePosition({ top: '50px', left: "860px" });
-    }, 200);
   }
 
   removeChart() {

@@ -1,7 +1,7 @@
 <ng-template #walk25FeetSecondLevelTemplate>
   <div class="modal-header">
     <h4 class="modal-title">25' Walk Test</h4>
-    <button type="button" class="close" aria-label="Close" (click)="dialog.closeAll()">
+    <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
               <span aria-hidden="true">&times;</span>
           </button>
   </div>
@@ -35,7 +35,7 @@
 <ng-template #walk25FeetEditSecondLevelTemplate>
   <div class="modal-header">
     <h4 class="modal-title">25' Walk Test</h4>
-    <button type="button" class="close" aria-label="Close" (click)="dialog.closeAll()">
+    <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
                 <span aria-hidden="true">&times;</span>
             </button>
   </div>
@@ -80,7 +80,7 @@
 <ng-template #walk25FeetAddSecondLevelTemplate>
   <div class="modal-header">
     <h4 class="modal-title">25' Walk Test</h4> <button type="button" class="btn-info-walk25Feet" (click)="walk25FeetInfo();"><span class="">i</span></button>
-    <button type="button" class="close" aria-label="Close" (click)="dialog.closeAll()">
+    <button type="button" class="close" aria-label="Close" (click)="Walk25FeetChartDialogRef.close()">
                 <span aria-hidden="true">&times;</span>
             </button>
   </div>

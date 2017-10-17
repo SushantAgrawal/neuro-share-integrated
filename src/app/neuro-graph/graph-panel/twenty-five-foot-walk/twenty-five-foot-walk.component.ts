@@ -33,7 +33,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   private score_2:any;
   private scoreValue:any;
   private score_ids:any=20;
-  constructor(private brokerService: BrokerService, private dialog: MdDialog,private dialogSec: MdDialog, private neuroGraphService: NeuroGraphService) {
+  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
 
   }
 
@@ -75,7 +75,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         this.score_1="";
         this.score_2="";
         this.scoreValue="";
-        let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px' };
+        let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px',preserveScope: true,skipHide: true };
         this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
         this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
         
@@ -111,8 +111,10 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
   walk25FeetInfo(){
+    //debugger;
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-25walk-theme', width: '300px', height: '400px' };
-    this.reportDialogRef = this.dialogSec.open(this.walk25FeetThirdLevelTemplate, dialogConfig);
+    this.dialog.openDialogs.pop();
+    this.reportDialogRef = this.dialog.open(this.walk25FeetThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '150px', left: "500px" });
   }
   updateWalk25FeetScore(str)
@@ -147,7 +149,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   showSecondLevel(data) {
     //debugger;
     this.showUpdate = false;
-    let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px' };
+    let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px',skipHide: true,preserveScope: true };
     this.walk25FeetScoreDetail = data;
     if(this.walk25FeetScoreDetail.save_csn_status == "Closed")
     {
