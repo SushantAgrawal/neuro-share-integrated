@@ -11,7 +11,7 @@ import { ImagingComponent } from '../graph-panel/imaging/imaging.component';
 import { LabsComponent } from '../graph-panel/labs/labs.component';
 import {MedicationsComponent} from '../graph-panel/medications/medications.component';
 import {EdssComponent} from '../graph-panel/edss/edss.component';
-//import moment from 'moment/src/moment.js';
+
 @Component({
   selector: 'app-graph-panel',
   templateUrl: './graph-panel.component.html',
@@ -35,7 +35,6 @@ export class GraphPanelComponent implements OnInit {
   constructor(private brokerService: BrokerService, private dialog: MdDialog, ) { }
 
   ngOnInit() {
-    console.log('graph-panel ngOnInit');
     this.state = this.getDefaultState();
 
     let edss = this
@@ -49,7 +48,6 @@ export class GraphPanelComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             this.isEdssSelected = true;
             this.toggleVirtualCaseLoad = "Add Virtual Caseload";
           })();
@@ -67,9 +65,7 @@ export class GraphPanelComponent implements OnInit {
   }
 
   getXDomain(zoomOption) {
-    //Currently dates are static. Later will be set dynamically based on zoom options.
      //Calculate range
-     //debugger;
     switch (zoomOption){
       case "2 Yrs": return {
         defaultMinValue: new Date(2016, 0, 1),
@@ -202,8 +198,6 @@ export class GraphPanelComponent implements OnInit {
       .range([0, dimension.width])
   }
   menuClicks(message:string):void {
-    //debugger;
-    //this.state = this.getDefaultState();
     this.menuClick(message);
   }
   menuClick(txt)

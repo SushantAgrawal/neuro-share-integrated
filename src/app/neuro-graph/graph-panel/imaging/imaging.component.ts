@@ -62,7 +62,6 @@ export class ImagingComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             //make api call
             this
               .brokerService
@@ -76,7 +75,6 @@ export class ImagingComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             this.removeChart();
           })();
       })
@@ -116,7 +114,6 @@ export class ImagingComponent implements OnInit {
       return {
         ...d,
         orderDate: new Date(d.orderDate),
-        axis: 3.0,
         status: d.status,
         orderFormatDate: d.orderDate
       }
@@ -135,7 +132,6 @@ export class ImagingComponent implements OnInit {
             if (this.datasetC[j].status == "Completed") {
               isComplete = "Full";
             }
-
             this.datasetB.push({
               'orderDate': this.datasetC[j].orderDate,
               'status': isComplete,
@@ -157,7 +153,6 @@ export class ImagingComponent implements OnInit {
           }
         }
       }
-
       repeatCount = 0;
       isComplete = "Empty";
     }
@@ -165,7 +160,6 @@ export class ImagingComponent implements OnInit {
       return {
         ...d,
         orderDate: d.orderDate,
-        axis: 3.0,
         status: d.status
       }
     }).sort((a, b) => a.orderDate - b.orderDate);
@@ -180,15 +174,15 @@ export class ImagingComponent implements OnInit {
 
     this.lineA = d3.line<any>()
       .x((d: any) => this.chartState.xScale(d.orderDate))
-      .y((d: any) => this.yScale(d.axis));
+      .y(0);
 
     this.chart = d3.select("#imaging")
       .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.imaging.positionTop + ")");
 
     this.pathUpdate = this.chart.append("path")
       .datum([
-        { "orderDate": this.chartState.xDomain.defaultMinValue, "axis": 3.0 },
-        { "orderDate": this.chartState.xDomain.defaultMaxValue, "axis": 3.0 }
+        { "orderDate": this.chartState.xDomain.defaultMinValue },
+        { "orderDate": this.chartState.xDomain.defaultMaxValue }
       ])
       .attr("d", this.lineA)
       .attr("stroke", GRAPH_SETTINGS.imaging.color)
@@ -209,13 +203,13 @@ export class ImagingComponent implements OnInit {
     gradImg.append("stop").attr("offset", "50%").style("stop-color", GRAPH_SETTINGS.imaging.color);
     gradImg.append("stop").attr("offset", "50%").style("stop-color", "white");
 
-    this.chart.selectAll(".dotA")
+    this.chart.selectAll(".dot")
       .data(this.datasetB)
       .enter()
       .append("circle")
-      .attr("class", "dotA")
+      .attr("class", "dot")
       .attr("cx", d => this.chartState.xScale(d.orderDate))
-      .attr("cy", d => this.yScale(d.axis))
+      .attr("cy", 0)
       .attr("r", 10)
       .attr('class', 'x-axis-arrow')
       .style("stroke", GRAPH_SETTINGS.imaging.color)
@@ -238,7 +232,7 @@ export class ImagingComponent implements OnInit {
 
     this.chart.append("text")
       .attr("transform", "translate(" + this.chartState.xScale(this.chartState.xDomain.defaultMinValue) + "," + "3.0" + ")")
-      .attr("dy", this.yScale(3.0))
+      .attr("dy", 0)
       .attr("text-anchor", "start")
       .attr("font-size", "10px")
       .text("Images");

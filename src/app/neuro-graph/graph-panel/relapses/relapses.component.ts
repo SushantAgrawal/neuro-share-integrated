@@ -89,7 +89,6 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             //make api call
             this
               .brokerService
@@ -102,7 +101,6 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             this.removeChart();
           })();
       })
@@ -111,7 +109,6 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            console.log(d.data);
             if (typeof this.relapsesData != "undefined" && this.relapsesData != null) {
               this.relapsesDetail = this.relapsesData[0];
               this.relapsesDetail.month = "January";
@@ -182,7 +179,6 @@ export class RelapsesComponent implements OnInit {
       "qx_id": "",
       "clinician_confirmed": true,
       "relapseaxis": "2.0"
-      //"relapse_cnt":""
     }
 
     this.relapsesData.push(obj);
@@ -231,7 +227,6 @@ export class RelapsesComponent implements OnInit {
         ...d,
         last_updated_instant: d.relapse_month + "/15/" + d.relapse_year,
         lastUpdatedDate: new Date(relYear, relMonth, 15),
-        relapseaxis: 2,
         confirm: d.clinician_confirmed,
         month: d.relapse_month,
         year: d.relapse_year
@@ -249,15 +244,15 @@ export class RelapsesComponent implements OnInit {
 
     this.line = d3.line<any>()
       .x((d: any) => this.chartState.xScale(d.lastUpdatedDate))
-      .y((d: any) => this.yScale(d.relapseaxis));
+      .y((d: any) => 0);
 
     this.chart = d3.select("#relapses")
       .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.relapse.positionTop + ")");
 
     this.pathUpdate = this.chart.append("path")
       .datum([
-        { "lastUpdatedDate": this.chartState.xDomain.defaultMinValue, "relapseaxis": 2.0 },
-        { "lastUpdatedDate": this.chartState.xDomain.defaultMaxValue, "relapseaxis": 2.0 }
+        { "lastUpdatedDate": this.chartState.xDomain.defaultMinValue },
+        { "lastUpdatedDate": this.chartState.xDomain.defaultMaxValue }
       ])
       .attr("class", "line")
       .attr("d", this.line)
@@ -273,7 +268,7 @@ export class RelapsesComponent implements OnInit {
       .attr("class", "triangle")
       .style('cursor', 'pointer')
       .attr('transform', d => {
-        return `translate(${(this.chartState.xScale(d.lastUpdatedDate))},${(this.yScale(d.relapseaxis))}) rotate(180)`;
+        return `translate(${(this.chartState.xScale(d.lastUpdatedDate))},0) rotate(180)`;
       })
       .style("stroke", "red")
       .style("fill", d => {

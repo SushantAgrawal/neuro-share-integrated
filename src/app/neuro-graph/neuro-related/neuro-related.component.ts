@@ -1,7 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BrokerService } from '../broker/broker.service';
-// import { BrokerService } from '../../broker/broker.module';
-// import {BrokerService} from 'broker';
 import { allMessages, allHttpMessages, manyHttpMessages } from '../neuro-graph.config';
 import { MdDialog } from '@angular/material';
 import { RelapsesComponent } from '../graph-panel/relapses/relapses.component';
@@ -17,12 +15,10 @@ export class NeuroRelatedComponent implements OnInit {
   display: Boolean = false;
   constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
 
-  ngOnInit() {
-    console.log('neuro-related ngOnInit');    
+  ngOnInit() {   
   }
 
   ngAfterViewInit(){
-    console.log('neuro-related anAfterViewInit');
     this
     .brokerService
     .emit(allMessages.neuroRelated, {
