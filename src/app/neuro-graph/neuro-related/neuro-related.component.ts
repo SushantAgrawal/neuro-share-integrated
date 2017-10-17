@@ -60,6 +60,9 @@ export class NeuroRelatedComponent implements OnInit {
       case 'edss':
         this.brokerService.emit(allMessages.invokeAddEdss);
         break;
+      case 'walk25Feet':
+        this.brokerService.emit(allMessages.invokeAddWalk25Feet);
+        break;
       default:
     }
   }

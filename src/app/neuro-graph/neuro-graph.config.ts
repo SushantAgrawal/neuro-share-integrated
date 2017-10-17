@@ -8,13 +8,15 @@ export const allMessages = {
     'neuroRelated': 'neuro:related',
     'invokeAddRelapses': 'invoke:add:relapses',
     'invokeAddEdss': 'invoke:add:edss',
+    'invokeAddWalk25Feet': 'invoke:add:walk25Feet',
     'virtualCaseload': 'virtual:Caseload'
 };
 
 export const manyHttpMessages = {
     'httpGetTestMany': 'http:get:test:many',
     'httpGetInitialApiCall': 'http:get:initial:api:call',
-    'httpGetMedicationSecondLayerApiCall': 'http:get:medication:second:layer:api:call'
+    'httpGetMedicationSecondLayerApiCall': 'http:get:medication:second:layer:api:call',
+    'httpGetWalk25FeetApiCall': 'http:get:walk25Feet:api:call'
 };
 export const allHttpMessages = {
     'httpGetMedications': 'http:get:medications',
@@ -32,7 +34,9 @@ export const allHttpMessages = {
     'httpGetOtherMeds': 'http:get:otherMeds',
     'httpGetImaging': 'http:get:imaging',
     'httpGetLabs': 'http:get:labs',
-    'httpGetVirtualCaseLoad':'http:get:virtualCaseLoad'
+    'httpGetVirtualCaseLoad':'http:get:virtualCaseLoad',
+    'httpGetWalk25Feet': 'http:get:walk25Feet',
+    'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info'
 };
 export const urlMaps = {
     
@@ -51,8 +55,10 @@ export const urlMaps = {
     "http:get:all:questionnaire": "https://private-anon-a39e22dbbe-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/?pom_id=82043",
     "http:get:otherMeds": "https://private-anon-a39e22dbbe-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds/?pom_id=82043",
     "http:get:imaging": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/imaging-orders/?pom_id=82043",
-    "http:get:labs": "http://private-anon-f773a6f996-ehr2.apiary-mock.com/maestro/api/ehr/lab-orders/?pom_id=82043",
-    "http:get:virtualCaseLoad":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/?pom_id=82043"
+    "http:get:labs": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/lab-orders/?pom_id=82043",
+    "http:get:virtualCaseLoad":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/?pom_id=82043",
+    "http:get:walk25Feet":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/?pom_id=82043",
+    "http:get:walk25Feet:info":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/"
     
 };
 
@@ -290,6 +296,12 @@ export const GRAPH_SETTINGS = {
         positionTop: 200,
         chartHeight: 30,
         color: "#00AAA5"
+    },
+    walk25Feet: {
+        positionTop: 300,
+        chartHeight: 200,
+        maxValueY: 30,
+        color: "#31859B"
     }
 }
 

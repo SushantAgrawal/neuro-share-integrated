@@ -21,6 +21,7 @@ import { InfoPopupComponent } from './cds/info-popup/info-popup.component';
 import { ImagingComponent } from './graph-panel/imaging/imaging.component';
 import { LabsComponent } from './graph-panel/labs/labs.component';
 import { EvalModule} from '@sutterhealth/analytics';
+import { TwentyFiveFootWalkComponent } from './graph-panel/twenty-five-foot-walk/twenty-five-foot-walk.component';
 
 export * from './graph-panel/graph-panel.component';
 export * from './cds/cds.component';
@@ -56,7 +57,8 @@ export const ROUTES: Routes = [];
     RelapsesComponent,
     InfoPopupComponent,
     ImagingComponent,
-    LabsComponent
+    LabsComponent,
+    TwentyFiveFootWalkComponent
   ],
   exports: [
     NeuroGraphBoxComponent,
