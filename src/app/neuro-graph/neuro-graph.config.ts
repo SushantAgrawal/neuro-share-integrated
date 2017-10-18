@@ -292,7 +292,7 @@ export const GRAPH_SETTINGS = {
     }
 }
 
-export const edssPopup = [{ score: '0.0', title: 'Normal neurological exam.' }
+export const edssScoreChart = [{ score: '0.0', title: 'Normal neurological exam.' }
     , { score: '1.0', title: 'No Disability, minimal signs in one FS.' }
     , { score: '1.5', title: 'No disability, minimal signs in more than one FS.' }
     , { score: '2.0', title: 'Minimal disability in one FS.' }
