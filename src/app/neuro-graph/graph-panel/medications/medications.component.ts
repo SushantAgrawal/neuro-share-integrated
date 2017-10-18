@@ -80,7 +80,7 @@ export class MedicationsComponent implements OnInit {
   }
 
   processMedication(neuroRelated, medication) {
-    debugger;
+    //debugger;
     // A medication was checked 
     let sub1 = neuroRelated.filter(t => {
       return ((t.data.artifact == medication) && (t.data.checked))
