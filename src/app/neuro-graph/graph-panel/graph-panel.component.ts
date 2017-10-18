@@ -1,16 +1,17 @@
 
-import { Component, OnInit, ViewEncapsulation,ViewChild,TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef } from '@angular/core';
 import { GRAPH_SETTINGS } from '../neuro-graph.config';
 import * as d3 from 'd3';
 import { BrokerService } from '../broker/broker.service';
-import { allMessages} from '../neuro-graph.config';
+import { allMessages } from '../neuro-graph.config';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { SharedGridComponent } from '../graph-panel/shared-grid/shared-grid.component';
 import { RelapsesComponent } from '../graph-panel/relapses/relapses.component';
 import { ImagingComponent } from '../graph-panel/imaging/imaging.component';
 import { LabsComponent } from '../graph-panel/labs/labs.component';
-import {MedicationsComponent} from '../graph-panel/medications/medications.component';
-import {EdssComponent} from '../graph-panel/edss/edss.component';
+import { MedicationsComponent } from '../graph-panel/medications/medications.component';
+import { EdssComponent } from '../graph-panel/edss/edss.component';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-graph-panel',
@@ -26,12 +27,12 @@ export class GraphPanelComponent implements OnInit {
   private state: any;
   private graphSetting = GRAPH_SETTINGS;
 
-  @ViewChild(SharedGridComponent) childSharedChart:SharedGridComponent;
-  @ViewChild(RelapsesComponent) childrelapsesChart:RelapsesComponent;
-  @ViewChild(ImagingComponent) childimagesChart:ImagingComponent;
-  @ViewChild(LabsComponent) childlabsChart:LabsComponent;
-  @ViewChild(MedicationsComponent) childmedicationsChart:MedicationsComponent;
-  @ViewChild(EdssComponent) childedssChart:EdssComponent;
+  @ViewChild(SharedGridComponent) childSharedChart: SharedGridComponent;
+  @ViewChild(RelapsesComponent) childrelapsesChart: RelapsesComponent;
+  @ViewChild(ImagingComponent) childimagesChart: ImagingComponent;
+  @ViewChild(LabsComponent) childlabsChart: LabsComponent;
+  @ViewChild(MedicationsComponent) childmedicationsChart: MedicationsComponent;
+  @ViewChild(EdssComponent) childedssChart: EdssComponent;
   constructor(private brokerService: BrokerService, private dialog: MdDialog, ) { }
 
   ngOnInit() {
@@ -65,8 +66,11 @@ export class GraphPanelComponent implements OnInit {
   }
 
   getXDomain(zoomOption) {
-     //Calculate range
-    switch (zoomOption){
+    //Calculate range
+    let momentTest = moment(new Date(1984, 11, 25)).add(-2, 'year').toDate();
+    console.log('Moment Build Test : Developers Birthday : ' + momentTest);
+
+    switch (zoomOption) {
       case "2 Yrs": return {
         defaultMinValue: new Date(2016, 0, 1),
         defaultMaxValue: new Date(2017, 11, 31),
@@ -97,92 +101,90 @@ export class GraphPanelComponent implements OnInit {
         currentMinValue: new Date(2017, 11, 1),
         currentMaxValue: new Date(2017, 11, 31)
       };
-      case "Prev":{
-      switch (this.state.zoomVal)
-      {
-        case "2 Yrs": 
-        return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-2, 'year').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-2, 'year').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-2, 'year').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-2, 'year').toDate()
-        };
-        case "1 Yr": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-1, 'year').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-1, 'year').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-1, 'year').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-1, 'year').toDate()
-        };
-        case "6 M": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-6, 'month').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-6, 'month').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-6, 'month').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-6, 'month').toDate()
-        };
-        case "3 M": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-3, 'month').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-3, 'month').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-3, 'month').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-3, 'month').toDate()
-        };
-        case "1 M": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-1, 'month').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-1, 'month').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-1, 'month').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-1, 'month').toDate()
-        };
-        default: return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-3, 'year').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-3, 'year').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-3, 'year').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-3, 'year').toDate()
-        };
-      }
-     
-    };
-      case "Next":{
-      switch (this.state.zoomVal)
-      {
-        case "2 Yrs": 
-        return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(2, 'year').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(2, 'year').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(2, 'year').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(2, 'year').toDate()
-        };
-        case "1 Yr": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(1, 'year').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(1, 'year').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(1, 'year').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(1, 'year').toDate()
-        };
-        case "6 M": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(6, 'month').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(6, 'month').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(6, 'month').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(6, 'month').toDate()
-        };
-        case "3 M": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(3, 'month').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(3, 'month').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(3, 'month').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(3, 'month').toDate()
-        };
-        case "1 M": return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(1, 'month').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(1, 'month').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(1, 'month').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(1, 'month').toDate()
-        };
-        default: return {
-          // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(3, 'year').toDate(),
-          // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(3, 'year').toDate(),
-          // currentMinValue: moment(this.state.xDomain.currentMinValue).add(3, 'year').toDate(),
-          // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(3, 'year').toDate()
-        };
-      }
-     
-    };
+      case "Prev": {
+        switch (this.state.zoomVal) {
+          case "2 Yrs":
+            return {
+              // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-2, 'year').toDate(),
+              // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-2, 'year').toDate(),
+              // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-2, 'year').toDate(),
+              // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-2, 'year').toDate()
+            };
+          case "1 Yr": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-1, 'year').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-1, 'year').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-1, 'year').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-1, 'year').toDate()
+          };
+          case "6 M": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-6, 'month').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-6, 'month').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-6, 'month').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-6, 'month').toDate()
+          };
+          case "3 M": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-3, 'month').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-3, 'month').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-3, 'month').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-3, 'month').toDate()
+          };
+          case "1 M": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-1, 'month').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-1, 'month').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-1, 'month').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-1, 'month').toDate()
+          };
+          default: return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(-3, 'year').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(-3, 'year').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(-3, 'year').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(-3, 'year').toDate()
+          };
+        }
+
+      };
+      case "Next": {
+        switch (this.state.zoomVal) {
+          case "2 Yrs":
+            return {
+              // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(2, 'year').toDate(),
+              // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(2, 'year').toDate(),
+              // currentMinValue: moment(this.state.xDomain.currentMinValue).add(2, 'year').toDate(),
+              // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(2, 'year').toDate()
+            };
+          case "1 Yr": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(1, 'year').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(1, 'year').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(1, 'year').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(1, 'year').toDate()
+          };
+          case "6 M": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(6, 'month').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(6, 'month').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(6, 'month').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(6, 'month').toDate()
+          };
+          case "3 M": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(3, 'month').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(3, 'month').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(3, 'month').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(3, 'month').toDate()
+          };
+          case "1 M": return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(1, 'month').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(1, 'month').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(1, 'month').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(1, 'month').toDate()
+          };
+          default: return {
+            // defaultMinValue: moment(this.state.xDomain.defaultMinValue).add(3, 'year').toDate(),
+            // defaultMaxValue: moment(this.state.xDomain.defaultMaxValue).add(3, 'year').toDate(),
+            // currentMinValue: moment(this.state.xDomain.currentMinValue).add(3, 'year').toDate(),
+            // currentMaxValue: moment(this.state.xDomain.currentMaxValue).add(3, 'year').toDate()
+          };
+        }
+
+      };
       default: return {
         defaultMinValue: new Date(2015, 0, 1),
         defaultMaxValue: new Date(2017, 11, 31),
@@ -190,38 +192,37 @@ export class GraphPanelComponent implements OnInit {
         currentMaxValue: new Date(2017, 11, 31)
       };
     }
-     }
+  }
 
   getXScale(dimension, xDomain): any {
     return d3.scaleTime()
       .domain([xDomain.currentMinValue, xDomain.currentMaxValue])
       .range([0, dimension.width])
   }
-  menuClicks(message:string):void {
+  menuClicks(message: string): void {
     this.menuClick(message);
   }
-  menuClick(txt)
-  {
-   
-      this.state.xDomain = this.getXDomain(txt);
-      this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-      this.state.zoomVal = txt;
-      this.childSharedChart.ngOnInit();
-      this.childrelapsesChart.removeChart();
-      this.childrelapsesChart.createChart();
-      this.childlabsChart.removeChart();
-      this.childlabsChart.createChart();
-      this.childimagesChart.removeChart();
-      this.childimagesChart.createChart();
-      this.childmedicationsChart.removeDmt();
-      this.childmedicationsChart.drawDmt();
-      this.childmedicationsChart.removeOtherMeds();
-      this.childmedicationsChart.drawOtherMeds();
-      this.childmedicationsChart.removeVitaminD();
-      this.childmedicationsChart.drawVitaminD();
-      this.childedssChart.removeChart();
-      this.childedssChart.drawEdssLineCharts();
-     
+  menuClick(txt) {
+
+    this.state.xDomain = this.getXDomain(txt);
+    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.state.zoomVal = txt;
+    this.childSharedChart.ngOnInit();
+    this.childrelapsesChart.removeChart();
+    this.childrelapsesChart.createChart();
+    this.childlabsChart.removeChart();
+    this.childlabsChart.createChart();
+    this.childimagesChart.removeChart();
+    this.childimagesChart.createChart();
+    this.childmedicationsChart.removeDmt();
+    this.childmedicationsChart.drawDmt();
+    this.childmedicationsChart.removeOtherMeds();
+    this.childmedicationsChart.drawOtherMeds();
+    this.childmedicationsChart.removeVitaminD();
+    this.childmedicationsChart.drawVitaminD();
+    this.childedssChart.removeChart();
+    this.childedssChart.drawEdssLineCharts();
+
   }
   getDefaultState() {
     let state: any = {};
@@ -237,7 +238,7 @@ export class GraphPanelComponent implements OnInit {
     };
     state.xDomain = this.getXDomain(null);
     state.xScale = this.getXScale(state.canvasDimension, state.xDomain);
-    state.zoomVal="";
+    state.zoomVal = "";
     return state;
   }
 
@@ -262,6 +263,6 @@ export class GraphPanelComponent implements OnInit {
   showVirtualCaseloadInfo(e) {
     let dialogConfig = { hasBackdrop: false, panelClass: 'virtual-caseload-info', width: '300px', height: '200px' };
     this.virtualCaseloadInfoDialogRef = this.dialog.open(this.virtualCaseloadInfoTemplate, dialogConfig);
-    this.virtualCaseloadInfoDialogRef.updatePosition({ top: `${e.clientY}px`, left:`${e.clientX}px` });
+    this.virtualCaseloadInfoDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
   }
 }
