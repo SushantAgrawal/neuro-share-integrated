@@ -1,0 +1,46 @@
+.ns-row-walk25Feet{ margin-bottom: 5px;}
+.ns-walk25Feet-col{ width: 65%; display: inline-block; text-align: left;}
+.ns-walk25Feet-value{ width:33%; display: inline-block; text-align:right; }
+.ns-walk25Feet-value-bg{background-color: #d8d8d8; border-bottom: solid 1px #31859B; padding: 2px; width: 65px; text-align: right;}
+
+.ns-row-walk25Feet:after{
+    clear: both;
+    content: '';
+    display: block;
+}
+.walk25Feet-container{padding: 10px;}
+.ns-walk25Feet-update{ float: right;}
+.walkFontWeight{
+    font-weight: bold;
+}
+.btn-info-walk25Feet
+{
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    margin-left: 8px;
+    font-size: 10pt;
+    line-height: 16px;
+    color: #333333;
+    border: solid 1px #31859B;
+    background-color: #ffffff;
+    cursor: pointer;
+    border-radius: 50% !important;
+}
+.ns-input-container
+{
+    display: inline !important;
+    background-color: #d8d8d8;
+   
+}
+.ns-input-container .mat-form-field-wrapper
+{
+    padding: 0px !important;
+    padding-bottom: 1.25em !important;
+}
+.ns-input-container .mat-form-field-infix
+{
+    padding: 0px !important;
+}

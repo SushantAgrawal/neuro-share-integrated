@@ -1,7 +1,7 @@
 <ng-template #imagingSecondLevelTemplate>
     <div class="modal-header">
         <h4 class="modal-title">Imaging</h4>
-        <button type="button" class="close" aria-label="Close" (click)="dialog.closeAll()">
+        <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
     <span aria-hidden="true">&times;</span>
     </button>
     </div>
@@ -35,7 +35,7 @@
                 <div class="ns-imaging-header-study">
                         <div class="ns-imaging-study">Study Name</div>
                         <div class="ns-imaging-study">Study Date</div>
-                        <div class="ns-imaging-study">Authorizer</div>
+                        <div class="ns-imaging-study">Reading Radiologist</div>
                 </div>
 
             <div class="ns-imaging-row" *ngFor="let imaging of imagingDataDetails; let i = index;">
@@ -43,7 +43,7 @@
                     <div class="ns-imaging-sub-header">
                     <div class="ns-imaging-study">{{imaging.displayName}}</div>
                     <div class="ns-imaging-study">{{imaging.resultDate}}</div>
-                    <div class="ns-imaging-study">{{imaging.authorizingProvider}}</div>
+                    <div class="ns-imaging-study">{{imaging.readingRadiologist}}</div>
                     </div>
                     <div class="ns-imgression">
                     <div *ngFor="let imp of imaging.impression;">

@@ -76,12 +76,11 @@ export class MedicationsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this
-      .subscriptions
-      .unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   processMedication(neuroRelated, medication) {
+    //debugger;
     // A medication was checked 
     let sub1 = neuroRelated.filter(t => {
       return ((t.data.artifact == medication) && (t.data.checked))
@@ -90,11 +89,10 @@ export class MedicationsComponent implements OnInit {
         ? console.log(d.error)
         : (() => {
           this.selectedMed[medication] = true;
-          this
-            .brokerService
-            .httpGet(allHttpMessages.httpGetMedications);
+          this.brokerService.httpGet(allHttpMessages.httpGetMedications);
         })();
     })
+
     //A medication was unchecked
     let sub2 = neuroRelated.filter(t => {
       return ((t.data.artifact == medication) && (!t.data.checked));
@@ -112,6 +110,7 @@ export class MedicationsComponent implements OnInit {
           }
         })();
     });
+
     this.subscriptions
       .add(sub1)
       .add(sub2);

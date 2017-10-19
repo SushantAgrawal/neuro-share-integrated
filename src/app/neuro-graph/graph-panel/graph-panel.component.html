@@ -16,6 +16,7 @@
             <g app-imaging [chartState]="state" id="imaging"></g>
             <g app-relapses [chartState]="state" id="relapses"></g>
             <g app-edss [chartState]="state" id="edss"></g>
+            <g app-twenty-five-foot-walk [chartState]="state" id="walk25feet"></g>
         </svg>
         <div app-medications [chartState]="state" id="medications-container" [style.top.px]="graphSetting.medications.positionTop"
             [style.height.px]="graphSetting.medications.containerHeight" style="position:absolute;width:100%;overflow-y:auto;overflow-x:hidden;background-color:#FFF;border:1px solid #E7E7E7;padding-top:5px;">
@@ -26,6 +27,15 @@
         <div id="legend" class="control-button"><i class="material-icons">speaker_notes</i></div>
         <div id="zoom" class="control-button">
             <i class="material-icons">zoom_in</i>
+            <!-- <button md-button [md-menu-trigger-for]="menu" style="min-width:0px;padding:0px;" class="control-button"> <i class="material-icons">zoom_in</i></button>
+            <md-menu #menu="mdMenu">
+            <button md-menu-item style="border-bottom:1px solid grey;">Zoom Scales</button>
+            <button md-menu-item (click)="menuClick('2 Yrs')">2 Yrs</button>
+            <button md-menu-item (click)="menuClick('1 Yr')">1 Yr</button>
+            <button md-menu-item (click)="menuClick('6 M')">6 M</button>
+            <button md-menu-item (click)="menuClick('3 M')">3 M</button>
+            <button md-menu-item (click)="menuClick('1 M')">1 M</button>
+            </md-menu> -->
     </div>
     </div>
 </div>
