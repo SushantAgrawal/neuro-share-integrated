@@ -107,7 +107,7 @@ export class LabsComponent implements OnInit {
           let trendArray: Array<any> = [];
           let i = 0;
           selCompArray.forEach(elems => {
-            i = i + 20;
+            i = i + 30;
             let color = "#bfbfbf";
             if (elems.isValueInRange == true) {
               color = "#9dbb61";
@@ -115,8 +115,8 @@ export class LabsComponent implements OnInit {
             else {
               color = "#e53935";
             }
-            if (i <= 60) {
-              if (Number(elems.value))
+            if (i <= 90) {
+              if (Number(elems.value) && elems.referenceLow!="")
                 trendArray.push({ "x": i, "y": Number(elems.value), "color": color })
 
             }
