@@ -56,7 +56,7 @@
                   Resulted {{labs.dates.resultDate}}
                 </div>
               </div>
-              <div class="ns-small-box" *ngIf="comp.referenceLow== ''">
+              <div class="ns-small-box-text" *ngIf="comp.referenceLow== ''">
                 {{comp.value}}
               </div>
               <div class="ns-small-box ns-labs-red" *ngIf="comp.isValueInRange== false && comp.referenceLow!= ''">
@@ -68,7 +68,13 @@
               <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && comp.referenceLow!= ''">
                 {{comp.value}}
               </div>
+<<<<<<< HEAD
               <div class="ns-labs-trend-box" id="TrendLine_{{labs.procedureCode}}_{{comp.id}}"></div>
+=======
+              <div class="ns-labs-trend-box"></div>
+              <div class="ns-labs-trend-box-null" *ngIf="comp.referenceLow== ''"></div>
+
+>>>>>>> 18ad91f61cbbd206ea86697a39960b6eb96753b8
               <div class="ns-labs-range-unit" *ngIf="comp.referenceLow!= ''">
                 <div class="ns-range-value">
                   {{comp.referenceLow}} - {{comp.referenceHigh}}
