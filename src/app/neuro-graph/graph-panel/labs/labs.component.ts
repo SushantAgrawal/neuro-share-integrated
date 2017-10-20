@@ -22,6 +22,7 @@ export class LabsComponent implements OnInit {
   private labsData: Array<any>;
   private labsDataDetails: Array<any>;
   private subscriptions: any;
+  private isCollapsed: Boolean = true;
   //private datasetA: Array<any>;
   //private datasetB: Array<any> = [];
   //private datasetC: Array<any> = [];
@@ -36,7 +37,7 @@ export class LabsComponent implements OnInit {
       d.error
         ? console.log(d.error)
         : (() => {
-          
+          //debugger;
           this.labsData = d.data.EPIC.labOrder;
           this.createChart();
         })();
@@ -80,7 +81,6 @@ export class LabsComponent implements OnInit {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
-
   showSecondLevel(data) {
     this.labsDataDetails = data.orderDetails;
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-labs-theme', width: '730px' };
@@ -195,7 +195,7 @@ export class LabsComponent implements OnInit {
         return returnColor;
       })
       .on('click', d => {
-       // this.showSecondLevel(d);
+        this.showSecondLevel(d);
       })
 
     this.chart.append("text")

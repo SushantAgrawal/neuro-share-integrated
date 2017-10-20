@@ -90,6 +90,8 @@ label {
     color: #959595;
     display: inline-block;
     border: solid 1px $buttonBorder;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
     text-align: center;
     margin-left: 10px;
     &:hover {
@@ -121,6 +123,8 @@ label {
     cursor: pointer;
     color: #808080;
     text-align: center;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
     background-color: #ffffff;
     &:hover {
         -webkit-box-shadow: 2px 2px 2px 1px #9c9c9c;
@@ -148,6 +152,8 @@ label {
     color: #808080!important;
     border: solid 1px $buttonBorder !important;
     text-align: center;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
    .mat-button-wrapper{
         font-weight: 400;
         font-size: 12pt;
@@ -191,6 +197,8 @@ label {
     background-color: #ffffff;
     margin-top: 7px;
     cursor: pointer;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
     @include border-radius(50%);
     &:not([disabled]):hover {
         border: solid 1px #F15A24; 
