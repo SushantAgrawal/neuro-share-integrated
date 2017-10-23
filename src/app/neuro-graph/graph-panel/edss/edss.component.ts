@@ -84,7 +84,7 @@ export class EdssComponent implements OnInit {
     });
 
     //When Virtual Caseload clicked
-    let sub3 = this.brokerService.filterOn(allMessages.virtualCaseload).subscribe(d => {
+    let sub3 = this.brokerService.filterOn(allMessages.toggleVirtualCaseload).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (d.data.artifact == "add") {
           this.brokerService.httpGet(allHttpMessages.httpGetVirtualCaseLoad);
@@ -152,13 +152,21 @@ export class EdssComponent implements OnInit {
         })();
       });
 
+    //When zoom option changed
+    let sub6 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        console.log(this.chartState);
+      })();
+    })
+
     //Subscription
     this.subscriptions = sub0
       .add(sub1)
       .add(sub2)
       .add(sub3)
       .add(sub4)
-      .add(sub5);
+      .add(sub5)
+      .add(sub6);
   }
 
   ngOnDestroy() {

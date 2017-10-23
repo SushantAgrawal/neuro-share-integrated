@@ -3,7 +3,8 @@ export const allMessages = {
     'invokeAddRelapses': 'invoke:add:relapses',
     'invokeAddEdss': 'invoke:add:edss',
     'invokeAddWalk25Feet': 'invoke:add:walk25Feet',
-    'virtualCaseload': 'virtual:Caseload'
+    'toggleVirtualCaseload': 'toggle:virtual:caseload',
+    'zoomOptionChange': 'zoom:option:change',
 };
 
 export const manyHttpMessages = {
