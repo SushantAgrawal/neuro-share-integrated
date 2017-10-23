@@ -92,6 +92,16 @@ export class GraphPanelComponent implements OnInit {
       //artifact: this.state
     });
   }
+
+  onResetZoom() {
+    this.state.zoomMonthsSpan = 36;
+    this.state.xDomain = this.getXDomain(36, new Date((new Date()).getFullYear(), 11, 31));
+    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.brokerService.emit(allMessages.zoomOptionChange, {
+      //This artifact is not being used. TBD
+      //artifact: this.state
+    });
+  }
   //#endregion
 
   //#region State Related
