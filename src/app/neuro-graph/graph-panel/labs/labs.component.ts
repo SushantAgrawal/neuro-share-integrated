@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation, ViewChild, TemplateRef } f
 import * as d3 from 'd3';
 import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
-import { allMessages, allHttpMessages } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages, labsConfig } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -35,7 +35,8 @@ export class LabsComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             //debugger;
-            this.labsData = d.data.EPIC.labOrder;
+            //this.labsData = d.data.EPIC.labOrder;
+            this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
           })();
       })

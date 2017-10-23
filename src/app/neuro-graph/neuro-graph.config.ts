@@ -312,3 +312,294 @@ export const edssPopup = [{ score: '0.0', title: 'Normal neurological exam.' }
     , { score: '9.0', title: 'Confined to bed. Can still communicate and eat.' }
     , { score: '9.5', title: 'Confined to bed and totally dependent. Unable to communicate effectively or eat/swallow.' }
     , { score: '10', title: 'Death due to MS.' }];
+
+export const labsConfig=[
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "White Blood Cell, Count",
+      "Abbreviation": "WBC",
+      "Lab Component ID": "LABWBC",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "Hematocrit",
+      "Abbreviation": "HCT",
+      "Lab Component ID": "LABHCT",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "CBC with Automated Differential",
+      "Abbreviation": "",
+      "Lab Component ID": "LABCBCA",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "Platelet Count",
+      "Abbreviation": "PLT",
+      "Lab Component ID": "LABPLT",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "AST, Aspartate Aminotransferase",
+      "Abbreviation": "AST",
+      "Lab Component ID": "LABAST",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "ALT, Alanine Transminase",
+      "Abbreviation": "ALT",
+      "Lab Component ID": "LABALT",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "Liver Panel (Hepatic)",
+      "Abbreviation": "",
+      "Lab Component ID": "LABLIVR",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "Basic Metabolic Panel W GFF (Astra7)",
+      "Abbreviation": "AST",
+      "Lab Component ID": "LABBMPG",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "Thyroid Stimulating Hormone (TSH)",
+      "Abbreviation": "TSH",
+      "Lab Component ID": "LABTSH",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "JC Polyoma Virus DNA, PCR, Qual",
+      "Abbreviation": "Ani JCV",
+      "Lab Component ID": "LABRSJCV",
+      "Comments": "Found in Epic \"Test",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "VZV (Varicella Zoster) Antibody IGG) - Titer",
+      "Abbreviation": "VZV",
+      "Lab Component ID": "LABVZVG2",
+      "Comments": "Found in Epic \"Test",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "VZV (Varicella Zoster) Antibody IGM)- Titer",
+      "Abbreviation": "VZV",
+      "Lab Component ID": "LABVZVM",
+      "Comments": "Found in Epic \"Test",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "VZV (Varicella Zoster) Antibody Panel, CSF - Titer",
+      "Abbreviation": "VZV",
+      "Lab Component ID": "",
+      "Comments": "",
+      "Specimen Type": "CSF (Spinal Fluid)"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "IGG Index, CSF",
+      "Abbreviation": "IgG Index",
+      "Lab Component ID": "LABRIGGC",
+      "Comments": "",
+      "Specimen Type": "CSF"
+    },
+    {
+      "Care Grouping": "Treatment",
+      "Lab Name": "TB Screen Quantiferon Gold",
+      "Abbreviation": "QFT-G",
+      "Lab Component ID": "LABTBSC",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "",
+      "Lab Name": "",
+      "Abbreviation": "",
+      "Lab Component ID": "",
+      "Comments": "",
+      "Specimen Type": ""
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Lyme Antibody, Total W Reflex Western Blot",
+      "Abbreviation": "LYME",
+      "Lab Component ID": "LABRLYMES",
+      "Comments": "",
+      "Specimen Type": "blood / csf"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Lyme DNA, Whole Blood",
+      "Abbreviation": "",
+      "Lab Component ID": "LABRBBURB",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Oligoclonal Bands IGG (CSR & SERUM)",
+      "Abbreviation": "OCB",
+      "Lab Component ID": "LABROLIB",
+      "Comments": "",
+      "Specimen Type": "CSF / Blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Immunofixation, CSF",
+      "Abbreviation": "",
+      "Lab Component ID": "LABIMMUF",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "CSF"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Lupus 12 Panel",
+      "Abbreviation": "",
+      "Lab Component ID": "LABRLUPUP",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "ANA Screen w Reflex Autoimm Panel",
+      "Abbreviation": "",
+      "Lab Component ID": "LABANASP",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Sjogrens SSA Antibody - Titer",
+      "Abbreviation": "",
+      "Lab Component ID": "LABSSA2",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Sjogrens SSB Antibody - Titer",
+      "Abbreviation": "",
+      "Lab Component ID": "LABSSB2",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "ESR, Erythrocyte Sedimentation Rate",
+      "Abbreviation": "ESR",
+      "Lab Component ID": "LABESR",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Angiotensin Converting Enzyme (ACE)",
+      "Abbreviation": "",
+      "Lab Component ID": "LABRANGI",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Angiotensin Converting Enzyme (ACE), CSF",
+      "Abbreviation": "",
+      "Lab Component ID": "LABRACECF",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "CSF"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Rapid Plasma Regain",
+      "Abbreviation": "RPR",
+      "Lab Component ID": "LABRPR",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Electrophoresis Protein",
+      "Abbreviation": "",
+      "Lab Component ID": "LABSPE",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "C Reactive Protein, Inflammatory",
+      "Abbreviation": "",
+      "Lab Component ID": "LABCRPRTN",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Workup",
+      "Lab Name": "Vitamin B12",
+      "Abbreviation": "",
+      "Lab Component ID": "LABB12",
+      "Comments": "Added from Epic MS Smart Set",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "",
+      "Lab Name": "",
+      "Abbreviation": "",
+      "Lab Component ID": "",
+      "Comments": "",
+      "Specimen Type": ""
+    },
+    {
+      "Care Grouping": "MS Monitoring",
+      "Lab Name": "Vitamin D (25 Hydroxy)",
+      "Abbreviation": "",
+      "Lab Component ID": "LABVITD",
+      "Comments": "",
+      "Specimen Type": "blood"
+    },
+    {
+      "Care Grouping": "MS Monitoring",
+      "Lab Name": "Urinalysis (Urine A)",
+      "Abbreviation": "",
+      "Lab Component ID": "",
+      "Comments": "",
+      "Specimen Type": "urine"
+    },
+    {
+      "Care Grouping": "MS Monitoring",
+      "Lab Name": "Urine Culture (UCX)",
+      "Abbreviation": "",
+      "Lab Component ID": "",
+      "Comments": "",
+      "Specimen Type": "urine"
+    },
+    {
+        "Care Grouping": "MS Monitoring",
+        "Lab Name": "LIPID PROFILE",
+        "Abbreviation": "",
+        "Lab Component ID": "LABLIPID",
+        "Comments": "",
+        "Specimen Type": "blood"
+      }
+  ];
