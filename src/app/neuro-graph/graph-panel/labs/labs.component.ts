@@ -24,6 +24,7 @@ export class LabsComponent implements OnInit {
   private subscriptions: any;
   private isCollapsed: Boolean = true;
   private dialogRef: any;
+  private labsChartLoaded: boolean = false;
   constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
 
   ngOnInit() {
@@ -38,6 +39,7 @@ export class LabsComponent implements OnInit {
             //this.labsData = d.data.EPIC.labOrder;
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
+            this.labsChartLoaded = true;            
           })();
       })
 
@@ -66,13 +68,25 @@ export class LabsComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
+            this.labsChartLoaded = false;            
           })();
       })
+
+    //When zoom option changed
+    let sub3 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        if (this.labsChartLoaded) {
+          this.removeChart();
+          this.createChart();
+        }
+      })();
+    })
 
     this
       .subscriptions
       .add(sub1)
-      .add(sub2);
+      .add(sub2)
+      .add(sub3);
   }
 
   ngOnDestroy() {
@@ -113,7 +127,7 @@ export class LabsComponent implements OnInit {
               color = "#e53935";
             }
             if (i <= 90) {
-              if (Number(elems.value) && elems.referenceLow!="")
+              if (Number(elems.value) && elems.referenceLow != "")
                 trendArray.push({ "x": i, "y": Number(elems.value), "color": color })
 
             }
@@ -138,11 +152,11 @@ export class LabsComponent implements OnInit {
 
     //debugger;
     this
-    .brokerService
-    .emit(allMessages.neuroRelated, {
-      artifact: 'dmt',
-      checked: true
-    });
+      .brokerService
+      .emit(allMessages.neuroRelated, {
+        artifact: 'dmt',
+        checked: true
+      });
   }
   plottrendline() {
     if (this.labsDataDetails[0].component.length > 0) {
@@ -163,7 +177,7 @@ export class LabsComponent implements OnInit {
     let line = d3.line<any>()
       .x((d: any) => d.x)
       .y((d: any) => scale(d.y))
-     
+
     //Drawing container
     let svg = d3
       .select('#TrendLine_' + labId + '_' + compId)
@@ -178,7 +192,7 @@ export class LabsComponent implements OnInit {
       .style('stroke', "#bfbfbf")
       .style('stroke-width', '1.5')
       .attr('d', line)
-     
+
 
     svg.selectAll('.dot')
       .data(trendData)
@@ -193,8 +207,8 @@ export class LabsComponent implements OnInit {
       })
       .style('cursor', 'pointer')
       .append("svg:title") // TITLE APPENDED HERE
-      .text(function(d) { return d.y; })
-     
+      .text(function (d) { return d.y; })
+
 
   }
   removeChart() {

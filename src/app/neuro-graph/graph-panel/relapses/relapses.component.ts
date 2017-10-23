@@ -35,6 +35,7 @@ export class RelapsesComponent implements OnInit {
   private datasetA: Array<any>;
   private relapsesData: Array<any>;
   private isEditSelected: boolean = false;
+  private relapsisChartLoaded: boolean = false;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.paramData = this.neuroGraphService.get('queryParams')
   }
@@ -51,6 +52,7 @@ export class RelapsesComponent implements OnInit {
           : (() => {
             this.relapsesData = d.data.relapses;
             this.createChart();
+            this.relapsisChartLoaded = true;            
           })();
       })
     let relapses = this
@@ -102,6 +104,7 @@ export class RelapsesComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
+            this.relapsisChartLoaded = false;            
           })();
       })
     let sub3 = modal
@@ -118,12 +121,22 @@ export class RelapsesComponent implements OnInit {
             }
           })();
       })
+    //When zoom option changed
+    let sub4 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        if (this.relapsisChartLoaded) {
+          this.removeChart();
+          this.createChart();
+        }
+      })();
+    })
 
     this
       .subscriptions
       .add(sub1)
       .add(sub2)
       .add(sub3)
+      .add(sub4)
       .add(putRelapse)
       .add(postRelapse);
   }
