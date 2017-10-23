@@ -13,9 +13,25 @@ import { RelapsesComponent } from '../graph-panel/relapses/relapses.component';
 })
 export class NeuroRelatedComponent implements OnInit {
   display: Boolean = false;
+  checkDMT:Boolean = true;
   constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
 
-  ngOnInit() {   
+  ngOnInit() { 
+    let dmt = this
+    .brokerService
+    .filterOn(allMessages.neuroRelated)
+    .filter(t => (t.data.artifact == 'dmt'));
+    
+    let sub1 = dmt
+    .filter(t => t.data.checked)
+    .subscribe(d => {
+      d.error
+        ? console.log(d.error)
+        : (() => {
+          //make api call
+          this.checkDMT=true;
+        })();
+    });
   }
 
   ngAfterViewInit(){

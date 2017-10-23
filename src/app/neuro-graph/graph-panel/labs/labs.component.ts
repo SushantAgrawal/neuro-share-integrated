@@ -136,6 +136,13 @@ export class LabsComponent implements OnInit {
       this.plottrendline();
     });
 
+    //debugger;
+    this
+    .brokerService
+    .emit(allMessages.neuroRelated, {
+      artifact: 'dmt',
+      checked: true
+    });
   }
   plottrendline() {
     if (this.labsDataDetails[0].component.length > 0) {
