@@ -17,7 +17,7 @@
         <div class="ns-labs-row" *ngFor="let labs of labsDataDetails; let i = index;">
           <!-- <div class="ns-sub-labs-items" *ngIf="labs.component!=null"> -->
           <div class="ns-labs-row" *ngIf="labs.component.length > 1">
-            <div class="ns-labs-icon-plus" *ngIf="!labs.collapsed" (click)="labs.collapsed =!labs.collapsed;"><i class="material-icons">add</i></div>
+            <div class="ns-labs-icon-plus"  *ngIf="!labs.collapsed" (click)="labs.collapsed =!labs.collapsed;"><i class="material-icons">add</i></div>
             <div class="ns-labs-icon-minus" *ngIf="labs.collapsed" (click)="labs.collapsed = !labs.collapsed;"><i class="material-icons">remove</i></div>
             <div class="ns-small-bar ns-labs-red" *ngIf="labs.abnormal== true "></div>
             <div class="ns-small-bar ns-labs-green" *ngIf="labs.abnormal== false && labs.dates.resultDate!=''"></div>
@@ -41,7 +41,7 @@
             <div class="ns-labs-trend-box"></div>
             <div class="ns-range-value-nogrey"></div>
             <div class="ns-labs-range-unit"></div>
-            <div *ngIf="labs.collapsed">
+            <div [style.display]="labs.collapsed ? 'block' : 'none'">
             <div class="ns-labs-row ns-sub-labs-items"  *ngFor="let comp of labs.component;">
               <div class="ns-small-bar ns-labs-red" *ngIf="comp.isValueInRange== false  && comp.referenceLow!= ''"></div>
               <div class="ns-small-bar ns-labs-green" *ngIf="comp.isValueInRange== true  && comp.referenceLow!= ''"></div>
@@ -68,9 +68,7 @@
               <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && comp.referenceLow!= ''">
                 {{comp.value}}
               </div>
-              <div class="ns-labs-trend-box"></div>
-              <div class="ns-labs-trend-box-null" *ngIf="comp.referenceLow== ''"></div>
-
+              <div class="ns-labs-trend-box" id="TrendLine_{{labs.procedureCode}}_{{comp.id}}"></div>
               <div class="ns-labs-range-unit" *ngIf="comp.referenceLow!= ''">
                 <div class="ns-range-value">
                   {{comp.referenceLow}} - {{comp.referenceHigh}}
@@ -95,20 +93,20 @@
                 Resulted {{labs.dates.resultDate}}
               </div>
             </div>
-            <div class="ns-small-box" *ngIf="labs.component.referenceLow== ''">
+            <div class="ns-small-box" *ngIf="labs.component[0].referenceLow== ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-small-box ns-labs-red" *ngIf="labs.abnormal== true && labs.component.referenceLow!= ''">
+            <div class="ns-small-box ns-labs-red" *ngIf="labs.abnormal== true && labs.component[0].referenceLow!= ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-small-box ns-labs-green" *ngIf="labs.abnormal== false && labs.component.referenceLow!= ''">
+            <div class="ns-small-box ns-labs-green" *ngIf="labs.abnormal== false && labs.component[0].referenceLow!= ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && labs.component.referenceLow!= ''">
+            <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && labs.component[0].referenceLow!= ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-labs-trend-box"></div>
-            <div class="ns-labs-range-unit" *ngIf="labs.component.referenceLow!= ''">
+            <div class="ns-labs-trend-box" id="TrendLine_{{labs.procedureCode}}_{{labs.component[0].id}}"></div>
+            <div class="ns-labs-range-unit" *ngIf="labs.component[0].referenceLow!= ''">
               <div class="ns-range-value">
                 {{labs.component[0].referenceLow}} - {{labs.component[0].referenceHigh}}
               </div>
@@ -128,7 +126,7 @@
               </div>
             </div>
             <div class="ns-small-box ns-labs-grey"></div>
-            <div class="ns-labs-trend-box"></div>
+            <div class="ns-labs-trend-box"  ></div>
             <div class="ns-labs-range-unit"></div>
           </div>
         </div>
