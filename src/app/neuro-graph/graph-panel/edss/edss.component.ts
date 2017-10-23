@@ -155,7 +155,9 @@ export class EdssComponent implements OnInit {
     //When zoom option changed
     let sub6 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        console.log(this.chartState);
+        if (this.edssChartLoaded) {
+          this.reloadChart();
+        }
       })();
     })
 

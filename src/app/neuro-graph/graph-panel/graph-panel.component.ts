@@ -57,7 +57,7 @@ export class GraphPanelComponent implements OnInit {
     })
     let sub2 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        console.log(this.state);
+        this.updateSharedGrid();
       })();
     })
     this.subscriptions = sub0.add(sub1).add(sub2);
@@ -139,4 +139,9 @@ export class GraphPanelComponent implements OnInit {
   }
   //#endregion
 
+  //#region Graph Related
+  updateSharedGrid() {
+    console.log("updating shared grid...");
+  }
+  //#endregion
 }
