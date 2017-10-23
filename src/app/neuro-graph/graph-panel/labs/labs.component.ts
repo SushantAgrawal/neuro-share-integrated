@@ -136,6 +136,13 @@ export class LabsComponent implements OnInit {
       this.plottrendline();
     });
 
+    //debugger;
+    this
+    .brokerService
+    .emit(allMessages.neuroRelated, {
+      artifact: 'dmt',
+      checked: true
+    });
   }
   plottrendline() {
     if (this.labsDataDetails[0].component.length > 0) {
@@ -151,17 +158,18 @@ export class LabsComponent implements OnInit {
     let minValue = Math.min.apply(Math, trendData.map(function (o) { return o.y; }))
     let scale = d3.scaleLinear()
       .domain([minValue, maxValue])
-      .range([10, 35]);
+      .range([35, 10]);
     //Chart line
     let line = d3.line<any>()
       .x((d: any) => d.x)
-      .y((d: any) => scale(d.y));
+      .y((d: any) => scale(d.y))
+     
     //Drawing container
     let svg = d3
       .select('#TrendLine_' + labId + '_' + compId)
       .append('svg')
       .attr("width", 100)
-      .attr("height", 45);
+      .attr("height", 45)
 
     svg.append('path')
       .datum(trendData)
@@ -170,6 +178,7 @@ export class LabsComponent implements OnInit {
       .style('stroke', "#bfbfbf")
       .style('stroke-width', '1.5')
       .attr('d', line)
+     
 
     svg.selectAll('.dot')
       .data(trendData)
@@ -183,6 +192,10 @@ export class LabsComponent implements OnInit {
         return d.color;
       })
       .style('cursor', 'pointer')
+      .append("svg:title") // TITLE APPENDED HERE
+      .text(function(d) { return d.y; })
+     
+
   }
   removeChart() {
     d3.select('#labs').selectAll("*").remove();

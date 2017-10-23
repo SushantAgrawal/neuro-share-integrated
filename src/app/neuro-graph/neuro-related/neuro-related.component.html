@@ -14,7 +14,7 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-dmt-theme">
-          <md-checkbox [checked]="true" (change)='changed($event,"dmt")' evalEvent [evalData]="{
+          <md-checkbox [(ngModel)]="checkDMT" (change)='changed($event,"dmt")' evalEvent [evalData]="{
             label:'DMT',
             data: checked,
             type: 'checkbox'
