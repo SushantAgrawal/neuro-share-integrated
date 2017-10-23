@@ -31,7 +31,7 @@
     </div>
     <div id="graph-control">
         <div id="undo" class="control-button">
-            <span class="icon-reloadneuroshare"></span>
+            <span class="icon-reloadneuroshare" (click)="onResetZoom()"></span>
         </div>
         <div id="legend" class="control-button">
             <i class="material-icons">speaker_notes</i>
@@ -42,7 +42,6 @@
             </button>
             <md-menu #menu="mdMenu">
                 <button md-menu-item style="border-bottom:1px solid grey;">Zoom Scales</button>
-                <button md-menu-item (click)="onZoomOptionChange('36')">3 Yrs</button>
                 <button md-menu-item (click)="onZoomOptionChange('24')">2 Yrs</button>
                 <button md-menu-item (click)="onZoomOptionChange('12')">1 Yr</button>
                 <button md-menu-item (click)="onZoomOptionChange('6')">6 M</button>
