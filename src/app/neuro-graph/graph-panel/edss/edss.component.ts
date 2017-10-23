@@ -292,7 +292,7 @@ export class EdssComponent implements OnInit {
         axis.select('.domain').remove();
         axis.selectAll('text').remove();
         axis.selectAll('line').attr('x2', (d) => {
-          return this.chartState.canvasDimension.offsetWidth;
+          return (this.chartState.canvasDimension.offsetWidth - 45);
         });
       });
   }
