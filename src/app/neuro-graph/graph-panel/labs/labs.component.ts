@@ -23,9 +23,6 @@ export class LabsComponent implements OnInit {
   private labsDataDetails: Array<any>;
   private subscriptions: any;
   private isCollapsed: Boolean = true;
-  //private datasetA: Array<any>;
-  //private datasetB: Array<any> = [];
-  //private datasetC: Array<any> = [];
   private dialogRef: any;
   constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
 
@@ -42,7 +39,6 @@ export class LabsComponent implements OnInit {
             this.createChart();
           })();
       })
-
 
     let labs = this
       .brokerService
@@ -141,13 +137,11 @@ export class LabsComponent implements OnInit {
 
   }
   plottrendline() {
-    // setTimeout(()=>{
     if (this.labsDataDetails[0].component.length > 0) {
       this.labsDataDetails[0].component.forEach(elems => {
         this.drawtrendLine(this.labsDataDetails[0].procedureCode, elems.id, elems.trendData)
       });
     }
-    //},2000);
 
   }
   drawtrendLine(labId, compId, trendData) {
@@ -175,7 +169,6 @@ export class LabsComponent implements OnInit {
       .style('stroke', "#bfbfbf")
       .style('stroke-width', '1.5')
       .attr('d', line)
-    //.attr('transform', `translate(5,-10)`);
 
     svg.selectAll('.dot')
       .data(trendData)
@@ -189,14 +182,10 @@ export class LabsComponent implements OnInit {
         return d.color;
       })
       .style('cursor', 'pointer')
-    // .attr('transform', `translate(5,-10)`);
-
-
   }
   removeChart() {
     d3.select('#labs').selectAll("*").remove();
   }
-
   createChart() {
     let tempDataset = this.labsData.map(d => {
       return {

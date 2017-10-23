@@ -36,11 +36,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
 
   }
-
-
-  ngOnInit() {
-   
-    
+  ngOnInit() {   
     this.subscriptions = this
       .brokerService
       .filterOn(allHttpMessages.httpGetWalk25Feet)
@@ -59,9 +55,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let modal = this.brokerService.filterOn(allMessages.invokeAddWalk25Feet)
 
     let sub1 = walk25Feet.filter(t => t.data.checked).subscribe(d => {
-      //debugger;
       d.error ? console.log(d.error) : (() => {
-        
         this.brokerService.httpGet(allHttpMessages.httpGetWalk25Feet);
       })();
     });
@@ -78,10 +72,8 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px',preserveScope: true,skipHide: true };
         this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
         this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
-        
       })();
     })
-    
     let sub4 = this.brokerService.filterOn(allHttpMessages.httpGetWalk25FeetInfo).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         this.walk25FeetDataInfo= d.data;
@@ -104,7 +96,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     }
    else{
     this.scoreValue = ((parseFloat((this.score_1= this.score_1 ||0).toString()) + parseFloat((this.score_2 = this.score_2 || 0).toString()))/2)
-    
    }
   }
   ngOnDestroy() {
@@ -129,7 +120,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       this.dialogRef.close();      
     }
     else{
-    
      this.walk25FeetData.push ({
       "score_id": this.score_ids.toString(),
         "walk_1_score": this.score_1.toString(),
@@ -145,7 +135,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       this.removeChart();
       this.drawWalk25FeetLineCharts();
   }
-
   showSecondLevel(data) {
     //debugger;
     this.showUpdate = false;
@@ -159,7 +148,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       this.dialogRef = this.dialog.open(this.walk25FeetEditSecondLevelTemplate, config);      
     }
   }
-
   drawWalk25FeetAxis() {
     this.yScale = d3
       .scaleLinear()
@@ -169,7 +157,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .select('#walk25feet')
       .append('g')
       .attr('class', 'walk25Feet-axis')
-
     let oneDecimalFormat = d3.format("10");
 
     //Draws Y Axis
