@@ -89,7 +89,7 @@ export class GraphPanelComponent implements OnInit {
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
     this.brokerService.emit(allMessages.zoomOptionChange, {
       //This artifact is not being used. TBD
-      artifact: this.state
+      //artifact: this.state
     });
   }
   //#endregion
