@@ -50,7 +50,7 @@
         <div class="ns-walk25Feet-col">25' Walk #1</div>
         <div class="ns-walk25Feet-value">
             <md-input-container  class="ns-input-container">
-          <input mdInput class="ns-walk25Feet-value-bg" type="number" min="0" max="30" [(ngModel)]="walk25FeetScoreDetail.walk_1_score"  (change)="updateWalk('Update')"/>
+          <input mdInput class="ns-walk25Feet-value-bg" type="number" name="UpdateScore1" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_1_score"  (change)="updateWalk('Update')"/>
             </md-input-container>
         </div>
       </div>
@@ -58,14 +58,14 @@
         <div class="ns-walk25Feet-col">25' Walk #2</div>
         <div class="ns-walk25Feet-value">
             <md-input-container  class="ns-input-container">
-          <input mdInput class="ns-walk25Feet-value-bg" type="number" min="0" max="30" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')"/>
+          <input mdInput class="ns-walk25Feet-value-bg" type="number" name="UpdateScore2" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')"/>
         </md-input-container>
         </div>
       </div>
       <div class="ns-row-walk25Feet">
         <div class="ns-walk25Feet-col">25' Walk Average</div>
         <div class="ns-walk25Feet-value">
-            <span [(ngModel)]="walk25FeetScoreDetail.scoreValue"> {{walk25FeetScoreDetail.scoreValue}}</span>
+            <span name="UpdateScoreAvg" [(ngModel)]="walk25FeetScoreDetail.scoreValue" ngDefaultControl> {{walk25FeetScoreDetail.scoreValue}}</span>
          
         </div>
       </div>
@@ -95,7 +95,7 @@
         <div class="ns-walk25Feet-col">25' Walk #1</div>
         <div class="ns-walk25Feet-value">
             <md-input-container  class="ns-input-container">
-          <input mdInput type="number"  min="0" max="30" class="ns-walk25Feet-value-bg" [(ngModel)]="score_1" (change)="updateWalk('Add')" />
+          <input mdInput type="number" name="AddScore1" min="0" max="300" class="ns-walk25Feet-value-bg" [(ngModel)]="score_1" (change)="updateWalk('Add')"/>
           </md-input-container>
         </div>
       </div>
@@ -103,14 +103,14 @@
         <div class="ns-walk25Feet-col">25' Walk #2</div>
         <div class="ns-walk25Feet-value">
             <md-input-container  class="ns-input-container">
-          <input mdInput type="number"  min="0" max="30" class="ns-walk25Feet-value-bg" [(ngModel)]="score_2" (change)="updateWalk('Add')"/>
+          <input mdInput type="number" name="AddScore2"  min="0" max="300" class="ns-walk25Feet-value-bg" [(ngModel)]="score_2" (change)="updateWalk('Add')" />
             </md-input-container>
         </div>
       </div>
       <div class="ns-row-walk25Feet">
         <div class="ns-walk25Feet-col">25' Walk Average</div>
         <div class="ns-walk25Feet-value">
-            <span [(ngModel)]="scoreValue"> {{scoreValue}}</span>
+            <span name="AddScoreAvg"  [(ngModel)]="scoreValue" ngDefaultControl> {{scoreValue}}</span>
         </div>
       </div>
       <div class="ns-row-walk25Feet">

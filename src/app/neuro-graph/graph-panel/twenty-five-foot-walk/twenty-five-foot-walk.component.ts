@@ -27,7 +27,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   private yDomain: Array<number> = [0, GRAPH_SETTINGS.walk25Feet.maxValueY];
   private walk25FeetData: Array<any> = [];
   private walk25FeetDataInfo: Array<any> = [];
-  private reportDialogRef: any;
+  private reportDialogRef: MdDialogRef<any>;
   private showUpdate: Boolean = false;
   private score_1: any;
   private score_2: any;
@@ -123,6 +123,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     this.reportDialogRef.updatePosition({ top: '150px', left: "500px" });
   }
   updateWalk25FeetScore(str) {
+    //debugger;
     let currentDate = new Date();
     if (str == "Update") {
       var objIndex = this.walk25FeetData.findIndex((obj => obj.score_id == this.walk25FeetScoreDetail.score_id));
@@ -132,15 +133,19 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       this.dialogRef.close();
     }
     else {
-      this.walk25FeetData.push({
-        "score_id": this.score_ids.toString(),
-        "walk_1_score": this.score_1.toString(),
-        "walk_2_score": this.score_2.toString(),
-        "last_updated_provider_id": "G00123",
-        "last_updated_instant": `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
-        "save_csn": this.neuroGraphService.get("queryParams").csn,
-        "save_csn_status": this.neuroGraphService.get("queryParams").encounter_status
-      });
+      if(Number(this.score_1) || Number(this.score_2))
+      {
+        this.walk25FeetData.push({
+          "score_id": this.score_ids.toString(),
+          "walk_1_score": this.score_1.toString(),
+          "walk_2_score": this.score_2.toString(),
+          "last_updated_provider_id": "G00123",
+          "last_updated_instant": `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
+          "save_csn": this.neuroGraphService.get("queryParams").csn,
+          "save_csn_status": this.neuroGraphService.get("queryParams").encounter_status
+        });
+      }
+      
       this.Walk25FeetChartDialogRef.close();
     }
     this.score_ids = this.score_ids + 1;
