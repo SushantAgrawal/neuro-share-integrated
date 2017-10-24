@@ -34,6 +34,7 @@ export class GraphPanelComponent implements OnInit {
   //#region Constructor
   constructor(private brokerService: BrokerService, private dialog: MdDialog, ) {
     this.momentFunc = (moment as any).default ? (moment as any).default : moment;
+    this.momentFunc.locale('en');
   }
   //#endregion
 
@@ -78,8 +79,7 @@ export class GraphPanelComponent implements OnInit {
   }
 
   onZoomOptionChange(monthsSpan) {
-    //Now now fixed end date.
-    this.state.zoomMonthsSpan = monthsSpan;
+    this.state.zoomMonthsSpan = +monthsSpan;
     this.state.xDomain = this.getXDomain(+monthsSpan, new Date((new Date()).getFullYear(), 11, 31));
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
     this.brokerService.emit(allMessages.zoomOptionChange, {

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import * as d3 from 'd3';
+import * as moment from 'moment';
 import { BrokerService } from '../../broker/broker.service';
 import { allMessages } from '../../neuro-graph.config';
 
@@ -11,9 +12,12 @@ import { allMessages } from '../../neuro-graph.config';
 })
 export class SharedGridComponent implements OnInit {
   @Input() private chartState: any;
-  @Output() menuClicked: EventEmitter<string> = new EventEmitter();
+  private momentFunc: any;
   private subscriptions: any;
-  constructor(private brokerService: BrokerService) { }
+  constructor(private brokerService: BrokerService) {
+    this.momentFunc = (moment as any).default ? (moment as any).default : moment;
+    this.momentFunc.locale('en');
+  }
 
   //#region Lifecycle events
   ngOnInit() {
@@ -50,8 +54,20 @@ export class SharedGridComponent implements OnInit {
   };
 
   drawCommonXAxis(nodeSelection, dimension, xScale) {
-    //Need to update this method when range is <= 1 Year
-    let xAxis = d3.axisBottom(xScale).tickSize(0);
+    let xAxis;
+    if (this.chartState.zoomMonthsSpan == 6) {
+      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(6);
+    }
+    else if (this.chartState.zoomMonthsSpan == 3) {
+      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(3);
+    }
+    else if (this.chartState.zoomMonthsSpan == 1) {
+      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(30);
+    }
+    else {
+      xAxis = d3.axisBottom(xScale).tickSize(0);
+    }
+
     nodeSelection.append('rect')
       .attr('x', 0)
       .attr('y', 0)
@@ -66,10 +82,38 @@ export class SharedGridComponent implements OnInit {
         g.select('.domain').remove();
         axis.selectAll('text').style('display', 'none');
         axis.selectAll('text').attr('class', (d) => {
-          return d.getMonth() == 6 ? 'mid-year-tick' : '';
+          if (this.chartState.zoomMonthsSpan >= 12) {
+            return d.getMonth() == 6 ? 'mid-year-tick' : '';
+          }
+          else if (this.chartState.zoomMonthsSpan == 6) {
+            return 'mid-year-tick';
+          }
+          else if (this.chartState.zoomMonthsSpan == 3) {
+            return 'mid-year-tick';
+          }
+          else if (this.chartState.zoomMonthsSpan == 1) {
+            return 'mid-year-tick';
+          }
+          else {
+            return '';
+          }
         });
         axis.selectAll('text').text((d) => {
-          return d.getMonth() == 6 ? d.getFullYear() : '';
+          if (this.chartState.zoomMonthsSpan >= 12) {
+            return d.getMonth() == 6 ? d.getFullYear() : '';
+          }
+          else if (this.chartState.zoomMonthsSpan == 6) {
+            return this.momentFunc.months(d.getMonth());
+          }
+          else if (this.chartState.zoomMonthsSpan == 3) {
+            return this.momentFunc.months(d.getMonth());
+          }
+          else if (this.chartState.zoomMonthsSpan == 1) {
+            return d.getDate() == 16 ? this.momentFunc.months(d.getMonth()) : '';
+          }
+          else {
+            return '';
+          }
         });
         axis.selectAll('.mid-year-tick').style('display', 'block').style('font-size', '12px');
       });
