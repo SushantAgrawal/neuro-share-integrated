@@ -56,10 +56,10 @@ export class SharedGridComponent implements OnInit {
   drawCommonXAxis(nodeSelection, dimension, xScale) {
     let xAxis;
     if (this.chartState.zoomMonthsSpan == 6) {
-      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(6);
+      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(180);
     }
     else if (this.chartState.zoomMonthsSpan == 3) {
-      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(3);
+      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(90);
     }
     else if (this.chartState.zoomMonthsSpan == 1) {
       xAxis = d3.axisBottom(xScale).tickSize(0).ticks(30);
@@ -81,38 +81,19 @@ export class SharedGridComponent implements OnInit {
         let axis = g.call(xAxis);
         g.select('.domain').remove();
         axis.selectAll('text').style('display', 'none');
-        axis.selectAll('text').attr('class', (d) => {
-          if (this.chartState.zoomMonthsSpan >= 12) {
-            return d.getMonth() == 6 ? 'mid-year-tick' : '';
-          }
-          else if (this.chartState.zoomMonthsSpan == 6) {
-            return 'mid-year-tick';
-          }
-          else if (this.chartState.zoomMonthsSpan == 3) {
-            return 'mid-year-tick';
-          }
-          else if (this.chartState.zoomMonthsSpan == 1) {
-            return 'mid-year-tick';
-          }
-          else {
-            return '';
-          }
-        });
+        axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
-          if (this.chartState.zoomMonthsSpan >= 12) {
-            return d.getMonth() == 6 ? d.getFullYear() : '';
-          }
-          else if (this.chartState.zoomMonthsSpan == 6) {
-            return this.momentFunc.months(d.getMonth());
+          if (this.chartState.zoomMonthsSpan == 6) {
+            return d.getDate() == 16 ? this.momentFunc.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 3) {
-            return this.momentFunc.months(d.getMonth());
+            return d.getDate() == 16 ? this.momentFunc.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 1) {
             return d.getDate() == 16 ? this.momentFunc.months(d.getMonth()) : '';
           }
           else {
-            return '';
+            return d.getMonth() == 6 ? d.getFullYear() : '';
           }
         });
         axis.selectAll('.mid-year-tick').style('display', 'block').style('font-size', '12px');
@@ -120,7 +101,21 @@ export class SharedGridComponent implements OnInit {
   };
 
   drawVerticalGridLines(nodeSelection, dimension, xScale) {
-    let xAxisGridLines = d3.axisBottom(xScale).tickSize(0);
+    let xAxisGridLines;
+
+    if (this.chartState.zoomMonthsSpan == 6) {
+      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(6);
+    }
+    else if (this.chartState.zoomMonthsSpan == 3) {
+      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(3);
+    }
+    else if (this.chartState.zoomMonthsSpan == 1) {
+      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(30);
+    }
+    else {
+      xAxisGridLines = d3.axisBottom(xScale).tickSize(0);
+    }
+
     nodeSelection.append('g')
       .attr('class', 'grid-lines')
       .call(g => {
@@ -128,7 +123,18 @@ export class SharedGridComponent implements OnInit {
         axis.select('.domain').remove();
         axis.selectAll('text').remove();
         axis.selectAll('line').attr('y2', (d) => {
-          return d.getMonth() == 0 ? dimension.offsetHeight : 0;
+          if (this.chartState.zoomMonthsSpan == 6) {
+            return d.getDate() == 1 ? dimension.offsetHeight : 0;
+          }
+          else if (this.chartState.zoomMonthsSpan == 3) {
+            return d.getDate() == 1 ? dimension.offsetHeight : 0;
+          }
+          else if (this.chartState.zoomMonthsSpan == 1) {
+            return d.getMonth() == 0 ? dimension.offsetHeight : 0;
+          }
+          else {
+            return d.getMonth() == 0 ? dimension.offsetHeight : 0;
+          }
         });
       });
   };
