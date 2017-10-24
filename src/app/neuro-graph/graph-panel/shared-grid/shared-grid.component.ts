@@ -1,5 +1,8 @@
-import { Component, OnInit, Input, ViewEncapsulation,ViewChild,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
 import * as d3 from 'd3';
+import { BrokerService } from '../../broker/broker.service';
+import { allMessages } from '../../neuro-graph.config';
+
 @Component({
   selector: '[app-shared-grid]',
   templateUrl: './shared-grid.component.html',
@@ -8,12 +11,22 @@ import * as d3 from 'd3';
 })
 export class SharedGridComponent implements OnInit {
   @Input() private chartState: any;
-  @Output() menuClicked:EventEmitter<string> = new EventEmitter();
-  constructor() { }
+  @Output() menuClicked: EventEmitter<string> = new EventEmitter();
+  private subscriptions: any;
+  constructor(private brokerService: BrokerService) { }
 
   ngOnInit() {
     this.drawRootElement(this.chartState);
-  }
+    this.subscriptions = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        console.log("Updating shared grid");
+      })();
+    })
+  };
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  };
 
   drawRootElement(state): void {
     let sharedGridElement = d3.select('#shared-grid');
@@ -30,13 +43,11 @@ export class SharedGridComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${dimension.marginLeft},${dimension.marginTop})`);
   };
-  updatePrev()
-  {
-    
+  updatePrev() {
+
   }
-  updateNext()
-  {
-    
+  updateNext() {
+
   }
   drawScrollArrows(nodeSelection, dimension) {
     let arc = d3.symbol().type(d3.symbolTriangle).size(100);
@@ -46,13 +57,13 @@ export class SharedGridComponent implements OnInit {
       .attr('d', arc)
       .attr('class', 'x-axis-arrow')
       .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
-      .on('click', d => {this.updatePrev(); });
+      .on('click', d => { this.updatePrev(); });
 
     nodeSelection.append('path')
       .attr('d', arc)
       .attr('class', 'x-axis-arrow')
       .attr('transform', `translate(${dimension.marginLeft + dimension.width + hAdj}, ${dimension.marginTop + vAdj}) rotate(90)`)
-      .on('click', d => {this.updateNext(); });
+      .on('click', d => { this.updateNext(); });
   };
 
   //Need to update this method when range is <= 1 Year

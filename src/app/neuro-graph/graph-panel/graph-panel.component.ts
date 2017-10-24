@@ -55,12 +55,7 @@ export class GraphPanelComponent implements OnInit {
           this.isEdssSelected = false;
         })();
     })
-    let sub2 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
-        this.updateSharedGrid();
-      })();
-    })
-    this.subscriptions = sub0.add(sub1).add(sub2);
+    this.subscriptions = sub0.add(sub1);
   }
 
   ngOnDestroy() {
@@ -146,12 +141,6 @@ export class GraphPanelComponent implements OnInit {
     state.xDomain = this.getXDomain(36, new Date((new Date()).getFullYear(), 11, 31));
     state.xScale = this.getXScale(state.canvasDimension, state.xDomain);
     return state;
-  }
-  //#endregion
-
-  //#region Graph Related
-  updateSharedGrid() {
-    console.log("updating shared grid...");
   }
   //#endregion
 }

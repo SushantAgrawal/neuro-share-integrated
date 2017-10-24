@@ -17,7 +17,7 @@
 </div>
 <div id="graph-panel-wrapper">
     <div id="graph-container" style="position:relative;">
-        <svg width="100%" [style.height.px]="graphSetting.panel.offsetHeight">
+        <svg width="100%" [style.height.px]="graphSetting.panel.offsetHeight" style="overflow: hidden;">
             <g app-shared-grid [chartState]="state" id="shared-grid"></g>
             <g app-labs [chartState]="state" id="labs"></g>
             <g app-imaging [chartState]="state" id="imaging"></g>
