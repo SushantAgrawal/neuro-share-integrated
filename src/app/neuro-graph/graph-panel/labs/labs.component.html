@@ -41,6 +41,7 @@
             <div class="ns-labs-trend-box"></div>
             <div class="ns-range-value-nogrey"></div>
             <div class="ns-labs-range-unit"></div>
+            
             <div [style.display]="labs.collapsed ? 'block' : 'none'">
               <div class="ns-labs-row ns-sub-labs-items" *ngFor="let comp of labs.component;">
                 <div class="ns-small-bar ns-labs-red" *ngIf="comp.isValueInRange== false  && comp.referenceLow!= ''"></div>
@@ -69,7 +70,7 @@
                   {{comp.value}}
                 </div>
                 <div class="ns-labs-range-unit" *ngIf="comp.referenceLow== ''">
-                  <div class="ns-labs-trend-box" id="TrendLine_{{labs.procedureCode}}_{{comp.id}}">
+                  <div class="ns-no-range" id="TrendLine_{{labs.procedureCode}}_{{comp.id}}">
                     No Range
                   </div>
                 </div>
