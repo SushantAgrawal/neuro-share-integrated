@@ -172,7 +172,7 @@ export class LabsComponent implements OnInit {
     let minValue = Math.min.apply(Math, trendData.map(function (o) { return o.y; }))
     let scale = d3.scaleLinear()
       .domain([minValue, maxValue])
-      .range([35, 10]);
+      .range([25, 15]);
     //Chart line
     let line = d3.line<any>()
       .x((d: any) => d.x)

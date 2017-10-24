@@ -117,7 +117,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   }
   walk25FeetInfo() {
     //debugger;
-    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-25walk-theme', width: '300px', height: '400px' };
+    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-25walk-theme', width: '300px', height: '340px' };
     this.dialog.openDialogs.pop();
     this.reportDialogRef = this.dialog.open(this.walk25FeetThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '150px', left: "500px" });
