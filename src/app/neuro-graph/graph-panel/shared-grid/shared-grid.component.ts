@@ -15,11 +15,12 @@ export class SharedGridComponent implements OnInit {
   private subscriptions: any;
   constructor(private brokerService: BrokerService) { }
 
+  //#region Lifecycle events
   ngOnInit() {
     this.drawRootElement(this.chartState);
     this.subscriptions = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        console.log("Updating shared grid");
+        this.drawRootElement(this.chartState);
       })();
     })
   };
@@ -27,8 +28,12 @@ export class SharedGridComponent implements OnInit {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   };
+  //#endregion
+
+  //#region Graph Drawing
 
   drawRootElement(state): void {
+    d3.select('#shared-grid').selectAll("*").remove();
     let sharedGridElement = d3.select('#shared-grid');
     let sharedGrid = this.setupSharedGrid(sharedGridElement, state.canvasDimension);
     this.drawScrollArrows(sharedGridElement, state.canvasDimension);
@@ -43,31 +48,9 @@ export class SharedGridComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${dimension.marginLeft},${dimension.marginTop})`);
   };
-  updatePrev() {
 
-  }
-  updateNext() {
-
-  }
-  drawScrollArrows(nodeSelection, dimension) {
-    let arc = d3.symbol().type(d3.symbolTriangle).size(100);
-    let hAdj = 7;
-    let vAdj = 8;
-    nodeSelection.append('path')
-      .attr('d', arc)
-      .attr('class', 'x-axis-arrow')
-      .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
-      .on('click', d => { this.updatePrev(); });
-
-    nodeSelection.append('path')
-      .attr('d', arc)
-      .attr('class', 'x-axis-arrow')
-      .attr('transform', `translate(${dimension.marginLeft + dimension.width + hAdj}, ${dimension.marginTop + vAdj}) rotate(90)`)
-      .on('click', d => { this.updateNext(); });
-  };
-
-  //Need to update this method when range is <= 1 Year
   drawCommonXAxis(nodeSelection, dimension, xScale) {
+    //Need to update this method when range is <= 1 Year
     let xAxis = d3.axisBottom(xScale).tickSize(0);
     nodeSelection.append('rect')
       .attr('x', 0)
@@ -105,5 +88,30 @@ export class SharedGridComponent implements OnInit {
         });
       });
   };
+
+  drawScrollArrows(nodeSelection, dimension) {
+    let arc = d3.symbol().type(d3.symbolTriangle).size(100);
+    let hAdj = 7;
+    let vAdj = 8;
+    nodeSelection.append('path')
+      .attr('d', arc)
+      .attr('class', 'x-axis-arrow')
+      .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
+      .on('click', d => { this.scrollLeft(); });
+
+    nodeSelection.append('path')
+      .attr('d', arc)
+      .attr('class', 'x-axis-arrow')
+      .attr('transform', `translate(${dimension.marginLeft + dimension.width + hAdj}, ${dimension.marginTop + vAdj}) rotate(90)`)
+      .on('click', d => { this.scrollRight(); });
+  };
+
+  scrollLeft() {
+  }
+
+  scrollRight() {
+  }
+
+  //#region
 
 }

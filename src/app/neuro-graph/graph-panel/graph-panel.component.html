@@ -37,9 +37,9 @@
             <i class="material-icons">speaker_notes</i>
         </div>
         <div id="zoom" class="control-button">
-            <button md-button [md-menu-trigger-for]="menu" style="min-width:0px;padding:0px;" class="control-button">
+            <span [md-menu-trigger-for]="menu" style="min-width:0px;padding:0px;" class="control-button">
                 <i class="material-icons">zoom_in</i>
-            </button>
+            </span>
             <md-menu #menu="mdMenu">
                 <button md-menu-item style="border-bottom:1px solid grey;">Zoom Scales</button>
                 <button md-menu-item (click)="onZoomOptionChange('24')">2 Yrs</button>
