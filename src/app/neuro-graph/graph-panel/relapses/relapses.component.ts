@@ -114,10 +114,11 @@ export class RelapsesComponent implements OnInit {
           : (() => {
             if (typeof this.relapsesData != "undefined" && this.relapsesData != null) {
               this.relapsesDetail = this.relapsesData[0];
-              this.relapsesDetail.month = "January";
-              this.relapsesDetail.year = new Date().getFullYear().toString();
+              this.relapsesDetail.month = "";
+              this.relapsesDetail.year = "";//new Date().getFullYear().toString();
               let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
               this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
+              this.dialogRef.updatePosition({ top: '335px', left: '255px' });              
             }
           })();
       })
