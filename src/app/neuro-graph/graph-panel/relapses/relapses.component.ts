@@ -179,10 +179,10 @@ export class RelapsesComponent implements OnInit {
     d3.select('#relapses').selectAll("*").remove();
   }
   addChart() {
-    this.dialogRef.close();
+   // debugger;
     var obj = {
       "relapse_id": this.relapsesData.length.toString(),
-      "relapse_month": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
+      "relapse_month":this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
       "relapse_year": this.relapsesDetail.year,
       "last_updated_provider_id": "",
       "save_csn": this.paramData.csn,
@@ -195,6 +195,7 @@ export class RelapsesComponent implements OnInit {
     }
 
     this.relapsesData.push(obj);
+    this.dialogRef.close();    
     this.removeChart();
     this.createChart();
 
