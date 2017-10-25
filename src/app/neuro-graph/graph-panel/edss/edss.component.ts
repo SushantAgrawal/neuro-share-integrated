@@ -227,7 +227,7 @@ export class EdssComponent implements OnInit {
     setTimeout(() => {
       let dialogConfig = { hasBackdrop: true, panelClass: 'ns-edss-theme', width: '670px', height: '650px' };
       this.scoreChartDialogRef = this.dialog.open(this.edssScoreChartTemplate, dialogConfig);
-      this.scoreChartDialogRef.updatePosition({ top: '55px', left: '55px' });
+      this.scoreChartDialogRef.updatePosition({ top: '65px', left: '60px' });
     }, 500)
   }
 
@@ -319,16 +319,16 @@ export class EdssComponent implements OnInit {
       .attr('id', 'edss-clip')
       .append('rect')
       .attr("x", 0)
-      .attr("y", 0)
+      .attr("y", -40)
       .attr("width", this.chartState.canvasDimension.width)
       .attr("height", GRAPH_SETTINGS.edss.chartHeight)
 
     let svg = d3
       .select('#edss')
       .append('g')
-      .attr("clip-path", "url(#edss-clip)")
       .attr('class', 'edss-charts')
-      .attr('transform', `translate(${GRAPH_SETTINGS.panel.marginLeft},${GRAPH_SETTINGS.edss.positionTop})`);
+      .attr('transform', `translate(${GRAPH_SETTINGS.panel.marginLeft},${GRAPH_SETTINGS.edss.positionTop})`)
+      .attr("clip-path", "url(#edss-clip)");
     //Draws circles for clinician data
     svg.selectAll('.dot-clinician')
       .data(this.clinicianDataSet)
