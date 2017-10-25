@@ -12,7 +12,7 @@ import {EvalService} from '@sutterhealth/analytics';
 export class NeuroRelatedComponent implements OnInit {
   display: Boolean = false;
   checkDMT:Boolean = true;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
+  constructor(private brokerService: BrokerService, private evalService:EvalService) { }
 
   ngOnInit() { 
     let dmt = this
