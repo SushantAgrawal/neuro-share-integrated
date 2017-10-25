@@ -46,7 +46,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           this.walk25FeetData = d.data["25fw_scores"];
           this.drawWalk25FeetAxis();
           this.drawWalk25FeetLineCharts();
-          this.Feet25WalkChartLoaded = true;          
+          this.Feet25WalkChartLoaded = true;
         })();
       })
     let walk25Feet = this
@@ -64,7 +64,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let sub2 = walk25Feet.filter(t => !t.data.checked).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         this.unloadChart();
-        this.Feet25WalkChartLoaded = false;        
+        this.Feet25WalkChartLoaded = false;
       })();
     })
     let sub3 = modal.subscribe(d => {
@@ -133,8 +133,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       this.dialogRef.close();
     }
     else {
-      if(Number(this.score_1) || Number(this.score_2))
-      {
+      if (Number(this.score_1) || Number(this.score_2)) {
         this.walk25FeetData.push({
           "score_id": this.score_ids.toString(),
           "walk_1_score": this.score_1.toString(),
@@ -145,7 +144,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           "save_csn_status": this.neuroGraphService.get("queryParams").encounter_status
         });
       }
-      
+
       this.Walk25FeetChartDialogRef.close();
     }
     this.score_ids = this.score_ids + 1;
@@ -168,7 +167,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   drawWalk25FeetAxis() {
     //debugger;
     d3.selectAll('.walk25Feet-axis').remove();
-    
+
     let clinicianDataSetforAxis = this.walk25FeetData.map(d => {
       return {
         ...d,
@@ -176,13 +175,12 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
     let maxValue = Math.max.apply(Math, clinicianDataSetforAxis.map(function (o) { return o.scoreValue; })) + 10;
-    if(maxValue < 30)
-    {
+    if (maxValue < 30) {
       maxValue = 30;
     }
     this.yScale = d3
       .scaleLinear()
-      .domain([0,maxValue])
+      .domain([0, maxValue])
       .range([GRAPH_SETTINGS.walk25Feet.chartHeight - 20, 0]);
     let svg = d3
       .select('#walk25feet')
@@ -245,11 +243,21 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .x((d: any) => this.chartState.xScale(d.lastUpdatedDate))
       .y((d: any) => this.yScale(d.scoreValue));
     //Drawing container
+    d3.select('#walk25feet')
+      .append('clipPath')
+      .attr('id', 'walk25feet-clip')
+      .append('rect')
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", this.chartState.canvasDimension.width)
+      .attr("height", GRAPH_SETTINGS.walk25Feet.chartHeight)
+
     let svg = d3
       .select('#walk25feet')
       .append('g')
       .attr('class', 'walk25feet-charts')
       .attr('transform', `translate(${GRAPH_SETTINGS.panel.marginLeft},${GRAPH_SETTINGS.walk25Feet.positionTop})`)
+      .attr("clip-path", "url(#walk25feet-clip)");
 
     //Draws line for patient data 
     svg.append('path')
