@@ -41,42 +41,50 @@
             <div class="ns-labs-trend-box"></div>
             <div class="ns-range-value-nogrey"></div>
             <div class="ns-labs-range-unit"></div>
-            <div *ngIf="labs.collapsed">
-            <div class="ns-labs-row ns-sub-labs-items"  *ngFor="let comp of labs.component;">
-              <div class="ns-small-bar ns-labs-red" *ngIf="comp.isValueInRange== false  && comp.referenceLow!= ''"></div>
-              <div class="ns-small-bar ns-labs-green" *ngIf="comp.isValueInRange== true  && comp.referenceLow!= ''"></div>
-              <div class="ns-small-bar ns-labs-white" *ngIf="comp.referenceLow== ''"></div>
-              
-              <div class="ns-order-labs-box">
-                <span class="ns-labs-name">{{comp.name}}</span>
-                <div class="ns-labs-orderDate" *ngIf="labs.dates.resultDate==''">
-                  Ordered {{labs.dates.orderDate}}
+            
+            <div [style.display]="labs.collapsed ? 'block' : 'none'">
+              <div class="ns-labs-row ns-sub-labs-items" *ngFor="let comp of labs.component;">
+                <div class="ns-small-bar ns-labs-red" *ngIf="comp.isValueInRange== false  && comp.referenceLow!= ''"></div>
+                <div class="ns-small-bar ns-labs-green" *ngIf="comp.isValueInRange== true  && comp.referenceLow!= ''"></div>
+                <div class="ns-small-bar ns-labs-white" *ngIf="comp.referenceLow== ''"></div>
+
+                <div class="ns-order-labs-box">
+                  <span class="ns-labs-name">{{comp.name}}</span>
+                  <div class="ns-labs-orderDate" *ngIf="labs.dates.resultDate==''">
+                    Ordered {{labs.dates.orderDate}}
+                  </div>
+                  <div class="ns-labs-resultDate" *ngIf="labs.dates.resultDate!=''">
+                    Resulted {{labs.dates.resultDate}}
+                  </div>
                 </div>
-                <div class="ns-labs-resultDate" *ngIf="labs.dates.resultDate!=''">
-                  Resulted {{labs.dates.resultDate}}
+                <div class="ns-small-box-text" *ngIf="comp.referenceLow== ''">
+                  {{comp.value}}
                 </div>
-              </div>
-              <div class="ns-small-box" *ngIf="comp.referenceLow== ''">
-                {{comp.value}}
-              </div>
-              <div class="ns-small-box ns-labs-red" *ngIf="comp.isValueInRange== false && comp.referenceLow!= ''">
-                {{comp.value}}
-              </div>
-              <div class="ns-small-box ns-labs-green" *ngIf="comp.isValueInRange== true && comp.referenceLow!= ''">
-                {{comp.value}}
-              </div>
-              <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && comp.referenceLow!= ''">
-                {{comp.value}}
-              </div>
-              <div class="ns-labs-trend-box"></div>
-              <div class="ns-labs-range-unit" *ngIf="comp.referenceLow!= ''">
-                <div class="ns-range-value">
-                  {{comp.referenceLow}} - {{comp.referenceHigh}}
+                <div class="ns-small-box ns-labs-red" *ngIf="comp.isValueInRange== false && comp.referenceLow!= ''">
+                  {{comp.value}}
                 </div>
-                <div class="ns-range-unit">({{comp.referenceUnits}})</div>
+                <div class="ns-small-box ns-labs-green" *ngIf="comp.isValueInRange== true && comp.referenceLow!= ''">
+                  {{comp.value}}
+                </div>
+                <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && comp.referenceLow!= ''">
+                  {{comp.value}}
+                </div>
+                <div class="ns-labs-range-unit" *ngIf="comp.referenceLow== ''">
+                  <div class="ns-no-range" id="TrendLine_{{labs.procedureCode}}_{{comp.id}}">
+                    No Range
+                  </div>
+                </div>
+                <div class="ns-labs-range-unit" *ngIf="comp.referenceLow!= ''">
+                  <div class="ns-labs-trend-box" id="TrendLine_{{labs.procedureCode}}_{{comp.id}}"></div>
+                </div>
+                <div class="ns-labs-range-unit" *ngIf="comp.referenceLow!= ''">
+                  <div class="ns-range-value">
+                    {{comp.referenceLow}} - {{comp.referenceHigh}}
+                  </div>
+                  <div class="ns-range-unit">({{comp.referenceUnits}})</div>
+                </div>
               </div>
             </div>
-          </div>
           </div>
           <div *ngIf="labs.component.length == 1">
             <div class="ns-labs-icon-plus"></div>
@@ -93,20 +101,20 @@
                 Resulted {{labs.dates.resultDate}}
               </div>
             </div>
-            <div class="ns-small-box" *ngIf="labs.component.referenceLow== ''">
+            <div class="ns-small-box" *ngIf="labs.component[0].referenceLow== ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-small-box ns-labs-red" *ngIf="labs.abnormal== true && labs.component.referenceLow!= ''">
+            <div class="ns-small-box ns-labs-red" *ngIf="labs.abnormal== true && labs.component[0].referenceLow!= ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-small-box ns-labs-green" *ngIf="labs.abnormal== false && labs.component.referenceLow!= ''">
+            <div class="ns-small-box ns-labs-green" *ngIf="labs.abnormal== false && labs.component[0].referenceLow!= ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && labs.component.referenceLow!= ''">
+            <div class="ns-small-box ns-labs-grey" *ngIf="labs.dates.resultDate=='' && labs.component[0].referenceLow!= ''">
               {{labs.component[0].value}}
             </div>
-            <div class="ns-labs-trend-box"></div>
-            <div class="ns-labs-range-unit" *ngIf="labs.component.referenceLow!= ''">
+            <div class="ns-labs-trend-box" id="TrendLine_{{labs.procedureCode}}_{{labs.component[0].id}}"></div>
+            <div class="ns-labs-range-unit" *ngIf="labs.component[0].referenceLow!= ''">
               <div class="ns-range-value">
                 {{labs.component[0].referenceLow}} - {{labs.component[0].referenceHigh}}
               </div>

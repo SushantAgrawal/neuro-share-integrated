@@ -35,6 +35,7 @@ export class RelapsesComponent implements OnInit {
   private datasetA: Array<any>;
   private relapsesData: Array<any>;
   private isEditSelected: boolean = false;
+  private relapsisChartLoaded: boolean = false;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.paramData = this.neuroGraphService.get('queryParams')
   }
@@ -51,6 +52,7 @@ export class RelapsesComponent implements OnInit {
           : (() => {
             this.relapsesData = d.data.relapses;
             this.createChart();
+            this.relapsisChartLoaded = true;            
           })();
       })
     let relapses = this
@@ -102,6 +104,7 @@ export class RelapsesComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
+            this.relapsisChartLoaded = false;            
           })();
       })
     let sub3 = modal
@@ -111,19 +114,30 @@ export class RelapsesComponent implements OnInit {
           : (() => {
             if (typeof this.relapsesData != "undefined" && this.relapsesData != null) {
               this.relapsesDetail = this.relapsesData[0];
-              this.relapsesDetail.month = "January";
-              this.relapsesDetail.year = new Date().getFullYear().toString();
+              this.relapsesDetail.month = "";
+              this.relapsesDetail.year = "";//new Date().getFullYear().toString();
               let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
               this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
+              this.dialogRef.updatePosition({ top: '335px', left: '255px' });              
             }
           })();
       })
+    //When zoom option changed
+    let sub4 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        if (this.relapsisChartLoaded) {
+          this.removeChart();
+          this.createChart();
+        }
+      })();
+    })
 
     this
       .subscriptions
       .add(sub1)
       .add(sub2)
       .add(sub3)
+      .add(sub4)
       .add(putRelapse)
       .add(postRelapse);
   }
@@ -166,10 +180,10 @@ export class RelapsesComponent implements OnInit {
     d3.select('#relapses').selectAll("*").remove();
   }
   addChart() {
-    this.dialogRef.close();
+   // debugger;
     var obj = {
       "relapse_id": this.relapsesData.length.toString(),
-      "relapse_month": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
+      "relapse_month":this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
       "relapse_year": this.relapsesDetail.year,
       "last_updated_provider_id": "",
       "save_csn": this.paramData.csn,
@@ -182,6 +196,7 @@ export class RelapsesComponent implements OnInit {
     }
 
     this.relapsesData.push(obj);
+    this.dialogRef.close();    
     this.removeChart();
     this.createChart();
 

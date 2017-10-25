@@ -1,17 +1,24 @@
 <div class="header-area">
     <div class="edss-caseload" *ngIf="isEdssSelected">
-        <button md-button class="virtual-buttons" (click)="toggleEdssVirtualCaseload()">{{toggleVirtualCaseLoad}}</button>
+        <button md-button *ngIf="!virtualCaseloadEnabled" class="virtual-buttons" (click)="toggleEdssVirtualCaseload()">Add Virtual Caseload</button>
+        <button md-button *ngIf="virtualCaseloadEnabled" class="virtual-buttons" (click)="toggleEdssVirtualCaseload()">Remove Virtual Caseload</button>
     </div>
-    <div class="btn-info" (click)="showVirtualCaseloadInfo($event)" *ngIf="isEdssSelected"><span class="">i</span></div>
+    <div class="btn-info" (click)="showVirtualCaseloadInfo($event)" *ngIf="isEdssSelected">
+        <span class="">i</span>
+    </div>
     <div class="right-float">
-        <div class="action-buttons disabled"><span class="icon-avsneuroshare"></span></div>
-        <div class="action-buttons"><span class="icon-notesneuroshare"></span></div>
+        <div class="action-buttons disabled">
+            <span class="icon-avsneuroshare"></span>
+        </div>
+        <div class="action-buttons">
+            <span class="icon-notesneuroshare"></span>
+        </div>
     </div>
 </div>
 <div id="graph-panel-wrapper">
     <div id="graph-container" style="position:relative;">
-        <svg width="100%" [style.height.px]="graphSetting.panel.offsetHeight">
-            <g app-shared-grid [chartState]="state" (menuClicked)="menuClicks($event)" id="shared-grid"></g>
+        <svg width="100%" [style.height.px]="graphSetting.panel.offsetHeight" style="overflow: hidden;">
+            <g app-shared-grid [chartState]="state" id="shared-grid"></g>
             <g app-labs [chartState]="state" id="labs"></g>
             <g app-imaging [chartState]="state" id="imaging"></g>
             <g app-relapses [chartState]="state" id="relapses"></g>
@@ -23,20 +30,25 @@
         </div>
     </div>
     <div id="graph-control">
-        <div id="undo" class="control-button"><span class="icon-reloadneuroshare"></span></div>
-        <div id="legend" class="control-button"><i class="material-icons">speaker_notes</i></div>
+        <div id="undo" class="control-button">
+            <span class="icon-reloadneuroshare" (click)="onResetZoom()"></span>
+        </div>
+        <div id="legend" class="control-button">
+            <i class="material-icons">speaker_notes</i>
+        </div>
         <div id="zoom" class="control-button">
-            <i class="material-icons">zoom_in</i>
-            <!-- <button md-button [md-menu-trigger-for]="menu" style="min-width:0px;padding:0px;" class="control-button"> <i class="material-icons">zoom_in</i></button>
+            <span [md-menu-trigger-for]="menu" style="min-width:0px;padding:0px;" class="control-button">
+                <i class="material-icons">zoom_in</i>
+            </span>
             <md-menu #menu="mdMenu">
-            <button md-menu-item style="border-bottom:1px solid grey;">Zoom Scales</button>
-            <button md-menu-item (click)="menuClick('2 Yrs')">2 Yrs</button>
-            <button md-menu-item (click)="menuClick('1 Yr')">1 Yr</button>
-            <button md-menu-item (click)="menuClick('6 M')">6 M</button>
-            <button md-menu-item (click)="menuClick('3 M')">3 M</button>
-            <button md-menu-item (click)="menuClick('1 M')">1 M</button>
-            </md-menu> -->
-    </div>
+                <button md-menu-item style="border-bottom:1px solid grey;">Zoom Scales</button>
+                <button md-menu-item (click)="onZoomOptionChange('24')">2 Yrs</button>
+                <button md-menu-item (click)="onZoomOptionChange('12')">1 Yr</button>
+                <button md-menu-item (click)="onZoomOptionChange('6')">6 M</button>
+                <button md-menu-item (click)="onZoomOptionChange('3')">3 M</button>
+                <button md-menu-item (click)="onZoomOptionChange('1')">1 M</button>
+            </md-menu>
+        </div>
     </div>
 </div>
 
@@ -45,11 +57,13 @@
         <div class="virtual-caseload-title">Virtual Caseload</div>
         <div class="virtual-caseload-close">
             <i (click)="virtualCaseloadInfoDialogRef.close()" class="material-icons">clear</i>
-          </div>
+        </div>
     </div>
     <div class="modal-body">
         <div class="virtual-caseload-content">
-            This is a cohort of comparable patients from UCSF and other clinical centers who were all prospectively followed in the modern treatment era.Visualizing your patient's course in the context of this 'virtual caseload' of treated MS patients may highlight patients who may require intensification of treatment.
+            This is a cohort of comparable patients from UCSF and other clinical centers who were all prospectively followed in the modern
+            treatment era.Visualizing your patient's course in the context of this 'virtual caseload' of treated MS patients
+            may highlight patients who may require intensification of treatment.
         </div>
     </div>
 </ng-template>

@@ -2,29 +2,25 @@
   <div class="modal-header">
     <h4 class="modal-title">25' Walk Test</h4>
     <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
-              <span aria-hidden="true">&times;</span>
-          </button>
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   <div class="modal-body">
-    <div class="edss-container">
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col"></div>
-        <div class="ns-walk25Feet-value walkFontWeight">Secs</div>
-      </div>
-
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col">25' Walk #1</div>
-        <div class="ns-walk25Feet-value walkFontWeight"> {{walk25FeetScoreDetail.walk_1_score}}
+    <div class="walk25feet-container">
+        <div class="ns-walk25feet-subheader">Secs</div>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk #1</div>
+        <div class="ns-walk25feet-value"> {{walk25FeetScoreDetail.walk_1_score}}
         </div>
       </div>
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col">25' Walk #2</div>
-        <div class="ns-walk25Feet-value walkFontWeight">{{walk25FeetScoreDetail.walk_2_score}}
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk #2</div>
+        <div class="ns-walk25feet-value">{{walk25FeetScoreDetail.walk_2_score}}
         </div>
       </div>
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col">25' Walk Average</div>
-        <div class="ns-walk25Feet-value walkFontWeight">
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk Average</div>
+        <div class="ns-walk25feet-value">
           {{walk25FeetScoreDetail.scoreValue}}
         </div>
       </div>
@@ -36,41 +32,36 @@
   <div class="modal-header">
     <h4 class="modal-title">25' Walk Test</h4>
     <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
-                <span aria-hidden="true">&times;</span>
-            </button>
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
   <div class="modal-body">
-    <div class="edss-container">
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col"></div>
-        <div class="ns-walk25Feet-value walkFontWeight">Secs</div>
-      </div>
-
-      <div >
-        <div class="ns-walk25Feet-col">25' Walk #1</div>
-        <div class="ns-walk25Feet-value">
-            <md-input-container  class="ns-input-container">
-          <input mdInput class="ns-walk25Feet-value-bg" type="number" min="0" max="30" [(ngModel)]="walk25FeetScoreDetail.walk_1_score"  (change)="updateWalk('Update')"/>
+    <div class="walk25feet-container">
+        <div class="ns-walk25feet-subheader">Secs</div>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk #1</div>
+   
+            <md-input-container  class="ns-walk25feet-input">
+          <input mdInput type="number" min="0" max="30" [(ngModel)]="walk25FeetScoreDetail.walk_1_score"  (change)="updateWalk('Update')"/>
             </md-input-container>
-        </div>
+      
       </div>
-      <div >
-        <div class="ns-walk25Feet-col">25' Walk #2</div>
-        <div class="ns-walk25Feet-value">
-            <md-input-container  class="ns-input-container">
-          <input mdInput class="ns-walk25Feet-value-bg" type="number" min="0" max="30" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')"/>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk #2</div>
+      
+        <md-input-container  class="ns-walk25feet-input">
+          <input mdInput type="number" min="0" max="30" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')"/>
         </md-input-container>
+        
+      </div>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk Average</div>
+        <div class="ns-walk25feet-value">
+            <span [(ngModel)]="walk25FeetScoreDetail.scoreValue" ngDefaultControl > {{walk25FeetScoreDetail.scoreValue}}</span>
         </div>
       </div>
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col">25' Walk Average</div>
-        <div class="ns-walk25Feet-value">
-            <span [(ngModel)]="walk25FeetScoreDetail.scoreValue"> {{walk25FeetScoreDetail.scoreValue}}</span>
-         
-        </div>
-      </div>
-      <div class="ns-row-walk25Feet" *ngIf="showUpdate == true">
-        <div class="ns-walk25Feet-update">
+      <div class="ns-row-walk25feet" *ngIf="showUpdate == true">
+        <div class="ns-walk25feet-update">
           <button class="call-out-buttons" (click)="updateWalk25FeetScore('Update')">Update</button>
         </div>
       </div>
@@ -79,42 +70,34 @@
 </ng-template>
 <ng-template #walk25FeetAddSecondLevelTemplate>
   <div class="modal-header">
-    <h4 class="modal-title">25' Walk Test</h4> <button type="button" class="btn-info-walk25Feet" (click)="walk25FeetInfo();"><span class="">i</span></button>
+    <h4 class="modal-title">25' Walk Test</h4> <button type="button" class="btn-info-walk25feet" (click)="walk25FeetInfo();"><span>i</span></button>
     <button type="button" class="close" aria-label="Close" (click)="Walk25FeetChartDialogRef.close()">
                 <span aria-hidden="true">&times;</span>
             </button>
   </div>
   <div class="modal-body">
-    <div class="edss-container">
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col"></div>
-        <div class="ns-walk25Feet-value walkFontWeight">Secs</div>
-      </div>
-
-      <div >
-        <div class="ns-walk25Feet-col">25' Walk #1</div>
-        <div class="ns-walk25Feet-value">
-            <md-input-container  class="ns-input-container">
-          <input mdInput type="number"  min="0" max="30" class="ns-walk25Feet-value-bg" [(ngModel)]="score_1" (change)="updateWalk('Add')" />
+    <div class="walk25feet-container">
+             <div class="ns-walk25feet-subheader">Secs</div>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk #1</div>
+            <md-input-container class="ns-walk25feet-input">
+              <input mdInput type="number" min="0" max="30" [(ngModel)]="score_1" (change)="updateWalk('Add')" />
           </md-input-container>
+      </div>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk #2</div>
+        <md-input-container class="ns-walk25feet-input">
+            <input mdInput type="number" min="0" max="30" [(ngModel)]="score_2" (change)="updateWalk('Add')"/>
+        </md-input-container>
+      </div>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">25' Walk Average</div>
+        <div class="ns-walk25feet-value">
+            <span [(ngModel)]="scoreValue" ngDefaultControl > {{scoreValue}}</span>
         </div>
       </div>
-      <div >
-        <div class="ns-walk25Feet-col">25' Walk #2</div>
-        <div class="ns-walk25Feet-value">
-            <md-input-container  class="ns-input-container">
-          <input mdInput type="number"  min="0" max="30" class="ns-walk25Feet-value-bg" [(ngModel)]="score_2" (change)="updateWalk('Add')"/>
-            </md-input-container>
-        </div>
-      </div>
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-col">25' Walk Average</div>
-        <div class="ns-walk25Feet-value">
-            <span [(ngModel)]="scoreValue"> {{scoreValue}}</span>
-        </div>
-      </div>
-      <div class="ns-row-walk25Feet">
-        <div class="ns-walk25Feet-update">
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-update">
           <button class="call-out-buttons" (click)="updateWalk25FeetScore('Add')">Add</button>
         </div>
       </div>
@@ -122,17 +105,15 @@
   </div>
 </ng-template>
 <ng-template #walk25FeetThirdLevelTemplate>
-  <div class="modal-header">
-    <h4 class="modal-title">{{walk25FeetDataInfo.title}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="reportDialogRef.close()">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-  </div>
-  <div class="modal-body">
-    <div class="edss-container">
-      <div class="ns-row-walk25Feet" *ngFor="let walk25feet of walk25FeetDataInfo.info;">
-        {{walk25feet}}
-      </div>
+  <div class="walk25feet-info-popup">
+  <div class="walk25feet-header">
+    <div class="walk25feet-header-title">{{walk25FeetDataInfo.title}}</div>
+    <div class="walk25feet-header-close">
+        <i (click)="reportDialogRef.close()" class="material-icons">clear</i>
     </div>
+  </div>
+  <div class="walk25feet-popup-content" *ngFor="let walk25feet of walk25FeetDataInfo.info;">
+    {{walk25feet}}
+  </div>
   </div>
 </ng-template>

@@ -28,7 +28,7 @@ export class ImagingComponent implements OnInit {
   private subscriptions: any;
   private imagingDataDetails: Array<any>;
   private imagingData: Array<any>;
-
+  private imagingChartLoaded: boolean = false;
   private datasetA: Array<any>;
   private datasetB: Array<any> = [];
   private datasetC: Array<any> = [];
@@ -48,6 +48,7 @@ export class ImagingComponent implements OnInit {
           : (() => {
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
             this.createChart();
+            this.imagingChartLoaded=true;            
           })();
       })
 
@@ -76,13 +77,25 @@ export class ImagingComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
+            this.imagingChartLoaded=false;            
           })();
       })
+
+       //When zoom option changed
+    let sub3 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        if (this.imagingChartLoaded) {
+          this.removeChart();
+          this.createChart();
+        }
+      })();
+    })
 
     this
       .subscriptions
       .add(sub1)
-      .add(sub2);
+      .add(sub2)
+      .add(sub3);
   }
   ngOnDestroy() {
     this

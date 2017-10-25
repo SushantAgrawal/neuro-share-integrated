@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation, ViewChild, TemplateRef } f
 import * as d3 from 'd3';
 import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
-import { allMessages, allHttpMessages } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages, labsConfig } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -23,26 +23,25 @@ export class LabsComponent implements OnInit {
   private labsDataDetails: Array<any>;
   private subscriptions: any;
   private isCollapsed: Boolean = true;
-  //private datasetA: Array<any>;
-  //private datasetB: Array<any> = [];
-  //private datasetC: Array<any> = [];
   private dialogRef: any;
+  private labsChartLoaded: boolean = false;
   constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
 
   ngOnInit() {
     this.subscriptions = this
-    .brokerService
-    .filterOn(allHttpMessages.httpGetLabs)
-    .subscribe(d => {
-      d.error
-        ? console.log(d.error)
-        : (() => {
-          //debugger;
-          this.labsData = d.data.EPIC.labOrder;
-          this.createChart();
-        })();
-    })
-
+      .brokerService
+      .filterOn(allHttpMessages.httpGetLabs)
+      .subscribe(d => {
+        d.error
+          ? console.log(d.error)
+          : (() => {
+            //debugger;
+            //this.labsData = d.data.EPIC.labOrder;
+            this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
+            this.createChart();
+            this.labsChartLoaded = true;            
+          })();
+      })
 
     let labs = this
       .brokerService
@@ -56,9 +55,9 @@ export class LabsComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             //make api call
-             this
-            .brokerService
-            .httpGet(allHttpMessages.httpGetLabs);
+            this
+              .brokerService
+              .httpGet(allHttpMessages.httpGetLabs);
           })();
       });
 
@@ -69,28 +68,152 @@ export class LabsComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
+            this.labsChartLoaded = false;            
           })();
       })
+
+    //When zoom option changed
+    let sub3 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        if (this.labsChartLoaded) {
+          this.removeChart();
+          this.createChart();
+        }
+      })();
+    })
 
     this
       .subscriptions
       .add(sub1)
-      .add(sub2);
+      .add(sub2)
+      .add(sub3);
   }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
   showSecondLevel(data) {
+    //debugger;
     this.labsDataDetails = data.orderDetails;
-    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-labs-theme', width: '730px' };
-    this.dialogRef = this.dialog.open(this.labSecondLevelTemplate, dialogConfig);
-  }
+    let compArray: Array<any> = [];
+    this.labsData.map(d => {
+      return {
+        ...d,
+        resultDate: new Date(d.dates.resultDate),
+      }
+    }).sort((a, b) => a.resultDate - b.resultDate).forEach(element => {
+      if (element.component.length > 0) {
+        if (element.component.length > 0 && element.dates.resultDate != "" && new Date(element.dates.resultDate) <= new Date(data.orderDetails[0].dates.resultDate)) {
+          element.component.forEach(elem => {
+            compArray.push(elem);
+          });
+        }
+      }
+    });
+    this.labsDataDetails.forEach(element => {
+      if (element.component.length > 0) {
+        element.component.forEach(elem => {
+          let selCompArray: Array<any> = [];
+          selCompArray = compArray.filter((obj => obj.id == elem.id));
+          let trendArray: Array<any> = [];
+          let i = 0;
+          selCompArray.forEach(elems => {
+            i = i + 30;
+            let color = "#bfbfbf";
+            if (elems.isValueInRange == true) {
+              color = "#9dbb61";
+            }
+            else {
+              color = "#e53935";
+            }
+            if (i <= 90) {
+              if (Number(elems.value) && elems.referenceLow != "")
+                trendArray.push({ "x": i, "y": Number(elems.value), "color": color })
 
+            }
+          });
+          if (trendArray.length > 1) {
+            elem.trendData = trendArray;
+          }
+          else {
+            elem.trendData = [];
+          }
+
+        });
+      }
+    });
+
+    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-labs-theme', width: '730px', data: this.labsDataDetails };
+
+    this.dialogRef = this.dialog.open(this.labSecondLevelTemplate, dialogConfig);
+    this.dialogRef.afterOpen().subscribe((ref: MdDialogRef<any>) => {
+      this.plottrendline();
+    });
+
+    //debugger;
+    this
+      .brokerService
+      .emit(allMessages.neuroRelated, {
+        artifact: 'dmt',
+        checked: true
+      });
+  }
+  plottrendline() {
+    if (this.labsDataDetails[0].component.length > 0) {
+      this.labsDataDetails[0].component.forEach(elems => {
+        this.drawtrendLine(this.labsDataDetails[0].procedureCode, elems.id, elems.trendData)
+      });
+    }
+
+  }
+  drawtrendLine(labId, compId, trendData) {
+    //debugger; 
+    let maxValue = Math.max.apply(Math, trendData.map(function (o) { return o.y; }));
+    let minValue = Math.min.apply(Math, trendData.map(function (o) { return o.y; }))
+    let scale = d3.scaleLinear()
+      .domain([minValue, maxValue])
+      .range([25, 15]);
+    //Chart line
+    let line = d3.line<any>()
+      .x((d: any) => d.x)
+      .y((d: any) => scale(d.y))
+
+    //Drawing container
+    let svg = d3
+      .select('#TrendLine_' + labId + '_' + compId)
+      .append('svg')
+      .attr("width", 100)
+      .attr("height", 45)
+
+    svg.append('path')
+      .datum(trendData)
+      .attr('class', 'line')
+      .style('fill', 'none')
+      .style('stroke', "#bfbfbf")
+      .style('stroke-width', '1.5')
+      .attr('d', line)
+
+
+    svg.selectAll('.dot')
+      .data(trendData)
+      .enter()
+      .append('circle')
+      .attr('class', 'dot')
+      .attr('cx', d => d.x)
+      .attr('cy', d => scale(d.y))
+      .attr('r', 4)
+      .style("fill", d => {
+        return d.color;
+      })
+      .style('cursor', 'pointer')
+      .append("svg:title") // TITLE APPENDED HERE
+      .text(function (d) { return d.y; })
+
+
+  }
   removeChart() {
     d3.select('#labs').selectAll("*").remove();
   }
-
   createChart() {
     let tempDataset = this.labsData.map(d => {
       return {
