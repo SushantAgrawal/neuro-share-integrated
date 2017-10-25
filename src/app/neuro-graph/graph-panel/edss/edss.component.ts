@@ -314,9 +314,19 @@ export class EdssComponent implements OnInit {
       .x((d: any) => this.chartState.xScale(d.lastUpdatedDate))
       .y((d: any) => this.yScale(d.scoreValue));
     //Drawing container
+    d3.select('#edss')
+      .append('clipPath')
+      .attr('id', 'edss-clip')
+      .append('rect')
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", this.chartState.canvasDimension.width)
+      .attr("height", GRAPH_SETTINGS.edss.chartHeight)
+
     let svg = d3
       .select('#edss')
       .append('g')
+      .attr("clip-path", "url(#edss-clip)")
       .attr('class', 'edss-charts')
       .attr('transform', `translate(${GRAPH_SETTINGS.panel.marginLeft},${GRAPH_SETTINGS.edss.positionTop})`);
     //Draws circles for clinician data
@@ -394,6 +404,7 @@ export class EdssComponent implements OnInit {
     let svg = d3
       .select('#edss')
       .append('g')
+      .attr("clip-path", "url(#edss-clip)")
       .attr('class', 'edss-charts')
       .attr('transform', `translate(${GRAPH_SETTINGS.panel.marginLeft},${GRAPH_SETTINGS.edss.positionTop})`);
 
