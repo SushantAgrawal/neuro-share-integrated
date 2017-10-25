@@ -39,7 +39,7 @@ export class LabsComponent implements OnInit {
             //this.labsData = d.data.EPIC.labOrder;
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
-            this.labsChartLoaded = true;            
+            this.labsChartLoaded = true;
           })();
       })
 
@@ -68,7 +68,7 @@ export class LabsComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
-            this.labsChartLoaded = false;            
+            this.labsChartLoaded = false;
           })();
       })
 
@@ -179,6 +179,7 @@ export class LabsComponent implements OnInit {
       .y((d: any) => scale(d.y))
 
     //Drawing container
+
     let svg = d3
       .select('#TrendLine_' + labId + '_' + compId)
       .append('svg')
@@ -268,8 +269,21 @@ export class LabsComponent implements OnInit {
     this.line = d3.line<any>()
       .x((d: any) => this.chartState.xScale(d.orderDate))
       .y(0);
+
+    d3.select('#labs')
+      .append('clipPath')
+      .attr('id', 'labs-clip')
+      .append('rect')
+      .attr("x", 0)
+      .attr("y", -GRAPH_SETTINGS.labs.chartHeight / 2)
+      .attr("width", this.chartState.canvasDimension.width)
+      .attr("height", GRAPH_SETTINGS.labs.chartHeight);
+
     this.chart = d3.select("#labs")
-      .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.labs.positionTop + ")");
+      .append('g')
+      .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.labs.positionTop + ")")
+      .attr("clip-path", "url(#labs-clip)");
+
     this.pathUpdate = this.chart.append("path")
       .datum([
         { "orderDate": this.chartState.xDomain.defaultMinValue },
