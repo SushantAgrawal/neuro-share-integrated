@@ -150,6 +150,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     }
     this.score_ids = this.score_ids + 1;
     this.removeChart();
+    this.drawWalk25FeetAxis();
     this.drawWalk25FeetLineCharts();
   }
   showSecondLevel(data) {
@@ -165,9 +166,16 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     }
   }
   drawWalk25FeetAxis() {
+    //debugger;
+    d3.selectAll('.walk25Feet-axis').remove();
+    let maxValue = Math.max.apply(Math, this.walk25FeetData.map(function (o) { return Math.round((parseFloat(o.walk_1_score) + parseFloat(o.walk_1_score))/2); })) + 10;
+    if(maxValue < 30)
+    {
+      maxValue = 30;
+    }
     this.yScale = d3
       .scaleLinear()
-      .domain(this.yDomain)
+      .domain([0,maxValue])
       .range([GRAPH_SETTINGS.walk25Feet.chartHeight - 20, 0]);
     let svg = d3
       .select('#walk25feet')
@@ -186,7 +194,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         yAxis.selectAll('text')
           .attr('x', '0')
           .attr('fill', GRAPH_SETTINGS.walk25Feet.color)
-          .attr('transform', `translate(${GRAPH_SETTINGS.panel.offsetWidth - GRAPH_SETTINGS.panel.marginLeft + 10} ,${GRAPH_SETTINGS.walk25Feet.positionTop})`)
+          .attr('transform', `translate(${GRAPH_SETTINGS.panel.offsetWidth - GRAPH_SETTINGS.panel.marginLeft + 5} ,${GRAPH_SETTINGS.walk25Feet.positionTop})`)
           .style('font-size', '1.2em')
           .style('font-weight', 'bold')
       });
