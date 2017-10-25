@@ -247,7 +247,7 @@ export class ImagingComponent implements OnInit {
       .attr("dy", 0)
       .attr("text-anchor", "start")
       .attr("font-size", "10px")
-      .text("Images");
+      .text("Imaging");
   }
 }
 
