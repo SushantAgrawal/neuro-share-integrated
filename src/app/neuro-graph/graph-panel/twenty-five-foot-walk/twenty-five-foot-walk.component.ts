@@ -168,7 +168,14 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   drawWalk25FeetAxis() {
     //debugger;
     d3.selectAll('.walk25Feet-axis').remove();
-    let maxValue = Math.max.apply(Math, this.walk25FeetData.map(function (o) { return Math.round((parseFloat(o.walk_1_score) + parseFloat(o.walk_1_score))/2); })) + 10;
+    
+    let clinicianDataSetforAxis = this.walk25FeetData.map(d => {
+      return {
+        ...d,
+        scoreValue: ((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2)
+      }
+    }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
+    let maxValue = Math.max.apply(Math, clinicianDataSetforAxis.map(function (o) { return o.scoreValue; })) + 10;
     if(maxValue < 30)
     {
       maxValue = 30;
