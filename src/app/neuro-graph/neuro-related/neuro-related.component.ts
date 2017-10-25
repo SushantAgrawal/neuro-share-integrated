@@ -1,45 +1,50 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { BrokerService } from '../broker/broker.service';
-import { allMessages, allHttpMessages, manyHttpMessages } from '../neuro-graph.config';
-import { MdDialog } from '@angular/material';
-import { RelapsesComponent } from '../graph-panel/relapses/relapses.component';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
+import {BrokerService} from '../broker/broker.service';
+import {allMessages, allHttpMessages, manyHttpMessages} from '../neuro-graph.config';
+// import {RelapsesComponent} from '../graph-panel/relapses/relapses.component';
+import {EvalService} from '@sutterhealth/analytics';
 
-
-@Component({
-  selector: 'app-neuro-related',
-  templateUrl: './neuro-related.component.html',
-  styleUrls: ['./neuro-related.component.scss'],
-  encapsulation: ViewEncapsulation.None
-})
+@Component({selector: 'app-neuro-related', templateUrl: './neuro-related.component.html', styleUrls: ['./neuro-related.component.scss'], encapsulation: ViewEncapsulation.None})
 export class NeuroRelatedComponent implements OnInit {
-  display: Boolean = false;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
+  display : Boolean = false;
+  constructor(private evalService : EvalService, private brokerService : BrokerService) {}
 
-  ngOnInit() {   
-  }
+  ngOnInit() {}
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {    
     this
-    .brokerService
-    .emit(allMessages.neuroRelated, {
-      artifact: 'dmt',
-      checked: true
-    });
-  this
-    .brokerService
-    .emit(allMessages.neuroRelated, {
-      artifact: 'edss',
-      checked: true
-    });
-  this
-    .brokerService
-    .emit(allMessages.neuroRelated, {
-      artifact: 'labs',
-      checked: true
-    });
+      .brokerService
+      .emit(allMessages.neuroRelated, {
+        artifact: 'dmt',
+        checked: true
+      });
+    this
+      .brokerService
+      .emit(allMessages.neuroRelated, {
+        artifact: 'edss',
+        checked: true
+      });
+    this
+      .brokerService
+      .emit(allMessages.neuroRelated, {
+        artifact: 'labs',
+        checked: true
+      });
   };
 
   changed(e, value) {
+    let evalData = {
+      label: value,
+      data: e.checked,
+      type: 'checkbox'
+    };
+    this
+      .evalService
+      .sendEvent(evalData);
     this
       .brokerService
       .emit(allMessages.neuroRelated, {
@@ -51,13 +56,19 @@ export class NeuroRelatedComponent implements OnInit {
   openDialog(type) {
     switch (type) {
       case 'relapses':
-        this.brokerService.emit(allMessages.invokeAddRelapses);
+        this
+          .brokerService
+          .emit(allMessages.invokeAddRelapses);
         break;
       case 'edss':
-        this.brokerService.emit(allMessages.invokeAddEdss);
+        this
+          .brokerService
+          .emit(allMessages.invokeAddEdss);
         break;
       case 'walk25Feet':
-        this.brokerService.emit(allMessages.invokeAddWalk25Feet);
+        this
+          .brokerService
+          .emit(allMessages.invokeAddWalk25Feet);
         break;
       default:
     }

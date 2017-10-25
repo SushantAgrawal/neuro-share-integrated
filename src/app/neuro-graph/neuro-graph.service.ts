@@ -20,12 +20,16 @@ export class NeuroGraphService {
       }, {});
       this.set('queryParams', urlObject);
     })();
-
+    // this.doInit();
     // uncomment following code for production or when actual url is available let
     // sub = this   .activatedRoute   .queryParams   .subscribe(q => {
     // this.set('queryParams', q);   });
 
   }
+
+  // doInit(){
+
+  // }
 
   get(id) {
     return (this.global[id]);
