@@ -36,16 +36,16 @@
         <div id="legend" class="control-button">
             <i class="material-icons">speaker_notes</i>
         </div>
-        <div id="zoom" class="control-button">
-            <span [md-menu-trigger-for]="menu" style="min-width:0px;padding:0px;" class="control-button">
+        <div id="zoom" class="control-button ">
+            <span [md-menu-trigger-for]="menu" class="control-button">
                 <i class="material-icons">zoom_in</i>
             </span>
-            <md-menu #menu="mdMenu">
-                <div>
-                    <span>
+            <md-menu #menu="mdMenu" class="graph-zoom">
+                <div class="zoom-panel">
+                    <span class="zoom-title">
                         Zoom Scales
                     </span>
-                    <span type="button" class="zoom-close pull-right" aria-label="Close">
+                    <span type="button" class="zoom-close" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </span>
                 </div>
