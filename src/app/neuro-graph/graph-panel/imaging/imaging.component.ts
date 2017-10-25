@@ -48,7 +48,7 @@ export class ImagingComponent implements OnInit {
           : (() => {
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
             this.createChart();
-            this.imagingChartLoaded=true;            
+            this.imagingChartLoaded = true;
           })();
       })
 
@@ -77,11 +77,11 @@ export class ImagingComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
-            this.imagingChartLoaded=false;            
+            this.imagingChartLoaded = false;
           })();
       })
 
-       //When zoom option changed
+    //When zoom option changed
     let sub3 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.imagingChartLoaded) {
@@ -110,10 +110,10 @@ export class ImagingComponent implements OnInit {
   }
 
   showResult() {
-      this.dialog.openDialogs.pop();
-      let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-images-theme', width: '490px', height: '600px' };
-      this.reportDialogRef = this.dialog.open(this.imagingThirdLevelTemplate, dialogConfig);
-      this.reportDialogRef.updatePosition({ top: '50px', left: "860px" });
+    this.dialog.openDialogs.pop();
+    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-images-theme', width: '490px', height: '600px' };
+    this.reportDialogRef = this.dialog.open(this.imagingThirdLevelTemplate, dialogConfig);
+    this.reportDialogRef.updatePosition({ top: '50px', left: "860px" });
   }
 
   removeChart() {
@@ -188,8 +188,19 @@ export class ImagingComponent implements OnInit {
       .x((d: any) => this.chartState.xScale(d.orderDate))
       .y(0);
 
+    d3.select('#imaging')
+      .append('clipPath')
+      .attr('id', 'imaging-clip')
+      .append('rect')
+      .attr("x", 0)
+      .attr("y", -GRAPH_SETTINGS.imaging.chartHeight / 2)
+      .attr("width", this.chartState.canvasDimension.width)
+      .attr("height", GRAPH_SETTINGS.imaging.chartHeight);
+
     this.chart = d3.select("#imaging")
-      .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.imaging.positionTop + ")");
+      .append('g')
+      .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.imaging.positionTop + ")")
+      .attr("clip-path", "url(#imaging-clip)");
 
     this.pathUpdate = this.chart.append("path")
       .datum([
