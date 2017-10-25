@@ -10,12 +10,6 @@ import {EvalService} from '@sutterhealth/analytics';
 
 @Component({selector: 'app-neuro-related', templateUrl: './neuro-related.component.html', styleUrls: ['./neuro-related.component.scss'], encapsulation: ViewEncapsulation.None})
 export class NeuroRelatedComponent implements OnInit {
-<<<<<<< HEAD
-  display : Boolean = false;
-  constructor(private evalService : EvalService, private brokerService : BrokerService) {}
-
-  ngOnInit() {}
-=======
   display: Boolean = false;
   checkDMT:Boolean = true;
   constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
@@ -37,7 +31,6 @@ export class NeuroRelatedComponent implements OnInit {
         })();
     });
   }
->>>>>>> 61a30e31f4019e5849112a5cc1eb30cb094068fb
 
   ngAfterViewInit() {    
     this
