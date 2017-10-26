@@ -27,7 +27,11 @@ $walk25feet-color:#31859b;
         color: #333333; 
     }
 }
-
+.ng-error
+{
+    color:red !important;
+    font-style: italic;
+}
 
 .walk25feet-header{
     border-bottom: 1px solid #bfbfbf;
