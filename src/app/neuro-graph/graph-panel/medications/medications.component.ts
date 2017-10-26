@@ -342,7 +342,7 @@ export class MedicationsComponent implements OnInit {
   getEndDate(input) {
     if (input)
       return Date.parse(input)
-    return this.chartState.xDomain.defaultMaxValue;
+    return this.chartState.xDomain.currentMaxValue;
   }
 
   getShortenedName(input) {

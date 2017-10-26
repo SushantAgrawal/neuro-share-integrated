@@ -277,8 +277,8 @@ export class RelapsesComponent implements OnInit {
 
     this.pathUpdate = this.chart.append("path")
       .datum([
-        { "lastUpdatedDate": this.chartState.xDomain.defaultMinValue },
-        { "lastUpdatedDate": this.chartState.xDomain.defaultMaxValue }
+        { "lastUpdatedDate": this.chartState.xDomain.currentMinValue },
+        { "lastUpdatedDate": this.chartState.xDomain.currentMaxValue }
       ])
       .attr("class", "line")
       .attr("d", this.line)

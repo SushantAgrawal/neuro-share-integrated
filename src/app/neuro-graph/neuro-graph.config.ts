@@ -5,6 +5,7 @@ export const allMessages = {
     'invokeAddWalk25Feet': 'invoke:add:walk25Feet',
     'toggleVirtualCaseload': 'toggle:virtual:caseload',
     'zoomOptionChange': 'zoom:option:change',
+    'timelineScroll': 'timeline:scroll',
 };
 
 export const manyHttpMessages = {
