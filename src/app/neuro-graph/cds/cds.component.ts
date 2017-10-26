@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {MdDialog} from '@angular/material';
 import {cdsMap, allMessages, manyHttpMessages, allHttpMessages} from '../neuro-graph.config';
 import {InfoPopupComponent} from './info-popup/info-popup.component'
+import moment from 'moment';
 
 @Component({selector: 'app-cds', templateUrl: './cds.component.html', styleUrls: ['./cds.component.scss'], encapsulation: ViewEncapsulation.None})
 export class CdsComponent implements OnInit {
@@ -14,7 +15,10 @@ export class CdsComponent implements OnInit {
   cdsUserData : any;
   cdsState : Object = {};
   csnState : any = {};
+  momentFunc: any;
   constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
+    this.momentFunc = (moment as any).default ? (moment as any).default : moment;
+    this.momentFunc.locale('en');
     this.cdsState = {
       review_relapses: {
         checked: false
@@ -89,7 +93,7 @@ export class CdsComponent implements OnInit {
             this.cdsUserData = this
               .cdsUserData
               .find(x => x.save_csn == this.csnState.csn);
-            this.setChkBoxes();          
+            this.setChkBoxes();
           })();
       });
     let sub3 = this
@@ -121,11 +125,11 @@ export class CdsComponent implements OnInit {
   saveChkBoxesState() {
     this
       .brokerService
-      .httpPost(allHttpMessages.httpPostCdsUserData, this.getCdsStateData());    
+      .httpPost(allHttpMessages.httpPostCdsUserData, this.getCdsStateData());
   }
 
   getCdsStateData() {
-    let cdsStateData:any = {};
+    let cdsStateData : any = {};
     Object
       .keys(this.cdsState)
       .forEach(x => {
@@ -137,9 +141,10 @@ export class CdsComponent implements OnInit {
           cdsStateData[x] = "No";
         }
       });
-      cdsStateData.provider_id = this.cdsUserData.last_updated_provider_id;
-      cdsStateData.encounter_csn = this.cdsUserData.save_csn;
-      cdsStateData.updated_instant = '10/10/2017 11:11:11';// moment().format('MM/DD/YYYY HH:mm:ss');    
+    cdsStateData.provider_id = this.cdsUserData.last_updated_provider_id;
+    cdsStateData.encounter_csn = this.cdsUserData.save_csn;
+    // cdsStateData.updated_instant = '10/10/2017 11:11:11'; // moment().format('MM/DD/YYYY HH:mm:ss');   
+    cdsStateData.updated_instant = moment().format('MM/DD/YYYY HH:mm:ss'); 
     return (cdsStateData);
   }
 
@@ -169,8 +174,8 @@ export class CdsComponent implements OnInit {
     let dialogRef = this
       .dialog
       .open(InfoPopupComponent, {
-        backdropClass:'cds-info-popup-backdrop',
-        panelClass:'cds-info-popup',
+        backdropClass: 'cds-info-popup-backdrop',
+        panelClass: 'cds-info-popup',
         width: '300px',
         data: {
           info: this.selectedCdsInfo,

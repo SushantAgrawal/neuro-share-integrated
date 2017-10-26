@@ -33,6 +33,7 @@
         "@sutterhealth/widgets": "^0.3.9",
         "@types/hammerjs": "^2.0.34",
         "@types/lodash": "",
+        "@types/moment": "^2.13.0",
         "angular-froala-wysiwyg": "^2.7.0",
         "angular2-toaster": "^4.0.1",
         "angular2-uuid": "^1.1.1",

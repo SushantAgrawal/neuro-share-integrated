@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import * as moment from 'moment';
 import {urlMaps} from './neuro-graph.config';
 import {BrokerService} from './broker/broker.service';
 @Injectable()
@@ -7,7 +8,7 @@ export class NeuroGraphService {
   global : any = {};
   constructor(private activatedRoute : ActivatedRoute, private brokerService : BrokerService) {
     this.set('urlMaps', urlMaps);
-    this.brokerService.init(urlMaps);
+    this.brokerService.init(urlMaps);    
     // Comment out following self executable function in production or when actual
     // url is available
     (() => {
@@ -24,7 +25,6 @@ export class NeuroGraphService {
     // uncomment following code for production or when actual url is available let
     // sub = this   .activatedRoute   .queryParams   .subscribe(q => {
     // this.set('queryParams', q);   });
-
   }
 
   // doInit(){
@@ -38,5 +38,4 @@ export class NeuroGraphService {
   set(id, value) {
     this.global[id] = value;
   }
-
 }
