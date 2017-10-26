@@ -91,39 +91,32 @@ export class GraphPanelComponent implements OnInit {
     this.state.zoomMonthsSpan = +monthsSpan;
     this.state.xDomain = this.getXDomain(+monthsSpan, spanLastDate);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, {
-      //This artifact is not being used. TBD
-      //artifact: this.state
-    });
+    this.brokerService.emit(allMessages.zoomOptionChange, null);
   }
 
   onResetZoom() {
     this.state.zoomMonthsSpan = 36;
-    this.state.xDomain = this.getXDomain(36, new Date((new Date()).getFullYear(), 11, 31));
+    this.state.xDomain = this.getXDomain(36);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, {
-      //This artifact is not being used. TBD
-      //artifact: this.state
-    });
+    this.brokerService.emit(allMessages.zoomOptionChange, null);
   }
   //#endregion
 
   //#region State Related
-  getXDomain(montsSpan, spanLastDate) {
-    let momentcurrentYearLastDate = this.momentFunc(spanLastDate);
+  getXDomain(montsSpan, spanLastDate?) {
+    let momentSpanLastDate = this.momentFunc(spanLastDate);
+    let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
     let output = {
-      defaultMaxValue: spanLastDate,
-      currentMaxValue: spanLastDate,
-      defaultMinValue: momentcurrentYearLastDate
+      scaleMinValue: new Date(1970, 0, 1),
+      scaleMaxValue: scaleLastDate,
+
+      currentMinValue: momentSpanLastDate
         .clone()
         .subtract(montsSpan, 'month')
         .add(1, 'days')
         .toDate(),
-      currentMinValue: momentcurrentYearLastDate
-        .clone()
-        .subtract(montsSpan, 'month')
-        .add(1, 'days')
-        .toDate(),
+      currentMaxValue: spanLastDate || scaleLastDate,
+
     }
     return output;
   }
@@ -146,9 +139,8 @@ export class GraphPanelComponent implements OnInit {
       marginBottom: GRAPH_SETTINGS.panel.marginBottom,
       marginLeft: GRAPH_SETTINGS.panel.marginLeft
     };
-    let scaleAbsoluteLastValue = new Date((new Date()).getFullYear(), 11, 31);
     state.zoomMonthsSpan = 36;
-    state.xDomain = this.getXDomain(36, scaleAbsoluteLastValue);
+    state.xDomain = this.getXDomain(36);
     state.xScale = this.getXScale(state.canvasDimension, state.xDomain);
     return state;
   }
