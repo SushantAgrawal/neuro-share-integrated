@@ -1,0 +1,56 @@
+<ng-template #symptomSecondLevelTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">Symptoms</h4>
+    <button type="button" class="close" aria-symptomel="Close" (click)="dialogRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="symptoms-container">
+      <div class="ns-symptoms-header">
+        <div class="ns-symptoms-quesHeaderLeft">Questionnaire Status</div>
+        <div class="ns-symptoms-quesHeader">Last Questionnaire Date</div>
+      </div>
+      <div class="ns-symptoms-header">
+        <div class="ns-symptoms-quesHeaderLeft font-small">[Status Categories]</div>
+        <div class="ns-symptoms-quesHeader font-small">dd/mm/yy</div>
+      </div>
+      <div class="ns-symptoms-header">
+        <div class="ns-symptoms-ordered">Patient Reported Symptoms</div>
+        <div class="ns-symptoms-status">Status</div>
+        <div class="ns-symptoms-trend">Trend</div>
+        <div class="ns-symptoms-quest">Questionnaire</div>
+      </div>
+      <div class="ns-symptoms-items-container">
+        <div class="ns-symptoms-row">
+          <div class="ns-symptoms-row">
+            <div class="ns-small-bar ns-symptoms-grey"></div>
+            <div class="ns-order-symptoms-box">
+              <span class="ns-symptoms-name">Swallowing</span>
+              <div class="ns-symptoms-reportDate">
+                Reported
+              </div>
+            </div>
+              <span class="ns-small-box-text">Moderate</span>
+              <div class="ns-symptoms-trend-box"></div>
+              <div class="ns-symptoms-quest-unit">
+                <button class="call-out-buttons" (click)="showThirdLayer()">See Qx</button>
+              </div>
+
+           
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #symptomsThirdLevelTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">Swallowing - Moderate</h4>
+    <button type="button" class="close" aria-symptomel="Close" (click)="questDialogRef.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body"></div>
+</ng-template>
