@@ -20,6 +20,7 @@ import { ImagingComponent } from './graph-panel/imaging/imaging.component';
 import { LabsComponent } from './graph-panel/labs/labs.component';
 import { EvalModule} from '@sutterhealth/analytics';
 import { TwentyFiveFootWalkComponent } from './graph-panel/twenty-five-foot-walk/twenty-five-foot-walk.component';
+import { SymptomsComponent } from './graph-panel/symptoms/symptoms.component';
 
 export * from './graph-panel/graph-panel.component';
 export * from './cds/cds.component';
@@ -53,7 +54,8 @@ export const ROUTES: Routes = [];
     InfoPopupComponent,
     ImagingComponent,
     LabsComponent,
-    TwentyFiveFootWalkComponent
+    TwentyFiveFootWalkComponent,
+    SymptomsComponent
   ],
   exports: [
     CdsComponent,

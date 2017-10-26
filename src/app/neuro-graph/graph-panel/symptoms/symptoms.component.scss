@@ -1,0 +1,108 @@
+$ns-symptoms-green:#9dbb61; 
+$ns-symptoms-grey:#bfbfbf;
+$ns-symptoms-red:#e53935;
+
+@mixin vertical-align($position: relative) {
+    position: $position;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+.borderTop{border-top:1px solid #7e7e7e;}
+.symptoms-container{ padding: 10px;}
+.ns-symptoms-header{ padding: 5px 0px; font-size: 13pt; margin-bottom: 15px;font-weight:bold;color:#7e7e7e;}
+.ns-symptoms-quesHeader
+{
+    width: 200px;
+    float: left;
+    margin-left: 40px;font-weight:bold;color:#7e7e7e;
+}
+.ns-symptoms-quesHeaderLeft
+{
+    width: 180px;
+    float: left;
+    margin-left: 40px;font-weight:bold;color:#7e7e7e;
+}
+.ns-symptoms-header:after{
+    clear: both;
+    content: '';
+    display: block; 
+}
+.font-small{
+    font-weight: normal;
+    font-size: 10pt;
+    margin-top: -15px;
+}
+.ns-symptoms-ordered { float: left; width:208px; margin-left: 40px;}
+.ns-symptoms-status { float: left; width: 155px;padding-left: 15px;}
+.ns-symptoms-trend { float: left; width: 145px;padding-left: 15px;}
+.ns-symptoms-quest { float: left; width: 120px;}
+.ns-symptoms-row{ margin-bottom: 5px;}
+.ns-symptoms-row:after{
+    clear: both;
+    content: '';
+    display: block;   
+}
+.ns-small-bar{
+    width: 6px;
+    margin-right: 5px;
+    height: 40px;
+    float: left;
+    margin-left:37px;
+}
+.ns-small-box{
+    width: 30px;
+    margin-right: 5px;
+    height: 30px;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 30px;
+    text-align:center;
+    padding: 5px;
+    }     
+.ns-small-box-text{
+        width: 155px;
+        margin-right: 5px;
+        height: 30px;
+        float: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 30px;
+        text-align:left;
+        padding: 5px;
+        background-color: #ececec;
+        font-weight:bold;
+}  
+.ns-order-symptoms-box{ 
+    background-color: #ececec; 
+    float: left; margin-right: 5px; width: 200px; height: 30px; padding: 5px;
+    .ns-symptoms-name{
+        font-size:10pt;
+        font-weight:bold;
+    }
+    .ns-symptoms-name-status{
+        font-size:10pt;
+        font-weight:bold;
+    }
+    .ns-symptoms-reportDate{
+        font-size: 8pt;
+        padding-top: 2px;
+    }
+}
+.ns-symptoms-trend-box{ float: left; width: 145px; height: 40px; display: block;line-height: 30px;}
+.ns-symptoms-quest-unit{ float: left; height: 40px;margin-top:10px; }
+.ns-symptoms-items-container{
+    height: 400px; overflow: auto;
+}
+.show
+{
+    display:block;
+}
+.hide
+{
+    display:none;
+}
