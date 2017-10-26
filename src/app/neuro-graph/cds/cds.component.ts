@@ -15,10 +15,10 @@ export class CdsComponent implements OnInit {
   cdsUserData : any;
   cdsState : Object = {};
   csnState : any = {};
-  momentFunc: any;
+  // momentFunc: any;
   constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
-    this.momentFunc = (moment as any).default ? (moment as any).default : moment;
-    this.momentFunc.locale('en');
+    // this.momentFunc = (moment as any).default ? (moment as any).default : moment;
+    // this.momentFunc.locale('en');
     this.cdsState = {
       review_relapses: {
         checked: false
