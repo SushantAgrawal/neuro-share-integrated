@@ -321,7 +321,7 @@ export class EdssComponent implements OnInit {
       .attr("x", 0)
       .attr("y", -40)
       .attr("width", this.chartState.canvasDimension.width)
-      .attr("height", GRAPH_SETTINGS.edss.chartHeight)
+      .attr("height", GRAPH_SETTINGS.edss.chartHeight + 40)
 
     let svg = d3
       .select('#edss')
@@ -514,6 +514,9 @@ export class EdssComponent implements OnInit {
     if (this.edssChartLoaded) {
       this.unloadChart();
       this.drawEdssYAxis();
+      if(this.virtualCaseloadLoaded){
+        this.drawVirtualCaseload();
+      }
       this.drawEdssLineCharts();
     }
   }

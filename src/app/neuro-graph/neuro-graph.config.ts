@@ -30,7 +30,8 @@ export const allHttpMessages = {
     'httpGetLabs': 'http:get:labs',
     'httpGetVirtualCaseLoad':'http:get:virtualCaseLoad',
     'httpGetWalk25Feet': 'http:get:walk25Feet',
-    'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info'
+    'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info',
+    'httpGetSymptoms': 'http:get:symptoms'
 };
 export const urlMaps = {
     
@@ -51,7 +52,8 @@ export const urlMaps = {
     "http:get:labs": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/lab-orders/?pom_id=82043",
     "http:get:virtualCaseLoad":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/?pom_id=82043",
     "http:get:walk25Feet":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/?pom_id=82043",
-    "http:get:walk25Feet:info":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/"
+    "http:get:walk25Feet:info":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
+    "http:get:symptoms": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/?pom_id=82043"
     
 };
 
@@ -289,7 +291,12 @@ export const GRAPH_SETTINGS = {
         chartHeight: 200,
         maxValueY: 30,
         color: "#31859B"
-    }
+    },
+    symptoms: {
+      positionTop: 260,
+      chartHeight: 30,
+      color: "#EA700D"
+  }
 }
 
 export const edssScoreChart = [{ score: '0.0', title: 'Normal neurological exam.' }
