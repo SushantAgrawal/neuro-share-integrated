@@ -56,7 +56,15 @@ export class GraphPanelComponent implements OnInit {
           this.isEdssSelected = false;
         })();
     })
-    this.subscriptions = sub0.add(sub1);
+    let sub2 = this.brokerService.filterOn(allMessages.timelineScroll).subscribe(d => {
+      d.error
+        ? console.log(d.error)
+        : (() => {
+          this.timelineScroll(d.data);
+        })();
+    });
+
+    this.subscriptions = sub0.add(sub1).add(sub2);
   }
 
   ngOnDestroy() {
@@ -79,8 +87,9 @@ export class GraphPanelComponent implements OnInit {
   }
 
   onZoomOptionChange(monthsSpan) {
+    let spanLastDate = new Date((new Date()).getFullYear(), 11, 31);
     this.state.zoomMonthsSpan = +monthsSpan;
-    this.state.xDomain = this.getXDomain(+monthsSpan, new Date((new Date()).getFullYear(), 11, 31));
+    this.state.xDomain = this.getXDomain(+monthsSpan, spanLastDate);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
     this.brokerService.emit(allMessages.zoomOptionChange, {
       //This artifact is not being used. TBD
@@ -100,16 +109,16 @@ export class GraphPanelComponent implements OnInit {
   //#endregion
 
   //#region State Related
-  getXDomain(montsSpan, lastDate) {
-    let momentcurrentYearLastDate = this.momentFunc(lastDate);
+  getXDomain(montsSpan, spanLastDate) {
+    let momentcurrentYearLastDate = this.momentFunc(spanLastDate);
     let output = {
-      defaultMaxValue: lastDate,
+      defaultMaxValue: spanLastDate,
+      currentMaxValue: spanLastDate,
       defaultMinValue: momentcurrentYearLastDate
         .clone()
         .subtract(montsSpan, 'month')
         .add(1, 'days')
         .toDate(),
-      currentMaxValue: lastDate,
       currentMinValue: momentcurrentYearLastDate
         .clone()
         .subtract(montsSpan, 'month')
@@ -137,10 +146,30 @@ export class GraphPanelComponent implements OnInit {
       marginBottom: GRAPH_SETTINGS.panel.marginBottom,
       marginLeft: GRAPH_SETTINGS.panel.marginLeft
     };
+    let scaleAbsoluteLastValue = new Date((new Date()).getFullYear(), 11, 31);
     state.zoomMonthsSpan = 36;
-    state.xDomain = this.getXDomain(36, new Date((new Date()).getFullYear(), 11, 31));
+    state.xDomain = this.getXDomain(36, scaleAbsoluteLastValue);
     state.xScale = this.getXScale(state.canvasDimension, state.xDomain);
     return state;
+  }
+  //#endregion
+
+  //#region Scroll
+  timelineScroll(direction) {
+    if (direction == 'forward') {
+      this.scrollForward();
+    }
+    else {
+      this.scrollBackward();
+    }
+  }
+
+  scrollForward() {
+
+  }
+
+  scrollBackward() {
+
   }
   //#endregion
 }

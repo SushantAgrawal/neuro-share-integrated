@@ -204,8 +204,8 @@ export class ImagingComponent implements OnInit {
 
     this.pathUpdate = this.chart.append("path")
       .datum([
-        { "orderDate": this.chartState.xDomain.defaultMinValue },
-        { "orderDate": this.chartState.xDomain.defaultMaxValue }
+        { "orderDate": this.chartState.xDomain.currentMinValue },
+        { "orderDate": this.chartState.xDomain.currentMaxValue }
       ])
       .attr("d", this.lineA)
       .attr("stroke", GRAPH_SETTINGS.imaging.color)
@@ -254,7 +254,7 @@ export class ImagingComponent implements OnInit {
       })
 
     this.chart.append("text")
-      .attr("transform", "translate(" + this.chartState.xScale(this.chartState.xDomain.defaultMinValue) + "," + "3.0" + ")")
+      .attr("transform", "translate(" + this.chartState.xScale(this.chartState.xDomain.currentMinValue) + "," + "3.0" + ")")
       .attr("dy", 0)
       .attr("text-anchor", "start")
       .attr("font-size", "10px")
