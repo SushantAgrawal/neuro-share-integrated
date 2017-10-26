@@ -1,3 +1,5 @@
+@import "../common.scss";
+
 .virtual-caseload-info .mat-dialog-container{
     padding: 0px;
 }
@@ -20,4 +22,39 @@
     clear: both;
     content: '';
     display: block;
+}
+
+.graph-zoom{
+    .mat-menu-content {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        border: solid 1px #AAAAAA;
+    }
+    .zoom-panel{
+        border-bottom: solid 1px #AAAAAA; padding:5px 10px; font-size: 10pt; 
+        .zoom-title{
+            font-weight: bold;
+            float: left;
+        }
+        .zoom-close{
+            cursor: pointer;
+            text-align: right;
+            float:right;
+        }
+    }
+    .zoom-panel:after{
+            clear: both;
+            content: '';
+            display: block;
+    }
+    .mat-menu-item{
+        background-color: #d8d8d8;
+        text-align:center;;
+        line-height: 25px;
+        height:25px;
+        font-weight:bold;
+        font-size: 10pt;
+        width: 65px;
+        margin:10px auto;
+    }
 }

@@ -52,7 +52,7 @@ export class RelapsesComponent implements OnInit {
           : (() => {
             this.relapsesData = d.data.relapses;
             this.createChart();
-            this.relapsisChartLoaded = true;            
+            this.relapsisChartLoaded = true;
           })();
       })
     let relapses = this
@@ -104,7 +104,7 @@ export class RelapsesComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             this.removeChart();
-            this.relapsisChartLoaded = false;            
+            this.relapsisChartLoaded = false;
           })();
       })
     let sub3 = modal
@@ -118,7 +118,7 @@ export class RelapsesComponent implements OnInit {
               this.relapsesDetail.year = "";//new Date().getFullYear().toString();
               let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
               this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
-              this.dialogRef.updatePosition({ top: '335px', left: '255px' });              
+              this.dialogRef.updatePosition({ top: '335px', left: '255px' });
             }
           })();
       })
@@ -180,10 +180,10 @@ export class RelapsesComponent implements OnInit {
     d3.select('#relapses').selectAll("*").remove();
   }
   addChart() {
-   // debugger;
+    // debugger;
     var obj = {
       "relapse_id": this.relapsesData.length.toString(),
-      "relapse_month":this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
+      "relapse_month": this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
       "relapse_year": this.relapsesDetail.year,
       "last_updated_provider_id": "",
       "save_csn": this.paramData.csn,
@@ -196,7 +196,7 @@ export class RelapsesComponent implements OnInit {
     }
 
     this.relapsesData.push(obj);
-    this.dialogRef.close();    
+    this.dialogRef.close();
     this.removeChart();
     this.createChart();
 
@@ -261,8 +261,19 @@ export class RelapsesComponent implements OnInit {
       .x((d: any) => this.chartState.xScale(d.lastUpdatedDate))
       .y((d: any) => 0);
 
+    d3.select('#relapses')
+      .append('clipPath')
+      .attr('id', 'relapses-clip')
+      .append('rect')
+      .attr("x", 0)
+      .attr("y", -GRAPH_SETTINGS.relapse.chartHeight / 2)
+      .attr("width", this.chartState.canvasDimension.width)
+      .attr("height", GRAPH_SETTINGS.relapse.chartHeight);
+
     this.chart = d3.select("#relapses")
-      .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.relapse.positionTop + ")");
+      .append('g')
+      .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.relapse.positionTop + ")")
+      .attr("clip-path", "url(#relapses-clip)");
 
     this.pathUpdate = this.chart.append("path")
       .datum([
