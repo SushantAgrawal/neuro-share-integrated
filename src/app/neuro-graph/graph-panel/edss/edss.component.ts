@@ -514,6 +514,9 @@ export class EdssComponent implements OnInit {
     if (this.edssChartLoaded) {
       this.unloadChart();
       this.drawEdssYAxis();
+      if(this.virtualCaseloadLoaded){
+        this.drawVirtualCaseload();
+      }
       this.drawEdssLineCharts();
     }
   }
