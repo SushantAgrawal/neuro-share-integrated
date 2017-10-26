@@ -106,30 +106,26 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   updateWalk(str) {
     //debugger;
     if (str == "Update") {
-      if(this.walk25FeetScoreDetail.walk_1_score =="" || this.walk25FeetScoreDetail.walk_1_score ==null || parseFloat(this.walk25FeetScoreDetail.walk_1_score) == 0 )
-      {
+      if (this.walk25FeetScoreDetail.walk_1_score == "" || this.walk25FeetScoreDetail.walk_1_score == null || parseFloat(this.walk25FeetScoreDetail.walk_1_score) == 0) {
         this.walk25FeetScoreDetail.scoreValue = parseFloat(this.walk25FeetScoreDetail.walk_2_score);
       }
-      else if(this.walk25FeetScoreDetail.walk_2_score =="" || this.walk25FeetScoreDetail.walk_2_score ==null || parseFloat(this.walk25FeetScoreDetail.walk_2_score) == 0 ) 
-      {
+      else if (this.walk25FeetScoreDetail.walk_2_score == "" || this.walk25FeetScoreDetail.walk_2_score == null || parseFloat(this.walk25FeetScoreDetail.walk_2_score) == 0) {
         this.walk25FeetScoreDetail.scoreValue = parseFloat(this.walk25FeetScoreDetail.walk_1_score);
       }
-      else{
-        this.walk25FeetScoreDetail.scoreValue = ((parseFloat(this.walk25FeetScoreDetail.walk_1_score = this.walk25FeetScoreDetail.walk_1_score || 0) + parseFloat(this.walk25FeetScoreDetail.walk_2_score = this.walk25FeetScoreDetail.walk_2_score || 0)) / 2)        
+      else {
+        this.walk25FeetScoreDetail.scoreValue = ((parseFloat(this.walk25FeetScoreDetail.walk_1_score = this.walk25FeetScoreDetail.walk_1_score || 0) + parseFloat(this.walk25FeetScoreDetail.walk_2_score = this.walk25FeetScoreDetail.walk_2_score || 0)) / 2)
       }
       this.showUpdate = true;
     }
     else {
-      if( this.score_1=="" || this.score_1==null || parseFloat(this.score_1) == 0 )
-      {
+      if (this.score_1 == "" || this.score_1 == null || parseFloat(this.score_1) == 0) {
         this.scoreValue = parseFloat(this.score_2);
       }
-      else if(this.score_2==""  || this.score_2==null || parseFloat(this.score_2) == 0 ) 
-      {
-        this.scoreValue =  parseFloat(this.score_1);
+      else if (this.score_2 == "" || this.score_2 == null || parseFloat(this.score_2) == 0) {
+        this.scoreValue = parseFloat(this.score_1);
       }
-      else{
-      this.scoreValue = ((parseFloat((this.score_1 = this.score_1 || 0).toString()) + parseFloat((this.score_2 = this.score_2 || 0).toString())) / 2)
+      else {
+        this.scoreValue = ((parseFloat((this.score_1 = this.score_1 || 0).toString()) + parseFloat((this.score_2 = this.score_2 || 0).toString())) / 2)
       }
     }
   }
@@ -145,24 +141,19 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   }
   updateWalk25FeetScore(str) {
     //debugger;
-    if(this.walk25FeetScoreDetail.walk_1_score == null || this.walk25FeetScoreDetail.walk_1_score == "")
-    {
-      this.walk25FeetScoreDetail.walk_1_score =0;
+    if (this.walk25FeetScoreDetail.walk_1_score == null || this.walk25FeetScoreDetail.walk_1_score == "") {
+      this.walk25FeetScoreDetail.walk_1_score = 0;
     }
-    if(this.walk25FeetScoreDetail.walk_2_score == null || this.walk25FeetScoreDetail.walk_2_score == "")
-    {
-      this.walk25FeetScoreDetail.walk_2_score =0;
+    if (this.walk25FeetScoreDetail.walk_2_score == null || this.walk25FeetScoreDetail.walk_2_score == "") {
+      this.walk25FeetScoreDetail.walk_2_score = 0;
     }
-    if(this.score_1 == null || this.score_1 == "")
-    {
+    if (this.score_1 == null || this.score_1 == "") {
       this.score_1 = 0;
     }
-    if(this.score_2 == null || this.score_2 == "")
-    {
+    if (this.score_2 == null || this.score_2 == "") {
       this.score_2 = 0;
     }
-    if((str == "Update" && this.walk25FeetScoreDetail.walk_1_score >= 0 && this.walk25FeetScoreDetail.walk_1_score <=300 && this.walk25FeetScoreDetail.walk_2_score >= 0 && this.walk25FeetScoreDetail.walk_2_score <=300) || (str != "Update" && this.score_1 >= 0 && this.score_1 <=300 && this.score_2 >= 0 && this.score_2 <=300)) 
-    {
+    if ((str == "Update" && this.walk25FeetScoreDetail.walk_1_score >= 0 && this.walk25FeetScoreDetail.walk_1_score <= 300 && this.walk25FeetScoreDetail.walk_2_score >= 0 && this.walk25FeetScoreDetail.walk_2_score <= 300) || (str != "Update" && this.score_1 >= 0 && this.score_1 <= 300 && this.score_2 >= 0 && this.score_2 <= 300)) {
       let currentDate = new Date();
       if (str == "Update") {
         var objIndex = this.walk25FeetData.findIndex((obj => obj.score_id == this.walk25FeetScoreDetail.score_id));
@@ -172,8 +163,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         this.dialogRef.close();
       }
       else {
-        if(Number(this.score_1) || Number(this.score_2))
-        {
+        if (Number(this.score_1) || Number(this.score_2)) {
           this.walk25FeetData.push({
             "score_id": this.score_ids.toString(),
             "walk_1_score": this.score_1.toString(),
@@ -184,7 +174,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
             "save_csn_status": this.neuroGraphService.get("queryParams").encounter_status
           });
         }
-        
+
         this.Walk25FeetChartDialogRef.close();
       }
       this.score_ids = this.score_ids + 1;
@@ -192,7 +182,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       this.drawWalk25FeetAxis();
       this.drawWalk25FeetLineCharts();
     }
-    
+
   }
   showSecondLevel(data) {
     //debugger;
@@ -273,7 +263,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       return {
         ...d,
         lastUpdatedDate: getParsedDate(d.last_updated_instant),
-        scoreValue: parseFloat(d.walk_1_score)==0 ?  parseFloat(d.walk_2_score) : (parseFloat(d.walk_2_score)==0 ? parseFloat(d.walk_1_score) :((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2))
+        scoreValue: parseFloat(d.walk_1_score) == 0 ? parseFloat(d.walk_2_score) : (parseFloat(d.walk_2_score) == 0 ? parseFloat(d.walk_1_score) : ((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2))
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
 
@@ -290,9 +280,9 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .attr('id', 'walk25feet-clip')
       .append('rect')
       .attr("x", 0)
-      .attr("y", 0)
+      .attr("y", -20)
       .attr("width", this.chartState.canvasDimension.width)
-      .attr("height", GRAPH_SETTINGS.walk25Feet.chartHeight)
+      .attr("height", GRAPH_SETTINGS.walk25Feet.chartHeight + 20)
 
     let svg = d3
       .select('#walk25feet')
