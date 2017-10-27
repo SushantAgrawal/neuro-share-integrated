@@ -13,17 +13,7 @@ export class CdsComponent implements OnInit {
   subscriptions : any;
   cdsInfo : any;
   cdsUserData : any;
-<<<<<<< HEAD
   cdsState = {
-=======
-  cdsState : Object = {};
-  csnState : any = {};
-  // momentFunc: any;
-  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
-    // this.momentFunc = (moment as any).default ? (moment as any).default : moment;
-    // this.momentFunc.locale('en');
-    this.cdsState = {
->>>>>>> 39ea1746fe7bc824b04fe0c7094c27ae0bc97c4d
       review_relapses: {
         checked: false
       },
