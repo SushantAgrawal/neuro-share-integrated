@@ -12,10 +12,7 @@ export class CdsComponent implements OnInit {
   subscriptions : any;
   cdsInfo : any;
   cdsUserData : any;
-  cdsState : Object = {};
-  csnState : any = {};
-  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
-    this.cdsState = {
+  cdsState = {
       review_relapses: {
         checked: false
       },
@@ -46,7 +43,9 @@ export class CdsComponent implements OnInit {
       review_vaccinations: {
         checked: false
       }
-    }
+    };
+  csnState : any = {};
+  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
   }
 
   ngOnInit() {

@@ -22,13 +22,13 @@ export class GraphPanelComponent implements OnInit {
 
   //#region Private fields
   @ViewChild('virtualCaseloadInfoTemplate') private virtualCaseloadInfoTemplate: TemplateRef<any>;
-  private subscriptions: any;
-  private momentFunc: any;
-  private virtualCaseloadInfoDialogRef: MdDialogRef<any>;
-  private isEdssSelected: boolean = true;
-  private virtualCaseloadEnabled: boolean;
-  private state: any;
-  private graphSetting = GRAPH_SETTINGS;
+  subscriptions: any;
+  momentFunc: any;
+  virtualCaseloadInfoDialogRef: MdDialogRef<any>;
+  isEdssSelected: boolean = true;
+  virtualCaseloadEnabled: boolean;
+  state: any;
+  graphSetting = GRAPH_SETTINGS;
   //#endregion
 
   //#region Constructor
