@@ -89,7 +89,7 @@ export class GraphPanelComponent implements OnInit {
   }
 
   showSymbols(e) {
-    let dialogConfig = { hasBackdrop: true, panelClass: 'chart-symbols', width: '300px', height: '400px' };
+    let dialogConfig = { hasBackdrop: true, panelClass: 'chart-symbols', width: '225px', height: '375px' };
     this.symbolsDialogRef = this.dialog.open(this.symbolsTemplate, dialogConfig);
     this.symbolsDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
   }

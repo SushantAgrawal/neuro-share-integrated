@@ -451,16 +451,23 @@ label {
 }
 #graph-control {
   width: 20px;
+  height: 20px;
   position: absolute;
-  top: 0px;
+  top: 8px;
   right: 4px;
   .control-button {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     text-align: center;
     cursor: pointer;
     color: #bfbfbf;
-    font-size:21pt;
-    padding-top: 5px;
+    fill:#bfbfbf;  
+    svg{
+        width: 20px;
+        height: 20px;
+    }  
+    .material-icons{
+        margin-left: -1px;
+    }
   }
 }
 .header-wrapper {
