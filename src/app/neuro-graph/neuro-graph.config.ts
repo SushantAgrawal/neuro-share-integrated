@@ -5,10 +5,10 @@ export const allMessages = {
     'invokeAddWalk25Feet': 'invoke:add:walk25Feet',
     'toggleVirtualCaseload': 'toggle:virtual:caseload',
     'zoomOptionChange': 'zoom:option:change',
+    'timelineScroll': 'timeline:scroll',
 };
 
 export const manyHttpMessages = {
-    'httpGetTestMany': 'http:get:test:many',
     'httpGetInitialApiCall': 'http:get:initial:api:call',
     'httpGetMedicationSecondLayerApiCall': 'http:get:medication:second:layer:api:call',
     'httpGetWalk25FeetApiCall': 'http:get:walk25Feet:api:call'

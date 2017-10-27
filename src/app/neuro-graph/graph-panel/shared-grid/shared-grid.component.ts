@@ -147,21 +147,19 @@ export class SharedGridComponent implements OnInit {
       .attr('d', arc)
       .attr('class', 'x-axis-arrow')
       .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
-      .on('click', d => { this.scrollLeft(); });
+      .on('click', d => { this.scroll('backward'); });
 
     nodeSelection.append('path')
       .attr('d', arc)
       .attr('class', 'x-axis-arrow')
       .attr('transform', `translate(${dimension.marginLeft + dimension.width + hAdj}, ${dimension.marginTop + vAdj}) rotate(90)`)
-      .on('click', d => { this.scrollRight(); });
+      .on('click', d => { this.scroll('forward'); });
   };
 
-  scrollLeft() {
+  scroll(direction) {
+    this.brokerService.emit(allMessages.timelineScroll, direction);
   }
 
-  scrollRight() {
-  }
-
-  //#region
+  //#endregion
 
 }

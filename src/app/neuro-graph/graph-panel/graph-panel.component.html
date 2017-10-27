@@ -34,11 +34,11 @@
         <div id="undo" class="control-button">
             <span class="icon-reloadneuroshare" (click)="onResetZoom()"></span>
         </div>
-        <div id="legend" class="control-button">
+        <div id="legend" class="control-button" (click)="showSymbols($event)">
             <i class="material-icons">speaker_notes</i>
         </div>
-        <div id="zoom" class="control-button ">
-            <span [md-menu-trigger-for]="menu" class="control-button">
+        <div id="zoom" class="control-button" [md-menu-trigger-for]="menu">
+            <span class="control-button">
                 <i class="material-icons">zoom_in</i>
             </span>
             <md-menu #menu="mdMenu" class="graph-zoom">
@@ -69,6 +69,22 @@
     </div>
     <div class="modal-body">
         <div class="virtual-caseload-content">
+            This is a cohort of comparable patients from UCSF and other clinical centers who were all prospectively followed in the modern
+            treatment era.Visualizing your patient's course in the context of this 'virtual caseload' of treated MS patients
+            may highlight patients who may require intensification of treatment.
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #symbolsTemplate>
+    <div class="graph-symbols-header">
+        <div class="graph-symbols-title">Graph Symbols</div>
+        <div class="graph-symbols-close">
+            <i (click)="symbolsDialogRef.close()" class="material-icons">clear</i>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="graph-symbols-content">
             This is a cohort of comparable patients from UCSF and other clinical centers who were all prospectively followed in the modern
             treatment era.Visualizing your patient's course in the context of this 'virtual caseload' of treated MS patients
             may highlight patients who may require intensification of treatment.

@@ -22,6 +22,7 @@ export class GraphPanelComponent implements OnInit {
 
   //#region Private fields
   @ViewChild('virtualCaseloadInfoTemplate') private virtualCaseloadInfoTemplate: TemplateRef<any>;
+<<<<<<< HEAD
   subscriptions: any;
   momentFunc: any;
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
@@ -29,6 +30,17 @@ export class GraphPanelComponent implements OnInit {
   virtualCaseloadEnabled: boolean;
   state: any;
   graphSetting = GRAPH_SETTINGS;
+=======
+  @ViewChild('symbolsTemplate') private symbolsTemplate: TemplateRef<any>;
+  private subscriptions: any;
+  private momentFunc: any;
+  private virtualCaseloadInfoDialogRef: MdDialogRef<any>;
+  private symbolsDialogRef: MdDialogRef<any>;
+  private isEdssSelected: boolean = true;
+  private virtualCaseloadEnabled: boolean;
+  private state: any;
+  private graphSetting = GRAPH_SETTINGS;
+>>>>>>> 39ea1746fe7bc824b04fe0c7094c27ae0bc97c4d
   //#endregion
 
   //#region Constructor
@@ -56,7 +68,15 @@ export class GraphPanelComponent implements OnInit {
           this.isEdssSelected = false;
         })();
     })
-    this.subscriptions = sub0.add(sub1);
+    let sub2 = this.brokerService.filterOn(allMessages.timelineScroll).subscribe(d => {
+      d.error
+        ? console.log(d.error)
+        : (() => {
+          this.timelineScroll(d.data);
+        })();
+    });
+
+    this.subscriptions = sub0.add(sub1).add(sub2);
   }
 
   ngOnDestroy() {
@@ -73,48 +93,48 @@ export class GraphPanelComponent implements OnInit {
   }
 
   showVirtualCaseloadInfo(e) {
-    let dialogConfig = { hasBackdrop: false, panelClass: 'virtual-caseload-info', width: '300px', height: '200px' };
+    let dialogConfig = { hasBackdrop: true, panelClass: 'virtual-caseload-info', width: '300px', height: '200px' };
     this.virtualCaseloadInfoDialogRef = this.dialog.open(this.virtualCaseloadInfoTemplate, dialogConfig);
     this.virtualCaseloadInfoDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
   }
 
+  showSymbols(e) {
+    let dialogConfig = { hasBackdrop: true, panelClass: 'chart-symbols', width: '300px', height: '400px' };
+    this.symbolsDialogRef = this.dialog.open(this.symbolsTemplate, dialogConfig);
+    this.symbolsDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
+  }
+
   onZoomOptionChange(monthsSpan) {
+    let spanLastDate = new Date((new Date()).getFullYear(), 11, 31);
     this.state.zoomMonthsSpan = +monthsSpan;
-    this.state.xDomain = this.getXDomain(+monthsSpan, new Date((new Date()).getFullYear(), 11, 31));
+    this.state.xDomain = this.getXDomain(+monthsSpan, spanLastDate);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, {
-      //This artifact is not being used. TBD
-      //artifact: this.state
-    });
+    this.brokerService.emit(allMessages.zoomOptionChange, null);
   }
 
   onResetZoom() {
     this.state.zoomMonthsSpan = 36;
-    this.state.xDomain = this.getXDomain(36, new Date((new Date()).getFullYear(), 11, 31));
+    this.state.xDomain = this.getXDomain(36);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, {
-      //This artifact is not being used. TBD
-      //artifact: this.state
-    });
+    this.brokerService.emit(allMessages.zoomOptionChange, null);
   }
   //#endregion
 
   //#region State Related
-  getXDomain(montsSpan, lastDate) {
-    let momentcurrentYearLastDate = this.momentFunc(lastDate);
+  getXDomain(montsSpan, spanLastDate?) {
+    let momentSpanLastDate = this.momentFunc(spanLastDate);
+    let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
     let output = {
-      defaultMaxValue: lastDate,
-      defaultMinValue: momentcurrentYearLastDate
+      scaleMinValue: new Date(1970, 0, 1),
+      scaleMaxValue: scaleLastDate,
+
+      currentMinValue: momentSpanLastDate
         .clone()
         .subtract(montsSpan, 'month')
         .add(1, 'days')
         .toDate(),
-      currentMaxValue: lastDate,
-      currentMinValue: momentcurrentYearLastDate
-        .clone()
-        .subtract(montsSpan, 'month')
-        .add(1, 'days')
-        .toDate(),
+      currentMaxValue: spanLastDate || scaleLastDate,
+
     }
     return output;
   }
@@ -138,9 +158,28 @@ export class GraphPanelComponent implements OnInit {
       marginLeft: GRAPH_SETTINGS.panel.marginLeft
     };
     state.zoomMonthsSpan = 36;
-    state.xDomain = this.getXDomain(36, new Date((new Date()).getFullYear(), 11, 31));
+    state.xDomain = this.getXDomain(36);
     state.xScale = this.getXScale(state.canvasDimension, state.xDomain);
     return state;
+  }
+  //#endregion
+
+  //#region Scroll
+  timelineScroll(direction) {
+    if (direction == 'forward') {
+      this.scrollForward();
+    }
+    else {
+      this.scrollBackward();
+    }
+  }
+
+  scrollForward() {
+
+  }
+
+  scrollBackward() {
+
   }
   //#endregion
 }
