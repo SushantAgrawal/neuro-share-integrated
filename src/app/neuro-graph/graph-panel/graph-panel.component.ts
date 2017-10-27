@@ -29,6 +29,8 @@ export class GraphPanelComponent implements OnInit {
   virtualCaseloadEnabled: boolean;
   state: any;
   graphSetting = GRAPH_SETTINGS;
+  symbolsDialogRef: any;
+  symbolsTemplate: any;
   //#endregion
 
   //#region Constructor

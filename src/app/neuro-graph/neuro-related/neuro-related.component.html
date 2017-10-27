@@ -40,7 +40,7 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-edss-theme">
-          <md-checkbox ng-checked="true" (change)='changed($event,"edss")' >EDSS</md-checkbox>
+          <md-checkbox [checked]="true" (change)='changed($event,"edss")' >EDSS</md-checkbox>
           <!-- evalEvent [evalData]="{
             label:'EDSS',
             data: checked,
@@ -68,7 +68,7 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-labs-theme">
-          <md-checkbox ng-checked="true" (change)='changed($event,"labs")' >Labs</md-checkbox>
+          <md-checkbox [checked]="true" (change)='changed($event,"labs")' >Labs</md-checkbox>
           <!-- evalEvent [evalData]="{
             label:'Labs',
             data: checked,
