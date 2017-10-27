@@ -51,7 +51,7 @@ export class NeuroRelatedComponent implements OnInit {
         artifact: 'labs',
         checked: true
       });
-  };
+   };
 
   changed(e, value) {
     let evalData = {
