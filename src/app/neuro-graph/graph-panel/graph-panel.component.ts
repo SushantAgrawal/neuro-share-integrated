@@ -4,6 +4,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 import { BrokerService } from '../broker/broker.service';
+import { NeuroGraphService } from '../neuro-graph.service';
 import { allMessages, GRAPH_SETTINGS } from '../neuro-graph.config';
 import { SharedGridComponent } from '../graph-panel/shared-grid/shared-grid.component';
 import { RelapsesComponent } from '../graph-panel/relapses/relapses.component';
@@ -23,7 +24,6 @@ export class GraphPanelComponent implements OnInit {
   //#region Private fields
   @ViewChild('virtualCaseloadInfoTemplate') private virtualCaseloadInfoTemplate: TemplateRef<any>;
   subscriptions: any;
-  momentFunc: any;
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean;
@@ -34,9 +34,7 @@ export class GraphPanelComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(private brokerService: BrokerService, private dialog: MdDialog, ) {
-    this.momentFunc = (moment as any).default ? (moment as any).default : moment;
-    this.momentFunc.locale('en');
+  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
   }
   //#endregion
 
@@ -112,7 +110,7 @@ export class GraphPanelComponent implements OnInit {
 
   //#region State Related
   getXDomain(montsSpan, spanLastDate?) {
-    let momentSpanLastDate = this.momentFunc(spanLastDate);
+    let momentSpanLastDate = this.neuroGraphService.momentFunc(spanLastDate);
     let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
     let output = {
       scaleMinValue: new Date(1970, 0, 1),

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEm
 import * as d3 from 'd3';
 import * as moment from 'moment';
 import { BrokerService } from '../../broker/broker.service';
+import { NeuroGraphService } from '../../neuro-graph.service';
 import { allMessages } from '../../neuro-graph.config';
 
 @Component({
@@ -12,11 +13,8 @@ import { allMessages } from '../../neuro-graph.config';
 })
 export class SharedGridComponent implements OnInit {
   @Input() private chartState: any;
-  private momentFunc: any;
   private subscriptions: any;
-  constructor(private brokerService: BrokerService) {
-    this.momentFunc = (moment as any).default ? (moment as any).default : moment;
-    this.momentFunc.locale('en');
+  constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService) {
   }
 
   //#region Lifecycle events
@@ -84,13 +82,13 @@ export class SharedGridComponent implements OnInit {
         axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
           if (this.chartState.zoomMonthsSpan == 6) {
-            return d.getDate() == 16 ? this.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == 16 ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 3) {
-            return d.getDate() == 16 ? this.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == 16 ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 1) {
-            return d.getDate() == 16 ? this.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == 16 ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
           }
           else {
             return d.getMonth() == 6 ? d.getFullYear() : '';
