@@ -44,12 +44,12 @@
                 <div class="ns-relapse-date">Date</div>
                 <div class="ns-relapse-selectdate">
 
-                    <md-select panelClass="neuro-graph-dropdown" placeholder="Month" [(ngModel)]="relapsesDetail.month" (change)="valChng()"
+                    <md-select panelClass="neuro-graph-dropdown ns-relapses-theme" placeholder="Month" [(ngModel)]="relapsesDetail.month" (change)="valChng()"
                         floatPlaceholder="never">
                         <md-option *ngFor="let mnth of month" [value]="mnth">{{mnth}}</md-option>
                     </md-select>
 
-                    <md-select panelClass="neuro-graph-dropdown" placeholder="Year" [(ngModel)]="relapsesDetail.year" (change)="valChng()" floatPlaceholder="never">
+                    <md-select panelClass="neuro-graph-dropdown ns-relapses-theme" placeholder="Year" [(ngModel)]="relapsesDetail.year" (change)="valChng()" floatPlaceholder="never">
                         <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
                     </md-select>
                 </div>
@@ -85,11 +85,11 @@
                 <div class="ns-relapse-col">Reported Relapse</div>
                 <div class="ns-relapse-value">
 
-                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown" [(ngModel)]="relapsesDetail.month" floatPlaceholder="never">
+                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown ns-relapses-theme" [(ngModel)]="relapsesDetail.month" floatPlaceholder="never">
                         <md-option *ngFor="let mnth of month" [value]="mnth">{{mnth}}</md-option>
                     </md-select>
 
-                    <md-select placeholder="Year" panelClass="neuro-graph-dropdown" [(ngModel)]="relapsesDetail.year" floatPlaceholder="never">
+                    <md-select placeholder="Year" panelClass="neuro-graph-dropdown ns-relapses-theme" [(ngModel)]="relapsesDetail.year" floatPlaceholder="never">
                         <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
                     </md-select>
                 </div>

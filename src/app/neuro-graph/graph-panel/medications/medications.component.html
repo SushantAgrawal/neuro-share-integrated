@@ -27,7 +27,7 @@
             <div class="ns-dmt-row">
                 <div class="ns-dmt-col">Patient Reported Start :</div>
                 <div class="ns-dmt-selectBox-value" *ngIf="medSecondLayerModel.allowEdit">
-                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown" floatPlaceholder="never" panelClass="neuro-graph-dropdown"
+                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown ns-dmt-theme" floatPlaceholder="never"
                         [(ngModel)]="medSecondLayerModel.patientReportedStartDateMonth">
                         <md-option [value]="1">Janaury</md-option>
                         <md-option [value]="2">February</md-option>
@@ -43,7 +43,7 @@
                         <md-option [value]="12">December</md-option>
                     </md-select>
 
-                    <md-select placeholder="Year" panelClass="neuro-graph-dropdown" floatPlaceholder="never" [(ngModel)]="medSecondLayerModel.patientReportedStartDateYear">
+                    <md-select placeholder="Year" panelClass="neuro-graph-dropdown ns-dmt-theme" floatPlaceholder="never" [(ngModel)]="medSecondLayerModel.patientReportedStartDateYear">
                         <md-option *ngFor="let item of medSecondLayerModel.allYears" [value]="item">{{item}}</md-option>
                     </md-select>
 
@@ -72,7 +72,7 @@
             <div class="ns-dmt-row">
                 <div class="ns-dmt-col">Reason Stopped :</div>
                 <div class="ns-dmt-selectBox-reason" *ngIf="medSecondLayerModel.allowEdit">
-                    <md-select placeholder="Select" panelClass="neuro-graph-dropdown" floatPlaceholder="never" [(ngModel)]="medSecondLayerModel.reasonStopped">
+                    <md-select placeholder="Select" panelClass="neuro-graph-dropdown ns-dmt-theme" floatPlaceholder="never" [(ngModel)]="medSecondLayerModel.reasonStopped">
                         <md-option value="Side effects">Side effects </md-option>
                         <md-option value="Insurance">Insurance</md-option>
                         <md-option value="Cost">Cost</md-option>
@@ -175,7 +175,7 @@
             <div class="ns-other-meds-row">
                 <div class="ns-other-meds-col">Reason for Med :</div>
                 <div class="ns-other-meds-selectBox" *ngIf="medSecondLayerModel.allowEdit">
-                    <md-select placeholder="Select" panelClass="neuro-graph-dropdown" floatPlaceholder="never" [(ngModel)]="medSecondLayerModel.reasonForMed">
+                    <md-select placeholder="Select" panelClass="neuro-graph-dropdown ns-dmt-theme" floatPlaceholder="never" [(ngModel)]="medSecondLayerModel.reasonForMed">
                         <md-option value="Thinking/Memory/Cognition">Thinking/Memory/Cognition </md-option>
                         <md-option value="Fatigue">Fatigue</md-option>
                         <md-option value="Vision">Vision</md-option>
