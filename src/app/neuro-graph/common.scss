@@ -53,15 +53,17 @@ body {
 label {
     font-weight: 300;
 }
-.mat-select, .mat-form-field, .mat-option{font-family: $font-Loto;}
-.mat-option{
+.neuro-graph-dropdown .mat-select, .neuro-graph-dropdown .mat-form-field, .neuro-graph-dropdown .mat-option{font-family: $font-Loto;}
+.neuro-graph-dropdown .mat-option{
     line-height:25px!important;
     height: 25px!important;
     font-size: 12px!important;
 }
+
 .mat-checkbox-layout .mat-checkbox-label{
     line-height:normal;
 }
+
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius!important;
     -moz-border-radius: $radius!important;
