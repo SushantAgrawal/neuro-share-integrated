@@ -22,7 +22,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     this.drawRootElement(this.chartState);
     this.subscriptions = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        debugger;
         this.drawRootElement(this.chartState);
       })();
     })
@@ -82,14 +81,16 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         axis.selectAll('text').style('display', 'none');
         axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
+          let momentD = this.neuroGraphService.momentFunc(d);
+          let midDate = Math.ceil(momentD.daysInMonth() / 2);
           if (this.chartState.zoomMonthsSpan == 6) {
-            return d.getDate() == 16 ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 3) {
-            return d.getDate() == 16 ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 1) {
-            return d.getDate() == 16 ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
           }
           else {
             return d.getMonth() == 6 ? d.getFullYear() : '';
@@ -129,7 +130,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
             return d.getDate() == 1 ? dimension.offsetHeight : 0;
           }
           else if (this.chartState.zoomMonthsSpan == 1) {
-            return d.getMonth() == 0 ? dimension.offsetHeight : 0;
+            //return d.getDate() % 2 == 0 ? dimension.offsetHeight : 0;
+            return 0;
           }
           else {
             return d.getMonth() == 0 ? dimension.offsetHeight : 0;
