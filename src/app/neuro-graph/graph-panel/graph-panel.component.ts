@@ -23,10 +23,8 @@ export class GraphPanelComponent implements OnInit {
 
   //#region Private fields
   @ViewChild('virtualCaseloadInfoTemplate') virtualCaseloadInfoTemplate: TemplateRef<any>;
-  @ViewChild('symbolsTemplate') symbolsTemplate: TemplateRef<any>;
   subscriptions: any;
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
-  symbolsDialogRef: MdDialogRef<any>;
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean;
   state: any;
@@ -84,12 +82,6 @@ export class GraphPanelComponent implements OnInit {
     let dialogConfig = { hasBackdrop: true, panelClass: 'virtual-caseload-info', width: '300px', height: '200px' };
     this.virtualCaseloadInfoDialogRef = this.dialog.open(this.virtualCaseloadInfoTemplate, dialogConfig);
     this.virtualCaseloadInfoDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
-  }
-
-  showSymbols(e) {
-    let dialogConfig = { hasBackdrop: true, panelClass: 'chart-symbols', width: '225px', height: '375px' };
-    this.symbolsDialogRef = this.dialog.open(this.symbolsTemplate, dialogConfig);
-    this.symbolsDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
   }
 
   onZoomOptionChange(monthsSpan) {
