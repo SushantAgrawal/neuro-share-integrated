@@ -23,6 +23,7 @@ export class GraphPanelComponent implements OnInit {
 
   //#region Private fields
   @ViewChild('virtualCaseloadInfoTemplate') private virtualCaseloadInfoTemplate: TemplateRef<any>;
+  @ViewChild('symbolsTemplate') private symbolsTemplate: TemplateRef<any>;
   subscriptions: any;
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
   isEdssSelected: boolean = true;
@@ -30,7 +31,6 @@ export class GraphPanelComponent implements OnInit {
   state: any;
   graphSetting = GRAPH_SETTINGS;
   symbolsDialogRef: any;
-  symbolsTemplate: any;
   //#endregion
 
   //#region Constructor
