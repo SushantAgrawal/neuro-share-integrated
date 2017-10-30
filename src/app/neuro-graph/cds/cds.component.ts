@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {MdDialog} from '@angular/material';
 import {cdsMap, allMessages, manyHttpMessages, allHttpMessages} from '../neuro-graph.config';
 import {InfoPopupComponent} from './info-popup/info-popup.component'
-import moment from 'moment';
+// import * as moment from 'moment';
 
 @Component({selector: 'app-cds', templateUrl: './cds.component.html', styleUrls: ['./cds.component.scss'], encapsulation: ViewEncapsulation.None})
 export class CdsComponent implements OnInit {
@@ -15,10 +15,7 @@ export class CdsComponent implements OnInit {
   cdsUserData : any;
   cdsState : Object = {};
   csnState : any = {};
-  // momentFunc: any;
-  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
-    // this.momentFunc = (moment as any).default ? (moment as any).default : moment;
-    // this.momentFunc.locale('en');
+  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {    
     this.cdsState = {
       review_relapses: {
         checked: false
@@ -142,9 +139,8 @@ export class CdsComponent implements OnInit {
         }
       });
     cdsStateData.provider_id = this.cdsUserData.last_updated_provider_id;
-    cdsStateData.encounter_csn = this.cdsUserData.save_csn;
-    // cdsStateData.updated_instant = '10/10/2017 11:11:11'; // moment().format('MM/DD/YYYY HH:mm:ss');   
-    cdsStateData.updated_instant = moment().format('MM/DD/YYYY HH:mm:ss'); 
+    cdsStateData.encounter_csn = this.cdsUserData.save_csn;      
+    cdsStateData.updated_instant = this.neuroGraphService.momentFunc().format('MM/DD/YYYY HH:mm:ss');
     return (cdsStateData);
   }
 
