@@ -90,7 +90,7 @@ export class CdsComponent implements OnInit {
             this.cdsUserData = this
               .cdsUserData
               .find(x => x.save_csn == this.csnState.csn);
-            // this.setChkBoxes();
+            this.setChkBoxes();
           })();
       });
     let sub3 = this
