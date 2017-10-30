@@ -30,6 +30,8 @@ export class SymptomsComponent implements OnInit {
   private dialogRef: any;
   private questDialogRef: any;
   private symptomsData: Array<any>;
+  private questionaireData: Array<any>;
+  private questionaireSymptomData: Array<any>=[];
   private symptomsChartLoaded: boolean = false;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.paramData = this.neuroGraphService.get('queryParams')
@@ -43,7 +45,81 @@ export class SymptomsComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            this.symptomsData = d.data.relapses;
+            //debugger;
+            //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
+            this.questionaireData = d.data.questionaires.map(d => {
+              return {
+                ...d,
+                qxCompleted: new Date(d["qx_completed_at"]),
+              }
+            }).sort((a, b) => a.qxCompleted - b.qxCompleted)
+            
+            //let element = this.questionaireData[0];
+            this.questionaireData.forEach(element => {
+              debugger;
+              let symptomsDataLocal: Array<any>=[];
+
+            for(let i = 0; i < element.symptoms.length; i++)
+            {
+              let symptomStatus:any="";
+              let reportedDate:any;
+              let qData:Array<any>=[];
+              reportedDate = element["qx_completed_at"];
+               qData.push(element.responses.filter(item => element.symptoms[i].qx_code.some(f => f == item["qx_code"])));
+               let prevCnt=0;
+               let newCnt=this.questionaireData.length - 2;
+               //let reportDate:any;
+               this.questionaireData.forEach(elem => {
+                //debugger;
+                 if(element["qx_id"]!= elem["qx_id"] && new Date(elem["qx_completed_at"]) < new Date(element["qx_completed_at"]) )
+                 {
+                   if(element.symptoms[i].score!="")
+                   {
+                    reportedDate = element["qx_completed_at"];
+                    if(elem.symptoms[i].score == "")
+                    {
+                      newCnt--;
+                    }
+                   }
+                 else{
+                  if(elem.symptoms[i].score != "")
+                  {
+                    prevCnt ++;
+                    reportedDate = elem["qx_completed_at"];
+                  }
+                 }
+                  
+                 }
+               });
+               if(newCnt ==0)
+               {
+                symptomStatus="New";
+               }
+               if(prevCnt >0)
+               {
+                symptomStatus="Previous";
+               }
+              var data ={
+                name: element.symptoms[i].title,
+                score:element.symptoms[i].score,
+                qx_code:element.symptoms[i].qx_code,
+                symptomStatus:symptomStatus,
+                reportDate:reportedDate
+                //reportedDate:element["qx_completed_at"]
+              };
+              symptomsDataLocal.push(data)
+            }
+            this.questionaireSymptomData.push({ 
+                questionnaireDate:element["qx_completed_at"],
+                status: element.status,
+                "qx_id":element["qx_id"],
+                symptom:symptomsDataLocal
+
+               });
+            //d.data.questionaires.forEach(element => { 
+
+            });
+            //debugger;            
             this.createChartSymptoms();
             this.symptomsChartLoaded = true;            
           })();
@@ -59,6 +135,7 @@ export class SymptomsComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
+            //debugger;
             //make api call
             this
               .brokerService
@@ -104,7 +181,8 @@ export class SymptomsComponent implements OnInit {
   }
   
   showSecondLevel(data) {
-   
+   debugger;
+      this.symptomsData = data;
       let dialogConfig = { hasBackdrop: false, panelClass: 'ns-symptoms-theme', width: '750px' };
       this.dialogRef = this.dialog.open(this.symptomSecondLevelTemplate, dialogConfig);
   }
@@ -117,18 +195,20 @@ export class SymptomsComponent implements OnInit {
   }
   
   createChartSymptoms() {
-    this.datasetB = this.symptomsData.map(d => {
-      let relMonth = this.month.indexOf(d.relapse_month);
-      let relYear = parseInt(d.relapse_year);
+    //debugger;
+    this.datasetB = this.questionaireSymptomData.map(d => {
+     // let relMonth = this.month.indexOf(d.relapse_month);
+    //  let relYear = parseInt(d.relapse_year);
       return {
         ...d,
-        last_updated_instant: d.relapse_month + "/15/" + d.relapse_year,
-        lastUpdatedDate: new Date(relYear, relMonth, 15),
-        confirm: d.clinician_confirmed,
-        month: d.relapse_month,
-        year: d.relapse_year
+        questionnaireDate_mod: new Date(d.questionnaireDate),
+        // last_updated_instant: d.relapse_month + "/15/" + d.relapse_year,
+        // lastUpdatedDate: new Date(relYear, relMonth, 15),
+        // confirm: d.clinician_confirmed,
+        // month: d.relapse_month,
+        // year: d.relapse_year
       }
-    }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
+    }).sort((a, b) => a. questionnaireDate_mod - b. questionnaireDate_mod);
 
     let element = d3.select("#symptoms");
     this.width = GRAPH_SETTINGS.panel.offsetWidth - GRAPH_SETTINGS.panel.marginLeft - GRAPH_SETTINGS.panel.marginRight;
@@ -140,7 +220,7 @@ export class SymptomsComponent implements OnInit {
       .range([GRAPH_SETTINGS.symptoms.chartHeight - 20, 0]);
 
     this.line = d3.line<any>()
-      .x((d: any) => this.chartState.xScale(d.lastUpdatedDate))
+      .x((d: any) => this.chartState.xScale(d. questionnaireDate_mod))
       .y((d: any) => 0);
 
     this.chart = d3.select("#symptoms")
@@ -148,8 +228,8 @@ export class SymptomsComponent implements OnInit {
 
     this.pathUpdate = this.chart.append("path")
       .datum([
-        { "lastUpdatedDate": this.chartState.xDomain.defaultMinValue },
-        { "lastUpdatedDate": this.chartState.xDomain.defaultMaxValue }
+        { "questionnaireDate_mod": this.chartState.xDomain.currentMinValue },
+        { "questionnaireDate_mod": this.chartState.xDomain.currentMaxValue }
       ])
       .attr("class", "line")
       .attr("d", this.line)
@@ -163,7 +243,7 @@ export class SymptomsComponent implements OnInit {
     .attr('class', 'x-axis-arrow')
     .attr('d', this.pathUpdate)
     .attr('transform', d => {
-      return `translate(${(this.chartState.xScale(d.lastUpdatedDate))},-10)`;
+      return `translate(${(this.chartState.xScale(d. questionnaireDate_mod))},-10)`;
     })
     .append('xhtml:span')
     .attr('class','icon-symptoms')

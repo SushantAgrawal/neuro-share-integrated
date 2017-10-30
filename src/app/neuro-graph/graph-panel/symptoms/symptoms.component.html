@@ -12,8 +12,8 @@
         <div class="ns-symptoms-quesHeader">Last Questionnaire Date</div>
       </div>
       <div class="ns-symptoms-header">
-        <div class="ns-symptoms-quesHeaderLeft font-small">[Status Categories]</div>
-        <div class="ns-symptoms-quesHeader font-small">dd/mm/yy</div>
+        <div class="ns-symptoms-quesHeaderLeft font-small">{{symptomsData.status}}</div>
+        <div class="ns-symptoms-quesHeader font-small">{{symptomsData.questionnaireDate}} </div>
       </div>
       <div class="ns-symptoms-header">
         <div class="ns-symptoms-ordered">Patient Reported Symptoms</div>
@@ -21,25 +21,20 @@
         <div class="ns-symptoms-trend">Trend</div>
         <div class="ns-symptoms-quest">Questionnaire</div>
       </div>
-      <div class="ns-symptoms-items-container">
-        <div class="ns-symptoms-row">
-          <div class="ns-symptoms-row">
+      <div class="ns-symptoms-items-container" >
+        <div class="ns-symptoms-row" *ngFor="let symp of symptomsData.symptom;">
             <div class="ns-small-bar ns-symptoms-grey"></div>
             <div class="ns-order-symptoms-box">
-              <span class="ns-symptoms-name">Swallowing</span>
+              <span class="ns-symptoms-name">{{symp.name}}</span>
               <div class="ns-symptoms-reportDate">
-                Reported
+                Reported {{symp.reportDate}}
               </div>
             </div>
-              <span class="ns-small-box-text">Moderate</span>
+              <span class="ns-small-box-text">{{symp.score}}</span>
               <div class="ns-symptoms-trend-box"></div>
               <div class="ns-symptoms-quest-unit">
                 <button class="call-out-buttons" (click)="showThirdLayer()">See Qx</button>
               </div>
-
-           
-
-          </div>
         </div>
       </div>
     </div>
