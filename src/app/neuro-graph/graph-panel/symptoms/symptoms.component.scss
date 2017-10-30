@@ -76,7 +76,26 @@ $ns-symptoms-red:#e53935;
         padding: 5px;
         background-color: #ececec;
         font-weight:bold;
+        color:black;
 }  
+
+.ns-symptoms-name-red
+{
+    font-size:10pt;
+    font-weight:bold;
+    background-color: red;
+    opacity: 0.2;
+    font-style: italic;
+    float: left; margin-right: 5px; width: 300px; height: 30px; padding: 5px;
+}
+.ns-symptoms-name-quest
+{
+    font-size:10pt;
+    font-weight:bold;
+}
+.ns-symptoms-name-det{
+    font-style: italic;
+}
 .ns-order-symptoms-box{ 
     background-color: #ececec; 
     float: left; margin-right: 5px; width: 200px; height: 30px; padding: 5px;
@@ -84,6 +103,7 @@ $ns-symptoms-red:#e53935;
         font-size:10pt;
         font-weight:bold;
     }
+    
     .ns-symptoms-name-status{
         font-size:10pt;
         font-weight:bold;
@@ -92,7 +112,22 @@ $ns-symptoms-red:#e53935;
         font-size: 8pt;
         padding-top: 2px;
     }
+    .ns-symptoms-type-grey
+    {
+        font-size: 8pt;
+        padding-top: 2px;
+        color:white;
+        background-color: #565656;
+    }
+    .ns-symptoms-type-red
+    {
+        font-size: 8pt;
+        padding-top: 2px;
+        color:white;
+        background-color: red;
+    }
 }
+
 .ns-symptoms-trend-box{ float: left; width: 145px; height: 40px; display: block;line-height: 30px;}
 .ns-symptoms-quest-unit{ float: left; height: 40px;margin-top:10px; }
 .ns-symptoms-items-container{
