@@ -15,7 +15,7 @@ export class CdsComponent implements OnInit {
   cdsUserData : any;
   cdsState : Object = {};
   csnState : any = {};
-  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {    
+  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) {
     this.cdsState = {
       review_relapses: {
         checked: false
@@ -48,7 +48,7 @@ export class CdsComponent implements OnInit {
         checked: false
       }
     }
-  }
+  };
 
   ngOnInit() {
     this.subscriptions = this
@@ -90,7 +90,7 @@ export class CdsComponent implements OnInit {
             this.cdsUserData = this
               .cdsUserData
               .find(x => x.save_csn == this.csnState.csn);
-            this.setChkBoxes();
+            // this.setChkBoxes();
           })();
       });
     let sub3 = this
@@ -124,7 +124,6 @@ export class CdsComponent implements OnInit {
       .brokerService
       .httpPost(allHttpMessages.httpPostCdsUserData, this.getCdsStateData());
   }
-
   getCdsStateData() {
     let cdsStateData : any = {};
     Object
@@ -139,11 +138,13 @@ export class CdsComponent implements OnInit {
         }
       });
     cdsStateData.provider_id = this.cdsUserData.last_updated_provider_id;
-    cdsStateData.encounter_csn = this.cdsUserData.save_csn;      
-    cdsStateData.updated_instant = this.neuroGraphService.momentFunc().format('MM/DD/YYYY HH:mm:ss');
+    cdsStateData.encounter_csn = this.cdsUserData.save_csn;
+    cdsStateData.updated_instant = this
+      .neuroGraphService
+      .momentFunc()
+      .format('MM/DD/YYYY HH:mm:ss');
     return (cdsStateData);
   }
-
   setChkBoxes() {
     Object
       .keys(this.cdsUserData)
@@ -156,12 +157,11 @@ export class CdsComponent implements OnInit {
       .changeDetector
       .detectChanges();
   }
-
   changed(event, item) {
     this.saveChkBoxesState();
   }
-
-  openDialog(e, infoTitle) {
+  openDialog(e, infoTitle)
+  {
     let x = e.clientX;
     let y = e.clientY;
     this.selectedCdsInfo = this
@@ -180,7 +180,6 @@ export class CdsComponent implements OnInit {
         }
       });
   }
-
   ngOnDestroy() {
     this
       .subscriptions

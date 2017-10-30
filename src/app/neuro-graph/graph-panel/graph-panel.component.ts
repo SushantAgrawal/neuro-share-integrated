@@ -22,13 +22,15 @@ export class GraphPanelComponent implements OnInit {
 
   //#region Private fields
   @ViewChild('virtualCaseloadInfoTemplate') private virtualCaseloadInfoTemplate: TemplateRef<any>;
-  private subscriptions: any;
-  private momentFunc: any;
-  private virtualCaseloadInfoDialogRef: MdDialogRef<any>;
-  private isEdssSelected: boolean = true;
-  private virtualCaseloadEnabled: boolean;
-  private state: any;
-  private graphSetting = GRAPH_SETTINGS;
+  subscriptions: any;
+  momentFunc: any;
+  virtualCaseloadInfoDialogRef: MdDialogRef<any>;
+  isEdssSelected: boolean = true;
+  virtualCaseloadEnabled: boolean;
+  state: any;
+  graphSetting = GRAPH_SETTINGS;
+  symbolsDialogRef: any;
+  symbolsTemplate: any;
   //#endregion
 
   //#region Constructor
@@ -81,9 +83,15 @@ export class GraphPanelComponent implements OnInit {
   }
 
   showVirtualCaseloadInfo(e) {
-    let dialogConfig = { hasBackdrop: false, panelClass: 'virtual-caseload-info', width: '300px', height: '200px' };
+    let dialogConfig = { hasBackdrop: true, panelClass: 'virtual-caseload-info', width: '300px', height: '200px' };
     this.virtualCaseloadInfoDialogRef = this.dialog.open(this.virtualCaseloadInfoTemplate, dialogConfig);
     this.virtualCaseloadInfoDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
+  }
+
+  showSymbols(e) {
+    let dialogConfig = { hasBackdrop: true, panelClass: 'chart-symbols', width: '225px', height: '375px' };
+    this.symbolsDialogRef = this.dialog.open(this.symbolsTemplate, dialogConfig);
+    this.symbolsDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
   }
 
   onZoomOptionChange(monthsSpan) {
