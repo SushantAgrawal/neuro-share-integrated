@@ -18,7 +18,7 @@ export class MedicationsComponent implements OnInit {
   @ViewChild('otherMedsSecondLevelTemplate') private otherMedsSecondLevelTemplate: TemplateRef<any>;
   @Input() private chartState: any;
 
-  private graphDimension = GRAPH_SETTINGS.panel;
+  public graphDimension = GRAPH_SETTINGS.panel;
   private dialogRef: MdDialogRef<any>;
   private medSecondLayerModel: any;
   private subscriptions: any;
@@ -30,7 +30,7 @@ export class MedicationsComponent implements OnInit {
     otherMeds: false,
     vitaminD: false
   };
-  private medType = {
+  public medType = {
     dmt: 'dmt',
     otherMeds: 'otherMeds',
     vitaminD: 'vitaminD'
