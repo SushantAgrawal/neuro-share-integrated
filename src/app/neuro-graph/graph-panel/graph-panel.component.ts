@@ -21,13 +21,13 @@ import { EdssComponent } from '../graph-panel/edss/edss.component';
 })
 export class GraphPanelComponent implements OnInit {
 
-  //#region Private fields
+  //#region Fields
   @ViewChild('virtualCaseloadInfoTemplate') virtualCaseloadInfoTemplate: TemplateRef<any>;
+  state: any;
   subscriptions: any;
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
   isEdssSelected: boolean = true;
-  virtualCaseloadEnabled: boolean;
-  state: any;
+  virtualCaseloadEnabled: boolean = false;
   graphSetting = GRAPH_SETTINGS;
   //#endregion
 
@@ -102,19 +102,17 @@ export class GraphPanelComponent implements OnInit {
 
   //#region State Related
   getXDomain(montsSpan, spanLastDate?) {
-    let momentSpanLastDate = this.neuroGraphService.momentFunc(spanLastDate);
     let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
+    let momentSpanLastDate = this.neuroGraphService.momentFunc(spanLastDate || scaleLastDate);
     let output = {
       scaleMinValue: new Date(1970, 0, 1),
       scaleMaxValue: scaleLastDate,
-
       currentMinValue: momentSpanLastDate
         .clone()
         .subtract(montsSpan, 'month')
         .add(1, 'days')
         .toDate(),
       currentMaxValue: spanLastDate || scaleLastDate,
-
     }
     return output;
   }
@@ -147,19 +145,34 @@ export class GraphPanelComponent implements OnInit {
   //#region Scroll
   timelineScroll(direction) {
     if (direction == 'forward') {
-      this.scrollForward();
+      this.setScrollForward();
     }
     else {
-      this.scrollBackward();
+      this.setScrollBackward();
     }
+    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.brokerService.emit(allMessages.zoomOptionChange, null);
   }
 
-  scrollForward() {
+  setScrollForward() {
 
   }
 
-  scrollBackward() {
-
+  setScrollBackward() {
+    let momentSpanLastDate = this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue);
+    let currentMaxValue = momentSpanLastDate
+      .clone()
+      .subtract(1, 'days')
+      .toDate();
+    let currentMinValue = momentSpanLastDate
+      .clone()
+      .subtract(this.state.zoomMonthsSpan, 'month')
+      .toDate();
+    this.state.xDomain = {
+      ...this.state.xDomain,
+      currentMaxValue,
+      currentMinValue
+    };
   }
   //#endregion
 }

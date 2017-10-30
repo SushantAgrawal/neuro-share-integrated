@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 import { BrokerService } from '../../broker/broker.service';
@@ -11,7 +11,7 @@ import { allMessages } from '../../neuro-graph.config';
   styleUrls: ['./shared-grid.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SharedGridComponent implements OnInit {
+export class SharedGridComponent implements OnInit, OnDestroy {
   @Input() private chartState: any;
   private subscriptions: any;
   constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService) {
@@ -22,6 +22,7 @@ export class SharedGridComponent implements OnInit {
     this.drawRootElement(this.chartState);
     this.subscriptions = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
+        debugger;
         this.drawRootElement(this.chartState);
       })();
     })
