@@ -22,15 +22,15 @@ import { EdssComponent } from '../graph-panel/edss/edss.component';
 export class GraphPanelComponent implements OnInit {
 
   //#region Private fields
-  @ViewChild('virtualCaseloadInfoTemplate') private virtualCaseloadInfoTemplate: TemplateRef<any>;
-  @ViewChild('symbolsTemplate') private symbolsTemplate: TemplateRef<any>;
+  @ViewChild('virtualCaseloadInfoTemplate') virtualCaseloadInfoTemplate: TemplateRef<any>;
+  @ViewChild('symbolsTemplate') symbolsTemplate: TemplateRef<any>;
   subscriptions: any;
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
+  symbolsDialogRef: MdDialogRef<any>;
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean;
   state: any;
   graphSetting = GRAPH_SETTINGS;
-  symbolsDialogRef: any;
   //#endregion
 
   //#region Constructor
