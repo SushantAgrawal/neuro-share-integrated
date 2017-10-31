@@ -103,7 +103,7 @@ export class GraphPanelComponent implements OnInit {
   //#region State Related
   getXDomain(montsSpan, spanLastDate?) {
     let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
-    let momentSpanLastDate = this.neuroGraphService.momentFunc(spanLastDate || scaleLastDate);
+    let momentSpanLastDate = this.neuroGraphService.moment(spanLastDate || scaleLastDate);
     let output = {
       scaleMinValue: new Date(1970, 0, 1),
       scaleMaxValue: scaleLastDate,
@@ -159,7 +159,7 @@ export class GraphPanelComponent implements OnInit {
   }
 
   setScrollBackward() {
-    let momentSpanLastDate = this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue);
+    let momentSpanLastDate = this.neuroGraphService.moment(this.state.xDomain.currentMinValue);
     let currentMaxValue = momentSpanLastDate
       .clone()
       .subtract(1, 'days')

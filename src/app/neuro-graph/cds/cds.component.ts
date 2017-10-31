@@ -145,7 +145,7 @@ export class CdsComponent implements OnInit {
     cdsStateData.encounter_csn = this.cdsUserData.save_csn;
     cdsStateData.updated_instant = this
       .neuroGraphService
-      .momentFunc()
+      .moment()
       .format('MM/DD/YYYY HH:mm:ss');
     return (cdsStateData);
   }
@@ -186,7 +186,7 @@ export class CdsComponent implements OnInit {
   }
 
   progressNotes(){
-    let timestamp = this.neuroGraphService.momentFunc().toString();
+    let timestamp = this.neuroGraphService.moment().toString();
     this.progressNotesGeneratorService.pushObject({
       destination: 'progress-note',
       category: 'progress-note',

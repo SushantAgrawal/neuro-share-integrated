@@ -81,16 +81,16 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         axis.selectAll('text').style('display', 'none');
         axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
-          let momentD = this.neuroGraphService.momentFunc(d);
+          let momentD = this.neuroGraphService.moment(d);
           let midDate = Math.ceil(momentD.daysInMonth() / 2);
           if (this.chartState.zoomMonthsSpan == 6) {
-            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == midDate ? this.neuroGraphService.moment.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 3) {
-            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == midDate ? this.neuroGraphService.moment.months(d.getMonth()) : '';
           }
           else if (this.chartState.zoomMonthsSpan == 1) {
-            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
+            return d.getDate() == midDate ? this.neuroGraphService.moment.months(d.getMonth()) : '';
           }
           else {
             return d.getMonth() == 6 ? d.getFullYear() : '';
