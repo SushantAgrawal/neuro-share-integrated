@@ -145,33 +145,35 @@ export class GraphPanelComponent implements OnInit {
   //#region Scroll
   timelineScroll(direction) {
     if (direction == 'forward') {
-      this.setScrollForward();
+      this.setTimelineForward();
     }
     else {
-      this.setScrollBackward();
+      this.setTimelineBackward();
     }
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
     this.brokerService.emit(allMessages.zoomOptionChange, null);
+    console.log('Current Scale : ' + this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.momentFunc(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
   }
 
-  setScrollForward() {
-
-  }
-
-  setScrollBackward() {
-    let momentSpanLastDate = this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue);
-    let currentMaxValue = momentSpanLastDate
-      .clone()
-      .subtract(1, 'days')
-      .toDate();
-    let currentMinValue = momentSpanLastDate
-      .clone()
-      .subtract(this.state.zoomMonthsSpan, 'month')
-      .toDate();
+  setTimelineForward() {
+    let mtNextMonthStart = this.neuroGraphService.momentFunc(this.state.xDomain.currentMaxValue).add(1, 'month').startOf('month');
+    let currentMinValue = mtNextMonthStart.clone().toDate();
+    let currentMaxValue = mtNextMonthStart.clone().add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
     this.state.xDomain = {
       ...this.state.xDomain,
-      currentMaxValue,
-      currentMinValue
+      currentMinValue,
+      currentMaxValue
+    };
+  }
+
+  setTimelineBackward() {
+    let mtLastSpanMinDate = this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue);
+    let currentMinValue = mtLastSpanMinDate.clone().subtract(this.state.zoomMonthsSpan, 'month').toDate();
+    let currentMaxValue = mtLastSpanMinDate.clone().subtract(1, 'days').toDate();
+    this.state.xDomain = {
+      ...this.state.xDomain,
+      currentMinValue,
+      currentMaxValue
     };
   }
   //#endregion
