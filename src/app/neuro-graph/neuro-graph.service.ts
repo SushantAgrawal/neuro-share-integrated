@@ -6,12 +6,12 @@ import {BrokerService} from './broker/broker.service';
 @Injectable()
 export class NeuroGraphService {
   global : any = {};
-  momentFunc: any;
+  moment: any;
   constructor(private activatedRoute : ActivatedRoute, private brokerService : BrokerService) {
     this.set('urlMaps', urlMaps);
     this.brokerService.init(urlMaps);
-    this.momentFunc = (moment as any).default ? (moment as any).default : moment;
-    this.momentFunc.locale('en');  
+    this.moment = (moment as any).default ? (moment as any).default : moment;
+    this.moment.locale('en');  
     // Comment out following self executable function in production or when actual
     // url is available
     (() => {

@@ -103,7 +103,7 @@ export class GraphPanelComponent implements OnInit {
   //#region State Related
   getXDomain(montsSpan, spanLastDate?) {
     let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
-    let momentSpanLastDate = this.neuroGraphService.momentFunc(spanLastDate || scaleLastDate);
+    let momentSpanLastDate = this.neuroGraphService.moment(spanLastDate || scaleLastDate);
     let output = {
       scaleMinValue: new Date(1970, 0, 1),
       scaleMaxValue: scaleLastDate,
@@ -152,11 +152,11 @@ export class GraphPanelComponent implements OnInit {
     }
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
     this.brokerService.emit(allMessages.zoomOptionChange, null);
-    console.log('Current Scale : ' + this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.momentFunc(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
+    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
   }
 
   setTimelineForward() {
-    let mtNextMonthStart = this.neuroGraphService.momentFunc(this.state.xDomain.currentMaxValue).add(1, 'month').startOf('month');
+    let mtNextMonthStart = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).add(1, 'month').startOf('month');
     let currentMinValue = mtNextMonthStart.clone().toDate();
     let currentMaxValue = mtNextMonthStart.clone().add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
     this.state.xDomain = {
@@ -167,7 +167,7 @@ export class GraphPanelComponent implements OnInit {
   }
 
   setTimelineBackward() {
-    let mtLastSpanMinDate = this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue);
+    let mtLastSpanMinDate = this.neuroGraphService.moment(this.state.xDomain.currentMinValue);
     let currentMinValue = mtLastSpanMinDate.clone().subtract(this.state.zoomMonthsSpan, 'month').toDate();
     let currentMaxValue = mtLastSpanMinDate.clone().subtract(1, 'days').toDate();
     this.state.xDomain = {
