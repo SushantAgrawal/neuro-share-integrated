@@ -158,7 +158,7 @@ export class GraphPanelComponent implements OnInit {
   }
 
   scrollForward() {
-    let diff = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).startOf('day').diff(this.neuroGraphService.moment(this.state.xDomain.scaleMaxValue).startOf('day'), 'days')
+    let diff = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).startOf('day').diff(this.neuroGraphService.moment(this.state.xDomain.scaleMaxValue).startOf('day'), 'days');
     if (diff == 0)
       return;
     let mtNextMonthStart = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).add(1, 'month').startOf('month');
@@ -173,6 +173,9 @@ export class GraphPanelComponent implements OnInit {
   }
 
   scrollBackward() {
+    let diff = this.neuroGraphService.moment(this.state.xDomain.currentMinValue).startOf('day').diff(this.neuroGraphService.moment(this.state.xDomain.scaleMinValue).startOf('day'), 'days');
+    if (diff == 0)
+      return;
     let mtLastSpanMinDate = this.neuroGraphService.moment(this.state.xDomain.currentMinValue);
     let currentMinValue = mtLastSpanMinDate.clone().subtract(this.state.zoomMonthsSpan, 'month').toDate();
     let currentMaxValue = mtLastSpanMinDate.clone().subtract(1, 'days').toDate();
