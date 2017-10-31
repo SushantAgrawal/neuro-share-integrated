@@ -50,9 +50,6 @@ export class CdsComponent implements OnInit {
       }
     };
   }
-  // csnState : any = {};
-  // constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) { 
-  // };
 
   ngOnInit() {
     this.subscriptions = this
