@@ -20,7 +20,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   //#region Lifecycle events
   ngOnInit() {
     this.drawRootElement(this.chartState);
-    this.subscriptions = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    this.subscriptions = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         this.drawRootElement(this.chartState);
       })();
@@ -81,16 +81,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         axis.selectAll('text').style('display', 'none');
         axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
-          let momentD = this.neuroGraphService.momentFunc(d);
+          let momentD = this.neuroGraphService.moment(d);
           let midDate = Math.ceil(momentD.daysInMonth() / 2);
-          if (this.chartState.zoomMonthsSpan == 6) {
-            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
-          }
-          else if (this.chartState.zoomMonthsSpan == 3) {
-            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
-          }
-          else if (this.chartState.zoomMonthsSpan == 1) {
-            return d.getDate() == midDate ? this.neuroGraphService.momentFunc.months(d.getMonth()) : '';
+          let year = d.getFullYear();
+          if (this.chartState.zoomMonthsSpan == 6 || this.chartState.zoomMonthsSpan == 3 || this.chartState.zoomMonthsSpan == 1) {
+            return d.getDate() == midDate ? `${this.neuroGraphService.moment.monthsShort(d.getMonth())}, ${year}` : '';
           }
           else {
             return d.getMonth() == 6 ? d.getFullYear() : '';

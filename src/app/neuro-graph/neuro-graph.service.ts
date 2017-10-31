@@ -7,17 +7,17 @@ import {BrokerService} from './broker/broker.service';
 @Injectable()
 export class NeuroGraphService {
   global : any = {};
-  momentFunc : any;
+  moment : any;
   constructor(private activatedRoute : ActivatedRoute, private brokerService : BrokerService) {
     this.set('urlMaps', urlMaps);
     this
       .brokerService
       .init(urlMaps);
-    this.momentFunc = (moment as any).default
+    this.moment = (moment as any).default
       ? (moment as any).default
       : moment;
     this
-      .momentFunc
+      .moment
       .locale('en');
     //url handling
     let searchParams = new URLSearchParams(top.location.search);

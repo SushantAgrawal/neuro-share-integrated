@@ -4,7 +4,7 @@ export const allMessages = {
     'invokeAddEdss': 'invoke:add:edss',
     'invokeAddWalk25Feet': 'invoke:add:walk25Feet',
     'toggleVirtualCaseload': 'toggle:virtual:caseload',
-    'zoomOptionChange': 'zoom:option:change',
+    'graphScaleUpdated': 'graph:scale:updated',
     'timelineScroll': 'timeline:scroll',
 };
 

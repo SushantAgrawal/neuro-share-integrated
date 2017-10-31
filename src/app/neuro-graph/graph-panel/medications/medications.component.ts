@@ -83,6 +83,7 @@ export class MedicationsComponent implements OnInit {
     this.processMedication(neuroRelated, this.medType.dmt);
     this.processMedication(neuroRelated, this.medType.vitaminD);
     this.processMedication(neuroRelated, this.medType.otherMeds);
+<<<<<<< HEAD
     let subZoom = this
       .brokerService
       .filterOn(allMessages.zoomOptionChange)
@@ -107,6 +108,25 @@ export class MedicationsComponent implements OnInit {
     this
       .subscriptions
       .add(subZoom);
+=======
+    let subZoom = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        if (this.selectedMed.dmt) {
+          this.removeDmt();
+          this.drawDmt();
+        }
+        if (this.selectedMed.otherMeds) {
+          this.removeOtherMeds();
+          this.drawOtherMeds();
+        }
+        if (this.selectedMed.vitaminD) {
+          this.removeVitaminD();
+          this.drawVitaminD();
+        }
+      })();
+    })
+    this.subscriptions.add(subZoom);
+>>>>>>> 2b131c7c16cb9b717b300f591c5fd1ef3d3d9383
 
     // This 'setSecondLayerData' is temporary and used to set a local data source.
     // Will be removed once apis are ready.

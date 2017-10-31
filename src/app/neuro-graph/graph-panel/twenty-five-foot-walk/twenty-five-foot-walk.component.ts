@@ -84,7 +84,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     })
 
     //When zoom option changed
-    let sub5 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    let sub5 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.Feet25WalkChartLoaded) {
           this.unloadChart();

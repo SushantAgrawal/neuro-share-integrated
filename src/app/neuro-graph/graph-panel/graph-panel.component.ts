@@ -2,7 +2,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
-import * as moment from 'moment';
 import { BrokerService } from '../broker/broker.service';
 import { NeuroGraphService } from '../neuro-graph.service';
 import { allMessages, GRAPH_SETTINGS } from '../neuro-graph.config';
@@ -89,21 +88,21 @@ export class GraphPanelComponent implements OnInit {
     this.state.zoomMonthsSpan = +monthsSpan;
     this.state.xDomain = this.getXDomain(+monthsSpan, spanLastDate);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
 
   onResetZoom() {
     this.state.zoomMonthsSpan = 36;
     this.state.xDomain = this.getXDomain(36);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
   //#endregion
 
   //#region State Related
   getXDomain(montsSpan, spanLastDate?) {
     let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
-    let momentSpanLastDate = this.neuroGraphService.momentFunc(spanLastDate || scaleLastDate);
+    let momentSpanLastDate = this.neuroGraphService.moment(spanLastDate || scaleLastDate);
     let output = {
       scaleMinValue: new Date(1970, 0, 1),
       scaleMaxValue: scaleLastDate,
@@ -145,34 +144,47 @@ export class GraphPanelComponent implements OnInit {
   //#region Scroll
   timelineScroll(direction) {
     if (direction == 'forward') {
-      this.setScrollForward();
+      this.scrollForward();
     }
     else {
-      this.setScrollBackward();
+      this.scrollBackward();
     }
+  }
+
+  updateScale() {
+    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
 
-  setScrollForward() {
-
-  }
-
-  setScrollBackward() {
-    let momentSpanLastDate = this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue);
-    let currentMaxValue = momentSpanLastDate
-      .clone()
-      .subtract(1, 'days')
-      .toDate();
-    let currentMinValue = momentSpanLastDate
-      .clone()
-      .subtract(this.state.zoomMonthsSpan, 'month')
-      .toDate();
+  scrollForward() {
+    let diff = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).startOf('day').diff(this.neuroGraphService.moment(this.state.xDomain.scaleMaxValue).startOf('day'), 'days');
+    if (diff == 0)
+      return;
+    let mtNextMonthStart = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).add(1, 'month').startOf('month');
+    let currentMinValue = mtNextMonthStart.clone().toDate();
+    let currentMaxValue = mtNextMonthStart.clone().add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
     this.state.xDomain = {
       ...this.state.xDomain,
-      currentMaxValue,
-      currentMinValue
+      currentMinValue,
+      currentMaxValue
     };
+    this.updateScale();
+  }
+
+  scrollBackward() {
+    let diff = this.neuroGraphService.moment(this.state.xDomain.currentMinValue).startOf('day').diff(this.neuroGraphService.moment(this.state.xDomain.scaleMinValue).startOf('day'), 'days');
+    if (diff == 0)
+      return;
+    let mtLastSpanMinDate = this.neuroGraphService.moment(this.state.xDomain.currentMinValue);
+    let currentMinValue = mtLastSpanMinDate.clone().subtract(this.state.zoomMonthsSpan, 'month').toDate();
+    let currentMaxValue = mtLastSpanMinDate.clone().subtract(1, 'days').toDate();
+    this.state.xDomain = {
+      ...this.state.xDomain,
+      currentMinValue,
+      currentMaxValue
+    };
+    this.updateScale();
   }
   //#endregion
 }
