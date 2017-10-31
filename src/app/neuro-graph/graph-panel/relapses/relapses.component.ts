@@ -131,7 +131,7 @@ export class RelapsesComponent implements OnInit {
           })();
       })
     //When zoom option changed
-    let sub4 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    let sub4 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.relapsisChartLoaded) {
           this.removeChart();

@@ -90,7 +90,7 @@ export class ImagingComponent implements OnInit {
       })
 
     //When zoom option changed
-    let sub3 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    let sub3 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.imagingChartLoaded) {
           this.removeChart();
