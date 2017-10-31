@@ -57,7 +57,11 @@ export class EdssComponent implements OnInit {
     let obsEdss = this.brokerService.filterOn(allMessages.neuroRelated).filter(t => (t.data.artifact == 'edss'));
     //When EDSS checked
     let sub0 = obsEdss.filter(t => t.data.checked).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
+      d.error ? (() => {
+        console.log(d.error)
+        this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':false});                                                  
+      }) : (() => {
+        this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':true});                                                                  
         this.brokerService.httpGetMany('FETCH_EDSS_QUES', [
           { urlId: allHttpMessages.httpGetEdss },
           { urlId: allHttpMessages.httpGetAllQuestionnaire }
@@ -100,7 +104,11 @@ export class EdssComponent implements OnInit {
     //When both EDSS and Questionnaire data arrives
     let sub4 = this.brokerService.filterOn('FETCH_EDSS_QUES')
       .subscribe(d => {
-        d.error ? console.log(d.error) : (() => {
+        d.error ?  (() => {
+          console.log(d.error)
+          this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':false});                                                  
+        }) : (() => {
+          this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':false});                                                                  
           let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
           let quesData = d.data[1][allHttpMessages.httpGetAllQuestionnaire].questionaires;
           //Use moment js later

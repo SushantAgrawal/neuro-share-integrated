@@ -44,8 +44,12 @@ export class ImagingComponent implements OnInit {
       .filterOn(allHttpMessages.httpGetImaging)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ?  (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':false});                                                  
+          })
           : (() => {
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':false});                                                          
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
             this.createChart();
             this.imagingChartLoaded = true;
@@ -61,8 +65,12 @@ export class ImagingComponent implements OnInit {
       .filter(t => t.data.checked)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':false});                                                  
+          })
           : (() => {
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':true});                                                                      
             //make api call
             this
               .brokerService
