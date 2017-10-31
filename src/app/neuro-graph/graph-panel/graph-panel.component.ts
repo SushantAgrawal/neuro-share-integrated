@@ -139,6 +139,12 @@ export class GraphPanelComponent implements OnInit {
     state.xScale = this.getXScale(state.canvasDimension, state.xDomain);
     return state;
   }
+
+  updateScale() {
+    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
+    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.brokerService.emit(allMessages.graphScaleUpdated, null);
+  }
   //#endregion
 
   //#region Scroll
@@ -151,11 +157,7 @@ export class GraphPanelComponent implements OnInit {
     }
   }
 
-  updateScale() {
-    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
-    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.graphScaleUpdated, null);
-  }
+
 
   scrollForward() {
     let diff = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).startOf('day').diff(this.neuroGraphService.moment(this.state.xDomain.scaleMaxValue).startOf('day'), 'days');
