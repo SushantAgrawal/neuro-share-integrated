@@ -4,7 +4,8 @@ import {NeuroGraphService} from '../neuro-graph.service';
 import {Observable} from 'rxjs/Observable';
 import {MdDialog} from '@angular/material';
 import {cdsMap, allMessages, manyHttpMessages, allHttpMessages} from '../neuro-graph.config';
-import {InfoPopupComponent} from './info-popup/info-popup.component'
+import {InfoPopupComponent} from './info-popup/info-popup.component';
+import { ProgressNotesGeneratorService } from '@sutterhealth/progress-notes';
 // import * as moment from 'moment';
 
 @Component({selector: 'app-cds', templateUrl: './cds.component.html', styleUrls: ['./cds.component.scss'], encapsulation: ViewEncapsulation.None})
@@ -13,7 +14,10 @@ export class CdsComponent implements OnInit {
   subscriptions : any;
   cdsInfo : any;
   cdsUserData : any;
-  cdsState = {
+  cdsState : any = {};
+  csnState : any = {};
+  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog, private progressNotesGeneratorService:ProgressNotesGeneratorService) {
+    this.cdsState = {
       review_relapses: {
         checked: false
       },
@@ -45,9 +49,10 @@ export class CdsComponent implements OnInit {
         checked: false
       }
     };
-  csnState : any = {};
-  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) { 
-  };
+  }
+  // csnState : any = {};
+  // constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) { 
+  // };
 
   ngOnInit() {
     this.subscriptions = this
@@ -179,6 +184,28 @@ export class CdsComponent implements OnInit {
         }
       });
   }
+
+  progressNotes(){
+    let timestamp = this.neuroGraphService.momentFunc().toString();
+    this.progressNotesGeneratorService.pushObject({
+      destination: 'progress-note',
+      category: 'progress-note',
+      source: 'MS-related-care',
+      title: 'MS related care',
+      editable: false,
+      draggable: true,
+      data: this.getMarkup(),
+      timestamp: timestamp,
+      overwrite: true
+    });
+  }
+
+  getMarkup(){
+    return(`
+    <h2>Informatio provided by clinician in MS related care</h2>
+    `);
+  }
+
   ngOnDestroy() {
     this
       .subscriptions
