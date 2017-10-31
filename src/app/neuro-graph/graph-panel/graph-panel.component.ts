@@ -29,6 +29,16 @@ export class GraphPanelComponent implements OnInit {
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean = false;
   graphSetting = GRAPH_SETTINGS;
+  show: boolean = false;
+  toggleObject = {
+    'labs': false,
+    'imaging': false,
+    'relapses': false,
+    'symptoms': false,
+    'edss': false,
+    'walk25feet': false,
+    'medication': false
+  };
   //#endregion
 
   //#region Constructor
@@ -61,8 +71,24 @@ export class GraphPanelComponent implements OnInit {
           this.timelineScroll(d.data);
         })();
     });
-
-    this.subscriptions = sub0.add(sub1).add(sub2);
+    let sub3 = this.brokerService.filterOn(allMessages.toggleProgress).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        this.toggleObject[d.data.component] = d.data.state;
+        let isTrueCnt = 0;
+        Object.keys(this.toggleObject).forEach(key => {
+          if (this.toggleObject[key] == true) {
+            isTrueCnt++;
+          }
+        });
+        if (isTrueCnt > 0) {
+          this.show = true;
+        }
+        else {
+          this.show = false;
+        }
+      })();
+    })
+    this.subscriptions = sub0.add(sub1).add(sub2).add(sub3);
   }
 
   ngOnDestroy() {

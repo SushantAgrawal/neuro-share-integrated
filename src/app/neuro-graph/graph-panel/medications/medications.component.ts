@@ -44,7 +44,11 @@ export class MedicationsComponent implements OnInit {
 
   ngOnInit() {
     this.subscriptions = this.brokerService.filterOn(allHttpMessages.httpGetMedications).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
+      d.error ? (() => {
+        console.log(d.error)
+        this.brokerService.emit(allMessages.toggleProgress, {'component': 'medication','state':false});                                                  
+      }) : (() => {
+        this.brokerService.emit(allMessages.toggleProgress, {'component': 'medication','state':false});                                                                          
         this.prepareMedications(d.data);
         if (this.selectedMed[this.medType.dmt]) {
           this.drawDmt();
@@ -93,9 +97,13 @@ export class MedicationsComponent implements OnInit {
       return ((t.data.artifact == medication) && (t.data.checked))
     }).subscribe(d => {
       d.error
-        ? console.log(d.error)
+        ? (() => {
+          console.log(d.error)
+          this.brokerService.emit(allMessages.toggleProgress, {'component': 'medication','state':false});                                                  
+        })
         : (() => {
           this.selectedMed[medication] = true;
+          this.brokerService.emit(allMessages.toggleProgress, {'component': 'medication','state':true});                                                                                    
           this.brokerService.httpGet(allHttpMessages.httpGetMedications);
         })();
     })

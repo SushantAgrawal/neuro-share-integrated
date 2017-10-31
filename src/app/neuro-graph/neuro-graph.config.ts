@@ -6,6 +6,7 @@ export const allMessages = {
     'toggleVirtualCaseload': 'toggle:virtual:caseload',
     'zoomOptionChange': 'zoom:option:change',
     'timelineScroll': 'timeline:scroll',
+    'toggleProgress': 'toggle:progress'
 };
 
 export const manyHttpMessages = {
