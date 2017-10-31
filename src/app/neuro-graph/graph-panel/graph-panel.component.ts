@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
 import { BrokerService } from '../broker/broker.service';
@@ -18,7 +18,7 @@ import { EdssComponent } from '../graph-panel/edss/edss.component';
   styleUrls: ['./graph-panel.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphPanelComponent implements OnInit {
+export class GraphPanelComponent implements OnInit, OnDestroy {
 
   //#region Fields
   @ViewChild('virtualCaseloadInfoTemplate') virtualCaseloadInfoTemplate: TemplateRef<any>;
@@ -29,14 +29,14 @@ export class GraphPanelComponent implements OnInit {
   virtualCaseloadEnabled: boolean = false;
   graphSetting = GRAPH_SETTINGS;
   show: boolean = false;
-  toggleObject = {
-    'labs': false,
-    'imaging': false,
-    'relapses': false,
-    'symptoms': false,
-    'edss': false,
-    'walk25feet': false,
-    'medication': false
+  loadingProgressState = {
+    labs: false,
+    imaging: false,
+    relapses: false,
+    symptoms: false,
+    edss: false,
+    walk25feet: false,
+    medication: false
   };
   //#endregion
 
@@ -72,19 +72,8 @@ export class GraphPanelComponent implements OnInit {
     });
     let sub3 = this.brokerService.filterOn(allMessages.toggleProgress).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        this.toggleObject[d.data.component] = d.data.state;
-        let isTrueCnt = 0;
-        Object.keys(this.toggleObject).forEach(key => {
-          if (this.toggleObject[key] == true) {
-            isTrueCnt++;
-          }
-        });
-        if (isTrueCnt > 0) {
-          this.show = true;
-        }
-        else {
-          this.show = false;
-        }
+        this.loadingProgressState[d.data.component] = d.data.state;
+        this.show = Object.keys(this.loadingProgressState).some(v => this.loadingProgressState[v] === true);
       })();
     })
     this.subscriptions = sub0.add(sub1).add(sub2).add(sub3);
