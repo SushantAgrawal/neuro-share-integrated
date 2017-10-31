@@ -83,14 +83,9 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         axis.selectAll('text').text((d) => {
           let momentD = this.neuroGraphService.moment(d);
           let midDate = Math.ceil(momentD.daysInMonth() / 2);
-          if (this.chartState.zoomMonthsSpan == 6) {
-            return d.getDate() == midDate ? this.neuroGraphService.moment.months(d.getMonth()) : '';
-          }
-          else if (this.chartState.zoomMonthsSpan == 3) {
-            return d.getDate() == midDate ? this.neuroGraphService.moment.months(d.getMonth()) : '';
-          }
-          else if (this.chartState.zoomMonthsSpan == 1) {
-            return d.getDate() == midDate ? this.neuroGraphService.moment.months(d.getMonth()) : '';
+          let year = d.getFullYear();
+          if (this.chartState.zoomMonthsSpan == 6 || this.chartState.zoomMonthsSpan == 3 || this.chartState.zoomMonthsSpan == 1) {
+            return d.getDate() == midDate ? `${this.neuroGraphService.moment.monthsShort(d.getMonth())}, ${year}` : '';
           }
           else {
             return d.getMonth() == 6 ? d.getFullYear() : '';
