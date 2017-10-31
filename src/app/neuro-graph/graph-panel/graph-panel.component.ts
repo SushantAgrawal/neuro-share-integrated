@@ -4,6 +4,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 import { BrokerService } from '../broker/broker.service';
+import { NeuroGraphService } from '../neuro-graph.service';
 import { allMessages, GRAPH_SETTINGS } from '../neuro-graph.config';
 import { SharedGridComponent } from '../graph-panel/shared-grid/shared-grid.component';
 import { RelapsesComponent } from '../graph-panel/relapses/relapses.component';
@@ -20,23 +21,18 @@ import { EdssComponent } from '../graph-panel/edss/edss.component';
 })
 export class GraphPanelComponent implements OnInit {
 
-  //#region Private fields
-  @ViewChild('virtualCaseloadInfoTemplate') private virtualCaseloadInfoTemplate: TemplateRef<any>;
+  //#region Fields
+  @ViewChild('virtualCaseloadInfoTemplate') virtualCaseloadInfoTemplate: TemplateRef<any>;
+  state: any;
   subscriptions: any;
-  momentFunc: any;
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
   isEdssSelected: boolean = true;
-  virtualCaseloadEnabled: boolean;
-  state: any;
+  virtualCaseloadEnabled: boolean = false;
   graphSetting = GRAPH_SETTINGS;
-  symbolsDialogRef: any;
-  symbolsTemplate: any;
   //#endregion
 
   //#region Constructor
-  constructor(private brokerService: BrokerService, private dialog: MdDialog, ) {
-    this.momentFunc = (moment as any).default ? (moment as any).default : moment;
-    this.momentFunc.locale('en');
+  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
   }
   //#endregion
 
@@ -88,12 +84,6 @@ export class GraphPanelComponent implements OnInit {
     this.virtualCaseloadInfoDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
   }
 
-  showSymbols(e) {
-    let dialogConfig = { hasBackdrop: true, panelClass: 'chart-symbols', width: '225px', height: '375px' };
-    this.symbolsDialogRef = this.dialog.open(this.symbolsTemplate, dialogConfig);
-    this.symbolsDialogRef.updatePosition({ top: `${e.clientY}px`, left: `${e.clientX}px` });
-  }
-
   onZoomOptionChange(monthsSpan) {
     let spanLastDate = new Date((new Date()).getFullYear(), 11, 31);
     this.state.zoomMonthsSpan = +monthsSpan;
@@ -112,19 +102,17 @@ export class GraphPanelComponent implements OnInit {
 
   //#region State Related
   getXDomain(montsSpan, spanLastDate?) {
-    let momentSpanLastDate = this.momentFunc(spanLastDate);
     let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
+    let momentSpanLastDate = this.neuroGraphService.momentFunc(spanLastDate || scaleLastDate);
     let output = {
       scaleMinValue: new Date(1970, 0, 1),
       scaleMaxValue: scaleLastDate,
-
       currentMinValue: momentSpanLastDate
         .clone()
         .subtract(montsSpan, 'month')
         .add(1, 'days')
         .toDate(),
       currentMaxValue: spanLastDate || scaleLastDate,
-
     }
     return output;
   }
@@ -157,19 +145,34 @@ export class GraphPanelComponent implements OnInit {
   //#region Scroll
   timelineScroll(direction) {
     if (direction == 'forward') {
-      this.scrollForward();
+      this.setScrollForward();
     }
     else {
-      this.scrollBackward();
+      this.setScrollBackward();
     }
+    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.brokerService.emit(allMessages.zoomOptionChange, null);
   }
 
-  scrollForward() {
+  setScrollForward() {
 
   }
 
-  scrollBackward() {
-
+  setScrollBackward() {
+    let momentSpanLastDate = this.neuroGraphService.momentFunc(this.state.xDomain.currentMinValue);
+    let currentMaxValue = momentSpanLastDate
+      .clone()
+      .subtract(1, 'days')
+      .toDate();
+    let currentMinValue = momentSpanLastDate
+      .clone()
+      .subtract(this.state.zoomMonthsSpan, 'month')
+      .toDate();
+    this.state.xDomain = {
+      ...this.state.xDomain,
+      currentMaxValue,
+      currentMinValue
+    };
   }
   //#endregion
 }

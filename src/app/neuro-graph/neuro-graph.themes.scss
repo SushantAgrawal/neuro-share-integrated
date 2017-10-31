@@ -120,6 +120,10 @@ $ns-default-theme: mat-light-theme($ns-default-primary, $ns-default-accent, $ns-
     .call-out-buttons{
         border: solid 1px mat-color($theme);
     } 
+    .mat-option.mat-selected{
+        border-bottom: solid 1px mat-color($theme)!important;
+        color: mat-color($theme)!important;
+    }
 }
 
 @include angular-material-theme($ns-default-theme);

@@ -48,8 +48,11 @@ export class CdsComponent implements OnInit {
       review_vaccinations: {
         checked: false
       }
-    }
-  };
+    };
+  }
+  // csnState : any = {};
+  // constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog) { 
+  // };
 
   ngOnInit() {
     this.subscriptions = this

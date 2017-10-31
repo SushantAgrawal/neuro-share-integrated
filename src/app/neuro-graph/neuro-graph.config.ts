@@ -54,7 +54,7 @@ export const urlMaps = {
     "http:get:virtualCaseLoad":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/?pom_id=82043",
     "http:get:walk25Feet":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/?pom_id=82043",
     "http:get:walk25Feet:info":"https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
-    "http:get:symptoms": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/?pom_id=82043"
+    "http:get:symptoms": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/?pom_id=82043"
     
 };
 
