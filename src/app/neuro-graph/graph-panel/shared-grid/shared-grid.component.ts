@@ -20,7 +20,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   //#region Lifecycle events
   ngOnInit() {
     this.drawRootElement(this.chartState);
-    this.subscriptions = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    this.subscriptions = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         this.drawRootElement(this.chartState);
       })();

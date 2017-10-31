@@ -2,7 +2,6 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
-import * as moment from 'moment';
 import { BrokerService } from '../broker/broker.service';
 import { NeuroGraphService } from '../neuro-graph.service';
 import { allMessages, GRAPH_SETTINGS } from '../neuro-graph.config';
@@ -89,14 +88,14 @@ export class GraphPanelComponent implements OnInit {
     this.state.zoomMonthsSpan = +monthsSpan;
     this.state.xDomain = this.getXDomain(+monthsSpan, spanLastDate);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
 
   onResetZoom() {
     this.state.zoomMonthsSpan = 36;
     this.state.xDomain = this.getXDomain(36);
     this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
   //#endregion
 
@@ -145,17 +144,23 @@ export class GraphPanelComponent implements OnInit {
   //#region Scroll
   timelineScroll(direction) {
     if (direction == 'forward') {
-      this.setTimelineForward();
+      this.scrollForward();
     }
     else {
-      this.setTimelineBackward();
+      this.scrollBackward();
     }
-    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.zoomOptionChange, null);
-    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
   }
 
-  setTimelineForward() {
+  updateScale() {
+    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
+    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.brokerService.emit(allMessages.graphScaleUpdated, null);
+  }
+
+  scrollForward() {
+    let diff = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).startOf('day').diff(this.neuroGraphService.moment(this.state.xDomain.scaleMaxValue).startOf('day'), 'days')
+    if (diff == 0)
+      return;
     let mtNextMonthStart = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).add(1, 'month').startOf('month');
     let currentMinValue = mtNextMonthStart.clone().toDate();
     let currentMaxValue = mtNextMonthStart.clone().add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
@@ -164,9 +169,10 @@ export class GraphPanelComponent implements OnInit {
       currentMinValue,
       currentMaxValue
     };
+    this.updateScale();
   }
 
-  setTimelineBackward() {
+  scrollBackward() {
     let mtLastSpanMinDate = this.neuroGraphService.moment(this.state.xDomain.currentMinValue);
     let currentMinValue = mtLastSpanMinDate.clone().subtract(this.state.zoomMonthsSpan, 'month').toDate();
     let currentMaxValue = mtLastSpanMinDate.clone().subtract(1, 'days').toDate();
@@ -175,6 +181,7 @@ export class GraphPanelComponent implements OnInit {
       currentMinValue,
       currentMaxValue
     };
+    this.updateScale();
   }
   //#endregion
 }

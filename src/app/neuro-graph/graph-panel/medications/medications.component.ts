@@ -60,7 +60,7 @@ export class MedicationsComponent implements OnInit {
     this.processMedication(neuroRelated, this.medType.dmt);
     this.processMedication(neuroRelated, this.medType.vitaminD);
     this.processMedication(neuroRelated, this.medType.otherMeds);
-    let subZoom = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    let subZoom = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.selectedMed.dmt) {
           this.removeDmt();
