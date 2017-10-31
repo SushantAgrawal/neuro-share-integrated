@@ -54,7 +54,7 @@ export class BrokerService {
       });
   };
 
-  httpGet(id : string, queryParams?: [{name:string,value:string}], headers?: [any], carryBag?: any) {
+  httpGet(id : string, queryParams?: {name:string,value:string}[], headers?: [any], carryBag?: any) {
     try {
       let url = this.urlMaps[id];
       let myParams = new URLSearchParams();

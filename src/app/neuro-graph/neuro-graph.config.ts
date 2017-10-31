@@ -36,7 +36,7 @@ export const allHttpMessages = {
 };
 export const urlMaps = {
     
-    "http:get:medications":"http://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/medications-orders/?pom_id=82043",
+    "http:get:medications":"http://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/medications-orders/",
     "http:get:edss": "https://private-anon-517d57d1fe-neuroshareapis.apiary-mock.com/neuroshare/api/ms/edss-score/?pom_id=82043",
     "http:get:cds:info": "http://private-anon-293c93a712-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds-info/",
     "http:get:cds:user:data": "https://private-anon-293c93a712-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/?pom_id=82043",
