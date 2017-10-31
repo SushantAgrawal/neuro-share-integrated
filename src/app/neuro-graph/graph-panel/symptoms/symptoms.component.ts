@@ -5,7 +5,6 @@ import { BrokerService } from '../../broker/broker.service';
 import { allMessages, allHttpMessages } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { NeuroGraphService } from '../../neuro-graph.service';
-
 @Component({
   selector: '[app-symptoms]',
   templateUrl: './symptoms.component.html',
@@ -98,7 +97,7 @@ export class SymptomsComponent implements OnInit {
                         trend.push({
                           index: 10,
                           x: cnt,
-                          score:elem.symptoms[i].score
+                          score: elem.symptoms[i].score
 
                         });
                         cnt = cnt + 20;
@@ -107,7 +106,7 @@ export class SymptomsComponent implements OnInit {
                         trend.push({
                           index: 20,
                           x: cnt,
-                          score:elem.symptoms[i].score
+                          score: elem.symptoms[i].score
 
                         });
                         cnt = cnt + 20;
@@ -116,17 +115,17 @@ export class SymptomsComponent implements OnInit {
                         trend.push({
                           index: 30,
                           x: cnt,
-                          score:elem.symptoms[i].score
+                          score: elem.symptoms[i].score
 
                         });
                         cnt = cnt + 20;
                       }
                       else if (elem.symptoms[i].score != "") {
                         trend.push({
-                          index:Number(elem.symptoms[i].score),
+                          index: Number(elem.symptoms[i].score),
                           x: cnt,
-                          score:elem.symptoms[i].score
-      
+                          score: elem.symptoms[i].score
+
                         });
                         cnt = cnt + 20;
                       }
@@ -135,53 +134,66 @@ export class SymptomsComponent implements OnInit {
                   }
 
                 });
-                if (element.symptoms[i].score == "Mild") {
-                  trend.push({
-                    index: 10,
-                    x: cnt,
-                    score:element.symptoms[i].score
+                if (prevCnt <= 0) {
+                  if (element.symptoms[i].score == "Mild") {
+                    trend.push({
+                      index: 10,
+                      x: cnt,
+                      score: element.symptoms[i].score
 
-                  });
-                  cnt = cnt + 20;
-                }
-                else if (element.symptoms[i].score == "Moderate") {
-                  trend.push({
-                    index: 20,
-                    x: cnt,
-                    score:element.symptoms[i].score
+                    });
+                    cnt = cnt + 20;
+                  }
+                  else if (element.symptoms[i].score == "Moderate") {
+                    trend.push({
+                      index: 20,
+                      x: cnt,
+                      score: element.symptoms[i].score
 
-                  });
-                  cnt = cnt + 20;
-                }
-                else if (element.symptoms[i].score == "Severe") {
-                  trend.push({
-                    index: 30,
-                    x: cnt,
-                    score:element.symptoms[i].score
+                    });
+                    cnt = cnt + 20;
+                  }
+                  else if (element.symptoms[i].score == "Severe") {
+                    trend.push({
+                      index: 30,
+                      x: cnt,
+                      score: element.symptoms[i].score
 
-                  });
-                  cnt = cnt + 20;
-                }
-                else if (element.symptoms[i].score != "") {
-                  trend.push({
-                    index:Number(element.symptoms[i].score),
-                    x: cnt,
-                    score:element.symptoms[i].score
+                    });
+                    cnt = cnt + 20;
+                  }
+                  else if (element.symptoms[i].score != "") {
+                    trend.push({
+                      index: Number(element.symptoms[i].score),
+                      x: cnt,
+                      score: element.symptoms[i].score
 
-                  });
-                  cnt = cnt + 20;
+                    });
+                    cnt = cnt + 20;
+                  }
                 }
 
                 if (newCnt == 0) {
                   symptomStatus = "New";
+                  trend = [];
 
                 }
                 if (prevCnt > 0) {
                   symptomStatus = "Previous";
                 }
+                let trendScore=0;
+                if(Number(element.symptoms[i].score))
+                {
+                  trendScore = (Number(element.symptoms[i].score))*10;
+                }
+                else{
+                  trendScore = element.symptoms[i].score;
+                }
                 var data = {
                   name: element.symptoms[i].title,
+                  nameTrend: element.symptoms[i].title.split(' ').join('_'),
                   score: element.symptoms[i].score,
+                  trendScore:trendScore,
                   qx_code: element.symptoms[i].qx_code,
                   symptomStatus: symptomStatus,
                   reportDate: reportedDate,
@@ -193,7 +205,7 @@ export class SymptomsComponent implements OnInit {
               }
               this.questionaireSymptomData.push({
                 questionnaireDate: element["qx_completed_at"],
-                status: element.status,
+                status: (element.status.charAt(0).toUpperCase() + element.status.substr(1).toLowerCase()),
                 "qx_id": element["qx_id"],
                 symptoms: symptomsDataLocal
 
@@ -276,7 +288,7 @@ export class SymptomsComponent implements OnInit {
     if (this.symptomsData.symptoms.length > 0) {
       this.symptomsData.symptoms.forEach(elems => {
         if (elems.trends.length > 1)
-          this.drawtrendLineSymptoms(elems.qxid, elems.score, elems.name, elems.trends)
+          this.drawtrendLineSymptoms(elems.qxid, elems.trendScore, elems.nameTrend, elems.trends)
       });
     }
 
@@ -285,6 +297,7 @@ export class SymptomsComponent implements OnInit {
     //debugger; 
     let maxValue = Math.max.apply(Math, trendData.map(function (o) { return o.index; }));
     let minValue = Math.min.apply(Math, trendData.map(function (o) { return o.index; }))
+   
     let scale = d3.scaleLinear()
       .domain([minValue, maxValue])
       .range([25, 15]);
