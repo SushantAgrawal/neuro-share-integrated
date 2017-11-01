@@ -48,8 +48,12 @@ export class RelapsesComponent implements OnInit {
       .filterOn(allHttpMessages.httpGetRelapse)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'relapses','state':false});                                                  
+          })
           : (() => {
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'relapses','state':false});            
             this.relapsesData = d.data.relapses;
             this.createChart();
             this.relapsisChartLoaded = true;
@@ -89,12 +93,21 @@ export class RelapsesComponent implements OnInit {
       .filter(t => t.data.checked)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'relapses','state':false});                                                  
+          })
           : (() => {
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'relapses','state':true});
             //make api call
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetRelapse);
+              .httpGet(allHttpMessages.httpGetRelapse, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
     let sub2 = relapses
@@ -123,7 +136,7 @@ export class RelapsesComponent implements OnInit {
           })();
       })
     //When zoom option changed
-    let sub4 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    let sub4 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.relapsisChartLoaded) {
           this.removeChart();

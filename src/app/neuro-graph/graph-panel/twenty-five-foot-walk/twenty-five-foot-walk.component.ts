@@ -42,7 +42,11 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .brokerService
       .filterOn(allHttpMessages.httpGetWalk25Feet)
       .subscribe(d => {
-        d.error ? console.log(d.error) : (() => {
+        d.error ? (() => {
+          console.log(d.error)
+          this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':false});                                                  
+        }) : (() => {
+          this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':false});                                  
           this.walk25FeetData = d.data["25fw_scores"];
           this.drawWalk25FeetAxis();
           this.drawWalk25FeetLineCharts();
@@ -57,8 +61,17 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let modal = this.brokerService.filterOn(allMessages.invokeAddWalk25Feet)
 
     let sub1 = walk25Feet.filter(t => t.data.checked).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
-        this.brokerService.httpGet(allHttpMessages.httpGetWalk25Feet);
+      d.error ? (() => {
+        console.log(d.error)
+        this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':false});                                                  
+      }) : (() => {
+        this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':true});                                          
+        this.brokerService.httpGet(allHttpMessages.httpGetWalk25Feet, [
+          {
+            name: 'pom_id',
+            value: this.neuroGraphService.get('queryParams').pom_id
+          }
+        ]);
       })();
     });
     let sub2 = walk25Feet.filter(t => !t.data.checked).subscribe(d => {
@@ -84,7 +97,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     })
 
     //When zoom option changed
-    let sub5 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    let sub5 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.Feet25WalkChartLoaded) {
           this.unloadChart();

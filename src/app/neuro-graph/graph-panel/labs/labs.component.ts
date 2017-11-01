@@ -4,6 +4,7 @@ import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
 import { allMessages, allHttpMessages, labsConfig } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import {NeuroGraphService} from '../../neuro-graph.service';
 
 @Component({
   selector: '[app-labs]',
@@ -25,7 +26,7 @@ export class LabsComponent implements OnInit {
   private isCollapsed: Boolean = true;
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService : NeuroGraphService) { }
 
   ngOnInit() {
     this.subscriptions = this
@@ -33,10 +34,14 @@ export class LabsComponent implements OnInit {
       .filterOn(allHttpMessages.httpGetLabs)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':false});                                                  
+          })
           : (() => {
             //debugger;
             //this.labsData = d.data.EPIC.labOrder;
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':false});                                              
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
             this.labsChartLoaded = true;
@@ -52,12 +57,21 @@ export class LabsComponent implements OnInit {
       .filter(t => t.data.checked)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':false});                                                  
+          })
           : (() => {
             //make api call
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':true});                                                          
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetLabs);
+              .httpGet(allHttpMessages.httpGetLabs, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
 
@@ -73,7 +87,7 @@ export class LabsComponent implements OnInit {
       })
 
     //When zoom option changed
-    let sub3 = this.brokerService.filterOn(allMessages.zoomOptionChange).subscribe(d => {
+    let sub3 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.labsChartLoaded) {
           this.removeChart();

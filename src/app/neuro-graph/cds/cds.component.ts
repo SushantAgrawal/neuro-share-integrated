@@ -111,7 +111,12 @@ export class CdsComponent implements OnInit {
       .httpGet(allHttpMessages.httpGetCdsInfo);
     this
       .brokerService
-      .httpGet(allHttpMessages.httpGetCdsUserData);
+      .httpGet(allHttpMessages.httpGetCdsUserData,[
+        {
+          name: 'pom_id',
+          value: this.neuroGraphService.get('queryParams').pom_id
+        }
+      ]);
     this
       .subscriptions
       .add(sub1)
