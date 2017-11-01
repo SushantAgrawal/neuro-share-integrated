@@ -173,7 +173,7 @@ export class EdssComponent implements OnInit {
         }
         else {
           this.unloadChart();
-          this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true })
+          this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true });
         }
       })();
     })
@@ -268,7 +268,7 @@ export class EdssComponent implements OnInit {
   }
 
   hasData() {
-    return Math.random() >= 0.5;
+    return true;// Math.random() >= 0.5;
   }
   //#endregion
 
