@@ -4,6 +4,7 @@ import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
 import { allMessages, allHttpMessages, labsConfig } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import {NeuroGraphService} from '../../neuro-graph.service';
 
 @Component({
   selector: '[app-labs]',
@@ -25,7 +26,7 @@ export class LabsComponent implements OnInit {
   private isCollapsed: Boolean = true;
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog) { }
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService : NeuroGraphService) { }
 
   ngOnInit() {
     this.subscriptions = this
@@ -65,7 +66,12 @@ export class LabsComponent implements OnInit {
             this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':true});                                                          
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetLabs);
+              .httpGet(allHttpMessages.httpGetLabs, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
 

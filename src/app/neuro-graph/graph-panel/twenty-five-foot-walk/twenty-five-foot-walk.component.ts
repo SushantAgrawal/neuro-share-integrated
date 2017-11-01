@@ -66,7 +66,12 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':false});                                                  
       }) : (() => {
         this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':true});                                          
-        this.brokerService.httpGet(allHttpMessages.httpGetWalk25Feet);
+        this.brokerService.httpGet(allHttpMessages.httpGetWalk25Feet, [
+          {
+            name: 'pom_id',
+            value: this.neuroGraphService.get('queryParams').pom_id
+          }
+        ]);
       })();
     });
     let sub2 = walk25Feet.filter(t => !t.data.checked).subscribe(d => {

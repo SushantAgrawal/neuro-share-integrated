@@ -4,6 +4,7 @@ import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
 import { allMessages, allHttpMessages } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import {NeuroGraphService} from '../../neuro-graph.service';
 
 @Component({
   selector: '[app-imaging]',
@@ -36,7 +37,7 @@ export class ImagingComponent implements OnInit {
   private reportDialogRef: any;
   private hasReportIcon: boolean = true;
   private hasBrainIcon: boolean = true;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog) { }
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService : NeuroGraphService) { }
 
   ngOnInit() {
     this.subscriptions = this
@@ -74,7 +75,12 @@ export class ImagingComponent implements OnInit {
             //make api call
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetImaging);
+              .httpGet(allHttpMessages.httpGetImaging, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
 
