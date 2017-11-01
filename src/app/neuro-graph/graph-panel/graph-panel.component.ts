@@ -73,7 +73,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     let sub3 = this.brokerService.filterOn(allMessages.toggleProgress).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         this.loadingProgressState[d.data.component] = d.data.state;
-        this.show = Object.keys(this.loadingProgressState).some(v => this.loadingProgressState[v] === true);
+        this.show = Object.keys(this.loadingProgressState).some(p => this.loadingProgressState[p] === true);
       })();
     })
     this.subscriptions = sub0.add(sub1).add(sub2).add(sub3);
