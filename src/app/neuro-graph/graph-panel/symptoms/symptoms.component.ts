@@ -397,7 +397,7 @@ export class SymptomsComponent implements OnInit {
       .attr('class', 'x-axis-arrow')
       .attr('d', this.pathUpdate)
       .attr('transform', d => {
-        return `translate(${(this.chartState.xScale(d.questionnaireDate_mod))},-10)`;
+        return `translate(${(this.chartState.xScale(d.questionnaireDate_mod))},-12)`;
       })
       .append('xhtml:span')
       .attr('class', 'icon-symptoms')
@@ -405,8 +405,12 @@ export class SymptomsComponent implements OnInit {
       .style("border-radius", "5px")
       .style("padding", "2px")
       .style("color", "#ffffff")
+      .style("font-size", "20px")
+      .style("width", "20px")
+      .style("height", "21px")
+      .style("display", "block")
       .attr("width", 30)
-      .attr("height", 30)
+      .attr("height", 30)     
       //.enter().append("image")
       //.attr("xlink:href", "https://github.com/favicon.ico")
       // .attr("width", 16)
