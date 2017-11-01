@@ -28,6 +28,8 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean = false;
   defaultScaleSpanInMonths = 36;
+  scaleMinDate = new Date(1970, 0, 1);
+  scaleMaxDate = new Date((new Date()).getFullYear(), 11, 31);
   graphSetting = GRAPH_SETTINGS;
   show: boolean = false;
   loadingProgressState = {
@@ -100,30 +102,28 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   }
 
   onZoomOptionChange(monthsSpan) {
-    let spanLastDate = new Date((new Date()).getFullYear(), 11, 31);
     this.state.zoomMonthsSpan = +monthsSpan;
-    this.setXDomain(+monthsSpan, spanLastDate);
+    this.setXDomain(+monthsSpan, this.scaleMaxDate);
     this.setXScale();
     this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
 
   onResetZoom() {
     this.state.zoomMonthsSpan = this.defaultScaleSpanInMonths;
-    this.setXDomain(this.defaultScaleSpanInMonths);
+    this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
     this.setXScale();
     this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
   //#endregion
 
   //#region State Related
-  setXDomain(montsSpan, spanLastDate?) {
-    let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
-    let momentSpanLastDate = this.neuroGraphService.moment(spanLastDate || scaleLastDate);
+  setXDomain(montsSpan, spanLastDate) {
+    let momentSpanLastDate = this.neuroGraphService.moment(spanLastDate);
     let output = {
-      scaleMinValue: new Date(1970, 0, 1),
-      scaleMaxValue: scaleLastDate,
+      scaleMinValue: this.scaleMinDate,
+      scaleMaxValue: this.scaleMaxDate,
       currentMinValue: momentSpanLastDate.clone().subtract(montsSpan, 'month').add(1, 'days').toDate(),
-      currentMaxValue: spanLastDate || scaleLastDate,
+      currentMaxValue: spanLastDate
     }
     this.state.xDomain = output;
   }
@@ -145,6 +145,8 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   //   }
   // }
 
+
+
   setXScale(): any {
     this.state.xScale = d3.scaleTime()
       .domain([this.state.xDomain.currentMinValue, this.state.xDomain.currentMaxValue])
@@ -164,7 +166,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
       marginLeft: GRAPH_SETTINGS.panel.marginLeft
     };
     this.state.zoomMonthsSpan = this.defaultScaleSpanInMonths;
-    this.setXDomain(this.defaultScaleSpanInMonths);
+    this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
     this.setXScale();
   }
 
@@ -177,7 +179,6 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
 
   //#region Scroll
   timelineScroll(direction) {
-    //temp
     if (direction == 'forward') {
       this.scrollForward();
     }

@@ -168,12 +168,14 @@ export class EdssComponent implements OnInit {
     //When zoom option changed
     let sub6 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        if (this.edssChartLoaded && this.hasData()) {
-          this.reloadChart();
-        }
-        else {
-          this.unloadChart();
-          this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true });
+        if (this.edssChartLoaded) {
+          if (this.hasData()) {
+            this.reloadChart();
+          }
+          else {
+            this.unloadChart();
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true });
+          }
         }
       })();
     })
