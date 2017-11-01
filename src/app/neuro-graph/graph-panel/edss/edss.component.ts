@@ -59,9 +59,9 @@ export class EdssComponent implements OnInit {
     let sub0 = obsEdss.filter(t => t.data.checked).subscribe(d => {
       d.error ? (() => {
         console.log(d.error)
-        this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':false});                                                  
+        this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': false });
       }) : (() => {
-        this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':true});                                                                  
+        this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': true });
         this.brokerService.httpGetMany('FETCH_EDSS_QUES', [
           { urlId: allHttpMessages.httpGetEdss },
           { urlId: allHttpMessages.httpGetAllQuestionnaire }
@@ -104,11 +104,11 @@ export class EdssComponent implements OnInit {
     //When both EDSS and Questionnaire data arrives
     let sub4 = this.brokerService.filterOn('FETCH_EDSS_QUES')
       .subscribe(d => {
-        d.error ?  (() => {
+        d.error ? (() => {
           console.log(d.error)
-          this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':false});                                                  
+          this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': false });
         }) : (() => {
-          this.brokerService.emit(allMessages.toggleProgress, {'component': 'edss','state':false});                                                                  
+          this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': false });
           let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
           let quesData = d.data[1][allHttpMessages.httpGetAllQuestionnaire].questionaires;
           //Use moment js later
@@ -163,8 +163,12 @@ export class EdssComponent implements OnInit {
     //When zoom option changed
     let sub6 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        if (this.edssChartLoaded) {
+        if (this.edssChartLoaded && this.hasData()) {
           this.reloadChart();
+        }
+        else {
+          this.unloadChart();
+          this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true })
         }
       })();
     })
@@ -256,6 +260,10 @@ export class EdssComponent implements OnInit {
     let config = { hasBackdrop: true, panelClass: 'ns-edss-theme', width: '200px' };
     this.edssScoreDetail = data;
     this.secondLayerDialogRef = this.dialog.open(this.edssSecondLevelTemplate, config);
+  }
+
+  hasData() {
+    return Math.random() >= 0.5;
   }
   //#endregion
 
@@ -522,7 +530,7 @@ export class EdssComponent implements OnInit {
     if (this.edssChartLoaded) {
       this.unloadChart();
       this.drawEdssYAxis();
-      if(this.virtualCaseloadLoaded){
+      if (this.virtualCaseloadLoaded) {
         this.drawVirtualCaseload();
       }
       this.drawEdssLineCharts();
