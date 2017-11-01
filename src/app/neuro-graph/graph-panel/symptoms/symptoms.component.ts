@@ -241,7 +241,12 @@ export class SymptomsComponent implements OnInit {
             this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':true});                                   
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetSymptoms);
+              .httpGet(allHttpMessages.httpGetSymptoms, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
     let sub2 = symptoms

@@ -102,7 +102,12 @@ export class RelapsesComponent implements OnInit {
             //make api call
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetRelapse);
+              .httpGet(allHttpMessages.httpGetRelapse, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
     let sub2 = relapses

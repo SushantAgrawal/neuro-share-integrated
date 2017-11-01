@@ -91,7 +91,12 @@ export class EdssComponent implements OnInit {
     let sub3 = this.brokerService.filterOn(allMessages.toggleVirtualCaseload).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (d.data.artifact == "add") {
-          this.brokerService.httpGet(allHttpMessages.httpGetVirtualCaseLoad);
+          this.brokerService.httpGet(allHttpMessages.httpGetVirtualCaseLoad, [
+            {
+              name: 'pom_id',
+              value: this.neuroGraphService.get('queryParams').pom_id
+            }
+          ]);
         }
         else {
           this.virtualCaseloadLoaded = false;
