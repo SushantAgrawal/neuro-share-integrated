@@ -28,6 +28,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean = false;
   defaultScaleSpanInMonths = 36;
+  dataBufferStartDate = new Date(2015, 0, 1);
   scaleMinDate = new Date(1970, 0, 1);
   scaleMaxDate = new Date((new Date()).getFullYear(), 11, 31);
   graphSetting = GRAPH_SETTINGS;
@@ -112,7 +113,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     this.state.zoomMonthsSpan = this.defaultScaleSpanInMonths;
     this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
     this.setXScale();
-    this.setDataAvailability(true);
+    this.setDataBufferPeriod('init');
     this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
   //#endregion
@@ -135,24 +136,6 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
       .range([0, this.state.canvasDimension.width])
   }
 
-  setDataAvailability(reset) {
-    if (!this.state.dataFetchDate || reset) {
-      this.state.dataFetchDate = {
-        fromDate: new Date(2014, 0, 1),
-        toDate: this.scaleMaxDate
-      }
-    }
-    else {
-      let mmtCurrentDataAvailableFrom = this.neuroGraphService.moment(this.state.dataFetchDate.fromDate);
-      let newFromDate = mmtCurrentDataAvailableFrom.clone().subtract(this.defaultScaleSpanInMonths, 'month').toDate();
-      let newToDate = mmtCurrentDataAvailableFrom.clone().subtract(1, 'days').toDate();
-      this.state.dataFetchDate = {
-        fromDate: newFromDate,
-        toDate: newToDate
-      }
-    }
-  }
-
   setDefaultState() {
     this.state = {};
     this.state.canvasDimension = {
@@ -168,15 +151,42 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     this.state.zoomMonthsSpan = this.defaultScaleSpanInMonths;
     this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
     this.setXScale();
-    this.setDataAvailability(true);
+    this.setDataBufferPeriod('init');
   }
 
   notifyUpdateAndDataShortage() {
-    //temp logging
     //console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
-    console.log('Data Date : ' + this.neuroGraphService.moment(this.state.dataFetchDate.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataFetchDate.toDate).format('MMMM Do YYYY'));
+    console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
     this.brokerService.emit(allMessages.graphScaleUpdated, { dataShortage: false });
   }
+
+  setDataBufferPeriod(opMode) {
+    if (opMode == 'backward') {
+      let mmtCurrentDataBufferFrom = this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate);
+      let newFromDate = mmtCurrentDataBufferFrom.clone().subtract(this.defaultScaleSpanInMonths, 'month').toDate();
+      let newToDate = mmtCurrentDataBufferFrom.clone().subtract(1, 'days').toDate();
+      this.state.dataBufferPeriod = {
+        fromDate: newFromDate,
+        toDate: newToDate
+      }
+    }
+    else if (opMode == 'forward') {
+      let mmtCurrentDataBufferUpto = this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate);
+      let newFromDate = mmtCurrentDataBufferUpto.clone().add(1, 'days').toDate();
+      let newToDate = mmtCurrentDataBufferUpto.clone().add(this.defaultScaleSpanInMonths, 'month').toDate();
+      this.state.dataBufferPeriod = {
+        fromDate: newFromDate,
+        toDate: newToDate
+      }
+    }
+    else {
+      this.state.dataBufferPeriod = {
+        fromDate: this.dataBufferStartDate,
+        toDate: this.scaleMaxDate
+      }
+    }
+  }
+
   //#endregion
 
   //#region Scroll
@@ -202,6 +212,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
       currentMaxValue
     };
     this.setXScale();
+    this.setDataBufferPeriod('forward');
     this.notifyUpdateAndDataShortage();
   }
 
@@ -218,7 +229,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
       currentMaxValue
     };
     this.setXScale();
-    this.setDataAvailability(false);
+    this.setDataBufferPeriod('backward');
     this.notifyUpdateAndDataShortage();
   }
   //#endregion
