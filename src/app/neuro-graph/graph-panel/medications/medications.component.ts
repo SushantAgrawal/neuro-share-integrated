@@ -69,7 +69,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       d.error
         ? (() => {
           console.log(d.error)
-          this.toggleProgress(false);
         })
         : (() => {
           this.prepareMedications(d.data);
@@ -82,7 +81,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           if (this.selectedMed[this.medType.otherMeds]) {
             this.drawOtherMeds();
           }
-          this.toggleProgress(false);
         })();
     });
     let neuroRelated = this.brokerService.filterOn(allMessages.neuroRelated);
@@ -147,22 +145,16 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleProgress(isBusy) {
-    this.brokerService.emit(allMessages.toggleProgress, { component: medication, state: isBusy });
-  }
-
   processMedication(neuroRelated, medication) {
     // A medication was checked
     let sub1 = neuroRelated.filter(t => t.data.artifact == medication && t.data.checked).subscribe(d => {
       d.error
         ? (() => {
           console.log(d.error)
-          this.toggleProgress(false);
         })
         : (() => {
           this.selectedMed[medication] = true;
           if (!this.hasData(medication)) {
-            this.toggleProgress(true);
             this.brokerService.httpGet(allHttpMessages.httpGetMedications, [
               {
                 name: 'pom_id',

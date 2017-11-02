@@ -62,20 +62,8 @@ export class EdssComponent implements OnInit {
         d.error
           ? (() => {
             console.log(d.error)
-            this
-              .brokerService
-              .emit(allMessages.toggleProgress, {
-                'component': 'edss',
-                'state': false
-              });
           })
           : (() => {
-            this
-              .brokerService
-              .emit(allMessages.toggleProgress, {
-                'component': 'edss',
-                'state': true
-              });
             this
               .brokerService
               .httpGetMany('FETCH_EDSS_QUES', [
@@ -178,20 +166,8 @@ export class EdssComponent implements OnInit {
         d.error
           ? (() => {
             console.log(d.error)
-            this
-              .brokerService
-              .emit(allMessages.toggleProgress, {
-                'component': 'edss',
-                'state': false
-              });
           })
           : (() => {
-            this
-              .brokerService
-              .emit(allMessages.toggleProgress, {
-                'component': 'edss',
-                'state': false
-              });
             let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
             let quesData = d.data[1][allHttpMessages.httpGetAllQuestionnaire].questionaires;
             //Use moment js later
