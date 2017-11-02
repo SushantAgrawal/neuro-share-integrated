@@ -44,9 +44,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .subscribe(d => {
         d.error ? (() => {
           console.log(d.error)
-          this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':false});                                                  
         }) : (() => {
-          this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':false});                                  
           this.walk25FeetData = d.data["25fw_scores"];
           this.drawWalk25FeetAxis();
           this.drawWalk25FeetLineCharts();
@@ -63,9 +61,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let sub1 = walk25Feet.filter(t => t.data.checked).subscribe(d => {
       d.error ? (() => {
         console.log(d.error)
-        this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':false});                                                  
       }) : (() => {
-        this.brokerService.emit(allMessages.toggleProgress, {'component': 'walk25feet','state':true});                                          
         this.brokerService.httpGet(allHttpMessages.httpGetWalk25Feet, [
           {
             name: 'pom_id',

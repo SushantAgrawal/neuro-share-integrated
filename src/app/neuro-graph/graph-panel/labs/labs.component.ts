@@ -36,12 +36,10 @@ export class LabsComponent implements OnInit {
         d.error
           ? (() => {
             console.log(d.error)
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':false});                                                  
           })
           : (() => {
             //debugger;
             //this.labsData = d.data.EPIC.labOrder;
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':false});                                              
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
             this.labsChartLoaded = true;
@@ -59,11 +57,9 @@ export class LabsComponent implements OnInit {
         d.error
           ? (() => {
             console.log(d.error)
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':false});                                                  
           })
           : (() => {
             //make api call
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'labs','state':true});                                                          
             this
               .brokerService
               .httpGet(allHttpMessages.httpGetLabs, [

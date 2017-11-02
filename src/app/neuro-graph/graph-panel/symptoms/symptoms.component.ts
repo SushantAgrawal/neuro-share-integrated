@@ -46,12 +46,10 @@ export class SymptomsComponent implements OnInit {
         d.error
           ? (() => {
             console.log(d.error)
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':false});                                                  
           })
           : (() => {
             //debugger;
             //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':false});                        
             this.questionaireData = d.data.questionaires.map(d => {
               return {
                 ...d,
@@ -235,12 +233,10 @@ export class SymptomsComponent implements OnInit {
         d.error
           ? (() => {
             console.log(d.error)
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':false});                                                  
           })
           : (() => {
             //debugger;
             //make api call
-            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':true});                                   
             this
               .brokerService
               .httpGet(allHttpMessages.httpGetSymptoms, [

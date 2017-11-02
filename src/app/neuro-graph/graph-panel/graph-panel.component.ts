@@ -32,7 +32,6 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   scaleMinDate = new Date(1970, 0, 1);
   scaleMaxDate = new Date((new Date()).getFullYear(), 11, 31);
   graphSetting = GRAPH_SETTINGS;
-  show: boolean = true;
   loadingProgressState = {
     labs: false,
     imaging: false,
@@ -74,13 +73,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
           this.timelineScroll(d.data);
         })();
     });
-    let sub3 = this.brokerService.filterOn(allMessages.toggleProgress).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
-        this.loadingProgressState[d.data.component] = d.data.state;
-        this.show = Object.keys(this.loadingProgressState).some(p => this.loadingProgressState[p]);
-      })();
-    })
-    this.subscriptions = sub0.add(sub1).add(sub2).add(sub3);
+    this.subscriptions = sub0.add(sub1).add(sub2);
   }
 
   ngOnDestroy() {
@@ -104,9 +97,9 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
 
   onZoomOptionChange(monthsSpan) {
     this.state.zoomMonthsSpan = +monthsSpan;
-    this.setXDomain(+monthsSpan, this.scaleMaxDate);
+    this.setXDomain(+monthsSpan, this.state.dataBufferPeriod.toDate);
     this.setXScale();
-    this.brokerService.emit(allMessages.graphScaleUpdated, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: false });
   }
 
   onResetZoom() {
@@ -114,7 +107,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
     this.setXScale();
     this.setDataBufferPeriod('init');
-    this.brokerService.emit(allMessages.graphScaleUpdated, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: true });
   }
   //#endregion
 
@@ -156,33 +149,47 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
 
   notifyUpdateAndDataShortage() {
     //console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
-    console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
-    this.brokerService.emit(allMessages.graphScaleUpdated, { dataShortage: false });
+    //console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
+    //console.log(this.state.dataBufferPeriod.dataAvailable ? 'data available' : 'need fresh data');
+    this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: !this.state.dataBufferPeriod.dataAvailable });
   }
 
   setDataBufferPeriod(opMode) {
     if (opMode == 'backward') {
-      let mmtCurrentDataBufferFrom = this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate);
-      let newFromDate = mmtCurrentDataBufferFrom.clone().subtract(this.defaultScaleSpanInMonths, 'month').toDate();
-      let newToDate = mmtCurrentDataBufferFrom.clone().subtract(1, 'days').toDate();
-      this.state.dataBufferPeriod = {
-        fromDate: newFromDate,
-        toDate: newToDate
+      if (this.state.xDomain.currentMinValue < this.state.dataBufferPeriod.fromDate) {
+        let mmtCurrentDataBufferFrom = this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate);
+        let newFromDate = mmtCurrentDataBufferFrom.clone().subtract(this.defaultScaleSpanInMonths, 'month').toDate();
+        let newToDate = mmtCurrentDataBufferFrom.clone().subtract(1, 'days').toDate();
+        this.state.dataBufferPeriod = {
+          fromDate: newFromDate,
+          toDate: newToDate,
+          dataAvailable: false
+        }
+      }
+      else {
+        this.state.dataBufferPeriod.dataAvailable = true;
       }
     }
     else if (opMode == 'forward') {
-      let mmtCurrentDataBufferUpto = this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate);
-      let newFromDate = mmtCurrentDataBufferUpto.clone().add(1, 'days').toDate();
-      let newToDate = mmtCurrentDataBufferUpto.clone().add(this.defaultScaleSpanInMonths, 'month').toDate();
-      this.state.dataBufferPeriod = {
-        fromDate: newFromDate,
-        toDate: newToDate
+      if (this.state.xDomain.currentMaxValue > this.state.dataBufferPeriod.toDate) {
+        let mmtCurrentDataBufferUpto = this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate);
+        let newFromDate = mmtCurrentDataBufferUpto.clone().add(1, 'days').toDate();
+        let newToDate = mmtCurrentDataBufferUpto.clone().add(this.defaultScaleSpanInMonths, 'month').toDate();
+        this.state.dataBufferPeriod = {
+          fromDate: newFromDate,
+          toDate: newToDate,
+          dataAvailable: false
+        }
+      }
+      else {
+        this.state.dataBufferPeriod.dataAvailable = true;
       }
     }
     else {
       this.state.dataBufferPeriod = {
         fromDate: this.dataBufferStartDate,
-        toDate: this.scaleMaxDate
+        toDate: this.scaleMaxDate,
+        dataAvailable: true
       }
     }
   }
