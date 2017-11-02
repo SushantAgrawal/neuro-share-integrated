@@ -306,11 +306,35 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .brokerService
       .httpGetMany(manyHttpMessages.httpGetMedicationSecondLayerApiCall, [
         {
-          urlId: allHttpMessages.httpGetDmt
+          urlId: allHttpMessages.httpGetDmt,queryParams: [
+            {
+              name: 'pom_id',
+              value: this
+                .neuroGraphService
+                .get('queryParams')
+                .pom_id
+            }
+          ]
         }, {
-          urlId: allHttpMessages.httpGetOtherMeds
+          urlId: allHttpMessages.httpGetOtherMeds,queryParams: [
+            {
+              name: 'pom_id',
+              value: this
+                .neuroGraphService
+                .get('queryParams')
+                .pom_id
+            }
+          ]
         }, {
-          urlId: allHttpMessages.httpGetRelapse
+          urlId: allHttpMessages.httpGetRelapse,queryParams: [
+            {
+              name: 'pom_id',
+              value: this
+                .neuroGraphService
+                .get('queryParams')
+                .pom_id
+            }
+          ]
         }
       ]);
     let secondLayerApiCallSub = this
