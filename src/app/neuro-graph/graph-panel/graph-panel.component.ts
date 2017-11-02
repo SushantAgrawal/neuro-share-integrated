@@ -1,5 +1,5 @@
 
-import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
 import { BrokerService } from '../broker/broker.service';
@@ -18,7 +18,7 @@ import { EdssComponent } from '../graph-panel/edss/edss.component';
   styleUrls: ['./graph-panel.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class GraphPanelComponent implements OnInit {
+export class GraphPanelComponent implements OnInit, OnDestroy {
 
   //#region Fields
   @ViewChild('virtualCaseloadInfoTemplate') virtualCaseloadInfoTemplate: TemplateRef<any>;
@@ -27,7 +27,20 @@ export class GraphPanelComponent implements OnInit {
   virtualCaseloadInfoDialogRef: MdDialogRef<any>;
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean = false;
+  defaultScaleSpanInMonths = 36;
+  scaleMinDate = new Date(1970, 0, 1);
+  scaleMaxDate = new Date((new Date()).getFullYear(), 11, 31);
   graphSetting = GRAPH_SETTINGS;
+  show: boolean = false;
+  loadingProgressState = {
+    labs: false,
+    imaging: false,
+    relapses: false,
+    symptoms: false,
+    edss: false,
+    walk25feet: false,
+    medication: false
+  };
   //#endregion
 
   //#region Constructor
@@ -37,7 +50,7 @@ export class GraphPanelComponent implements OnInit {
 
   //#region Lifecycle events
   ngOnInit() {
-    this.state = this.getDefaultState();
+    this.setDefaultState();
     let obsEdss = this.brokerService.filterOn(allMessages.neuroRelated).filter(t => (t.data.artifact == 'edss'));
     let sub0 = obsEdss.filter(t => t.data.checked).subscribe(d => {
       d.error
@@ -60,8 +73,13 @@ export class GraphPanelComponent implements OnInit {
           this.timelineScroll(d.data);
         })();
     });
-
-    this.subscriptions = sub0.add(sub1).add(sub2);
+    let sub3 = this.brokerService.filterOn(allMessages.toggleProgress).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        this.loadingProgressState[d.data.component] = d.data.state;
+        this.show = Object.keys(this.loadingProgressState).some(p => this.loadingProgressState[p]);
+      })();
+    })
+    this.subscriptions = sub0.add(sub1).add(sub2).add(sub3);
   }
 
   ngOnDestroy() {
@@ -84,47 +102,60 @@ export class GraphPanelComponent implements OnInit {
   }
 
   onZoomOptionChange(monthsSpan) {
-    let spanLastDate = new Date((new Date()).getFullYear(), 11, 31);
     this.state.zoomMonthsSpan = +monthsSpan;
-    this.state.xDomain = this.getXDomain(+monthsSpan, spanLastDate);
-    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.setXDomain(+monthsSpan, this.scaleMaxDate);
+    this.setXScale();
     this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
 
   onResetZoom() {
-    this.state.zoomMonthsSpan = 36;
-    this.state.xDomain = this.getXDomain(36);
-    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
+    this.state.zoomMonthsSpan = this.defaultScaleSpanInMonths;
+    this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
+    this.setXScale();
     this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
   //#endregion
 
   //#region State Related
-  getXDomain(montsSpan, spanLastDate?) {
-    let scaleLastDate = new Date((new Date()).getFullYear(), 11, 31);
-    let momentSpanLastDate = this.neuroGraphService.moment(spanLastDate || scaleLastDate);
+  setXDomain(montsSpan, spanLastDate) {
+    let momentSpanLastDate = this.neuroGraphService.moment(spanLastDate);
     let output = {
-      scaleMinValue: new Date(1970, 0, 1),
-      scaleMaxValue: scaleLastDate,
-      currentMinValue: momentSpanLastDate
-        .clone()
-        .subtract(montsSpan, 'month')
-        .add(1, 'days')
-        .toDate(),
-      currentMaxValue: spanLastDate || scaleLastDate,
+      scaleMinValue: this.scaleMinDate,
+      scaleMaxValue: this.scaleMaxDate,
+      currentMinValue: momentSpanLastDate.clone().subtract(montsSpan, 'month').add(1, 'days').toDate(),
+      currentMaxValue: spanLastDate
     }
-    return output;
+    this.state.xDomain = output;
   }
 
-  getXScale(dimension, xDomain): any {
-    return d3.scaleTime()
-      .domain([xDomain.currentMinValue, xDomain.currentMaxValue])
-      .range([0, dimension.width])
+  // setDataAvailability() {
+  //   let momentScaleLastDate = this.neuroGraphService.moment(this.state.xDomain.scaleMaxValue);
+  //   //to do logic
+  //   if (this.state.xDomain.currentMinValue < this.state.dataAvailability.dataAvailableFrom) {
+  //     let dataAvailableFrom = momentScaleLastDate.clone().subtract(this.defaultScaleSpanInMonths, 'month').add(1, 'days').toDate();
+  //   }
+  //   else {
+
+  //   }
+  //   let dataAvailableFrom = momentScaleLastDate.clone().subtract(this.defaultScaleSpanInMonths, 'month').add(1, 'days').toDate();
+  //   let dataAvailableUpto = this.state.xDomain.scaleMaxValue;
+  //   this.state.dataAvailability = {
+  //     dataAvailableFrom,
+  //     dataAvailableUpto
+  //   }
+  // }
+
+
+
+  setXScale(): any {
+    this.state.xScale = d3.scaleTime()
+      .domain([this.state.xDomain.currentMinValue, this.state.xDomain.currentMaxValue])
+      .range([0, this.state.canvasDimension.width])
   }
 
-  getDefaultState() {
-    let state: any = {};
-    state.canvasDimension = {
+  setDefaultState() {
+    this.state = {};
+    this.state.canvasDimension = {
       offsetHeight: GRAPH_SETTINGS.panel.offsetHeight,
       offsetWidth: GRAPH_SETTINGS.panel.offsetWidth,
       height: GRAPH_SETTINGS.panel.offsetHeight - GRAPH_SETTINGS.panel.marginTop - GRAPH_SETTINGS.panel.marginBottom,
@@ -134,10 +165,15 @@ export class GraphPanelComponent implements OnInit {
       marginBottom: GRAPH_SETTINGS.panel.marginBottom,
       marginLeft: GRAPH_SETTINGS.panel.marginLeft
     };
-    state.zoomMonthsSpan = 36;
-    state.xDomain = this.getXDomain(36);
-    state.xScale = this.getXScale(state.canvasDimension, state.xDomain);
-    return state;
+    this.state.zoomMonthsSpan = this.defaultScaleSpanInMonths;
+    this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
+    this.setXScale();
+  }
+
+  notifyUpdateAndDataShortage() {
+    //temp logging
+    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
+    this.brokerService.emit(allMessages.graphScaleUpdated, { dataShortage: false });
   }
   //#endregion
 
@@ -149,12 +185,6 @@ export class GraphPanelComponent implements OnInit {
     else {
       this.scrollBackward();
     }
-  }
-
-  updateScale() {
-    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
-    this.state.xScale = this.getXScale(this.state.canvasDimension, this.state.xDomain);
-    this.brokerService.emit(allMessages.graphScaleUpdated, null);
   }
 
   scrollForward() {
@@ -169,7 +199,8 @@ export class GraphPanelComponent implements OnInit {
       currentMinValue,
       currentMaxValue
     };
-    this.updateScale();
+    this.setXScale();
+    this.notifyUpdateAndDataShortage();
   }
 
   scrollBackward() {
@@ -184,7 +215,8 @@ export class GraphPanelComponent implements OnInit {
       currentMinValue,
       currentMaxValue
     };
-    this.updateScale();
+    this.setXScale();
+    this.notifyUpdateAndDataShortage();
   }
   //#endregion
 }

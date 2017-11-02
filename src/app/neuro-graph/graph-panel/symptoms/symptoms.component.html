@@ -7,36 +7,45 @@
   </div>
   <div class="modal-body">
     <div class="symptoms-container">
-      <div class="ns-symptoms-header">
-        <div class="ns-symptoms-quesHeaderLeft">Questionnaire Status</div>
-        <div class="ns-symptoms-quesHeader">Last Questionnaire Date</div>
-      </div>
-      <div class="ns-symptoms-header">
-        <div class="ns-symptoms-quesHeaderLeft font-small">{{symptomsData.status}}</div>
-        <div class="ns-symptoms-quesHeader font-small">{{symptomsData.questionnaireDate | date: 'dd/MM/yyyy'}} </div>
-      </div>
-      <div class="ns-symptoms-header">
-        <div class="ns-symptoms-ordered">Patient Reported Symptoms</div>
-        <div class="ns-symptoms-status">Status</div>
-        <div class="ns-symptoms-trend">Trend</div>
-        <div class="ns-symptoms-quest">Questionnaire</div>
-      </div>
+
+<div class="ns-symtoms-head-panel">
+  <div class="ns-symtoms-item">
+    <div class="ns-symtoms-header">Questionnaire Status</div>
+    <div class="ns-symtoms-value">{{symptomsData.status}}</div>
+  </div>
+  <div class="ns-symtoms-item">
+    <div class="ns-symtoms-header">Last Questionnaire Date</div>
+    <div class="ns-symtoms-value">{{symptomsData.questionnaireDate | date: 'dd/MM/yyyy'}} </div>
+  </div>
+</div>
+
+<div class="ns-symptoms-header">
+  <div class="ns-symptoms-reported">Patient Reported <br/> Symptoms</div>
+  <div class="ns-symptoms-status">Status</div>
+  <div class="ns-symptoms-trend">Trend</div>
+  <div class="ns-symptoms-quest">Questionnaire</div>
+</div>
+
+      
       <div class="ns-symptoms-items-container">
         <div class="ns-symptoms-row" *ngFor="let symp of symptomsData.symptoms;">
-          <div class="ns-small-bar ns-symptoms-grey"></div>
+          <div class="ns-small-bar"></div>
           <div class="ns-order-symptoms-box">
             <span class="ns-symptoms-name">{{symp.name}}</span>
-            <div class="ns-symptoms-reportDate">
+            <div class="ns-symtoms-date-box">
+            <span class="ns-symptoms-reportDate">
               Reported {{symp.reportDate | date: 'dd/MM/yyyy'}}
+            </span>
+            <span class="ns-symptoms-previous" *ngIf="symp.symptomStatus=='Previous'">
+                {{symp.symptomStatus}}
+              </span>
+              <span class="ns-symptoms-new" *ngIf="symp.symptomStatus=='New'">
+                {{symp.symptomStatus}}
+              </span>
             </div>
-            <div class="ns-symptoms-type-grey" *ngIf="symp.symptomStatus=='Previous'">
-              {{symp.symptomStatus}}
-            </div>
-            <div class="ns-symptoms-type-red" *ngIf="symp.symptomStatus=='New'">
-              {{symp.symptomStatus}}
-            </div>
+            
           </div>
-          <span class="ns-small-box-text">{{symp.score}}</span>
+          <div class="ns-small-box-text">{{symp.score}}</div>
           <div class="ns-symptoms-trend-box" id="TrendLine_{{symp.qxid}}_{{symp.trendScore}}_{{symp.nameTrend}}"></div>
           
           <div class="ns-symptoms-quest-unit">
@@ -55,16 +64,15 @@
     </button>
   </div>
   <div class="modal-body">
-    <div class="symptoms-container">
+    <div class="symptoms-container-qx">
       <div >
-        <div class="ns-symptoms-row" *ngFor="let sympDetails of symptomsDataDetails.questData[0];">
-          <div class="ns-symptoms-row">
-            <span class="ns-symptoms-name-quest">{{sympDetails["qx_code"]}} {{sympDetails["qx_text"]}}</span>
-          </div>
-          <div class="ns-symptoms-row" *ngFor="let sympAns of sympDetails['answer_options'];">
+        <div class="ns-symptoms-qx" *ngFor="let sympDetails of symptomsDataDetails.questData[0];">
+          
+          <span class="ns-symptoms-name-quest">{{sympDetails["qx_code"]}} {{sympDetails["qx_text"]}}</span>
+          
+          <div *ngFor="let sympAns of sympDetails['answer_options'];">
             <span class="ns-symptoms-name-det" *ngIf="sympAns!=sympDetails['answer_text']">{{sympAns}}</span>
             <span class="ns-symptoms-name-red" *ngIf="sympAns==sympDetails['answer_text']">{{sympAns}}</span>
-
           </div>
         </div>
       </div>

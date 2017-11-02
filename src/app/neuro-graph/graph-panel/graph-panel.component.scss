@@ -70,3 +70,21 @@
     .graph-symbols-close i{font-size: 10pt;}
     .ns-legend{padding: 10px;}
 }
+.loader{
+    position: absolute;
+    float: right;
+    top: 250px;
+    width: 500px;
+    left: 100px;
+}
+.loader-hidden {
+    visibility: hidden;
+}
+.loader-overlay {
+    position: absolute;
+    width:100%;
+    top:0;
+    left: 0;
+    opacity: 1;
+    z-index: 500000;
+}

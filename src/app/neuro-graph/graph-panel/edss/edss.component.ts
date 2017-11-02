@@ -57,7 +57,11 @@ export class EdssComponent implements OnInit {
     let obsEdss = this.brokerService.filterOn(allMessages.neuroRelated).filter(t => (t.data.artifact == 'edss'));
     //When EDSS checked
     let sub0 = obsEdss.filter(t => t.data.checked).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
+      d.error ? (() => {
+        console.log(d.error)
+        this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': false });
+      }) : (() => {
+        this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': true });
         this.brokerService.httpGetMany('FETCH_EDSS_QUES', [
           { urlId: allHttpMessages.httpGetEdss },
           { urlId: allHttpMessages.httpGetAllQuestionnaire }
@@ -87,7 +91,12 @@ export class EdssComponent implements OnInit {
     let sub3 = this.brokerService.filterOn(allMessages.toggleVirtualCaseload).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (d.data.artifact == "add") {
-          this.brokerService.httpGet(allHttpMessages.httpGetVirtualCaseLoad);
+          this.brokerService.httpGet(allHttpMessages.httpGetVirtualCaseLoad, [
+            {
+              name: 'pom_id',
+              value: this.neuroGraphService.get('queryParams').pom_id
+            }
+          ]);
         }
         else {
           this.virtualCaseloadLoaded = false;
@@ -100,7 +109,11 @@ export class EdssComponent implements OnInit {
     //When both EDSS and Questionnaire data arrives
     let sub4 = this.brokerService.filterOn('FETCH_EDSS_QUES')
       .subscribe(d => {
-        d.error ? console.log(d.error) : (() => {
+        d.error ? (() => {
+          console.log(d.error)
+          this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': false });
+        }) : (() => {
+          this.brokerService.emit(allMessages.toggleProgress, { 'component': 'edss', 'state': false });
           let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
           let quesData = d.data[1][allHttpMessages.httpGetAllQuestionnaire].questionaires;
           //Use moment js later
@@ -156,7 +169,13 @@ export class EdssComponent implements OnInit {
     let sub6 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.edssChartLoaded) {
-          this.reloadChart();
+          if (this.hasData()) {
+            this.reloadChart();
+          }
+          else {
+            this.unloadChart();
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true });
+          }
         }
       })();
     })
@@ -248,6 +267,10 @@ export class EdssComponent implements OnInit {
     let config = { hasBackdrop: true, panelClass: 'ns-edss-theme', width: '200px' };
     this.edssScoreDetail = data;
     this.secondLayerDialogRef = this.dialog.open(this.edssSecondLevelTemplate, config);
+  }
+
+  hasData() {
+    return true;// Math.random() >= 0.5;
   }
   //#endregion
 
@@ -514,7 +537,7 @@ export class EdssComponent implements OnInit {
     if (this.edssChartLoaded) {
       this.unloadChart();
       this.drawEdssYAxis();
-      if(this.virtualCaseloadLoaded){
+      if (this.virtualCaseloadLoaded) {
         this.drawVirtualCaseload();
       }
       this.drawEdssLineCharts();

@@ -4,29 +4,36 @@ import {
   Input,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  OnDestroy
 } from '@angular/core';
-import {MdDialog, MdDialogRef} from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
-import {BrokerService} from '../../broker/broker.service';
-import {allMessages, allHttpMessages, manyHttpMessages, medication, GRAPH_SETTINGS} from '../../neuro-graph.config';
-import {searchObject} from '../../neuro-graph.helper';
-import {NeuroGraphService} from '../../neuro-graph.service';
+import { BrokerService } from '../../broker/broker.service';
+import { allMessages, allHttpMessages, manyHttpMessages, medication, GRAPH_SETTINGS } from '../../neuro-graph.config';
+import { searchObject } from '../../neuro-graph.helper';
+import { NeuroGraphService } from '../../neuro-graph.service';
 
-@Component({selector: '[app-medications]', templateUrl: './medications.component.html', styleUrls: ['./medications.component.scss'], encapsulation: ViewEncapsulation.None})
-export class MedicationsComponent implements OnInit {
-  @ViewChild('dmtSecondLevelTemplate')private dmtSecondLevelTemplate : TemplateRef < any >;
-  @ViewChild('vitaminDSecondLevelTemplate')private vitaminDSecondLevelTemplate : TemplateRef < any >;
-  @ViewChild('otherMedsSecondLevelTemplate')private otherMedsSecondLevelTemplate : TemplateRef < any >;
-  @Input()private chartState : any;
+@Component({
+  selector: '[app-medications]',
+  templateUrl: './medications.component.html',
+  styleUrls: ['./medications.component.scss'],
+  encapsulation: ViewEncapsulation.None
+})
+export class MedicationsComponent implements OnInit, OnDestroy {
+  @ViewChild('dmtSecondLevelTemplate') private dmtSecondLevelTemplate: TemplateRef<any>;
+  @ViewChild('vitaminDSecondLevelTemplate') private vitaminDSecondLevelTemplate: TemplateRef<any>;
+  @ViewChild('otherMedsSecondLevelTemplate') private otherMedsSecondLevelTemplate: TemplateRef<any>;
+  @Input() private chartState: any;
 
   public graphDimension = GRAPH_SETTINGS.panel;
-  private dialogRef : MdDialogRef < any >;
-  private medSecondLayerModel : any;
-  private subscriptions : any;
-  private dmtArray : Array < any > = [];
-  private vitaminDArray : Array < any > = [];
-  private otherMedsArray : Array < any > = [];
+  private dialogRef: MdDialogRef<any>;
+  private medSecondLayerModel: any;
+  private subscriptions: any;
+  private allMedicationData: Array<any> = [];
+  private dmtArray: Array<any> = [];
+  private vitaminDArray: Array<any> = [];
+  private otherMedsArray: Array<any> = [];
   private selectedMed = {
     dmt: false,
     otherMeds: false,
@@ -37,9 +44,9 @@ export class MedicationsComponent implements OnInit {
     otherMeds: 'otherMeds',
     vitaminD: 'vitaminD'
   };
-  private dmtSecondLayerLocalData : Array < any >;
-  private otherMedsSecondLayerLocalData : Array < any >;
-  private relapsesLocalData : Array < any >;
+  private dmtSecondLayerLocalData: Array<any>;
+  private otherMedsSecondLayerLocalData: Array<any>;
+  private relapsesLocalData: Array<any>;
   private months = [
     'January',
     'February',
@@ -55,51 +62,66 @@ export class MedicationsComponent implements OnInit {
     'December'
   ];
 
-  constructor(private brokerService : BrokerService, private dialog : MdDialog, private neuroGraphService : NeuroGraphService) {}
+  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) { }
 
   ngOnInit() {
-    this.subscriptions = this
-      .brokerService
-      .filterOn(allHttpMessages.httpGetMedications)
-      .subscribe(d => {
-        d.error
-          ? console.log(d.error)
-          : (() => {
-            this.prepareMedications(d.data);
-            if (this.selectedMed[this.medType.dmt]) {
-              this.drawDmt();
-            }
-            if (this.selectedMed[this.medType.vitaminD]) {
-              this.drawVitaminD();
-            }
-            if (this.selectedMed[this.medType.otherMeds]) {
-              this.drawOtherMeds();
-            }
-          })();
-      });
-    let neuroRelated = this
-      .brokerService
-      .filterOn(allMessages.neuroRelated);
+    this.subscriptions = this.brokerService.filterOn(allHttpMessages.httpGetMedications).subscribe(d => {
+      d.error
+        ? (() => {
+          console.log(d.error)
+          this.toggleProgress(false);
+        })
+        : (() => {
+          this.prepareMedications(d.data);
+          if (this.selectedMed[this.medType.dmt]) {
+            this.drawDmt();
+          }
+          if (this.selectedMed[this.medType.vitaminD]) {
+            this.drawVitaminD();
+          }
+          if (this.selectedMed[this.medType.otherMeds]) {
+            this.drawOtherMeds();
+          }
+          this.toggleProgress(false);
+        })();
+    });
+    let neuroRelated = this.brokerService.filterOn(allMessages.neuroRelated);
     this.processMedication(neuroRelated, this.medType.dmt);
     this.processMedication(neuroRelated, this.medType.vitaminD);
     this.processMedication(neuroRelated, this.medType.otherMeds);
-    let subZoom = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
+
+    let subScaleUpdate = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.selectedMed.dmt) {
           this.removeDmt();
-          this.drawDmt();
+          if (this.hasData(this.medType.dmt)) {
+            this.drawDmt();
+          }
+          else {
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.dmt, checked: true });
+          }
         }
         if (this.selectedMed.otherMeds) {
           this.removeOtherMeds();
-          this.drawOtherMeds();
+          if (this.hasData(this.medType.otherMeds)) {
+            this.drawOtherMeds();
+          }
+          else {
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.otherMeds, checked: true });
+          }
         }
         if (this.selectedMed.vitaminD) {
           this.removeVitaminD();
-          this.drawVitaminD();
+          if (this.hasData(this.medType.vitaminD)) {
+            this.drawOtherMeds();
+          }
+          else {
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.vitaminD, checked: true });
+          }
         }
       })();
     })
-    this.subscriptions.add(subZoom);
+    this.subscriptions.add(subScaleUpdate);
 
     // This 'setSecondLayerData' is temporary and used to set a local data source.
     // Will be removed once apis are ready.
@@ -108,29 +130,56 @@ export class MedicationsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this
-      .subscriptions
-      .unsubscribe();
+    this.subscriptions.unsubscribe();
+  }
+
+  hasData(medication) {
+    //check date range
+    switch (medication) {
+      case this.medType.dmt:
+        return this.dmtArray.length > 0;
+      case this.medType.vitaminD:
+        return this.vitaminDArray.length > 0;
+      case this.medType.otherMeds:
+        return this.otherMedsArray.length > 0;
+      default:
+        return false;
+    }
+  }
+
+  toggleProgress(isBusy) {
+    this.brokerService.emit(allMessages.toggleProgress, { component: medication, state: isBusy });
   }
 
   processMedication(neuroRelated, medication) {
     // A medication was checked
-    let sub1 = neuroRelated.filter(t => {
-      return ((t.data.artifact == medication) && (t.data.checked))
-    }).subscribe(d => {
+    let sub1 = neuroRelated.filter(t => t.data.artifact == medication && t.data.checked).subscribe(d => {
       d.error
-        ? console.log(d.error)
+        ? (() => {
+          console.log(d.error)
+          this.toggleProgress(false);
+        })
         : (() => {
           this.selectedMed[medication] = true;
-          // let queryParams = ;
-          this
-            .brokerService
-            .httpGet(allHttpMessages.httpGetMedications, [
+          if (!this.hasData(medication)) {
+            this.toggleProgress(true);
+            this.brokerService.httpGet(allHttpMessages.httpGetMedications, [
               {
                 name: 'pom_id',
                 value: this.neuroGraphService.get('queryParams').pom_id
               }
             ]);
+          }
+          else {
+            switch (medication) {
+              case this.medType.dmt:
+                this.drawDmt();
+              case this.medType.vitaminD:
+                this.drawVitaminD();
+              case this.medType.otherMeds:
+                this.drawOtherMeds();
+            }
+          }
         })();
     })
 
@@ -158,7 +207,7 @@ export class MedicationsComponent implements OnInit {
   }
 
   prepareMedications(data) {
-    let medicationOrders : Array < any > = [];
+    let medicationOrders: Array<any> = [];
     data && data.EPIC && data.EPIC.patients && (data.EPIC.patients.length > 0) && (medicationOrders = data.EPIC.patients[0].medicationOrders);
     let genericNames = medication
       .dmt
@@ -195,7 +244,7 @@ export class MedicationsComponent implements OnInit {
 
   //Clean up needed
   getSecondLayerModel(data, medType, secondLayerData) {
-    let model : any = {
+    let model: any = {
       orderIdentifier: data.orderIdentifier,
       name: data.name,
       simpleGenericName: data.medication.simple_generic_name,
@@ -370,7 +419,7 @@ export class MedicationsComponent implements OnInit {
           .dialog
           .open(this.dmtSecondLevelTemplate, config);
       } else {
-        let subsc : any;
+        let subsc: any;
         this
           .brokerService
           .httpGet(allHttpMessages.httpGetDmt);
@@ -430,7 +479,7 @@ export class MedicationsComponent implements OnInit {
           .dialog
           .open(this.otherMedsSecondLevelTemplate, config);
       } else {
-        let subsc : any;
+        let subsc: any;
         this
           .brokerService
           .httpGet(allHttpMessages.httpGetOtherMeds);
@@ -473,7 +522,7 @@ export class MedicationsComponent implements OnInit {
   }
 
   getEndDate(input) {
-    if (input) 
+    if (input)
       return Date.parse(input)
     return this.chartState.xDomain.currentMaxValue;
   }
@@ -486,7 +535,7 @@ export class MedicationsComponent implements OnInit {
     return capitalize + ' ...';
   }
 
-  drawChart(allData : Array < any >, containterId, barColor, onClickCallback) {
+  drawChart(allData: Array<any>, containterId, barColor, onClickCallback) {
     let dataset = allData.filter(d => {
       let dt = new Date(Date.parse(d.date.orderDate));
       return dt >= this.chartState.xDomain.currentMinValue && dt <= this.chartState.xDomain.currentMaxValue;
@@ -527,7 +576,7 @@ export class MedicationsComponent implements OnInit {
           ? 0
           : pos;
       })
-      .attr('y', function (d : any, i) {
+      .attr('y', function (d: any, i) {
         for (var j = 0; j < groups.length; j++) {
           if (d.medication.id == groups[j]) {
             return j * 27 + 12;
@@ -540,8 +589,8 @@ export class MedicationsComponent implements OnInit {
         return this
           .chartState
           .xScale(medEndDate) - this
-          .chartState
-          .xScale(medStartDate);
+            .chartState
+            .xScale(medStartDate);
       })
       .attr('height', 6)
       .attr('stroke', 'none')
@@ -561,8 +610,8 @@ export class MedicationsComponent implements OnInit {
         let width = this
           .chartState
           .xScale(medEndDate) - this
-          .chartState
-          .xScale(medStartDate);
+            .chartState
+            .xScale(medStartDate);
         let pos = this
           .chartState
           .xScale(medStartDate);
@@ -570,7 +619,7 @@ export class MedicationsComponent implements OnInit {
           ? 0
           : pos;
       })
-      .attr('y', function (d : any, i) {
+      .attr('y', function (d: any, i) {
         for (var j = 0; j < groups.length; j++) {
           if (d.medication.id == groups[j]) {
             return j * 27 + 8;

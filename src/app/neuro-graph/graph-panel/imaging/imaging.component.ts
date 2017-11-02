@@ -4,6 +4,7 @@ import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
 import { allMessages, allHttpMessages } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import {NeuroGraphService} from '../../neuro-graph.service';
 
 @Component({
   selector: '[app-imaging]',
@@ -36,7 +37,7 @@ export class ImagingComponent implements OnInit {
   private reportDialogRef: any;
   private hasReportIcon: boolean = true;
   private hasBrainIcon: boolean = true;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog) { }
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService : NeuroGraphService) { }
 
   ngOnInit() {
     this.subscriptions = this
@@ -44,8 +45,12 @@ export class ImagingComponent implements OnInit {
       .filterOn(allHttpMessages.httpGetImaging)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ?  (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':false});                                                  
+          })
           : (() => {
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':false});                                                          
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
             this.createChart();
             this.imagingChartLoaded = true;
@@ -61,12 +66,21 @@ export class ImagingComponent implements OnInit {
       .filter(t => t.data.checked)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':false});                                                  
+          })
           : (() => {
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'imaging','state':true});                                                                      
             //make api call
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetImaging);
+              .httpGet(allHttpMessages.httpGetImaging, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
 

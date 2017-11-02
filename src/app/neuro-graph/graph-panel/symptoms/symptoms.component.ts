@@ -43,10 +43,14 @@ export class SymptomsComponent implements OnInit {
       .filterOn(allHttpMessages.httpGetSymptoms)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':false});                                                  
+          })
           : (() => {
             //debugger;
             //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':false});                        
             this.questionaireData = d.data.questionaires.map(d => {
               return {
                 ...d,
@@ -227,13 +231,22 @@ export class SymptomsComponent implements OnInit {
       .filter(t => t.data.checked)
       .subscribe(d => {
         d.error
-          ? console.log(d.error)
+          ? (() => {
+            console.log(d.error)
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':false});                                                  
+          })
           : (() => {
             //debugger;
             //make api call
+            this.brokerService.emit(allMessages.toggleProgress, {'component': 'symptoms','state':true});                                   
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetSymptoms);
+              .httpGet(allHttpMessages.httpGetSymptoms, [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]);
           })();
       });
     let sub2 = symptoms
@@ -397,7 +410,7 @@ export class SymptomsComponent implements OnInit {
       .attr('class', 'x-axis-arrow')
       .attr('d', this.pathUpdate)
       .attr('transform', d => {
-        return `translate(${(this.chartState.xScale(d.questionnaireDate_mod))},-10)`;
+        return `translate(${(this.chartState.xScale(d.questionnaireDate_mod))},-12)`;
       })
       .append('xhtml:span')
       .attr('class', 'icon-symptoms')
@@ -405,8 +418,12 @@ export class SymptomsComponent implements OnInit {
       .style("border-radius", "5px")
       .style("padding", "2px")
       .style("color", "#ffffff")
+      .style("font-size", "20px")
+      .style("width", "20px")
+      .style("height", "21px")
+      .style("display", "block")
       .attr("width", 30)
-      .attr("height", 30)
+      .attr("height", 30)     
       //.enter().append("image")
       //.attr("xlink:href", "https://github.com/favicon.ico")
       // .attr("width", 16)

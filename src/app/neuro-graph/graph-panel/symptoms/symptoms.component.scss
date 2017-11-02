@@ -1,43 +1,46 @@
-$ns-symptoms-green:#9dbb61; 
-$ns-symptoms-grey:#bfbfbf;
-$ns-symptoms-red:#e53935;
+$ns-symptoms-grey:#a5a5a5;
+$ns-symtoms-bg-gray:#d8d8d8;
+$ns-symptoms-red:#ff0000;
+$ns-symptoms-black:#3f3f3f;
 
-@mixin vertical-align($position: relative) {
-    position: $position;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
-.borderTop{border-top:1px solid #7e7e7e;}
-.symptoms-container{ padding: 10px;}
-.ns-symptoms-header{ padding: 5px 0px; font-size: 13pt; margin-bottom: 15px;font-weight:bold;color:#7e7e7e;}
-.ns-symptoms-quesHeader
-{
-    width: 200px;
-    float: left;
-    margin-left: 40px;font-weight:bold;color:#7e7e7e;
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    border-radius: $radius;
 }
-.ns-symptoms-quesHeaderLeft
-{
-    width: 180px;
-    float: left;
-    margin-left: 40px;font-weight:bold;color:#7e7e7e;
+
+.borderTop{border-top:1px solid #7e7e7e;}
+.symptoms-container{ padding: 10px;
+.ns-symtoms-head-panel{
+    border-bottom: solid 1px #bfbfbf; display: flex; padding: 10px 10px 10px 40px; margin-bottom: 10px; 
+    .ns-symtoms-item{
+        margin-right:60px;
+        .ns-symtoms-header{
+            font-size: 13pt;
+            font-weight:bold;
+            color:#7e7e7e;
+        }
+        .ns-symtoms-value{
+            font-weight: normal;
+            font-size: 9pt;
+        }
+    }
+
+}
+.ns-symptoms-header{
+    font-size: 13pt; 
+    margin-bottom: 20px;
 }
 .ns-symptoms-header:after{
     clear: both;
+    display: block;
     content: '';
-    display: block; 
 }
-.font-small{
-    font-weight: normal;
-    font-size: 10pt;
-    margin-top: -15px;
-}
-.ns-symptoms-ordered { float: left; width:208px; margin-left: 40px;}
-.ns-symptoms-status { float: left; width: 155px;padding-left: 15px;}
-.ns-symptoms-trend { float: left; width: 145px;padding-left: 15px;}
-.ns-symptoms-quest { float: left; width: 120px;}
+.ns-symptoms-reported { float: left; width:238px; margin-left: 48px;}
+.ns-symptoms-status { float: left; width: 100px;padding-left: 10px;}
+.ns-symptoms-trend { float: left; width: 100px;padding-left: 15px;}
+.ns-symptoms-quest { float: left; width: 100px;}
 .ns-symptoms-row{ margin-bottom: 5px;}
 .ns-symptoms-row:after{
     clear: both;
@@ -50,6 +53,7 @@ $ns-symptoms-red:#e53935;
     height: 40px;
     float: left;
     margin-left:37px;
+    background-color: $ns-symptoms-grey;
 }
 .ns-small-box{
     width: 30px;
@@ -64,7 +68,7 @@ $ns-symptoms-red:#e53935;
     padding: 5px;
     }     
 .ns-small-box-text{
-        width: 155px;
+        width: 100px;
         margin-right: 5px;
         height: 30px;
         float: left;
@@ -79,65 +83,66 @@ $ns-symptoms-red:#e53935;
         color:black;
 }  
 
-.ns-symptoms-name-red
-{
-    font-size:10pt;
-    font-weight:bold;
-    background-color: red;
-    opacity: 0.2;
-    font-style: italic;
-    float: left; margin-right: 5px; width: 300px; height: 30px; padding: 5px;
-}
-.ns-symptoms-name-quest
-{
-    font-size:10pt;
-    font-weight:bold;
-}
-.ns-symptoms-name-det{
-    font-style: italic;
-}
+
+
 .ns-order-symptoms-box{ 
     background-color: #ececec; 
-    float: left; margin-right: 5px; width: 200px; height: 30px; padding: 5px;
+    float: left; margin-right: 5px; width: 230px; height: 30px; padding: 5px;
+
     .ns-symptoms-name{
         font-size:10pt;
         font-weight:bold;
     }
+    .ns-symtoms-date-box{
+        display: flex;
+        .ns-symptoms-reportDate{
+            font-size: 8pt;
+        }
+        .ns-symptoms-previous
+        {
+            @include border-radius(10px);
+            font-size: 7pt;
+            color:#ffffff;
+            background-color: $ns-symptoms-black;
+            padding: 1px 5px;
+            margin-left: auto;
+        }
+        .ns-symptoms-new
+        {
+            @include border-radius(10px);
+            font-size: 7pt;
+            padding: 1px 5px;
+            color:#ffffff;
+            background-color: $ns-symptoms-red;
+            margin-left: auto;
+        }
+    }
+
     
-    .ns-symptoms-name-status{
-        font-size:10pt;
-        font-weight:bold;
-    }
-    .ns-symptoms-reportDate{
-        font-size: 8pt;
-        padding-top: 2px;
-    }
-    .ns-symptoms-type-grey
-    {
-        font-size: 8pt;
-        padding-top: 2px;
-        color:white;
-        background-color: #565656;
-    }
-    .ns-symptoms-type-red
-    {
-        font-size: 8pt;
-        padding-top: 2px;
-        color:white;
-        background-color: red;
-    }
 }
 
-.ns-symptoms-trend-box{ float: left; width: 145px; height: 40px; display: block;line-height: 30px;}
-.ns-symptoms-quest-unit{ float: left; height: 40px;margin-top:10px; }
+
+.ns-symptoms-trend-box{ float: left; width: 105px; height: 40px; display: block;line-height: 30px;}
+.ns-symptoms-quest-unit{ float: left; margin-top:10px; }
+
+
+
 .ns-symptoms-items-container{
     height: 400px; overflow: auto;
 }
-.show
-{
-    display:block;
+
 }
-.hide
-{
-    display:none;
+.symptoms-container-qx{
+    height: 300px; overflow: auto; padding: 10px;
+.ns-symptoms-qx{
+    border-bottom: solid 1px #bfbfbf; padding-bottom: 10px; margin-bottom: 10px;
+    .ns-symptoms-name-quest{ display: block; padding-bottom: 5px; font-size: 13pt; font-weight: bold;}
+    .ns-symptoms-name-det{ margin-bottom: 5px;  padding: 3px;  display: block; counter-reset: #494949; }
+    .ns-symptoms-name-red{ background-color: #fbe2cf; padding: 5px; margin-bottom: 5px; display: block; font-size: 9pt; font-weight: bold;}
+    .ns-symptoms-name-quest
+    {
+        font-size:10pt;
+        font-weight:bold;
+    }
+    }
 }
