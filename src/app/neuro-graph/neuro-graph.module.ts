@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 //UI Frameworks
-import { MdButtonModule,MdMenuModule, MdCheckboxModule, MdSelectModule, MdInputModule, MdDialogModule, MdTooltipModule, MdGridListModule,MatProgressBarModule} from '@angular/material';
+import { MdButtonModule,MdMenuModule, MdCheckboxModule, MdSelectModule, MdInputModule, MdDialogModule, MdTooltipModule, MdGridListModule,MatProgressSpinnerModule} from '@angular/material';
 //Custom Components, Services etc
 import { GraphPanelComponent } from './graph-panel/graph-panel.component';
 import { NeuroRelatedComponent } from './neuro-related/neuro-related.component';
@@ -42,7 +42,7 @@ export const ROUTES: Routes = [];
     MdDialogModule,
     MdTooltipModule,
     MdGridListModule,
-    MatProgressBarModule,
+    MatProgressSpinnerModule,
     EvalModule.forRoot(),
   ],
   declarations: [
