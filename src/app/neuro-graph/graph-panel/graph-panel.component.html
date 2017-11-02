@@ -26,13 +26,13 @@
             <g app-edss [chartState]="state" id="edss"></g>
             <g app-twenty-five-foot-walk [chartState]="state" id="walk25feet"></g>
         </svg>
-        <div class="loader" [class.loader-hidden]="!show">
+        <!-- <div class="loader" [class.loader-hidden]="!show">
             <div class="loader-overlay">
                 <div>
                     <md-progress-bar mode="indeterminate" *ngIf="show"></md-progress-bar>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div app-medications [chartState]="state" id="medications-container" [style.top.px]="graphSetting.medications.positionTop"
             [style.height.px]="graphSetting.medications.containerHeight" style="position:absolute;width:100%;overflow-y:auto;overflow-x:hidden;background-color:#FFF;border:1px solid #E7E7E7;padding-top:5px;">
         </div>
