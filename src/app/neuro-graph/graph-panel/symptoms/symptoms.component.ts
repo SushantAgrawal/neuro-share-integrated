@@ -75,7 +75,7 @@ export class SymptomsComponent implements OnInit {
                 let answerText: any = "";
                 let questionText: any = "";
                 //let reportDate:any;
-                let cnt = 20;
+                let cnt = 40;
                 this.questionaireData.forEach(elem => {
                  // debugger;
                   if (element["qx_id"] != elem["qx_id"] && new Date(this.neuroGraphService.moment(elem["qx_completed_at"]).format("MM/DD/YYYY")) < new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY"))) {
@@ -87,7 +87,7 @@ export class SymptomsComponent implements OnInit {
                       }
                     }
                     else {
-                      if (elem.symptoms[i].score != "") {
+                      if (elem.symptoms[i].score != "" &&  element.symptoms[i].score=="") {
                         prevCnt++;
                         reportedDate = elem["qx_completed_at"];
                         element.symptoms[i].score = elem.symptoms[i].score;
@@ -96,7 +96,7 @@ export class SymptomsComponent implements OnInit {
 
                       }
                     }
-                    if (cnt <= 40) {
+                    if (cnt >=20) {
                       if (elem.symptoms[i].score == "Mild") {
                         trend.push({
                           index: 10,
@@ -104,7 +104,7 @@ export class SymptomsComponent implements OnInit {
                           score: elem.symptoms[i].score
 
                         });
-                        cnt = cnt + 20;
+                        cnt = cnt - 20;
                       }
                       else if (elem.symptoms[i].score == "Moderate") {
                         trend.push({
@@ -113,7 +113,7 @@ export class SymptomsComponent implements OnInit {
                           score: elem.symptoms[i].score
 
                         });
-                        cnt = cnt + 20;
+                        cnt = cnt - 20;
                       }
                       else if (elem.symptoms[i].score == "Severe") {
                         trend.push({
@@ -122,7 +122,7 @@ export class SymptomsComponent implements OnInit {
                           score: elem.symptoms[i].score
 
                         });
-                        cnt = cnt + 20;
+                        cnt = cnt - 20;
                       }
                       else if (elem.symptoms[i].score != "") {
                         trend.push({
@@ -131,49 +131,46 @@ export class SymptomsComponent implements OnInit {
                           score: elem.symptoms[i].score
 
                         });
-                        cnt = cnt + 20;
+                        cnt = cnt - 20;
                       }
                     }
 
                   }
 
                 });
+                trend.reverse();
                 if (prevCnt <= 0) {
                   if (element.symptoms[i].score == "Mild") {
                     trend.push({
                       index: 10,
-                      x: cnt,
+                      x: 60,
                       score: element.symptoms[i].score
 
                     });
-                    cnt = cnt + 20;
                   }
                   else if (element.symptoms[i].score == "Moderate") {
                     trend.push({
                       index: 20,
-                      x: cnt,
+                      x: 60,
                       score: element.symptoms[i].score
 
                     });
-                    cnt = cnt + 20;
                   }
                   else if (element.symptoms[i].score == "Severe") {
                     trend.push({
                       index: 30,
-                      x: cnt,
+                      x: 60,
                       score: element.symptoms[i].score
 
                     });
-                    cnt = cnt + 20;
                   }
                   else if (element.symptoms[i].score != "") {
                     trend.push({
                       index: Number(element.symptoms[i].score),
-                      x: cnt,
+                      x: 60,
                       score: element.symptoms[i].score
 
                     });
-                    cnt = cnt + 20;
                   }
                 }
 
