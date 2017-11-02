@@ -52,4 +52,8 @@ export class NeuroGraphService {
   set(id, value) {
     this.global[id] = value;
   }
+
+  test(){
+    console.log('Test');
+  }
 }

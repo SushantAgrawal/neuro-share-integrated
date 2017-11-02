@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { AppointmentsService } from '../../core/services/appointments.service';
 import { EvalModule, EvalService, EvalEventDirective } from '@sutterhealth/analytics';
+import {NeuroGraphService} from '../../neuro-graph/neuro-graph.service';
 
 import * as moment from 'moment';
 
@@ -48,14 +49,14 @@ export class DemographicBarComponent implements OnInit {
   private pomId: string;
   public lastAppointmentWhitMe;
   public showTooltip: boolean=false;
-  constructor(private service: EhrService, private support: SupportService, private session: SessionService, private activityService: ActivityService, private router: Router, private auth: AuthenticationService, private msService: MsService, private appoService: AppointmentsService) {
+  constructor(private service: EhrService, private support: SupportService, private session: SessionService, private activityService: ActivityService, private router: Router, private auth: AuthenticationService, private msService: MsService, private appoService: AppointmentsService,private neuroGraphService: NeuroGraphService) {
     activityService.activityData$.subscribe(activityObject => {
       Object.assign(this.activity, activityObject);
     });
   }
 
   ngOnInit() {
-    
+    this.neuroGraphService.test();
     this.session.getParams().subscribe(params => {
       if (params['PatID']) {
         let pomId = params['PomId'] ? params['PomId'] : '82043';
