@@ -91,30 +91,51 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let subScaleUpdate = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.selectedMed.dmt) {
+          // this.removeDmt();
+          // if (this.hasData(this.medType.dmt)) {
+          //   this.drawDmt();
+          // }
+          // else {
+          //   this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.dmt, checked: true });
+          // }
           this.removeDmt();
-          if (this.hasData(this.medType.dmt)) {
-            this.drawDmt();
+          if (d.data.fetchData) {
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.dmt, checked: true });
           }
           else {
-            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.dmt, checked: true });
+            this.drawDmt();
           }
         }
         if (this.selectedMed.otherMeds) {
+          // this.removeOtherMeds();
+          // if (this.hasData(this.medType.otherMeds)) {
+          //   this.drawOtherMeds();
+          // }
+          // else {
+          //   this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.otherMeds, checked: true });
+          // }
           this.removeOtherMeds();
-          if (this.hasData(this.medType.otherMeds)) {
-            this.drawOtherMeds();
+          if (d.data.fetchData) {
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.otherMeds, checked: true });
           }
           else {
-            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.otherMeds, checked: true });
+            this.drawOtherMeds();
           }
         }
         if (this.selectedMed.vitaminD) {
+          // this.removeVitaminD();
+          // if (this.hasData(this.medType.vitaminD)) {
+          //   this.drawOtherMeds();
+          // }
+          // else {
+          //   this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.vitaminD, checked: true });
+          // }
           this.removeVitaminD();
-          if (this.hasData(this.medType.vitaminD)) {
-            this.drawOtherMeds();
+          if (d.data.fetchData) {
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.vitaminD, checked: true });
           }
           else {
-            this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.vitaminD, checked: true });
+            this.drawVitaminD();
           }
         }
       })();
@@ -131,20 +152,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  hasData(medication) {
-    //check date range
-    switch (medication) {
-      case this.medType.dmt:
-        return this.dmtArray.length > 0;
-      case this.medType.vitaminD:
-        return this.vitaminDArray.length > 0;
-      case this.medType.otherMeds:
-        return this.otherMedsArray.length > 0;
-      default:
-        return false;
-    }
-  }
-
   processMedication(neuroRelated, medication) {
     // A medication was checked
     let sub1 = neuroRelated.filter(t => t.data.artifact == medication && t.data.checked).subscribe(d => {
@@ -154,24 +161,13 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         })
         : (() => {
           this.selectedMed[medication] = true;
-          if (!this.hasData(medication)) {
-            this.brokerService.httpGet(allHttpMessages.httpGetMedications, [
-              {
-                name: 'pom_id',
-                value: this.neuroGraphService.get('queryParams').pom_id
-              }
-            ]);
-          }
-          else {
-            switch (medication) {
-              case this.medType.dmt:
-                this.drawDmt();
-              case this.medType.vitaminD:
-                this.drawVitaminD();
-              case this.medType.otherMeds:
-                this.drawOtherMeds();
+          this.selectedMed[medication] = true;
+          this.brokerService.httpGet(allHttpMessages.httpGetMedications, [
+            {
+              name: 'pom_id',
+              value: this.neuroGraphService.get('queryParams').pom_id
             }
-          }
+          ]);
         })();
     })
 
@@ -298,7 +294,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .brokerService
       .httpGetMany(manyHttpMessages.httpGetMedicationSecondLayerApiCall, [
         {
-          urlId: allHttpMessages.httpGetDmt,queryParams: [
+          urlId: allHttpMessages.httpGetDmt, queryParams: [
             {
               name: 'pom_id',
               value: this
@@ -308,7 +304,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             }
           ]
         }, {
-          urlId: allHttpMessages.httpGetOtherMeds,queryParams: [
+          urlId: allHttpMessages.httpGetOtherMeds, queryParams: [
             {
               name: 'pom_id',
               value: this
@@ -318,7 +314,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             }
           ]
         }, {
-          urlId: allHttpMessages.httpGetRelapse,queryParams: [
+          urlId: allHttpMessages.httpGetRelapse, queryParams: [
             {
               name: 'pom_id',
               value: this

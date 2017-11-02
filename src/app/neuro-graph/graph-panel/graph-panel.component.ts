@@ -107,7 +107,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     this.setXDomain(this.defaultScaleSpanInMonths, this.scaleMaxDate);
     this.setXScale();
     this.setDataBufferPeriod('init');
-    this.brokerService.emit(allMessages.graphScaleUpdated, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: true });
   }
   //#endregion
 
@@ -151,7 +151,6 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     //console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
     //console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
     //console.log(this.state.dataBufferPeriod.dataAvailable ? 'data available' : 'need fresh data');
-    debugger;
     this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: !this.state.dataBufferPeriod.dataAvailable });
   }
 
@@ -190,7 +189,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
       this.state.dataBufferPeriod = {
         fromDate: this.dataBufferStartDate,
         toDate: this.scaleMaxDate,
-        dataAvailable: false
+        dataAvailable: true
       }
     }
   }
