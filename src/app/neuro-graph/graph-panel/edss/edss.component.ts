@@ -7,43 +7,43 @@ import {
   Inject,
   ViewEncapsulation
 } from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import * as d3 from 'd3';
-import {BrokerService} from '../../broker/broker.service';
-import {NeuroGraphService} from '../../neuro-graph.service';
-import {allMessages, allHttpMessages, medication, GRAPH_SETTINGS, edssScoreChart} from '../../neuro-graph.config';
+import { BrokerService } from '../../broker/broker.service';
+import { NeuroGraphService } from '../../neuro-graph.service';
+import { allMessages, allHttpMessages, medication, GRAPH_SETTINGS, edssScoreChart } from '../../neuro-graph.config';
 
-@Component({selector: '[app-edss]', templateUrl: './edss.component.html', styleUrls: ['./edss.component.scss'], encapsulation: ViewEncapsulation.None})
+@Component({ selector: '[app-edss]', templateUrl: './edss.component.html', styleUrls: ['./edss.component.scss'], encapsulation: ViewEncapsulation.None })
 
 export class EdssComponent implements OnInit {
   //#region Private Fields
-  @Input()private chartState : any;
-  @ViewChild('edssSecondLevelTemplate')private edssSecondLevelTemplate : TemplateRef < any >;
-  @ViewChild('edssScoreChartTemplate')private edssScoreChartTemplate : TemplateRef < any >;
-  private subscriptions : any;
-  private secondLayerDialogRef : MatDialogRef < any >;
-  private scoreChartDialogRef : MatDialogRef < any >;
-  private edssChartLoaded : boolean = false;
-  private virtualCaseloadLoaded : boolean = false;
-  private edssScoreDetail : any;
-  private yScale : any;
-  private yDomain : Array < number > = [0, GRAPH_SETTINGS.edss.maxValueY];
-  private clinicianDataSet : Array < any > = [];
-  private patientDataSet : Array < any > = [];
-  private edssPopupQuestions : any = [];
-  private scoreChartOpType : any;
-  private edssVirtualLoadData : Array < any >;
-  private edssVirtualLoadDataq1 : Array < any >;
-  private edssVirtualLoadDataq2 : Array < any >;
-  private edssVirtualLoadDataq3 : Array < any >;
-  private edssVirtualLoadDataq4 : Array < any >;
-  private edssVirtualLoadDatam : Array < any >;
-  private edssVirtualLoadDataLength : number;
-  private datasetArea1 : Array < any > = [];
-  private datasetArea2 : Array < any > = [];
-  private datasetMean : Array < any > = [];
+  @Input() private chartState: any;
+  @ViewChild('edssSecondLevelTemplate') private edssSecondLevelTemplate: TemplateRef<any>;
+  @ViewChild('edssScoreChartTemplate') private edssScoreChartTemplate: TemplateRef<any>;
+  private subscriptions: any;
+  private secondLayerDialogRef: MatDialogRef<any>;
+  private scoreChartDialogRef: MatDialogRef<any>;
+  private edssChartLoaded: boolean = false;
+  private virtualCaseloadLoaded: boolean = false;
+  private edssScoreDetail: any;
+  private yScale: any;
+  private yDomain: Array<number> = [0, GRAPH_SETTINGS.edss.maxValueY];
+  private clinicianDataSet: Array<any> = [];
+  private patientDataSet: Array<any> = [];
+  private edssPopupQuestions: any = [];
+  private scoreChartOpType: any;
+  private edssVirtualLoadData: Array<any>;
+  private edssVirtualLoadDataq1: Array<any>;
+  private edssVirtualLoadDataq2: Array<any>;
+  private edssVirtualLoadDataq3: Array<any>;
+  private edssVirtualLoadDataq4: Array<any>;
+  private edssVirtualLoadDatam: Array<any>;
+  private edssVirtualLoadDataLength: number;
+  private datasetArea1: Array<any> = [];
+  private datasetArea2: Array<any> = [];
+  private datasetMean: Array<any> = [];
   //#endregion #region Constructor
-  constructor(private brokerService : BrokerService, private dialog : MatDialog, private neuroGraphService : NeuroGraphService) {}
+  constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) { }
   //#endregion #region Lifecycle Event Handlers
   ngOnInit() {
     this.edssPopupQuestions = edssScoreChart;
@@ -126,7 +126,7 @@ export class EdssComponent implements OnInit {
               .open(this.edssScoreChartTemplate, dialogConfig);
             this
               .scoreChartDialogRef
-              .updatePosition({top: '65px', left: '60px'});
+              .updatePosition({ top: '65px', left: '60px' });
           })();
       });
 
@@ -231,16 +231,12 @@ export class EdssComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             if (this.edssChartLoaded) {
-              if (this.hasData()) {
-                this.reloadChart();
-              } else {
+              if (d.data.fetchData) {
                 this.unloadChart();
-                this
-                  .brokerService
-                  .emit(allMessages.neuroRelated, {
-                    artifact: 'edss',
-                    checked: true
-                  });
+                this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true });
+              }
+              else {
+                this.reloadChart();
               }
             }
           })();
@@ -335,7 +331,7 @@ export class EdssComponent implements OnInit {
         .open(this.edssScoreChartTemplate, dialogConfig);
       this
         .scoreChartDialogRef
-        .updatePosition({top: '65px', left: '60px'});
+        .updatePosition({ top: '65px', left: '60px' });
     }, 500)
   }
 
@@ -366,9 +362,6 @@ export class EdssComponent implements OnInit {
       .open(this.edssSecondLevelTemplate, config);
   }
 
-  hasData() {
-    return true; // Math.random() >= 0.5;
-  }
   //#endregion #region Chart Drawing Related
   drawEdssYAxis() {
     this.yScale = d3
@@ -448,7 +441,7 @@ export class EdssComponent implements OnInit {
   drawEdssLineCharts() {
     let oneDecimalFormat = d3.format(".1f");
     //Chart line
-    let line = d3.line < any > ().x((d : any) => this.chartState.xScale(d.lastUpdatedDate)).y((d : any) => this.yScale(d.scoreValue));
+    let line = d3.line<any>().x((d: any) => this.chartState.xScale(d.lastUpdatedDate)).y((d: any) => this.yScale(d.scoreValue));
     //Drawing container
     d3
       .select('#edss')
@@ -541,7 +534,7 @@ export class EdssComponent implements OnInit {
   }
 
   drawVirtualCaseload() {
-    let line = d3.line < any > ().x((d : any) => this.chartState.xScale(d.lastUpdatedDate)).y((d : any) => this.yScale(d.scoreValue));
+    let line = d3.line<any>().x((d: any) => this.chartState.xScale(d.lastUpdatedDate)).y((d: any) => this.yScale(d.scoreValue));
 
     let svg = d3
       .select('#edss')
@@ -552,15 +545,15 @@ export class EdssComponent implements OnInit {
 
     this
       .datasetArea1
-      .push({xDate: this.chartState.xDomain.currentMinValue, q2: this.edssVirtualLoadDataq2[0], q3: this.edssVirtualLoadDataq3[0]});
+      .push({ xDate: this.chartState.xDomain.currentMinValue, q2: this.edssVirtualLoadDataq2[0], q3: this.edssVirtualLoadDataq3[0] });
 
     this
       .datasetArea2
-      .push({xDate: this.chartState.xDomain.currentMinValue, q1: this.edssVirtualLoadDataq1[0], q4: this.edssVirtualLoadDataq4[0]});
+      .push({ xDate: this.chartState.xDomain.currentMinValue, q1: this.edssVirtualLoadDataq1[0], q4: this.edssVirtualLoadDataq4[0] });
 
     this
       .datasetMean
-      .push({xDate: this.chartState.xDomain.currentMinValue, m: this.edssVirtualLoadDatam[0]});
+      .push({ xDate: this.chartState.xDomain.currentMinValue, m: this.edssVirtualLoadDatam[0] });
 
     for (let i = 0; i < this.edssVirtualLoadDataLength; i++) {
       let scaleMinYear = this
@@ -576,15 +569,15 @@ export class EdssComponent implements OnInit {
       }
       this
         .datasetArea1
-        .push({xDate: date, q2: this.edssVirtualLoadDataq2[i], q3: this.edssVirtualLoadDataq3[i]});
+        .push({ xDate: date, q2: this.edssVirtualLoadDataq2[i], q3: this.edssVirtualLoadDataq3[i] });
 
       this
         .datasetArea2
-        .push({xDate: date, q1: this.edssVirtualLoadDataq1[i], q4: this.edssVirtualLoadDataq4[i]});
+        .push({ xDate: date, q1: this.edssVirtualLoadDataq1[i], q4: this.edssVirtualLoadDataq4[i] });
 
       this
         .datasetMean
-        .push({xDate: date, m: this.edssVirtualLoadDatam[i]});
+        .push({ xDate: date, m: this.edssVirtualLoadDatam[i] });
     }
 
     this
@@ -610,19 +603,19 @@ export class EdssComponent implements OnInit {
         m: this.edssVirtualLoadDatam[this.edssVirtualLoadDataLength - 1]
       });
 
-    let lineMean = d3.line < any > ().x((d : any) => this.chartState.xScale(d.xDate)).y((d : any) => this.yScale(d.m));
+    let lineMean = d3.line<any>().x((d: any) => this.chartState.xScale(d.xDate)).y((d: any) => this.yScale(d.m));
 
     let area1 = d3
       .area()
-      .x((d : any) => this.chartState.xScale(d.xDate))
-      .y0((d : any) => this.yScale(d.q2))
-      .y1((d : any) => this.yScale(d.q3));
+      .x((d: any) => this.chartState.xScale(d.xDate))
+      .y0((d: any) => this.yScale(d.q2))
+      .y1((d: any) => this.yScale(d.q3));
 
     let area2 = d3
       .area()
-      .x((d : any) => this.chartState.xScale(d.xDate))
-      .y0((d : any) => this.yScale(d.q1))
-      .y1((d : any) => this.yScale(d.q4));
+      .x((d: any) => this.chartState.xScale(d.xDate))
+      .y0((d: any) => this.yScale(d.q1))
+      .y1((d: any) => this.yScale(d.q4));
 
     svg
       .append("path")

@@ -97,9 +97,9 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
 
   onZoomOptionChange(monthsSpan) {
     this.state.zoomMonthsSpan = +monthsSpan;
-    this.setXDomain(+monthsSpan, this.scaleMaxDate);
+    this.setXDomain(+monthsSpan, this.state.dataBufferPeriod.toDate);
     this.setXScale();
-    this.brokerService.emit(allMessages.graphScaleUpdated, null);
+    this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: false });
   }
 
   onResetZoom() {
@@ -149,12 +149,13 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
 
   notifyUpdateAndDataShortage() {
     //console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
-    console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
-    this.brokerService.emit(allMessages.graphScaleUpdated, { dataShortage: false });
+    //console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
+    //console.log(this.state.dataBufferPeriod.dataAvailable ? 'data available' : 'need fresh data');
+    debugger;
+    this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: !this.state.dataBufferPeriod.dataAvailable });
   }
 
   setDataBufferPeriod(opMode) {
-    //debugger;
     if (opMode == 'backward') {
       if (this.state.xDomain.currentMinValue < this.state.dataBufferPeriod.fromDate) {
         let mmtCurrentDataBufferFrom = this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate);
@@ -162,8 +163,12 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
         let newToDate = mmtCurrentDataBufferFrom.clone().subtract(1, 'days').toDate();
         this.state.dataBufferPeriod = {
           fromDate: newFromDate,
-          toDate: newToDate
+          toDate: newToDate,
+          dataAvailable: false
         }
+      }
+      else {
+        this.state.dataBufferPeriod.dataAvailable = true;
       }
     }
     else if (opMode == 'forward') {
@@ -173,14 +178,19 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
         let newToDate = mmtCurrentDataBufferUpto.clone().add(this.defaultScaleSpanInMonths, 'month').toDate();
         this.state.dataBufferPeriod = {
           fromDate: newFromDate,
-          toDate: newToDate
+          toDate: newToDate,
+          dataAvailable: false
         }
+      }
+      else {
+        this.state.dataBufferPeriod.dataAvailable = true;
       }
     }
     else {
       this.state.dataBufferPeriod = {
         fromDate: this.dataBufferStartDate,
-        toDate: this.scaleMaxDate
+        toDate: this.scaleMaxDate,
+        dataAvailable: false
       }
     }
   }
