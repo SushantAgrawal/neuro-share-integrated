@@ -26,7 +26,7 @@
             <g app-edss [chartState]="state" id="edss"></g>
             <g app-twenty-five-foot-walk [chartState]="state" id="walk25feet"></g>
         </svg>
-        <div class="loader" [class.loader-hidden]="!show">
+        <div class="loader" [class.loader-hidden]="brokerService.isHide">
             <div class="loader-overlay">
                 <div class="ns-dmt-theme">
                     <md-progress-spinner mode="indeterminate"></md-progress-spinner>
