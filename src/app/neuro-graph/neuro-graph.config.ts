@@ -10,8 +10,6 @@ export const allMessages = {
 
 export const manyHttpMessages = {
     'httpGetInitialApiCall': 'http:get:initial:api:call',
-    'httpGetMedicationSecondLayerApiCall': 'http:get:medication:second:layer:api:call',
-    'httpGetWalk25FeetApiCall': 'http:get:walk25Feet:api:call'
 };
 export const allHttpMessages = {
     'httpGetMedications': 'http:get:medications',
