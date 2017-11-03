@@ -26,28 +26,29 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   @ViewChild('otherMedsSecondLevelTemplate') private otherMedsSecondLevelTemplate: TemplateRef<any>;
   @Input() private chartState: any;
 
-  public graphDimension = GRAPH_SETTINGS.panel;
-  private dialogRef: MdDialogRef<any>;
-  private medSecondLayerModel: any;
-  private subscriptions: any;
-  private allMedicationData: Array<any> = [];
-  private dmtArray: Array<any> = [];
-  private vitaminDArray: Array<any> = [];
-  private otherMedsArray: Array<any> = [];
-  private selectedMed = {
+  graphDimension = GRAPH_SETTINGS.panel;
+  chartsWidth = GRAPH_SETTINGS.medications.chartsWidth;
+  dialogRef: MdDialogRef<any>;
+  medSecondLayerModel: any;
+  subscriptions: any;
+  allMedicationData: Array<any> = [];
+  dmtArray: Array<any> = [];
+  vitaminDArray: Array<any> = [];
+  otherMedsArray: Array<any> = [];
+  selectedMed = {
     dmt: false,
     otherMeds: false,
     vitaminD: false
   };
-  public medType = {
+  medType = {
     dmt: 'dmt',
     otherMeds: 'otherMeds',
     vitaminD: 'vitaminD'
   };
-  private dmtSecondLayerLocalData: Array<any>;
-  private otherMedsSecondLayerLocalData: Array<any>;
-  private relapsesLocalData: Array<any>;
-  private months = [
+  dmtSecondLayerLocalData: Array<any>;
+  otherMedsSecondLayerLocalData: Array<any>;
+  relapsesLocalData: Array<any>;
+  months = [
     'January',
     'February',
     'March',
@@ -81,7 +82,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           if (this.selectedMed[this.medType.otherMeds]) {
             this.drawOtherMeds();
           }
-          debugger;
           let dmtResponse = d.data[1][allHttpMessages.httpGetDmt];
           let otherMedsResponse = d.data[2][allHttpMessages.httpGetOtherMeds];
           let relapsesLocalData = d.data[3][allHttpMessages.httpGetRelapse];
@@ -404,7 +404,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   getEndDate(input) {
     if (input)
       return Date.parse(input)
-    return this.chartState.xDomain.currentMaxValue;
+    return this.chartState.xDomain.scaleMaxValue;
   }
 
   getShortenedName(input) {
@@ -415,11 +415,13 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     return capitalize + ' ...';
   }
 
-  drawChart(dataset: Array<any>, containterId, barColor, onClickCallback) {
-    // let dataset = allData.filter(d => {
-    //   let dt = new Date(Date.parse(d.date.orderDate));
-    //   return dt >= this.chartState.xDomain.currentMinValue && dt <= this.chartState.xDomain.currentMaxValue;
-    // });
+  drawChart(allData: Array<any>, containterId, barColor, onClickCallback) {
+    let dataset = allData.filter(d => {
+      //let dt = new Date(Date.parse(d.date.medStart || d.date.orderDate));
+      //return dt >= this.chartState.xDomain.currentMinValue && dt <= this.chartState.xDomain.currentMaxValue;
+      let endDt = d.date.medEnd ? new Date(Date.parse(d.date.medEnd)) : this.chartState.xDomain.scaleMaxValue;
+      return endDt >= this.chartState.xDomain.currentMinValue;
+    });
 
     //temporary fix to avoid overwrite
     d3.selectAll('#' + containterId).selectAll("*").remove();
@@ -446,12 +448,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('ry', 0)
       .attr('x', d => {
         let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
-        let pos = this
-          .chartState
-          .xScale(medStartDate);
-        return pos < 0
-          ? 0
-          : pos;
+        let pos = this.chartState.xScale(medStartDate);
+        return pos < 0 ? 0 : pos;
       })
       .attr('y', function (d: any, i) {
         for (var j = 0; j < groups.length; j++) {
@@ -463,11 +461,14 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('width', d => {
         let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
         let medEndDate = this.getEndDate(d.date.medEnd);
-        return this
-          .chartState
-          .xScale(medEndDate) - this
-            .chartState
-            .xScale(medStartDate);
+        let timelineMinDate = Date.parse(this.chartState.xDomain.currentMinValue)
+        let width = 0;
+        if (medStartDate >= timelineMinDate) {
+          return this.chartState.xScale(medEndDate) - this.chartState.xScale(medStartDate);
+        }
+        else {
+          return this.chartState.xScale(medEndDate) - this.chartState.xScale(this.chartState.xDomain.currentMinValue);
+        }
       })
       .attr('height', 6)
       .attr('stroke', 'none')
@@ -483,18 +484,10 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .text(d => this.getShortenedName(d.name))
       .attr('x', d => {
         let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
-        let medEndDate = this.getEndDate(d.date.medEnded);
-        let width = this
-          .chartState
-          .xScale(medEndDate) - this
-            .chartState
-            .xScale(medStartDate);
-        let pos = this
-          .chartState
-          .xScale(medStartDate);
-        return pos < 0
-          ? 0
-          : pos;
+        let medEndDate = this.getEndDate(d.date.medEnd);
+        let width = this.chartState.xScale(medEndDate) - this.chartState.xScale(medStartDate);
+        let pos = this.chartState.xScale(medStartDate);
+        return pos < 0 ? 0 : pos;
       })
       .attr('y', function (d: any, i) {
         for (var j = 0; j < groups.length; j++) {
