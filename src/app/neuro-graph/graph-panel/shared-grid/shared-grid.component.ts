@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter, OnDestroy,TemplateRef } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter, OnDestroy, TemplateRef } from '@angular/core';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 import { BrokerService } from '../../broker/broker.service';
@@ -12,13 +12,11 @@ import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
   encapsulation: ViewEncapsulation.None
 })
 export class SharedGridComponent implements OnInit, OnDestroy {
-  @ViewChild('progressNoteTemplate') private progressNoteTemplate: TemplateRef<any>;
-  @Input() private chartState: any;
-  private subscriptions: any;
-  private dialogRef: any;
-  private todayLabel:string;
-  private lastOfficeDateLabel:string;
-  constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService,public dialog: MdDialog) {
+  @ViewChild('progressNoteTemplate') progressNoteTemplate: TemplateRef<any>;
+  @Input() chartState: any;
+  subscriptions: any;
+  dialogRef: any;
+  constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
   //#region Lifecycle events
@@ -44,6 +42,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let sharedGrid = this.setupSharedGrid(sharedGridElement, state.canvasDimension);
     this.drawScrollArrows(sharedGridElement, state.canvasDimension);
     this.drawVerticalGridLines(sharedGrid, state.canvasDimension, state.xScale);
+    this.drawReferenceLines(sharedGrid, state.canvasDimension, state.xScale);
     this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
   };
 
@@ -69,14 +68,12 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     else {
       xAxis = d3.axisBottom(xScale).tickSize(0);
     }
-
     nodeSelection.append('rect')
       .attr('x', 0)
       .attr('y', 0)
       .attr('width', dimension.width)
       .attr('height', 16)
       .attr('class', 'custom-x-domain');
-
     let minor = nodeSelection.append('g')
       .attr('class', 'x-axis')
       .call(g => {
@@ -97,13 +94,12 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         });
         axis.selectAll('.mid-year-tick').style('display', 'block').style('font-size', '12px');
       });
+  };
 
-    var today = new Date();
-    var dd = today.getDate();    
-    var mm = today.getMonth() + 1; 
-    var yyyy = today.getFullYear();  
+  drawReferenceLines(nodeSelection, dimension, xScale) {
+    let today = new Date();
+    let todayLabel = "Today";
 
-    //Axis text
     let rect = nodeSelection.append("rect")
       .attr("x", xScale(today) - 25)
       .attr("y", "20")
@@ -111,35 +107,35 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .attr("height", 25)
       .attr("fill", "#EBEBEB");
 
-    this.todayLabel="Today";
     let axisText = nodeSelection.append('text')
       .attr('y', 35)
       .style('font-size', '12px')
       .style('font-weight', 'bold')
-      .style('cursor', 'pointer')      
+      .style('cursor', 'pointer')
     axisText.append('tspan')
       .attr('x', xScale(today) - 15)
       .attr('dy', 0)
-      .text(this.todayLabel)
+      .text(todayLabel)
       .on('click', d => {
         this.showSecondLevel();
       })
 
     nodeSelection.append("line")
-      .attr("x1", xScale(today))  
+      .attr("x1", xScale(today))
       .attr("y1", 45)
-      .attr("x2", xScale(today))  
+      .attr("x2", xScale(today))
       .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
       .style("stroke-dasharray", "2,2")
       .style("opacity", "0.4")
       .style("stroke", "grey")
       .style("fill", "none");
   };
-  showSecondLevel()
-  {
+
+  showSecondLevel() {
     let dialogConfig = { hasBackdrop: false, width: '350px', height: '350px' };
     this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
-  }
+  };
+
   drawVerticalGridLines(nodeSelection, dimension, xScale) {
     let xAxisGridLines;
 
@@ -199,8 +195,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
   scroll(direction) {
     this.brokerService.emit(allMessages.timelineScroll, direction);
-  }
+  };
 
   //#endregion
-
 }
