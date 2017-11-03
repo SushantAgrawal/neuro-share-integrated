@@ -16,40 +16,40 @@ import { allMessages, allHttpMessages, medication, GRAPH_SETTINGS, edssScoreChar
 @Component({ selector: '[app-edss]', templateUrl: './edss.component.html', styleUrls: ['./edss.component.scss'], encapsulation: ViewEncapsulation.None })
 
 export class EdssComponent implements OnInit {
-  //#region Private Fields
-  @Input() private chartState: any;
-  @ViewChild('edssSecondLevelTemplate') private edssSecondLevelTemplate: TemplateRef<any>;
-  @ViewChild('edssScoreChartTemplate') private edssScoreChartTemplate: TemplateRef<any>;
-  private subscriptions: any;
-  private secondLayerDialogRef: MatDialogRef<any>;
-  private scoreChartDialogRef: MatDialogRef<any>;
-  private edssChartLoaded: boolean = false;
-  private virtualCaseloadLoaded: boolean = false;
-  private edssScoreDetail: any;
-  private yScale: any;
-  private yDomain: Array<number> = [0, GRAPH_SETTINGS.edss.maxValueY];
-  private clinicianDataSet: Array<any> = [];
-  private patientDataSet: Array<any> = [];
-  private edssPopupQuestions: any = [];
-  private scoreChartOpType: any;
-  private edssVirtualLoadData: Array<any>;
-  private edssVirtualLoadDataq1: Array<any>;
-  private edssVirtualLoadDataq2: Array<any>;
-  private edssVirtualLoadDataq3: Array<any>;
-  private edssVirtualLoadDataq4: Array<any>;
-  private edssVirtualLoadDatam: Array<any>;
-  private edssVirtualLoadDataLength: number;
-  private datasetArea1: Array<any> = [];
-  private datasetArea2: Array<any> = [];
-  private datasetMean: Array<any> = [];
+  //#region Fields
+  @Input() chartState: any;
+  @ViewChild('edssSecondLevelTemplate') edssSecondLevelTemplate: TemplateRef<any>;
+  @ViewChild('edssScoreChartTemplate') edssScoreChartTemplate: TemplateRef<any>;
+  subscriptions: any;
+  secondLayerDialogRef: MatDialogRef<any>;
+  scoreChartDialogRef: MatDialogRef<any>;
+  edssChartLoaded: boolean = false;
+  virtualCaseloadLoaded: boolean = false;
+  edssScoreDetail: any;
+  yScale: any;
+  yDomain: Array<number> = [0, GRAPH_SETTINGS.edss.maxValueY];
+  clinicianDataSet: Array<any> = [];
+  patientDataSet: Array<any> = [];
+  edssPopupQuestions: any = [];
+  scoreChartOpType: any;
+  edssVirtualLoadData: Array<any>;
+  edssVirtualLoadDataq1: Array<any>;
+  edssVirtualLoadDataq2: Array<any>;
+  edssVirtualLoadDataq3: Array<any>;
+  edssVirtualLoadDataq4: Array<any>;
+  edssVirtualLoadDatam: Array<any>;
+  edssVirtualLoadDataLength: number;
+  datasetArea1: Array<any> = [];
+  datasetArea2: Array<any> = [];
+  datasetMean: Array<any> = [];
   //#endregion #region Constructor
-  constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) { }
+  constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
+
+  }
   //#endregion #region Lifecycle Event Handlers
   ngOnInit() {
     this.edssPopupQuestions = edssScoreChart;
-    this
-      .edssPopupQuestions
-      .map(x => x.checked = false);
+    this.edssPopupQuestions.map(x => x.checked = false);
 
     let obsEdss = this
       .brokerService
@@ -72,10 +72,15 @@ export class EdssComponent implements OnInit {
                   queryParams: [
                     {
                       name: 'pom_id',
-                      value: this
-                        .neuroGraphService
-                        .get('queryParams')
-                        .pom_id
+                      value: this.neuroGraphService.get('queryParams').pom_id
+                    },
+                    {
+                      name: 'startDate',
+                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+                    },
+                    {
+                      name: 'endDate',
+                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
                     }
                   ]
                 }, {
@@ -83,10 +88,15 @@ export class EdssComponent implements OnInit {
                   queryParams: [
                     {
                       name: 'pom_id',
-                      value: this
-                        .neuroGraphService
-                        .get('queryParams')
-                        .pom_id
+                      value: this.neuroGraphService.get('queryParams').pom_id
+                    },
+                    {
+                      name: 'startDate',
+                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+                    },
+                    {
+                      name: 'endDate',
+                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
                     }
                   ]
                 }
@@ -144,10 +154,15 @@ export class EdssComponent implements OnInit {
                 .httpGet(allHttpMessages.httpGetVirtualCaseLoad, [
                   {
                     name: 'pom_id',
-                    value: this
-                      .neuroGraphService
-                      .get('queryParams')
-                      .pom_id
+                    value: this.neuroGraphService.get('queryParams').pom_id
+                  },
+                  {
+                    name: 'startDate',
+                    value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+                  },
+                  {
+                    name: 'endDate',
+                    value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
                   }
                 ]);
             } else {

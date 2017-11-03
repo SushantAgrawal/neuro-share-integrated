@@ -91,13 +91,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let subScaleUpdate = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.selectedMed.dmt) {
-          // this.removeDmt();
-          // if (this.hasData(this.medType.dmt)) {
-          //   this.drawDmt();
-          // }
-          // else {
-          //   this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.dmt, checked: true });
-          // }
           this.removeDmt();
           if (d.data.fetchData) {
             this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.dmt, checked: true });
@@ -107,13 +100,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           }
         }
         if (this.selectedMed.otherMeds) {
-          // this.removeOtherMeds();
-          // if (this.hasData(this.medType.otherMeds)) {
-          //   this.drawOtherMeds();
-          // }
-          // else {
-          //   this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.otherMeds, checked: true });
-          // }
           this.removeOtherMeds();
           if (d.data.fetchData) {
             this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.otherMeds, checked: true });
@@ -123,13 +109,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           }
         }
         if (this.selectedMed.vitaminD) {
-          // this.removeVitaminD();
-          // if (this.hasData(this.medType.vitaminD)) {
-          //   this.drawOtherMeds();
-          // }
-          // else {
-          //   this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.vitaminD, checked: true });
-          // }
           this.removeVitaminD();
           if (d.data.fetchData) {
             this.brokerService.emit(allMessages.neuroRelated, { artifact: this.medType.vitaminD, checked: true });
@@ -145,7 +124,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     // This 'setSecondLayerData' is temporary and used to set a local data source.
     // Will be removed once apis are ready.
     this.setSecondLayerData();
-    //-------------------------//
   }
 
   ngOnDestroy() {
@@ -166,6 +144,14 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             {
               name: 'pom_id',
               value: this.neuroGraphService.get('queryParams').pom_id
+            },
+            {
+              name: 'startDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+            },
+            {
+              name: 'endDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
             }
           ]);
         })();
@@ -297,30 +283,45 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           urlId: allHttpMessages.httpGetDmt, queryParams: [
             {
               name: 'pom_id',
-              value: this
-                .neuroGraphService
-                .get('queryParams')
-                .pom_id
+              value: this.neuroGraphService.get('queryParams').pom_id
+            },
+            {
+              name: 'startDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+            },
+            {
+              name: 'endDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
             }
           ]
         }, {
           urlId: allHttpMessages.httpGetOtherMeds, queryParams: [
             {
               name: 'pom_id',
-              value: this
-                .neuroGraphService
-                .get('queryParams')
-                .pom_id
+              value: this.neuroGraphService.get('queryParams').pom_id
+            },
+            {
+              name: 'startDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+            },
+            {
+              name: 'endDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
             }
           ]
         }, {
           urlId: allHttpMessages.httpGetRelapse, queryParams: [
             {
               name: 'pom_id',
-              value: this
-                .neuroGraphService
-                .get('queryParams')
-                .pom_id
+              value: this.neuroGraphService.get('queryParams').pom_id
+            },
+            {
+              name: 'startDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+            },
+            {
+              name: 'endDate',
+              value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
             }
           ]
         }
@@ -411,6 +412,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .dialogRef
       .close();
   }
+
+  //#region Drawing
 
   drawDmt() {
     let config = {
@@ -662,5 +665,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .select('#' + containterId)
       .style('display', 'none');
   }
+  //#endregion
+
 
 }

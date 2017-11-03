@@ -102,6 +102,14 @@ export class RelapsesComponent implements OnInit {
                 {
                   name: 'pom_id',
                   value: this.neuroGraphService.get('queryParams').pom_id
+                },
+                {
+                  name: 'startDate',
+                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+                },
+                {
+                  name: 'endDate',
+                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
                 }
               ]);
           })();
