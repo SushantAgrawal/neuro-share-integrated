@@ -7,7 +7,7 @@
 
 <ng-template #dmtSecondLevelTemplate>
     <div class="modal-header">
-        <h4 class="modal-title" [attr.id]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
+        <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -107,7 +107,7 @@
 
 <ng-template #vitaminDSecondLevelTemplate>
     <div class="modal-header">
-        <h4 class="modal-title" [attr.id]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
+        <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -142,7 +142,7 @@
 
 <ng-template #otherMedsSecondLevelTemplate>
     <div class="modal-header">
-        <h4 class="modal-title" [attr.id]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
+        <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
         </button>
