@@ -6,7 +6,6 @@ import {MdDialog} from '@angular/material';
 import {cdsMap, allMessages, manyHttpMessages, allHttpMessages} from '../neuro-graph.config';
 import {InfoPopupComponent} from './info-popup/info-popup.component';
 import { ProgressNotesGeneratorService } from '@sutterhealth/progress-notes';
-// import * as moment from 'moment';
 
 @Component({selector: 'app-cds', templateUrl: './cds.component.html', styleUrls: ['./cds.component.scss'], encapsulation: ViewEncapsulation.None})
 export class CdsComponent implements OnInit {

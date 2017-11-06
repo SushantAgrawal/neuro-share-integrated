@@ -239,6 +239,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   //Clean up needed
   getSecondLayerModel(data, medType, secondLayerData) {
     let model: any = {
+      medicationId: data.medication.id,
       orderIdentifier: data.orderIdentifier,
       name: data.name,
       simpleGenericName: data.medication.simple_generic_name,
