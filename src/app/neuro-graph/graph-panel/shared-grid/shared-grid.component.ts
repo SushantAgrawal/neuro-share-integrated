@@ -16,7 +16,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   @Input() chartState: any;
   subscriptions: any;
   dialogRef: any;
-  todayLabel: string;
+  lastOfficeDateLabel: string;
   constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
@@ -98,28 +98,135 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   };
 
   drawReferenceLines(nodeSelection, dimension, xScale) {
+
+    let previousDate = new Date("2/17/2017");
+    let dateArray = [
+      new Date(), moment(new Date()).add(1, "month"), moment(new Date()).add(2, "month")
+    ];
+    let i = Math.floor(Math.random() * 3) + 0
     let today = new Date();
-    this.todayLabel = "Today";
+    let width = 50;
+    let height = 25;
+    let lastOfficewidth = 85;
+    let lastOfficeheight = 25;
+    let lastOfficeLabel1 = "Last";
+    let todayLabel1 = "Today's";
+    let todayLastLabel = "Office Visit";
+    let todayLabel="";
+    let currentDate = dateArray[i];
+    if (currentDate > new Date()) {
+      todayLabel = "Today";
+      this.lastOfficeDateLabel = moment(previousDate).format("MM/DD/YYYY");
+    }
+    else {
+      todayLabel = todayLabel1 + " " + todayLastLabel;
+      height = 40;
+      width = 85;
+      this.lastOfficeDateLabel = lastOfficeLabel1 + " " + todayLastLabel;
+      lastOfficeheight = 40;
+    }
 
-    let rect = nodeSelection.append("rect")
-      .attr("x", xScale(today) - 25)
-      .attr("y", "20")
-      .attr("width", 50)
-      .attr("height", 25)
-      .attr("fill", "#EBEBEB");
 
-    let axisText = nodeSelection.append('text')
-      .attr('y', 35)
-      .style('font-size', '12px')
-      .style('font-weight', 'bold')
-      .style('cursor', 'pointer')
-    axisText.append('tspan')
-      .attr('x', xScale(today) - 15)
-      .attr('dy', 0)
-      .text(this.todayLabel)
-      .on('click', d => {
-        this.showSecondLevel();
-      })
+    if (currentDate > new Date()) {
+
+      let rectPrev = nodeSelection.append("rect")
+        .attr("x", xScale(previousDate) - 40)
+        .attr("y", "20")
+        .attr("width", lastOfficewidth)
+        .attr("height", lastOfficeheight)
+        .attr("fill", "#EBEBEB");
+      let axisTextPrev = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+        .style('cursor', 'pointer')
+      axisTextPrev.append('tspan')
+        .attr('x', xScale(previousDate) - 30)
+        .attr('dy', 0)
+        .text(this.lastOfficeDateLabel)
+        .on('click', d => {
+          this.showSecondLevel();
+        })
+
+    }
+    else {
+      let rectPrev = nodeSelection.append("rect")
+        .attr("x", xScale(previousDate) - 40)
+        .attr("y", "20")
+        .attr("width", lastOfficewidth)
+        .attr("height", lastOfficeheight)
+        .attr("fill", "#EBEBEB");
+
+      let axisTextPrev = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+        .style('cursor', 'pointer')
+      axisTextPrev.append('tspan')
+        .attr('x', xScale(previousDate) - 10)
+        .attr('dy', 0)
+        .text(lastOfficeLabel1)
+      axisTextPrev.append('tspan')
+        .attr('x', xScale(previousDate) - 30)
+        .attr('dy', 15)
+        .text(todayLastLabel)
+        .on('click', d => {
+          this.showSecondLevel();
+        })
+
+    }
+
+    nodeSelection.append("line")
+      .attr("x1", xScale(previousDate))
+      .attr("y1", 45)
+      .attr("x2", xScale(previousDate))
+      .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
+      .style("stroke-dasharray", "2,2")
+      .style("opacity", "0.4")
+      .style("stroke", "grey")
+      .style("fill", "none");
+
+    if (currentDate > new Date()) {
+      let rect = nodeSelection.append("rect")
+        .attr("x", xScale(today) - 25)
+        .attr("y", "20")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "#EBEBEB");
+
+      let axisText = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+      axisText.append('tspan')
+        .attr('x', xScale(today) - 15)
+        .attr('dy', 0)
+        .text(todayLabel)
+    
+    }
+    else {
+      let rect = nodeSelection.append("rect")
+        .attr("x", xScale(today) - 40)
+        .attr("y", "20")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "#EBEBEB");
+
+      let axisText = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+      axisText.append('tspan')
+        .attr('x', xScale(today) - 20)
+        .attr('dy', 0)
+        .text(todayLabel1)
+      axisText.append('tspan')
+        .attr('x', xScale(today) - 30)
+        .attr('dy', 15)
+        .text(todayLastLabel)
+     
+    }
+
 
     nodeSelection.append("line")
       .attr("x1", xScale(today))
