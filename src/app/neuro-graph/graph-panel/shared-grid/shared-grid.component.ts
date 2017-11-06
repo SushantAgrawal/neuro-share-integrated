@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter, OnDestroy, TemplateRef } from '@angular/core';
 import * as d3 from 'd3';
-import * as moment from 'moment';
 import { BrokerService } from '../../broker/broker.service';
 import { NeuroGraphService } from '../../neuro-graph.service';
 import { allMessages } from '../../neuro-graph.config';
@@ -98,10 +97,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   };
 
   drawReferenceLines(nodeSelection, dimension, xScale) {
-
     let previousDate = new Date("2/17/2017");
     let dateArray = [
-      new Date(), moment(new Date()).add(1, "month"), moment(new Date()).add(2, "month")
+      new Date(),
+      this.neuroGraphService.moment(new Date()).add(1, "month"),
+      this.neuroGraphService.moment(new Date()).add(2, "month")
     ];
     let i = Math.floor(Math.random() * 3) + 0
     let today = new Date();
@@ -112,11 +112,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let lastOfficeLabel1 = "Last";
     let todayLabel1 = "Today's";
     let todayLastLabel = "Office Visit";
-    let todayLabel="";
+    let todayLabel = "";
     let currentDate = dateArray[i];
     if (currentDate > new Date()) {
       todayLabel = "Today";
-      this.lastOfficeDateLabel = moment(previousDate).format("MM/DD/YYYY");
+      this.lastOfficeDateLabel = this.neuroGraphService.moment(previousDate).format("MM/DD/YYYY");
     }
     else {
       todayLabel = todayLabel1 + " " + todayLastLabel;
@@ -127,17 +127,16 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
 
     nodeSelection.append("line")
-    .attr("x1", xScale(previousDate))
-    .attr("y1", 45)
-    .attr("x2", xScale(previousDate))
-    .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
-    .style("stroke-dasharray", "2,2")
-    .style("opacity", "0.4")
-    .style("stroke", "grey")
-    .style("fill", "none");
+      .attr("x1", xScale(previousDate))
+      .attr("y1", 45)
+      .attr("x2", xScale(previousDate))
+      .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
+      .style("stroke-dasharray", "2,2")
+      .style("opacity", "0.4")
+      .style("stroke", "grey")
+      .style("fill", "none");
 
     if (currentDate > new Date()) {
-
       let rectPrev = nodeSelection.append("rect")
         .attr("x", xScale(previousDate) - 40)
         .attr("y", "20")
@@ -156,7 +155,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .on('click', d => {
           this.showSecondLevel();
         })
-
     }
     else {
       let rectPrev = nodeSelection.append("rect")
@@ -165,7 +163,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
         .attr("fill", "#EBEBEB");
-
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
@@ -182,19 +179,17 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .on('click', d => {
           this.showSecondLevel();
         })
-
     }
 
     nodeSelection.append("line")
-    .attr("x1", xScale(today))
-    .attr("y1", 45)
-    .attr("x2", xScale(today))
-    .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
-    .style("stroke-dasharray", "2,2")
-    .style("opacity", "0.4")
-    .style("stroke", "grey")
-    .style("fill", "none"); 
-
+      .attr("x1", xScale(today))
+      .attr("y1", 45)
+      .attr("x2", xScale(today))
+      .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
+      .style("stroke-dasharray", "2,2")
+      .style("opacity", "0.4")
+      .style("stroke", "grey")
+      .style("fill", "none");
     if (currentDate > new Date()) {
       let rect = nodeSelection.append("rect")
         .attr("x", xScale(today) - 25)
@@ -202,7 +197,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("width", width)
         .attr("height", height)
         .attr("fill", "#EBEBEB");
-
       let axisText = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
@@ -211,7 +205,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr('x', xScale(today) - 15)
         .attr('dy', 0)
         .text(todayLabel)
-    
     }
     else {
       let rect = nodeSelection.append("rect")
@@ -220,7 +213,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("width", width)
         .attr("height", height)
         .attr("fill", "#EBEBEB");
-
       let axisText = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
@@ -233,9 +225,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr('x', xScale(today) - 30)
         .attr('dy', 15)
         .text(todayLastLabel)
-     
     }
-
   };
 
   showSecondLevel() {
