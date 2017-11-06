@@ -16,6 +16,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   @Input() chartState: any;
   subscriptions: any;
   dialogRef: any;
+  todayLabel: string;
   constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
@@ -98,7 +99,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
   drawReferenceLines(nodeSelection, dimension, xScale) {
     let today = new Date();
-    let todayLabel = "Today";
+    this.todayLabel = "Today";
 
     let rect = nodeSelection.append("rect")
       .attr("x", xScale(today) - 25)
@@ -115,7 +116,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     axisText.append('tspan')
       .attr('x', xScale(today) - 15)
       .attr('dy', 0)
-      .text(todayLabel)
+      .text(this.todayLabel)
       .on('click', d => {
         this.showSecondLevel();
       })

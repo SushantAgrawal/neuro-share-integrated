@@ -16,7 +16,6 @@ import { allMessages, allHttpMessages, medication, GRAPH_SETTINGS, edssScoreChar
 @Component({ selector: '[app-edss]', templateUrl: './edss.component.html', styleUrls: ['./edss.component.scss'], encapsulation: ViewEncapsulation.None })
 
 export class EdssComponent implements OnInit {
-  //#region Fields
   @Input() chartState: any;
   @ViewChild('edssSecondLevelTemplate') edssSecondLevelTemplate: TemplateRef<any>;
   @ViewChild('edssScoreChartTemplate') edssScoreChartTemplate: TemplateRef<any>;
@@ -42,11 +41,10 @@ export class EdssComponent implements OnInit {
   datasetArea1: Array<any> = [];
   datasetArea2: Array<any> = [];
   datasetMean: Array<any> = [];
-  //#endregion #region Constructor
+
   constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
 
   }
-  //#endregion #region Lifecycle Event Handlers
   ngOnInit() {
     this.edssPopupQuestions = edssScoreChart;
     this.edssPopupQuestions.map(x => x.checked = false);
@@ -272,7 +270,6 @@ export class EdssComponent implements OnInit {
       .subscriptions
       .unsubscribe();
   }
-  //#endregion #region UI Event Handlers
   onSelectChartScore(index) {
     this
       .edssPopupQuestions
@@ -364,7 +361,6 @@ export class EdssComponent implements OnInit {
       .close();
   }
 
-  //#endregion #region Misc
   showSecondLevel(data) {
     let config = {
       hasBackdrop: true,
@@ -377,7 +373,6 @@ export class EdssComponent implements OnInit {
       .open(this.edssSecondLevelTemplate, config);
   }
 
-  //#endregion #region Chart Drawing Related
   drawEdssYAxis() {
     this.yScale = d3
       .scaleLinear()
@@ -677,5 +672,4 @@ export class EdssComponent implements OnInit {
       this.drawEdssLineCharts();
     }
   }
-  //#endregion
 }
