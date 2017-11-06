@@ -126,6 +126,15 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       lastOfficeheight = 40;
     }
 
+    nodeSelection.append("line")
+    .attr("x1", xScale(previousDate))
+    .attr("y1", 45)
+    .attr("x2", xScale(previousDate))
+    .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
+    .style("stroke-dasharray", "2,2")
+    .style("opacity", "0.4")
+    .style("stroke", "grey")
+    .style("fill", "none");
 
     if (currentDate > new Date()) {
 
@@ -177,14 +186,14 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
 
     nodeSelection.append("line")
-      .attr("x1", xScale(previousDate))
-      .attr("y1", 45)
-      .attr("x2", xScale(previousDate))
-      .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
-      .style("stroke-dasharray", "2,2")
-      .style("opacity", "0.4")
-      .style("stroke", "grey")
-      .style("fill", "none");
+    .attr("x1", xScale(today))
+    .attr("y1", 45)
+    .attr("x2", xScale(today))
+    .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
+    .style("stroke-dasharray", "2,2")
+    .style("opacity", "0.4")
+    .style("stroke", "grey")
+    .style("fill", "none"); 
 
     if (currentDate > new Date()) {
       let rect = nodeSelection.append("rect")
@@ -227,21 +236,12 @@ export class SharedGridComponent implements OnInit, OnDestroy {
      
     }
 
-
-    nodeSelection.append("line")
-      .attr("x1", xScale(today))
-      .attr("y1", 45)
-      .attr("x2", xScale(today))
-      .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
-      .style("stroke-dasharray", "2,2")
-      .style("opacity", "0.4")
-      .style("stroke", "grey")
-      .style("fill", "none");
   };
 
   showSecondLevel() {
     let dialogConfig = { hasBackdrop: false, width: '350px', height: '350px' };
     this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
+    this.dialogRef.updatePosition({ top: '150px', left: '850px' });
   };
 
   drawVerticalGridLines(nodeSelection, dimension, xScale) {
