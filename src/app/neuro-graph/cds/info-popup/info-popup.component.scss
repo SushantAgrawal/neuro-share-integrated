@@ -5,7 +5,7 @@
 }
 .cds-header{
     border-bottom: 1px solid #bfbfbf;
-    padding: 7px 7px 5px 15px;
+    padding: 7px 15px 5px 15px;
     height: 38px;
     line-height: 38px;
     font-weight: 700;
@@ -26,7 +26,7 @@
 .urlContainer{
 
     a{
-        text-decoration: underline; color: #333333;
+        text-decoration: underline; color: #333333; outline: none;
     }
     .pull-left{
         float: left;

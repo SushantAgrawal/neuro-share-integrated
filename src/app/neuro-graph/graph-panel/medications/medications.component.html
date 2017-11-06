@@ -1,11 +1,13 @@
-<!-- initial height is 0, appropriate height and display will be set at runtime -->
-<svg attr.id={{medType.vitaminD}} width="100%" height="0" [style.marginLeft.px]="graphDimension.marginLeft" style="display:none"></svg>
-<svg attr.id={{medType.dmt}} width="100%" height="0" [style.marginLeft.px]="graphDimension.marginLeft" style="display:none"></svg>
-<svg attr.id={{medType.otherMeds}} width="100%" height="0" [style.marginLeft.px]="graphDimension.marginLeft" style="display:none"></svg>
+<svg attr.id={{medType.vitaminD}} [style.width.px]="chartsWidth" height="0" [style.marginLeft.px]="graphDimension.marginLeft"
+    style="display:none;overflow:hidden;"></svg>
+<svg attr.id={{medType.dmt}} [style.width.px]="chartsWidth" height="0" [style.marginLeft.px]="graphDimension.marginLeft"
+    style="display:none;overflow:hidden;"></svg>
+<svg attr.id={{medType.otherMeds}} [style.width.px]="chartsWidth" height="0" [style.marginLeft.px]="graphDimension.marginLeft"
+    style="display:none;overflow:hidden;"></svg>
 
 <ng-template #dmtSecondLevelTemplate>
     <div class="modal-header">
-        <h4 class="modal-title">{{medSecondLayerModel.name}}</h4>
+        <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -27,8 +29,7 @@
             <div class="ns-dmt-row">
                 <div class="ns-dmt-col">Patient Reported Start :</div>
                 <div class="ns-dmt-selectBox-value" *ngIf="medSecondLayerModel.allowEdit">
-                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown ns-dmt-theme" floatPlaceholder="never"
-                        [(ngModel)]="medSecondLayerModel.patientReportedStartDateMonth">
+                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown ns-dmt-theme" floatPlaceholder="never" [(ngModel)]="medSecondLayerModel.patientReportedStartDateMonth">
                         <md-option [value]="1">Janaury</md-option>
                         <md-option [value]="2">February</md-option>
                         <md-option [value]="3">March</md-option>
@@ -106,7 +107,7 @@
 
 <ng-template #vitaminDSecondLevelTemplate>
     <div class="modal-header">
-        <h4 class="modal-title">{{medSecondLayerModel.name}}</h4>
+        <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -129,7 +130,7 @@
                 <div class="ns-vitamin-d3-col">Patient Reported:</div>
                 <div class="ns-vitamin-d3-value">{{medSecondLayerModel.medEnded}}</div>
             </div>
-            <hr/>
+           
             <div class="ns-vitamin-d3-row">
                 <div class="ns-vitamin-d3-text">
                     Best practices suggest that all patients treated for MS, should be on dosages of Vitamin D.
@@ -141,7 +142,7 @@
 
 <ng-template #otherMedsSecondLevelTemplate>
     <div class="modal-header">
-        <h4 class="modal-title">{{medSecondLayerModel.name}}</h4>
+        <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
         </button>

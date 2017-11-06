@@ -2,13 +2,14 @@ $walk25feet-color:#31859b;
 
 .btn-info-walk25feet
 {
-    width: 16px; 
-    height: 16px; 
+    width: 15px; 
+    height: 15px; 
+    padding: 2px;
     text-align:center;
     font-weight: 700;
     margin-left: 8px;
-    font-size: 10pt;
-    line-height: 16px;
+    font-size: 8pt;
+    line-height: 8pt;
     color: #333333; 
     border: solid 1px $walk25feet-color; 
     background-color: #ffffff;
@@ -19,6 +20,9 @@ $walk25feet-color:#31859b;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
     border-radius: 50%;
+    outline: none;  
+    float: left;
+    margin-top: 2px;
     &:not([disabled]):hover {
         border: solid 1px $walk25feet-color; 
         background: #ffffff!important;
@@ -35,7 +39,7 @@ $walk25feet-color:#31859b;
 
 .walk25feet-header{
     border-bottom: 1px solid #bfbfbf;
-    padding: 7px 7px 5px 15px;
+    padding: 7px 15px 5px 15px;
     height: 38px;
     line-height: 38px;
     font-weight: 700;

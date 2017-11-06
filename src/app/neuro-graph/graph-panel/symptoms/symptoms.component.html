@@ -15,7 +15,7 @@
   </div>
   <div class="ns-symtoms-item">
     <div class="ns-symtoms-header">Last Questionnaire Date</div>
-    <div class="ns-symtoms-value">{{symptomsData.questionnaireDate | date: 'dd/MM/yyyy'}} </div>
+    <div class="ns-symtoms-value">{{symptomsData.questionnaireDate }} </div>
   </div>
 </div>
 
@@ -34,7 +34,7 @@
             <span class="ns-symptoms-name">{{symp.name}}</span>
             <div class="ns-symtoms-date-box">
             <span class="ns-symptoms-reportDate">
-              Reported {{symp.reportDate | date: 'dd/MM/yyyy'}}
+              Reported {{symp.reportDate }}
             </span>
             <span class="ns-symptoms-previous" *ngIf="symp.symptomStatus=='Previous'">
                 {{symp.symptomStatus}}

@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEmitter, OnDestroy, TemplateRef } from '@angular/core';
 import * as d3 from 'd3';
-import * as moment from 'moment';
 import { BrokerService } from '../../broker/broker.service';
 import { NeuroGraphService } from '../../neuro-graph.service';
 import { allMessages } from '../../neuro-graph.config';
-
+import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 @Component({
   selector: '[app-shared-grid]',
   templateUrl: './shared-grid.component.html',
@@ -12,9 +11,12 @@ import { allMessages } from '../../neuro-graph.config';
   encapsulation: ViewEncapsulation.None
 })
 export class SharedGridComponent implements OnInit, OnDestroy {
-  @Input() private chartState: any;
-  private subscriptions: any;
-  constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService) {
+  @ViewChild('progressNoteTemplate') progressNoteTemplate: TemplateRef<any>;
+  @Input() chartState: any;
+  subscriptions: any;
+  dialogRef: any;
+  lastOfficeDateLabel: string;
+  constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
   //#region Lifecycle events
@@ -40,6 +42,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let sharedGrid = this.setupSharedGrid(sharedGridElement, state.canvasDimension);
     this.drawScrollArrows(sharedGridElement, state.canvasDimension);
     this.drawVerticalGridLines(sharedGrid, state.canvasDimension, state.xScale);
+    this.drawReferenceLines(sharedGrid, state.canvasDimension, state.xScale);
     this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
   };
 
@@ -65,20 +68,18 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     else {
       xAxis = d3.axisBottom(xScale).tickSize(0);
     }
-
     nodeSelection.append('rect')
       .attr('x', 0)
       .attr('y', 0)
       .attr('width', dimension.width)
       .attr('height', 16)
       .attr('class', 'custom-x-domain');
-
     let minor = nodeSelection.append('g')
       .attr('class', 'x-axis')
       .call(g => {
         let axis = g.call(xAxis);
         g.select('.domain').remove();
-        axis.selectAll('text').style('display', 'none');
+        axis.selectAll('text').style('display', 'none').style('font-weight', 'bold');
         axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
           let momentD = this.neuroGraphService.moment(d);
@@ -93,6 +94,144 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         });
         axis.selectAll('.mid-year-tick').style('display', 'block').style('font-size', '12px');
       });
+  };
+
+  drawReferenceLines(nodeSelection, dimension, xScale) {
+    let previousDate = new Date("2/17/2017");
+    let dateArray = [
+      new Date(),
+      this.neuroGraphService.moment(new Date()).add(1, "month"),
+      this.neuroGraphService.moment(new Date()).add(2, "month")
+    ];
+    let i = Math.floor(Math.random() * 3) + 0
+    let today = new Date();
+    let width = 50;
+    let height = 25;
+    let lastOfficewidth = 85;
+    let lastOfficeheight = 25;
+    let lastOfficeLabel1 = "Last";
+    let todayLabel1 = "Today's";
+    let todayLastLabel = "Office Visit";
+    let todayLabel = "";
+    let currentDate = dateArray[i];
+    if (currentDate > new Date()) {
+      todayLabel = "Today";
+      this.lastOfficeDateLabel = this.neuroGraphService.moment(previousDate).format("MM/DD/YYYY");
+    }
+    else {
+      todayLabel = todayLabel1 + " " + todayLastLabel;
+      height = 40;
+      width = 85;
+      this.lastOfficeDateLabel = lastOfficeLabel1 + " " + todayLastLabel;
+      lastOfficeheight = 40;
+    }
+
+    nodeSelection.append("line")
+      .attr("x1", xScale(previousDate))
+      .attr("y1", 45)
+      .attr("x2", xScale(previousDate))
+      .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
+      .style("stroke-dasharray", "2,2")
+      .style("opacity", "0.4")
+      .style("stroke", "grey")
+      .style("fill", "none");
+
+    if (currentDate > new Date()) {
+      let rectPrev = nodeSelection.append("rect")
+        .attr("x", xScale(previousDate) - 40)
+        .attr("y", "20")
+        .attr("width", lastOfficewidth)
+        .attr("height", lastOfficeheight)
+        .attr("fill", "#EBEBEB");
+      let axisTextPrev = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+        .style('cursor', 'pointer')
+      axisTextPrev.append('tspan')
+        .attr('x', xScale(previousDate) - 30)
+        .attr('dy', 0)
+        .text(this.lastOfficeDateLabel)
+        .on('click', d => {
+          this.showSecondLevel();
+        })
+    }
+    else {
+      let rectPrev = nodeSelection.append("rect")
+        .attr("x", xScale(previousDate) - 40)
+        .attr("y", "20")
+        .attr("width", lastOfficewidth)
+        .attr("height", lastOfficeheight)
+        .attr("fill", "#EBEBEB");
+      let axisTextPrev = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+        .style('cursor', 'pointer')
+      axisTextPrev.append('tspan')
+        .attr('x', xScale(previousDate) - 10)
+        .attr('dy', 0)
+        .text(lastOfficeLabel1)
+      axisTextPrev.append('tspan')
+        .attr('x', xScale(previousDate) - 30)
+        .attr('dy', 15)
+        .text(todayLastLabel)
+        .on('click', d => {
+          this.showSecondLevel();
+        })
+    }
+
+    nodeSelection.append("line")
+      .attr("x1", xScale(today))
+      .attr("y1", 45)
+      .attr("x2", xScale(today))
+      .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
+      .style("stroke-dasharray", "2,2")
+      .style("opacity", "0.4")
+      .style("stroke", "grey")
+      .style("fill", "none");
+    if (currentDate > new Date()) {
+      let rect = nodeSelection.append("rect")
+        .attr("x", xScale(today) - 25)
+        .attr("y", "20")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "#EBEBEB");
+      let axisText = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+      axisText.append('tspan')
+        .attr('x', xScale(today) - 15)
+        .attr('dy', 0)
+        .text(todayLabel)
+    }
+    else {
+      let rect = nodeSelection.append("rect")
+        .attr("x", xScale(today) - 40)
+        .attr("y", "20")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "#EBEBEB");
+      let axisText = nodeSelection.append('text')
+        .attr('y', 35)
+        .style('font-size', '12px')
+        .style('font-weight', 'bold')
+      axisText.append('tspan')
+        .attr('x', xScale(today) - 20)
+        .attr('dy', 0)
+        .text(todayLabel1)
+      axisText.append('tspan')
+        .attr('x', xScale(today) - 30)
+        .attr('dy', 15)
+        .text(todayLastLabel)
+    }
+  };
+
+  showSecondLevel() {
+    let dialogConfig = { hasBackdrop: false, width: '350px', height: '350px' };
+    this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
+    this.dialogRef.updatePosition({ top: '150px', left: '850px' });
   };
 
   drawVerticalGridLines(nodeSelection, dimension, xScale) {
@@ -154,8 +293,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
   scroll(direction) {
     this.brokerService.emit(allMessages.timelineScroll, direction);
-  }
+  };
 
   //#endregion
-
 }
