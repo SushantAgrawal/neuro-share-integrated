@@ -79,7 +79,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .call(g => {
         let axis = g.call(xAxis);
         g.select('.domain').remove();
-        axis.selectAll('text').style('display', 'none');
+        axis.selectAll('text').style('display', 'none').style('font-weight', 'bold');
         axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
           let momentD = this.neuroGraphService.moment(d);
