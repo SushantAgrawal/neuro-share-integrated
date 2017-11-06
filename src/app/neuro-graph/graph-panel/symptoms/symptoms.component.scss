@@ -82,9 +82,6 @@ $ns-symptoms-black:#3f3f3f;
         font-weight:bold;
         color:black;
 }  
-
-
-
 .ns-order-symptoms-box{ 
     background-color: #ececec; 
     float: left; margin-right: 5px; width: 230px; height: 30px; padding: 5px;
@@ -117,16 +114,13 @@ $ns-symptoms-black:#3f3f3f;
             margin-left: auto;
         }
     }
-
-    
 }
 
-
-.ns-symptoms-trend-box{ float: left; width: 105px; height: 40px; display: block;line-height: 30px;}
+.ns-symptoms-trend-box{ float: left; width: 105px; height: 40px; display: block; line-height: 30px;}
 .ns-symptoms-quest-unit{ float: left; margin-top:10px; }
-
-
-
+.ns-symptoms-quest-unit .call-out-buttons{
+    width: 65px;
+}
 .ns-symptoms-items-container{
     height: 400px; overflow: auto;
 }
@@ -139,13 +133,14 @@ $ns-symptoms-black:#3f3f3f;
     .ns-symptoms-name-quest{ display: block; padding-bottom: 5px; font-size: 13pt; font-weight: bold;}
     .ns-symptoms-name-det{ margin-bottom: 5px;  padding: 3px;  display: block; counter-reset: #494949; }
     .ns-symptoms-name-red{ background-color: #fbe2cf; padding: 5px; margin-bottom: 5px; display: block; font-size: 9pt; font-weight: bold;}
-    .ns-symptoms-name-quest
-    {
-        font-size:10pt;
-        font-weight:bold;
-    }
+        .ns-symptoms-name-quest{
+            font-size:10pt;
+            font-weight:bold;
+        }
     }
 }
+
+
 .st0{clip-path:url(#SVGID_2_);fill-rule:evenodd;clip-rule:evenodd;fill:#EA700D;}
 .st1{clip-path:url(#SVGID_2_);}
 

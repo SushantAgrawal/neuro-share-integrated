@@ -5,7 +5,7 @@
 }
 .virtual-caseload-header{
     border-bottom: 1px solid #bfbfbf;
-    padding: 7px 7px 5px 15px;
+    padding: 7px 15px 5px 15px;
     height: 38px;
     line-height: 38px;
     font-weight: 700;
@@ -17,6 +17,7 @@
 .virtual-caseload-close i{ font-size: 10pt; cursor: pointer;}
 .virtual-caseload-content{
     padding: 10px 15px 15px 15px;
+    font-size: 10pt;
 }
 .virtual-caseload-info:after{
     clear: both;

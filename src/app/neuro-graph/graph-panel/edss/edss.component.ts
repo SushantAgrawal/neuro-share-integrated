@@ -127,7 +127,7 @@ export class EdssComponent implements OnInit {
               hasBackdrop: true,
               panelClass: 'ns-edss-theme',
               width: '670px',
-              height: '650px'
+              height: '675px'
             };
             this.scoreChartDialogRef = this
               .dialog
@@ -336,7 +336,7 @@ export class EdssComponent implements OnInit {
         hasBackdrop: true,
         panelClass: 'ns-edss-theme',
         width: '670px',
-        height: '650px'
+        height: '675px'
       };
       this.scoreChartDialogRef = this
         .dialog
