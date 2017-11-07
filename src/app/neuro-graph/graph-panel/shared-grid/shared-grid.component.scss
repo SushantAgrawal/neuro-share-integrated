@@ -23,3 +23,42 @@
         display: none !important;
     }
 }
+.ns-default-dialog{
+    .mat-dialog-container {
+        padding: 0px;
+        border: solid 1px #bfbfbf;
+    }
+    .modal-header {
+        border-bottom: 1px solid #bfbfbf;
+        padding: 2px 10px;
+        .modal-title {
+            float: left;
+            margin: 0px;
+            font-size: 10pt;
+            font-weight: 700;
+            line-height: 19px;
+            color: #7e7e7e;
+        }
+        .close{
+             float: right;
+             font-size: 12pt;
+             color: #bfbfbf;
+             background-color: transparent;
+             cursor: pointer;
+             border: none;   
+             outline: none;    
+             padding: 0px; 
+         }
+    } 
+    .modal-header:after {
+            clear: both;
+            content: '';
+            display: block;
+    }
+    .modal-body {
+        font-size: 10pt;
+        .call-out-buttons{
+            font-size: 10pt;
+        }
+    }
+}

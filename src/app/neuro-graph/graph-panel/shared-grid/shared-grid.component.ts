@@ -272,7 +272,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   };
 
   showSecondLevel() {
-    let dialogConfig = { hasBackdrop: false, width: '375px', height: '350px' };
+    let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
     this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
     this.dialogRef.updatePosition({ top: '150px', left: '850px' });
   };
