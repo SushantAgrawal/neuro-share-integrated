@@ -226,7 +226,7 @@ export class RelapsesComponent implements OnInit {
     }
   }
   showSecondLevel(data) {
-    this.relapsesDetail = data;
+    this.relapsesDetail = {...data};
     if (data.save_csn_status == "Open") {
       this.isEditSelected = false;
       let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '405px' };

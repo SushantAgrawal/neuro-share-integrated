@@ -204,7 +204,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   showSecondLevel(data) {
     this.showUpdate = false;
     let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', skipHide: true, preserveScope: true };
-    this.walk25FeetScoreDetail = data;
+    this.walk25FeetScoreDetail = {...data};
     if (this.walk25FeetScoreDetail.save_csn_status == "Closed") {
       this.dialogRef = this.dialog.open(this.walk25FeetSecondLevelTemplate, config);
     }
