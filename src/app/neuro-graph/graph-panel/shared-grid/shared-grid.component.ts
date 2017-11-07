@@ -117,7 +117,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .attr('y', 0)
       .attr('width', dimension.width)
       .attr('height', 16)
-      .attr('class', 'custom-x-domain');
+      .attr('class', 'custom-x-domain')
+      .attr('fill', '#EBEBEB');
     let minor = nodeSelection.append('g')
       .attr('class', 'x-axis')
       .call(g => {
@@ -326,14 +327,16 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     nodeSelection.append('path')
       .attr('d', arc)
       .attr('class', 'x-axis-arrow')
-      // .style('fill', '#C8C8C8')
-      // .style('cursor', 'pointer')
+      .style('fill', '#C8C8C8')
+      .style('cursor', 'pointer')
       .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
       .on('click', d => { this.scroll('backward'); });
 
     nodeSelection.append('path')
       .attr('d', arc)
       .attr('class', 'x-axis-arrow')
+      .style('fill', '#C8C8C8')
+      .style('cursor', 'pointer')
       .attr('transform', `translate(${dimension.marginLeft + dimension.width + hAdj}, ${dimension.marginTop + vAdj}) rotate(90)`)
       .on('click', d => { this.scroll('forward'); });
   };
