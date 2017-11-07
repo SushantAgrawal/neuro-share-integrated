@@ -156,7 +156,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let todayLastLabel = "Office Visit";
     let todayLabel = "";
     let currentDate = new Date(this.encounterData[0].date);
-    if (new Date() > currentDate ) {
+    if (today > currentDate ) {
       todayLabel = "Today";
       this.lastOfficeDateLabel = this.neuroGraphService.moment(previousDate).format("MM/DD/YYYY");
     }
@@ -178,7 +178,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .style("stroke", "grey")
       .style("fill", "none");
 
-    if (new Date() > currentDate) {
+    if (today > currentDate) {
       let rectPrev = nodeSelection.append("rect")
         .attr("x", xScale(previousDate) - 40)
         .attr("y", "20")
@@ -232,8 +232,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .style("opacity", "0.4")
       .style("stroke", "grey")
       .style("fill", "none");
-      
-    if (new Date() > currentDate) {
+
+    if (today > currentDate) {
       let rect = nodeSelection.append("rect")
         .attr("x", xScale(currentDate) - 25)
         .attr("y", "20")

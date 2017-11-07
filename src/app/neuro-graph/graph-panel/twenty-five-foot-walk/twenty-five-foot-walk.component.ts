@@ -121,7 +121,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .add(sub5);
   }
   updateWalk(str) {
-    //debugger;
     if (str == "Update") {
       if (this.walk25FeetScoreDetail.walk_1_score == "" || this.walk25FeetScoreDetail.walk_1_score == null || parseFloat(this.walk25FeetScoreDetail.walk_1_score) == 0) {
         this.walk25FeetScoreDetail.scoreValue = parseFloat(this.walk25FeetScoreDetail.walk_2_score);
@@ -150,14 +149,12 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
   walk25FeetInfo() {
-    //debugger;
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-25walk-theme', width: '300px', height: '340px' };
     this.dialog.openDialogs.pop();
     this.reportDialogRef = this.dialog.open(this.walk25FeetThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '150px', left: "500px" });
   }
   updateWalk25FeetScore(str) {
-    //debugger;
     if (str == "Update") {
       if (this.walk25FeetScoreDetail.walk_1_score == null || this.walk25FeetScoreDetail.walk_1_score == "") {
         this.walk25FeetScoreDetail.walk_1_score = 0;
@@ -205,7 +202,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
 
   }
   showSecondLevel(data) {
-    //debugger;
     this.showUpdate = false;
     let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', skipHide: true, preserveScope: true };
     this.walk25FeetScoreDetail = data;
@@ -217,7 +213,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     }
   }
   drawWalk25FeetAxis() {
-    //debugger;
     d3.selectAll('.walk25Feet-axis').remove();
 
     let clinicianDataSetforAxis = this.walk25FeetData.map(d => {
@@ -272,7 +267,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
 
 
   drawWalk25FeetLineCharts() {
-    //debugger;
     //Use moment js later
     let getParsedDate = (dtString) => {
       let dtPart = dtString.split(' ')[0];

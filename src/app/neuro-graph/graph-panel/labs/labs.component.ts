@@ -38,7 +38,6 @@ export class LabsComponent implements OnInit {
             console.log(d.error)
           })
           : (() => {
-            //debugger;
             //this.labsData = d.data.EPIC.labOrder;
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
@@ -103,7 +102,6 @@ export class LabsComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
   showSecondLevel(data) {
-    //debugger;
     this.labsDataDetails = data.orderDetails;
     let compArray: Array<any> = [];
     this.labsData.map(d => {
@@ -160,7 +158,6 @@ export class LabsComponent implements OnInit {
       this.plottrendline();
     });
 
-    //debugger;
     this
       .brokerService
       .emit(allMessages.neuroRelated, {
@@ -177,7 +174,6 @@ export class LabsComponent implements OnInit {
 
   }
   drawtrendLine(labId, compId, trendData) {
-    //debugger; 
     let maxValue = Math.max.apply(Math, trendData.map(function (o) { return o.y; }));
     let minValue = Math.min.apply(Math, trendData.map(function (o) { return o.y; }))
     let scale = d3.scaleLinear()

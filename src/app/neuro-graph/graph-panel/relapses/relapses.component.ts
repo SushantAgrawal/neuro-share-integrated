@@ -197,7 +197,6 @@ export class RelapsesComponent implements OnInit {
     d3.select('#relapses').selectAll("*").remove();
   }
   addChart() {
-    // debugger;
     var obj = {
       "relapse_id": this.relapsesData.length.toString(),
       "relapse_month": this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
