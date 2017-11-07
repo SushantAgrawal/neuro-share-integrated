@@ -1,5 +1,5 @@
 /*------- Imaging ------------------*/
-.imaging-container{padding: 10px;}
+.imaging-container{padding: 10px; max-height: 544px; overflow: auto;}
 .ns-imaging-row{ margin-bottom: 7px;}
 .ns-imaging-header{ margin-bottom: 10px;}
 
@@ -16,9 +16,6 @@
     content: '';
     display: block;
 }
-
-
-
 .ns-imaging-header-study{
 background-color: #efe4f4; padding: 5px;
 margin-bottom: 10px;

@@ -447,3 +447,12 @@ body {
   margin: 0px 24px 0px 5px;
   min-height: 560px;
 }
+
+.neuro-error-snackbar{
+    color: #e35748;
+}
+.neuro-error-snackbar .mat-simple-snackbar-action{
+ background-color: #3c3c3c; padding: 5px;
+ -webkit-border-radius: 50% 50% 50% 50%;
+ border-radius: 50% 50% 50% 50%;
+}
