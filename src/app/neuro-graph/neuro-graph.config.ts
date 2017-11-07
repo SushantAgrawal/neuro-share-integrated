@@ -5,7 +5,8 @@ export const allMessages = {
   'invokeAddWalk25Feet': 'invoke:add:walk25Feet',
   'toggleVirtualCaseload': 'toggle:virtual:caseload',
   'graphScaleUpdated': 'graph:scale:updated',
-  'timelineScroll': 'timeline:scroll'
+  'timelineScroll': 'timeline:scroll',
+  'applicationError': 'application:error'
 };
 
 export const manyHttpMessages = {
