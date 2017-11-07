@@ -158,12 +158,15 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   }
   updateWalk25FeetScore(str) {
     //debugger;
-    if (this.walk25FeetScoreDetail.walk_1_score == null || this.walk25FeetScoreDetail.walk_1_score == "") {
-      this.walk25FeetScoreDetail.walk_1_score = 0;
+    if (str == "Update") {
+      if (this.walk25FeetScoreDetail.walk_1_score == null || this.walk25FeetScoreDetail.walk_1_score == "") {
+        this.walk25FeetScoreDetail.walk_1_score = 0;
+      }
+      if (this.walk25FeetScoreDetail.walk_2_score == null || this.walk25FeetScoreDetail.walk_2_score == "") {
+        this.walk25FeetScoreDetail.walk_2_score = 0;
+      }
     }
-    if (this.walk25FeetScoreDetail.walk_2_score == null || this.walk25FeetScoreDetail.walk_2_score == "") {
-      this.walk25FeetScoreDetail.walk_2_score = 0;
-    }
+
     if (this.score_1 == null || this.score_1 == "") {
       this.score_1 = 0;
     }
@@ -220,7 +223,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let clinicianDataSetforAxis = this.walk25FeetData.map(d => {
       return {
         ...d,
-        scoreValue: ((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2)
+        scoreValue: parseFloat(d.walk_1_score) == 0? parseFloat(d.walk_2_score) : parseFloat(d.walk_2_score) == 0 ? parseFloat(d.walk_1_score) :((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2)
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
     let maxValue = Math.max.apply(Math, clinicianDataSetforAxis.map(function (o) { return o.scoreValue; })) + 10;
