@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation, ViewChild, Output, EventEm
 import * as d3 from 'd3';
 import { BrokerService } from '../../broker/broker.service';
 import { NeuroGraphService } from '../../neuro-graph.service';
-import { allMessages } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 @Component({
   selector: '[app-shared-grid]',
@@ -16,6 +16,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   subscriptions: any;
   dialogRef: any;
   lastOfficeDateLabel: string;
+  encounterData: any;
   constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
@@ -27,6 +28,50 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         this.drawRootElement(this.chartState);
       })();
     })
+    let sub1 = this
+      .brokerService
+      .filterOn(allHttpMessages.httpGetReferenceLine)
+      .subscribe(d => {
+        d.error
+          ? (() => {
+            console.log(d.error)
+          })
+          : (() => {
+            let encounters: Array<any> = [];
+            encounters = d.data.EPIC.encounters;
+            let filteredEncounter = encounters.filter(t => t.contactType == 'Office Visit');
+            this.encounterData = filteredEncounter.map(d => {
+              return {
+                ...d,
+                date: new Date(d.date),
+              }
+            }).sort((a, b) => b.date - a.date);
+
+            let sharedGridElement = d3.select('#shared-grid');            
+            let sharedGrid = this.setupSharedGrid(sharedGridElement, this.chartState.canvasDimension);
+            
+            if (this.encounterData.length > 0)
+              this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
+        
+          })();
+      })
+    let sub2 =
+      this.brokerService.httpGet(allHttpMessages.httpGetReferenceLine, [
+        {
+          name: 'pom_id',
+          value: this.neuroGraphService.get('queryParams').pom_id
+        },
+        {
+          name: 'startDate',
+          value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+        },
+        {
+          name: 'endDate',
+          value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+        }
+      ]);
+
+    this.subscriptions.add(sub1).add(sub2);
   };
 
   ngOnDestroy() {
@@ -42,8 +87,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let sharedGrid = this.setupSharedGrid(sharedGridElement, state.canvasDimension);
     this.drawScrollArrows(sharedGridElement, state.canvasDimension);
     this.drawVerticalGridLines(sharedGrid, state.canvasDimension, state.xScale);
-    this.drawReferenceLines(sharedGrid, state.canvasDimension, state.xScale);
-    this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
+        this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
   };
 
   setupSharedGrid(nodeSelection, dimension) {
@@ -97,13 +141,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   };
 
   drawReferenceLines(nodeSelection, dimension, xScale) {
-    let previousDate = new Date("2/17/2017");
-    let dateArray = [
-      new Date(),
-      this.neuroGraphService.moment(new Date()).add(1, "month"),
-      this.neuroGraphService.moment(new Date()).add(2, "month")
-    ];
-    let i = Math.floor(Math.random() * 3) + 0
+    let previousDate: any;
+    if (this.encounterData.length > 1) {
+      previousDate = new Date(this.encounterData[1].date)
+    }
+
     let today = new Date();
     let width = 50;
     let height = 25;
@@ -113,7 +155,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let todayLabel1 = "Today's";
     let todayLastLabel = "Office Visit";
     let todayLabel = "";
-    let currentDate = dateArray[i];
+    let currentDate = new Date(this.encounterData[0].date);
     if (currentDate > new Date()) {
       todayLabel = "Today";
       this.lastOfficeDateLabel = this.neuroGraphService.moment(previousDate).format("MM/DD/YYYY");
@@ -182,9 +224,9 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
 
     nodeSelection.append("line")
-      .attr("x1", xScale(today))
+      .attr("x1", xScale(currentDate))
       .attr("y1", 45)
-      .attr("x2", xScale(today))
+      .attr("x2", xScale(currentDate))
       .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
       .style("stroke-dasharray", "2,2")
       .style("opacity", "0.4")
@@ -192,7 +234,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .style("fill", "none");
     if (currentDate > new Date()) {
       let rect = nodeSelection.append("rect")
-        .attr("x", xScale(today) - 25)
+        .attr("x", xScale(currentDate) - 25)
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
@@ -202,13 +244,13 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(today) - 15)
+        .attr('x', xScale(currentDate) - 15)
         .attr('dy', 0)
         .text(todayLabel)
     }
     else {
       let rect = nodeSelection.append("rect")
-        .attr("x", xScale(today) - 40)
+        .attr("x", xScale(currentDate) - 40)
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
@@ -218,18 +260,18 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(today) - 20)
+        .attr('x', xScale(currentDate) - 20)
         .attr('dy', 0)
         .text(todayLabel1)
       axisText.append('tspan')
-        .attr('x', xScale(today) - 30)
+        .attr('x', xScale(currentDate) - 30)
         .attr('dy', 15)
         .text(todayLastLabel)
     }
   };
 
   showSecondLevel() {
-    let dialogConfig = { hasBackdrop: false, width: '350px', height: '350px' };
+    let dialogConfig = { hasBackdrop: false, width: '375px', height: '350px' };
     this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
     this.dialogRef.updatePosition({ top: '150px', left: '850px' });
   };

@@ -30,7 +30,8 @@ export const allHttpMessages = {
   'httpGetVirtualCaseLoad': 'http:get:virtualCaseLoad',
   'httpGetWalk25Feet': 'http:get:walk25Feet',
   'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info',
-  'httpGetSymptoms': 'http:get:symptoms'
+  'httpGetSymptoms': 'http:get:symptoms',
+  'httpGetReferenceLine': 'http:get:referenceLine'
 };
 export const urlMaps = {
 
@@ -52,8 +53,8 @@ export const urlMaps = {
   "http:get:virtualCaseLoad": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/",
   "http:get:walk25Feet": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
   "http:get:walk25Feet:info": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
-  "http:get:symptoms": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/"
-
+  "http:get:symptoms": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/",
+  "http:get:referenceLine":"https://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/encounters/"
 };
 
 export const cdsMap = {
