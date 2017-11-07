@@ -13,6 +13,10 @@ export class BrokerService {
   urlMaps: {};
   isHide: boolean = true;
   counter: number = 0;
+  errorMessageId: string = 'broker.service:error';
+  successMessageId: string = 'broker.service:success';
+  warningMessageId: string = 'broker.service:warning';
+
   constructor(private http: Http) {
     this.subject = new Subject();
   }
@@ -89,7 +93,7 @@ export class BrokerService {
               .next({ id: id, error: err });
             (--this.counter == 0) && (this.isHide = true);
             //temp implementation
-            this.subject.next({ id: 'application:error', error: err });
+            this.subject.next({ id: this.errorMessageId, error: err });
           });
         this.isHide = false;
         this.counter++;
@@ -98,7 +102,7 @@ export class BrokerService {
           .subject
           .next({ id: id, error: messages.idNotMappedToUrl })
         //temp implementation
-        this.subject.next({ id: 'application:error', error: messages.idNotMappedToUrl });
+        this.subject.next({ id: this.errorMessageId, error: messages.idNotMappedToUrl });
       }
     } catch (err) {
       this
@@ -106,7 +110,7 @@ export class BrokerService {
         .next({ id: id, error: messages.httpGetUnknownError });
       this.isHide = true;
       //temp implementation
-      this.subject.next({ id: 'application:error', error: messages.httpGetUnknownError });
+      this.subject.next({ id: this.errorMessageId, error: messages.httpGetUnknownError });
     }
   };
 
@@ -156,7 +160,7 @@ export class BrokerService {
           .subject
           .next({ id: messsageId, error: messages.idNotMappedToUrl });
         //temp implementation
-        this.subject.next({ id: 'application:error', error: messages.idNotMappedToUrl });
+        this.subject.next({ id: this.errorMessageId, error: messages.idNotMappedToUrl });
         return;
       }
       let forks = temp.map(x => this.http.get(x.url, x.options).map(res => res.json()));
@@ -181,7 +185,7 @@ export class BrokerService {
             .next({ id: messsageId, error: err });
           (--this.counter == 0) && (this.isHide = true);
           //temp implementation
-          this.subject.next({ id: 'application:error', error: err });
+          this.subject.next({ id: this.errorMessageId, error: err });
         });
 
     } catch (err) {
@@ -190,7 +194,7 @@ export class BrokerService {
         .next({ id: messsageId, error: messages.httpGetUnknownError });
       this.isHide = true;
       //temp implementation
-      this.subject.next({ id: 'application:error', error: messages.httpGetUnknownError });
+      this.subject.next({ id: this.errorMessageId, error: messages.httpGetUnknownError });
     }
   }
 

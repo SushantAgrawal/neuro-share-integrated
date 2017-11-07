@@ -326,6 +326,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     nodeSelection.append('path')
       .attr('d', arc)
       .attr('class', 'x-axis-arrow')
+      // .style('fill', '#C8C8C8')
+      // .style('cursor', 'pointer')
       .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
       .on('click', d => { this.scroll('backward'); });
 

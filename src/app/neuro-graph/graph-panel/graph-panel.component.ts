@@ -73,7 +73,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
           this.timelineScroll(d.data);
         })();
     });
-    let sub3 = this.brokerService.filterOn(allMessages.applicationError).subscribe(d => {
+    let sub3 = this.brokerService.filterOn(this.brokerService.errorMessageId).subscribe(d => {
       this.showError(d.error);
     });
     this.subscriptions = sub0.add(sub1).add(sub2).add(sub3);
