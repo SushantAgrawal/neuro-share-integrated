@@ -434,6 +434,10 @@ export class EdssComponent implements OnInit {
       .attr('class', 'horizontal-grid-lines')
       .call(g => {
         let axis = g.call(xAxisGridLines);
+        axis.selectAll('line')
+          .style('stroke', '#f0f0f0');
+        axis.selectAll('line')
+          .style('stroke-width', '1px')
         axis
           .select('.domain')
           .remove();

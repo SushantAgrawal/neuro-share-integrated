@@ -47,12 +47,12 @@ export class SharedGridComponent implements OnInit, OnDestroy {
               }
             }).sort((a, b) => b.date - a.date);
 
-            let sharedGridElement = d3.select('#shared-grid');            
+            let sharedGridElement = d3.select('#shared-grid');
             let sharedGrid = this.setupSharedGrid(sharedGridElement, this.chartState.canvasDimension);
-            
+
             if (this.encounterData.length > 0)
               this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
-        
+
           })();
       })
     let sub2 =
@@ -87,7 +87,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let sharedGrid = this.setupSharedGrid(sharedGridElement, state.canvasDimension);
     this.drawScrollArrows(sharedGridElement, state.canvasDimension);
     this.drawVerticalGridLines(sharedGrid, state.canvasDimension, state.xScale);
-        this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
+    this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
   };
 
   setupSharedGrid(nodeSelection, dimension) {
@@ -123,6 +123,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .call(g => {
         let axis = g.call(xAxis);
         g.select('.domain').remove();
+
         axis.selectAll('text').style('display', 'none').style('font-weight', 'bold');
         axis.selectAll('text').attr('class', 'mid-year-tick');
         axis.selectAll('text').text((d) => {
@@ -156,7 +157,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let todayLastLabel = "Office Visit";
     let todayLabel = "";
     let currentDate = new Date(this.encounterData[0].date);
-    if (today > currentDate ) {
+    if (today > currentDate) {
       todayLabel = "Today";
       this.lastOfficeDateLabel = this.neuroGraphService.moment(previousDate).format("MM/DD/YYYY");
     }
@@ -299,6 +300,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         let axis = g.call(xAxisGridLines)
         axis.select('.domain').remove();
         axis.selectAll('text').remove();
+        axis.selectAll('line').style('stroke', '#E4E4E4').style('stroke-width', '1px');
         axis.selectAll('line').attr('y2', (d) => {
           if (this.chartState.zoomMonthsSpan == 6) {
             return d.getDate() == 1 ? dimension.offsetHeight : 0;
