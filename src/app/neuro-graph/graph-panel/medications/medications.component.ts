@@ -299,6 +299,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     if (dmt) {
       dmt.patient_reported_start = `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`;
       dmt.reason_stopped = this.medSecondLayerModel.reasonStopped;
+      dmt.other_reason = this.medSecondLayerModel.otherReason;
       dmt.otherReason = this.medSecondLayerModel.otherReason;
     } else {
       this
