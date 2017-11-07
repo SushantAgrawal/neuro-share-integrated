@@ -367,7 +367,7 @@ export class EdssComponent implements OnInit {
       panelClass: 'ns-edss-theme',
       width: '200px'
     };
-    this.edssScoreDetail = data;
+    this.edssScoreDetail = { ...data };
     this.secondLayerDialogRef = this
       .dialog
       .open(this.edssSecondLevelTemplate, config);
