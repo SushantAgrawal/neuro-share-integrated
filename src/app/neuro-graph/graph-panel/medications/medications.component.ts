@@ -256,7 +256,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       model.allowEdit = secondLayerData.save_csn_status !== 'Closed';
       if (medType == this.medType.dmt) {
         model.reasonStopped = secondLayerData.reason_stopped;
-        model.otherReason = secondLayerData.otherReason;
+        model.otherReason = secondLayerData.other_reason;
         let dtParts = secondLayerData.patient_reported_start.split('/');
         if (dtParts.length == 2) {
           model.patientReportedStartDateMonth = parseInt(dtParts[0]);
@@ -310,6 +310,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             .toString(),
           patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
           reason_stopped: this.medSecondLayerModel.reasonStopped,
+          other_reason: this.medSecondLayerModel.otherReason,
           last_updated_provider_id: "G00123",
           last_updated_instant: "09/30/2017 10:41:05",
           save_csn: this

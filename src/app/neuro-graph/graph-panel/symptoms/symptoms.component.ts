@@ -49,7 +49,6 @@ export class SymptomsComponent implements OnInit {
             console.log(d.error)
           })
           : (() => {
-            //debugger;
             //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
             this.questionaireData = d.data.questionaires.map(d => {
               return {
@@ -59,7 +58,6 @@ export class SymptomsComponent implements OnInit {
             }).sort((a, b) => b.qxCompleted - a.qxCompleted)
 
             this.questionaireData.forEach(element => {
-              //debugger;
               let symptomsDataLocal: Array<any> = [];
 
               for (let i = 0; i < element.symptoms.length; i++) {
@@ -76,7 +74,6 @@ export class SymptomsComponent implements OnInit {
                 let questionText: any = "";
                 let cnt = 40;
                 this.questionaireData.forEach(elem => {
-                  // debugger;
                   if (element["qx_id"] != elem["qx_id"] && new Date(this.neuroGraphService.moment(elem["qx_completed_at"]).format("MM/DD/YYYY")) < new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY"))) {
                     if (element.symptoms[i].score != "") {
                       if (new Date(this.neuroGraphService.moment(reportedDate).format("MM/DD/YYYY")) >= new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY")))
@@ -210,7 +207,6 @@ export class SymptomsComponent implements OnInit {
 
               });
             });
-            //debugger;            
             this.createChartSymptoms();
             this.symptomsChartLoaded = true;
           })();
@@ -228,7 +224,6 @@ export class SymptomsComponent implements OnInit {
             console.log(d.error)
           })
           : (() => {
-            //debugger;
             //make api call
             this
               .brokerService
@@ -291,7 +286,6 @@ export class SymptomsComponent implements OnInit {
   }
 
   showSecondLevel(data) {
-    //debugger;
     this.symptomsData = data;
     let dialogConfig = { hasBackdrop: false, panelClass: 'ns-symptoms-theme', width: '750px' };
     this.dialogRef = this.dialog.open(this.symptomSecondLevelTemplate, dialogConfig);
@@ -300,7 +294,6 @@ export class SymptomsComponent implements OnInit {
     });
   }
   plottrendlineSymptoms() {
-    //debugger;
     if (this.symptomsData.symptoms.length > 0) {
       this.symptomsData.symptoms.forEach(elems => {
         if (elems.trends.length > 1)
@@ -310,7 +303,6 @@ export class SymptomsComponent implements OnInit {
 
   }
   drawtrendLineSymptoms(qid, scoreid, compName, trendData) {
-    //debugger; 
     let maxValue = Math.max.apply(Math, trendData.map(function (o) { return o.index; }));
     let minValue = Math.min.apply(Math, trendData.map(function (o) { return o.index; }))
 
@@ -364,7 +356,6 @@ export class SymptomsComponent implements OnInit {
   }
 
   createChartSymptoms() {
-    //debugger;
     this.datasetB = this.questionaireSymptomData.map(d => {
       return {
         ...d,
