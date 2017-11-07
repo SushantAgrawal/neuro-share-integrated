@@ -177,7 +177,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       let currentDate = new Date();
       if (str == "Update") {
         var objIndex = this.walk25FeetData.findIndex((obj => obj.score_id == this.walk25FeetScoreDetail.score_id));
-        this.walk25FeetData[objIndex].last_updated_instant = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
+        this.walk25FeetData[objIndex].last_updated_instant = this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY');//`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
         this.walk25FeetData[objIndex].walk_1_score = this.walk25FeetScoreDetail.walk_1_score;
         this.walk25FeetData[objIndex].walk_2_score = this.walk25FeetScoreDetail.walk_2_score;
         this.dialogRef.close();
@@ -189,7 +189,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
             "walk_1_score": this.score_1.toString(),
             "walk_2_score": this.score_2.toString(),
             "last_updated_provider_id": "G00123",
-            "last_updated_instant": `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
+            "last_updated_instant": this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY'),//`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
             "save_csn": this.neuroGraphService.get("queryParams").csn,
             "save_csn_status": this.neuroGraphService.get("queryParams").encounter_status
           });
