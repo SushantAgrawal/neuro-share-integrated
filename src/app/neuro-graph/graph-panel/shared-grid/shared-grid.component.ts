@@ -55,23 +55,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
           })();
       })
-    let sub2 =
-      this.brokerService.httpGet(allHttpMessages.httpGetReferenceLine, [
-        {
-          name: 'pom_id',
-          value: this.neuroGraphService.get('queryParams').pom_id
-        },
-        {
-          name: 'startDate',
-          value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
-        },
-        {
-          name: 'endDate',
-          value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
-        }
-      ]);
-
-    this.subscriptions.add(sub1).add(sub2);
+    this.subscriptions.add(sub1);
   };
 
   ngOnDestroy() {
@@ -81,6 +65,23 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
   //#region Graph Drawing
 
+  getReferenceLineData() {
+    this.brokerService.httpGet(allHttpMessages.httpGetReferenceLine, [
+      {
+        name: 'pom_id',
+        value: this.neuroGraphService.get('queryParams').pom_id
+      },
+      {
+        name: 'startDate',
+        value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+      },
+      {
+        name: 'endDate',
+        value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+      }
+    ]);
+  }
+
   drawRootElement(state): void {
     d3.select('#shared-grid').selectAll("*").remove();
     let sharedGridElement = d3.select('#shared-grid');
@@ -88,6 +89,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     this.drawScrollArrows(sharedGridElement, state.canvasDimension);
     this.drawVerticalGridLines(sharedGrid, state.canvasDimension, state.xScale);
     this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
+    this.getReferenceLineData();
   };
 
   setupSharedGrid(nodeSelection, dimension) {
@@ -197,7 +199,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr('dy', 0)
         .text(this.lastOfficeDateLabel)
         .on('click', d => {
-          this.showSecondLevel();
+          this.showProgressNote();
         })
     }
     else {
@@ -221,7 +223,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr('dy', 15)
         .text(todayLastLabel)
         .on('click', d => {
-          this.showSecondLevel();
+          this.showProgressNote();
         })
     }
 
@@ -273,7 +275,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
   };
 
-  showSecondLevel() {
+  showProgressNote() {
     let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
     this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
     this.dialogRef.updatePosition({ top: '150px', left: '850px' });
