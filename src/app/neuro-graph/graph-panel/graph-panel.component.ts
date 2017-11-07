@@ -1,6 +1,6 @@
 
 import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import * as d3 from 'd3';
 import { BrokerService } from '../broker/broker.service';
 import { NeuroGraphService } from '../neuro-graph.service';
@@ -44,7 +44,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   //#endregion
 
   //#region Constructor
-  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
+  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService, public snackBar: MdSnackBar) {
   }
   //#endregion
 
@@ -73,7 +73,10 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
           this.timelineScroll(d.data);
         })();
     });
-    this.subscriptions = sub0.add(sub1).add(sub2);
+    let sub3 = this.brokerService.filterOn(allMessages.applicationError).subscribe(d => {
+      this.showError(d.error);
+    });
+    this.subscriptions = sub0.add(sub1).add(sub2).add(sub3);
   }
 
   ngOnDestroy() {
@@ -238,6 +241,15 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     this.setXScale();
     this.setDataBufferPeriod('backward');
     this.notifyUpdateAndDataShortage();
+  }
+  //#endregion
+
+  //#region Error
+  showError(err) {
+    this.snackBar.open(err, "Dismiss", {
+      duration: 5000,
+      extraClasses: ['neuro-error-snackbar']
+    });
   }
   //#endregion
 }
