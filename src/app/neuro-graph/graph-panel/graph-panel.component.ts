@@ -124,8 +124,8 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     this.progressNotesGeneratorService.pushObject({
       destination: 'progress-note',
       category: 'progress-note',
-      source: 'MS-related-care',
-      title: 'MS related care',
+      source: 'Graph-panel',
+      title: 'Graph-panel',
       editable: false,
       draggable: true,
       data: this.getMarkup(),
