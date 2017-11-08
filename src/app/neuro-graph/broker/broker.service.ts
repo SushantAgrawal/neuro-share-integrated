@@ -135,6 +135,7 @@ export class BrokerService {
     try {
       this.isHide = false;
       this.counter++;
+      console.log(this.counter);
       let temp = queries.map(t => {
         let url = this.urlMaps[t.urlId];
         let myParams = new URLSearchParams();
@@ -160,6 +161,7 @@ export class BrokerService {
         this
           .subject
           .next({ id: messsageId, error: messages.idNotMappedToUrl });
+        (--this.counter == 0) && (this.isHide = true);
         //temp implementation
         this.subject.next({ id: this.errorMessageId, error: messages.idNotMappedToUrl });
         return;
