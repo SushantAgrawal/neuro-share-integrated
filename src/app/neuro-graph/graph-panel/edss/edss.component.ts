@@ -25,6 +25,7 @@ export class EdssComponent implements OnInit {
   edssChartLoaded: boolean = false;
   virtualCaseloadLoaded: boolean = false;
   edssScoreDetail: any;
+  selectedDataPoint: any;
   yScale: any;
   yDomain: Array<number> = [0, GRAPH_SETTINGS.edss.maxValueY];
   clinicianDataSet: Array<any> = [];
@@ -353,6 +354,7 @@ export class EdssComponent implements OnInit {
       .find(x => x.score_id == this.edssScoreDetail.score_id);
     if (match) {
       match.score = this.edssScoreDetail.score
+      match.scoreValue = this.edssScoreDetail.scoreValue
     }
     this.removeChart();
     this.drawEdssLineCharts();
@@ -368,6 +370,7 @@ export class EdssComponent implements OnInit {
       width: '200px'
     };
     this.edssScoreDetail = { ...data };
+    this.selectedDataPoint = data;
     this.secondLayerDialogRef = this
       .dialog
       .open(this.edssSecondLevelTemplate, config);
