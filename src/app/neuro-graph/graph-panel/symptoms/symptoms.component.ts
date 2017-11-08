@@ -403,7 +403,7 @@ export class SymptomsComponent implements OnInit {
       .attr("width", "32")
       .attr("viewBox", "0 0 40 40")
       .html(svgImage)
-      .attr('class', 'x-axis-arrow')
+      .style('cursor', 'pointer')      
       .attr('d', this.pathUpdate)
       .on('click', d => {
         this.showSecondLevel(d);

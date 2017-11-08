@@ -251,7 +251,7 @@ export class ImagingComponent implements OnInit {
       .attr("cx", d => this.chartState.xScale(d.orderDate))
       .attr("cy", 0)
       .attr("r", 10)
-      .attr('class', 'x-axis-arrow')
+      .style('cursor', 'pointer')
       .style("stroke", GRAPH_SETTINGS.imaging.color)
       .style("fill", d => {
         let returnColor;
