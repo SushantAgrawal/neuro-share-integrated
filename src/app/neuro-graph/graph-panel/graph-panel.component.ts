@@ -137,7 +137,6 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   getMarkup() {
     let graph = document.getElementById("graph-container").innerHTML;
     let output = `<div style="width:710px;height:560px;overflow:hidden;"><svg width="710" height="560">${graph}</svg></div>`;
-    console.log(output);
     return output;
   }
   //#endregion
