@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService, AuthenticationService } from '@sutterhealth/user-authentication'
+import { SessionService, AuthenticationService } from '@sutterhealth/user-authentication';
 import { EhrService, SupportService, MsService } from '@sutterhealth/data-services';
 import { ActivityService } from '../services/activity/activity.service';
 import { environment } from '../../../environments/environment';
@@ -22,33 +22,37 @@ export class DemographicBarComponent implements OnInit {
   data: any = {};
   activity: any = {
     ege: '',
-    diseaseStatus: 'Select',
-    diseaseType: 'Select',
-    statusDisease: 'Select',
-    statusType: 'Select'
+    age_of_onset: 'Select',
+    ms_type: 'Select',
+    ms_status_1: 'Select',
+    ms_status_2: 'Select'
   };
   public age: number;
   public typesArray: any[] = [
     { name: 'Select', value: 'Select' },
-    { name: 'RRMS', value: 'Relapsing Remitting' },
-    { name: 'PPMS', value: 'Primary Progressive' },
-    { name: 'SPMS', value: 'Secondary Progressive' },
-    { name: 'PRMS', value: 'Progressing Relapsing' },
-    { name: 'CIS', value: 'Clinically Isolated Syndrome' }];
+    { name: 'RRMS - Relapsing-Remitting', value: 'Relapsing-Remitting' },
+    { name: 'PPMS - Primary Progressive', value: 'Primary Progressive' },
+    { name: 'SPMS - Secondary Progressive', value: 'Secondary Progressive' },
+    { name: 'PRMS - Progressive-Relapsing', value: 'Progressive-Relapsing' },
+    { name: 'CIS - Clinically Isolated Syndrome', value: 'Clinically Isolated Syndrome' }];
 
   public statusDisease = [
     { name: 'Select' },
     { name: 'Active' },
-    { name: 'Non Active' }
+    { name: 'Not Active' }
   ];
   public statusType = [
     { name: 'Select' },
     { name: 'Progressive' },
-    { name: 'Non Progressive' }
+    { name: 'Not Progressive' }
   ];
   private pomId: string;
   public lastAppointmentWhitMe;
-  public showTooltip: boolean=false;
+  public showTooltip: boolean = false;
+  encunterClosed: boolean = false;
+  msTypeTooltip: string;
+  patientName: string;
+
   constructor(private service: EhrService, private support: SupportService, private session: SessionService, private activityService: ActivityService, private router: Router, private auth: AuthenticationService, private msService: MsService, private appoService: AppointmentsService) {
     activityService.activityData$.subscribe(activityObject => {
       Object.assign(this.activity, activityObject);
@@ -60,10 +64,16 @@ export class DemographicBarComponent implements OnInit {
       if (params['PatID']) {
         let pomId = params['PomId'] ? params['PomId'] : '82043';
         this.msService.getMSPatientData(pomId).subscribe(data => {
-          this.activity.age = data.age_of_onset;
-          this.activity.diseaseType = data.ms_type;
-          this.activity.statusDisease = data.ms_status_1;
-          this.activity.statusType = data.ms_status_2;
+          this.activity.age_of_onset = data.age_of_onset;
+          this.activity.ms_type = data.ms_type;
+          this.activity.ms_status_1 = data.ms_status_1;
+          this.activity.ms_status_2 = data.ms_status_2;
+          this.activity.age_of_onset_last_updated_instant = moment(data['age_of_onset_last_updated_instant']).format('MM/DD/YYYY');
+          this.activity.ms_type_last_updated_instant = moment(data['ms_type_last_updated_instant']).format('MM/DD/YYYY');
+          this.activity.ms_status_1_last_updated_instant = moment(data['ms_status_1_last_updated_instant']).format('MM/DD/YYYY');
+          this.activity.ms_status_2_last_updated_instant = moment(data['ms_status_2_last_updated_instant']).format('MM/DD/YYYY');
+          this.msTypeTooltip = `${this.activity.ms_type}\nEntered on: ${this.activity['ms_type_last_updated_instant']}`;
+          this.updateActivity('');
         });
 
         this.msService.getMSPatientInfo().subscribe(patInfo => {
@@ -73,6 +83,17 @@ export class DemographicBarComponent implements OnInit {
         });
 
         this.service.getDemographics(params['PatID']).subscribe(data => {
+          if (data.patientDemographics.name) {
+            let middle: string = '';
+            let title: string = '';
+            if (data.patientDemographics.name.middle.length > 0) {
+              middle = `, ${data.patientDemographics.name.middle.substr(0, 1)}`;
+            }
+            if (data.patientDemographics.name.title.length > 0) {
+              title = ` ${data.patientDemographics.name.title}`;
+            }
+            this.patientName = `${data.patientDemographics.name.last}${title},  ${data.patientDemographics.name.first}${middle}`
+          }
           if (data.patientDemographics.dateOfBirth) {
             var date = data.patientDemographics.dateOfBirth;
             var splitted = date.split('/');
@@ -85,12 +106,17 @@ export class DemographicBarComponent implements OnInit {
             }
             let dob = moment(date, 'MM/DD/YYYY').format('MM/DD/YYYY');
             this.age = moment().diff(dob, 'years');
+            this.activity.age = this.age;
+            this.updateActivity('');
           }
-          if(data.patientDemographics.sex){
-            data.patientDemographics.sex = data.patientDemographics.sex.substring(0,1);
+          if (data.patientDemographics.sex) {
+            data.patientDemographics.sex = data.patientDemographics.sex.substring(0, 1);
           }
           this.data = data.patientDemographics;
         });
+        if (params['encounter_status'] && params['encounter_status'] === 'close') {
+          this.encunterClosed = true;
+        }
       } else {
         this.data = {};
       }
@@ -114,14 +140,23 @@ export class DemographicBarComponent implements OnInit {
       }
     });
   }
-  updateActivity() {
-    this.activityService.updateActivity(this.activity)
+  updateActivity(field_last_updated_instant: string) {
+    if (field_last_updated_instant !== '')
+      this.activity[field_last_updated_instant] = moment().format('MM/DD/YYYY');
+    this.activityService.updateActivity(this.activity, this.encunterClosed);
+    this.msTypeTooltip = `${this.activity.ms_type}\nEntered on: ${this.activity['ms_type_last_updated_instant']}`;
   }
-  updateStatus() {
-    this.activity.diseaseStatus = `${this.activity.statusDisease} ${this.activity.statusType}`;
-    this.activityService.updateActivity(this.activity);
-  }
-  toggleTooltip(){
+
+  toggleTooltip() {
     this.showTooltip = !this.showTooltip;
+  }
+
+  isValidKey(event) {
+    let regex = new RegExp("^[0-9]");
+    let key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key) || this.activity['age_of_onset'].toString().length >= 2) {
+      event.preventDefault();
+      return false;
+    }
   }
 }

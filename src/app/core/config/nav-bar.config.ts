@@ -8,7 +8,7 @@ export const navBarOptions = {
     {
       action: "router",
       path: 'notes',
-      title: "Progress Notes",
+      title: "Progress Note",
       icon: "fa icon-notesneuroshare",
     },
     {
@@ -25,7 +25,7 @@ export const navBarOptions = {
     {
       action: "link",
       url: 'https://www.google.com/',
-      title: 'Users Guide',
+      title: 'User\'s Guide',
       icon: 'fa icon-openneuroshare'
   }]
 };

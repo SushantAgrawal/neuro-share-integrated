@@ -15,7 +15,7 @@ export const environment = {
     do: { '': ['view'] },
     np: { '': ['view'] }
   },
-  appName: 'neuroShare',
+  appName: 'neuroSHARE',
   appAPIName: 'neuroshare',
   version: "0.1.0",
   trackEval: true,

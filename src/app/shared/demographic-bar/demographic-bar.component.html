@@ -4,7 +4,7 @@
         fxFlex="100%">
         <div>
             <div class="title">Patient</div>
-            <div class="bold truncate" *ngIf="data.name">{{data.name.first}} {{data.name.last}}</div>
+            <div class="bold truncate" *ngIf="data.name" mdTooltip="{{patientName}}">{{patientName}}</div>
         </div>
         <div>
             <div class="title">Sex</div>
@@ -24,8 +24,8 @@
         </div>
         <div>
             <div class="title">Age of Onset</div>
-            <md-input-container>
-                <input class="age-onset pointer" mdInput type="number" [(ngModel)]="activity.age" (change)="updateActivity()" evalEvent [evalData]="{
+            <md-input-container mdTooltip="Entered on: {{activity.age_of_onset_last_updated_instant}}">
+                <input class="age-onset pointer" mdInput type="number" max="99" min="0" (keypress)="isValidKey($event)" [(ngModel)]="activity.age_of_onset" (change)="updateActivity('age_of_onset_last_updated_instant')" [disabled]='encunterClosed' evalEvent [evalData]="{
                             label:'Age of Onset',
                             data: activity.age,
                             type: 'button'
@@ -34,14 +34,12 @@
         </div>
         <div>
             <div class="title select">MS Type</div>
-            <md-select [(ngModel)]="activity.diseaseType" (change)="updateActivity()" >
-                <!--mdTooltip="{{activity.diseaseType}}"-->
+            <md-select [(ngModel)]="activity.ms_type" (change)="updateActivity('ms_type_last_updated_instant')" mdTooltip="{{msTypeTooltip}}"  [mdTooltipClass]="'ms-type-tooltip'">
                 <md-option *ngFor="let type of typesArray" [value]="type.name" evalEvent [evalData]="{
                             label:'MS Type',
                             data: type.name,
                             type: 'button'
                             }">
-                    <!-- mdTooltip="{{type.value}}"-->
                     {{ type.name }}
                 </md-option>
             </md-select>
@@ -53,9 +51,8 @@
                     <i class="fa fa-info fa-stack-1x"></i>
                 </span>
                 <div class="info-tooltip" [ngClass]="{'show' : showTooltip}">{{information}}</div>
-                <!--<div  [mdTooltipClass]="'info-tooltip'" mdTooltip="{{information}}" #tooltip="mdTooltip"></div>-->
             </div>
-            <md-select [(ngModel)]="activity.statusDisease" (change)="updateStatus()">
+            <md-select [(ngModel)]="activity.ms_status_1" (change)="updateActivity('ms_status_1_last_updated_instant')" mdTooltip="Entered on: {{activity.ms_status_1_last_updated_instant}}">
                 <md-option *ngFor="let status of statusDisease" [value]="status.name" evalEvent [evalData]="{
                             label:'MS Status (1)',
                             data: status.name,
@@ -64,7 +61,7 @@
                     {{ status.name }}
                 </md-option>
             </md-select>
-            <md-select [(ngModel)]="activity.statusType" (change)="updateStatus()">
+            <md-select [(ngModel)]="activity.ms_status_2" (change)="updateActivity('ms_status_2_last_updated_instant')" mdTooltip="Entered on: {{activity.ms_status_2_last_updated_instant}}">
                 <md-option *ngFor="let status of statusType" [value]="status.name" evalEvent [evalData]="{
                             label:'MS Status (2)',
                             data: status.name,
@@ -76,8 +73,8 @@
         </div>
         <div>
             <div class="title">Last Visit with Me</div>
-            <div class="bold pointer truncate" *ngIf="lastAppointmentWhitMe">{{lastAppointmentWhitMe.date}}</div>
-            <div class="bold pointer truncate" *ngIf="!lastAppointmentWhitMe">-</div>
+            <div class="bold truncate" *ngIf="lastAppointmentWhitMe">{{lastAppointmentWhitMe.date}}</div>
+            <div class="bold truncate" *ngIf="!lastAppointmentWhitMe">-</div>
         </div>
     </div>
     <span class="filler"></span>

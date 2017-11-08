@@ -58,6 +58,11 @@
     font-weight: lighter !important;
 }
 
+:host /deep/ .name-version-container p:first-child{
+    font-weight: 700 !important;
+    color: white;
+}
+
 :host /deep/ .user-name{ 
     font-weight: 700 !important;
 }
