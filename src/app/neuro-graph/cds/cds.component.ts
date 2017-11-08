@@ -201,12 +201,9 @@ export class CdsComponent implements OnInit {
   }
 
   getMarkup() {
-    // return(`
-    // <h2>Informatio provided by clinician in MS related care</h2>
-    // `);
-    let graph = document.getElementById("graph-container").innerHTML;
-    let output = `<div style="width:710px;height:560px"><svg width="710" height="560">${graph}</svg></div>`;
-    return output;
+    return (`
+      <h2>Informatio provided by clinician in MS related care</h2>
+    `);
   }
 
   ngOnDestroy() {
