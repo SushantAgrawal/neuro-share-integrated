@@ -62,6 +62,8 @@ export class BrokerService {
 
   httpGet(id: string, queryParams?: { name: string, value: string }[], headers?: [any], carryBag?: any) {
     try {
+      this.counter++;
+      this.isHide = false;
       let url = this.urlMaps[id];
       let myParams = new URLSearchParams();
       queryParams && (queryParams.map(x => myParams.append(x.name, x.value)));
@@ -95,12 +97,11 @@ export class BrokerService {
             //temp implementation
             this.subject.next({ id: this.errorMessageId, error: err });
           });
-        this.isHide = false;
-        this.counter++;
       } else {
         this
           .subject
-          .next({ id: id, error: messages.idNotMappedToUrl })
+          .next({ id: id, error: messages.idNotMappedToUrl });
+        (--this.counter == 0) && (this.isHide = true);
         //temp implementation
         this.subject.next({ id: this.errorMessageId, error: messages.idNotMappedToUrl });
       }
@@ -108,7 +109,7 @@ export class BrokerService {
       this
         .subject
         .next({ id: id, error: messages.httpGetUnknownError });
-      this.isHide = true;
+      (--this.counter == 0) && (this.isHide = true);
       //temp implementation
       this.subject.next({ id: this.errorMessageId, error: messages.httpGetUnknownError });
     }
@@ -192,7 +193,7 @@ export class BrokerService {
       this
         .subject
         .next({ id: messsageId, error: messages.httpGetUnknownError });
-      this.isHide = true;
+      (--this.counter == 0) && (this.isHide = true);
       //temp implementation
       this.subject.next({ id: this.errorMessageId, error: messages.httpGetUnknownError });
     }
