@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild, TemplateRef, OnDestroy } from '@angular/core';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import * as d3 from 'd3';
+import { ProgressNotesGeneratorService } from '@sutterhealth/progress-notes';
 import { BrokerService } from '../broker/broker.service';
 import { NeuroGraphService } from '../neuro-graph.service';
 import { allMessages, GRAPH_SETTINGS } from '../neuro-graph.config';
@@ -44,7 +45,12 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   //#endregion
 
   //#region Constructor
-  constructor(public brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService, public snackBar: MdSnackBar) {
+  constructor(
+    private brokerService: BrokerService,
+    private dialog: MdDialog,
+    private neuroGraphService: NeuroGraphService,
+    public snackBar: MdSnackBar,
+    private progressNotesGeneratorService: ProgressNotesGeneratorService) {
   }
   //#endregion
 
@@ -111,6 +117,27 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     this.setXScale();
     this.setDataBufferPeriod('init');
     this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: true });
+  }
+
+  progressNotes() {
+    let timestamp = this.neuroGraphService.moment().toString();
+    this.progressNotesGeneratorService.pushObject({
+      destination: 'progress-note',
+      category: 'progress-note',
+      source: 'Graph-panel',
+      title: 'Graph-panel',
+      editable: false,
+      draggable: true,
+      data: this.getMarkup(),
+      timestamp: timestamp,
+      overwrite: true
+    });
+  }
+
+  getMarkup() {
+    let graph = document.getElementById("graph-container").innerHTML;
+    let output = `<div style="width:710px;height:560px;overflow:hidden;"><svg width="710" height="560">${graph}</svg></div>`;
+    return output;
   }
   //#endregion
 
