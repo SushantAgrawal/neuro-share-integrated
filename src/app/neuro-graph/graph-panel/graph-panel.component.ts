@@ -46,7 +46,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
 
   //#region Constructor
   constructor(
-    private brokerService: BrokerService,
+    public brokerService: BrokerService,
     private dialog: MdDialog,
     private neuroGraphService: NeuroGraphService,
     public snackBar: MdSnackBar,

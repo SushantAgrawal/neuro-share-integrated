@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { AppointmentsService } from '../../core/services/appointments.service';
 import { EvalModule, EvalService, EvalEventDirective } from '@sutterhealth/analytics';
-import {NeuroGraphService} from '../../neuro-graph/neuro-graph.service';
+//import {NeuroGraphService} from '../../neuro-graph/neuro-graph.service';
 
 import * as moment from 'moment';
 
@@ -49,7 +49,7 @@ export class DemographicBarComponent implements OnInit {
   private pomId: string;
   public lastAppointmentWhitMe;
   public showTooltip: boolean=false;
-  constructor(private service: EhrService, private support: SupportService, private session: SessionService, private activityService: ActivityService, private router: Router, private auth: AuthenticationService, private msService: MsService, private appoService: AppointmentsService,private neuroGraphService: NeuroGraphService) {
+  constructor(private service: EhrService, private support: SupportService, private session: SessionService, private activityService: ActivityService, private router: Router, private auth: AuthenticationService, private msService: MsService, private appoService: AppointmentsService) {
     activityService.activityData$.subscribe(activityObject => {
       Object.assign(this.activity, activityObject);
     });
