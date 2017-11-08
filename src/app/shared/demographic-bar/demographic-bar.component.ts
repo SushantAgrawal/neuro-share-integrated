@@ -56,7 +56,6 @@ export class DemographicBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.neuroGraphService.test();
     this.session.getParams().subscribe(params => {
       if (params['PatID']) {
         let pomId = params['PomId'] ? params['PomId'] : '82043';
