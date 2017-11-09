@@ -135,7 +135,6 @@ export class BrokerService {
     try {
       this.isHide = false;
       this.counter++;
-      console.log(this.counter);
       let temp = queries.map(t => {
         let url = this.urlMaps[t.urlId];
         let myParams = new URLSearchParams();
