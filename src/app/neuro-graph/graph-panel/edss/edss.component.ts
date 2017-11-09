@@ -548,41 +548,31 @@ export class EdssComponent implements OnInit {
       .attr('x', d => this.chartState.xScale(d.lastUpdatedDate) - 7)
       .attr('y', d => this.yScale(d.scoreValue) - 10)
       .text(d => oneDecimalFormat(d.scoreValue));
-      this.arrangeLabels(labels1,labels2);
+    this.arrangeLabels(labels1, labels2);
   }
-  arrangeLabels(labels1,labels2) {
-    var move = 1;
-    while(move > 0) {
-      move = 0;
-      labels1
-         .each(function() {
-           var that = this,
-               //a = this.getBoundingClientRect();
-               x1= parseFloat(this.getAttribute("x")),
-               a = parseFloat(this.getAttribute("y")),
-               textLength1 = this.textContent.length *5;
-               var cnt=1;
-               
-               labels2
-              .each(function() {
-                if(this != that) {
-                  var x2= parseFloat(this.getAttribute("x"));
-                  var b = parseFloat(this.getAttribute("y"));
-                  var textLength2 = this.textContent.length*5;//this.getBoundingClientRect();
-                  if((Math.abs(x1 -x2) < Math.abs(textLength1)) &&
-                     (Math.abs(a) == Math.abs(b))) {
-                      
-                   this.setAttribute("y",(b - 5*cnt).toString())
-                   cnt++;
-                   that.setAttribute("y",(b + 15*cnt).toString())
-                    a = parseFloat(this.getAttribute("y"));//this.getBoundingClientRect();
-                    
-                  }
-                }
-              });
-         });
-    }
+
+  arrangeLabels(labels1, labels2) {
+    labels1.each((d1, i, currentNodes) => {
+      const current = currentNodes[i];
+      let y1 = parseFloat(current.getAttribute('y'));
+      const x1 = parseFloat(current.getAttribute('x'));
+      const textLength1 = current.textContent.length * 5;
+      labels2.each((d2, j, nextNodes) => {
+        const next = nextNodes[j];
+        if (current !== next) {
+          const x2 = parseFloat(next.getAttribute('x'));
+          const y2 = parseFloat(next.getAttribute('y'));
+          const textLength2 = next.textContent.length * 5;
+          if ((Math.abs(x1 - x2) < Math.abs(textLength1)) && (Math.abs(y1) === Math.abs(y2))) {
+            next.setAttribute('y', (y2 - 2).toString());
+            current.setAttribute('y', (y2 + 28).toString());
+            y1 = parseFloat(next.getAttribute('y'));
+          }
+        }
+      });
+    });
   }
+
   drawVirtualCaseload() {
     let line = d3.line<any>().x((d: any) => this.chartState.xScale(d.lastUpdatedDate)).y((d: any) => this.yScale(d.scoreValue));
 
