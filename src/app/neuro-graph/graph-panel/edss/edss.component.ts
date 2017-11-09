@@ -503,7 +503,7 @@ export class EdssComponent implements OnInit {
         this.showSecondLevel(d);
       });
     //Adds labels for clinician data
-    svg
+    let labels1 = svg
       .selectAll('.label-clinician')
       .data(this.clinicianDataSet)
       .enter()
@@ -538,7 +538,7 @@ export class EdssComponent implements OnInit {
         this.showSecondLevel(d);
       });
     //Adds labels for patient data
-    svg
+    let labels2 = svg
       .selectAll('.label-patient')
       .data(this.patientDataSet)
       .enter()
@@ -548,8 +548,41 @@ export class EdssComponent implements OnInit {
       .attr('x', d => this.chartState.xScale(d.lastUpdatedDate) - 7)
       .attr('y', d => this.yScale(d.scoreValue) - 10)
       .text(d => oneDecimalFormat(d.scoreValue));
+      this.arrangeLabels(labels1,labels2);
   }
-
+  arrangeLabels(labels1,labels2) {
+    var move = 1;
+    while(move > 0) {
+      move = 0;
+      labels1
+         .each(function() {
+           var that = this,
+               //a = this.getBoundingClientRect();
+               x1= parseFloat(this.getAttribute("x")),
+               a = parseFloat(this.getAttribute("y")),
+               textLength1 = this.textContent.length *5;
+               var cnt=1;
+               
+               labels2
+              .each(function() {
+                if(this != that) {
+                  var x2= parseFloat(this.getAttribute("x"));
+                  var b = parseFloat(this.getAttribute("y"));
+                  var textLength2 = this.textContent.length*5;//this.getBoundingClientRect();
+                  if((Math.abs(x1 -x2) < Math.abs(textLength1)) &&
+                     (Math.abs(a) == Math.abs(b))) {
+                      
+                   this.setAttribute("y",(b + 15*cnt).toString())
+                   cnt++;
+                   that.setAttribute("y",(b + 15*cnt).toString())
+                    a = parseFloat(this.getAttribute("y"));//this.getBoundingClientRect();
+                    
+                  }
+                }
+              });
+         });
+    }
+  }
   drawVirtualCaseload() {
     let line = d3.line<any>().x((d: any) => this.chartState.xScale(d.lastUpdatedDate)).y((d: any) => this.yScale(d.scoreValue));
 

@@ -482,7 +482,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       })
 
     //Draws texts
-    rectangles
+     let labels = rectangles
       .append('text')
       .text(d => this.getShortenedName(d.name))
       .attr('x', d => {
@@ -504,6 +504,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('text-height', 40)
       .attr('fill', 'black')
       .style('text-transform', 'capitalize');
+      this.arrangeLabels(labels);
+
 
     //Adjusts height
     d3
@@ -513,7 +515,39 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .select('#' + containterId)
       .style('display', 'block');
   }
-
+ arrangeLabels(labels) {
+    var move = 1;
+    while(move > 0) {
+      move = 0;
+      labels
+         .each(function() {
+           var that = this,
+               //a = this.getBoundingClientRect();
+               x1= parseFloat(this.getAttribute("x")),
+               a = parseFloat(this.getAttribute("y")),
+               textLength1 = this.textContent.length *5;
+               var cnt=1;
+               
+               labels
+              .each(function() {
+                if(this != that) {
+                  var x2= parseFloat(this.getAttribute("x"));
+                  var b = parseFloat(this.getAttribute("y"));
+                  var textLength2 = this.textContent.length*5;//this.getBoundingClientRect();
+                  if((Math.abs(x1 -x2) < Math.abs(textLength1)) &&
+                     (Math.abs(a) == Math.abs(b))) {
+                      
+                   this.setAttribute("y",(b + 10*cnt).toString())
+                   cnt++;
+                   that.setAttribute("y",(b + 10*cnt).toString())
+                    a = parseFloat(this.getAttribute("y"));//this.getBoundingClientRect();
+                    
+                  }
+                }
+              });
+         });
+    }
+  }
   removeChart(containterId) {
     d3
       .selectAll('#' + containterId)
