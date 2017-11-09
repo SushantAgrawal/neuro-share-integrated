@@ -312,8 +312,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
           reason_stopped: this.medSecondLayerModel.reasonStopped,
           other_reason: this.medSecondLayerModel.otherReason,
-          last_updated_provider_id: "G00123",
-          last_updated_instant: "09/30/2017 10:41:05",
+          last_updated_provider_id: "",
+          last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
           save_csn: this
             .neuroGraphService
             .get("queryParams")
@@ -344,8 +344,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             .orderIdentifier
             .toString(),
           reason_for_med: this.medSecondLayerModel.reasonForMed,
-          last_updated_provider_id: "G00123",
-          last_updated_instant: "09/30/2017 10:41:05",
+          last_updated_provider_id: "",
+          last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
           save_csn: this
             .neuroGraphService
             .get("queryParams")
