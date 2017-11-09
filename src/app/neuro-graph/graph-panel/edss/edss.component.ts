@@ -572,7 +572,7 @@ export class EdssComponent implements OnInit {
                   if((Math.abs(x1 -x2) < Math.abs(textLength1)) &&
                      (Math.abs(a) == Math.abs(b))) {
                       
-                   this.setAttribute("y",(b + 15*cnt).toString())
+                   this.setAttribute("y",(b - 5*cnt).toString())
                    cnt++;
                    that.setAttribute("y",(b + 15*cnt).toString())
                     a = parseFloat(this.getAttribute("y"));//this.getBoundingClientRect();
