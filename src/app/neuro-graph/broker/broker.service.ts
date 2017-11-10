@@ -187,7 +187,7 @@ export class BrokerService {
             .next({ id: messsageId, error: err });
           (--this.counter == 0) && (this.isHide = true);
           //temp implementation
-          this.subject.next({ id: this.errorMessageId, error: err });
+          this.subject.next({ id: this.errorMessageId, error: messages.httpGetUnknownError });
         });
 
     } catch (err) {
