@@ -443,9 +443,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .selectAll('rect')
       .data(dataset)
       .enter();
-
+   
     //Draws rectangles
-    rectangles
+    let rect = rectangles
       .append('rect')
       .attr('rx', 0)
       .attr('ry', 0)
@@ -480,6 +480,73 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .on("click", d => {
         onClickCallback(d);
       })
+    //overlapping areas
+    let overlapColor = "grey";
+    if (containterId == "dmt") {
+      overlapColor = "#303945";
+    }
+    else if (containterId == "otherMeds") {
+      overlapColor = "#898e90";
+    }
+    else if (containterId == "vitaminD") {
+      overlapColor = "#a07a1c";
+    }
+    rect.each((d1, i, currentNodes) => {
+      const current = currentNodes[i];
+      let x1 = parseFloat(current.getAttribute("x"));
+      let y1 = parseFloat(current.getAttribute("y"));
+      let width1 = parseFloat(current.getAttribute("width"));
+
+      //overlap area
+      rect.each((d2, j, nextNodes) => {
+        const next = nextNodes[j];
+        let x2 = parseFloat(next.getAttribute("x"));
+        let y2 = parseFloat(next.getAttribute("y"));
+        let width2 = parseFloat(next.getAttribute("width"));
+        if (current !== next) {
+          if (x1 > x2 && (x2 + width2) > x1 && y1 == y2) {
+            //debugger;
+            let x = x1;
+            let y = y1;
+            let width = Math.abs(width2 - Math.abs(x2 - x1));
+            rectangles
+              .append('rect')
+              .attr('rx', 0)
+              .attr('ry', 0)
+              .attr('x', x)
+              .attr('y', y)
+              .attr('width', width)
+              .attr('height', 6)
+              .attr('stroke', 'none')
+              .attr('fill', overlapColor)
+              .style('cursor', 'pointer')
+              .on("click", d => {
+                onClickCallback(d);
+              })
+          }
+          else if (x1 > x2 && (x2 + width2) == x1 && y1 == y2) {
+            let x = x1;
+            let y = y1;
+            //let width = Math.abs(width2 - Math.abs(x2 - x1));
+            rectangles
+              .append('rect')
+              .attr('rx', 0)
+              .attr('ry', 0)
+              .attr('x', x)
+              .attr('y', y)
+              .attr('width', 1)
+              .attr('height', 6)
+              .attr('stroke', 'none')
+              .attr('fill', overlapColor)
+              .style('cursor', 'pointer')
+              .on("click", d => {
+                onClickCallback(d);
+              })
+          }
+        }
+
+      });
+    });
 
     //Draws texts
     let labels = rectangles
