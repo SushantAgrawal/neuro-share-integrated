@@ -123,19 +123,22 @@ export class EdssComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            this.scoreChartOpType = "Add";
-            let dialogConfig = {
-              hasBackdrop: true,
-              panelClass: 'ns-edss-theme',
-              width: '670px',
-              height: '675px'
-            };
-            this.scoreChartDialogRef = this
-              .dialog
-              .open(this.edssScoreChartTemplate, dialogConfig);
-            this
-              .scoreChartDialogRef
-              .updatePosition({ top: '65px', left: '60px' });
+            let dt = d3.selectAll('.edss-charts');
+            if (dt["_groups"][0].length > 0) {
+              this.scoreChartOpType = "Add";
+              let dialogConfig = {
+                hasBackdrop: true,
+                panelClass: 'ns-edss-theme',
+                width: '670px',
+                height: '675px'
+              };
+              this.scoreChartDialogRef = this
+                .dialog
+                .open(this.edssScoreChartTemplate, dialogConfig);
+              this
+                .scoreChartDialogRef
+                .updatePosition({ top: '65px', left: '60px' });
+            }
           })();
       });
 

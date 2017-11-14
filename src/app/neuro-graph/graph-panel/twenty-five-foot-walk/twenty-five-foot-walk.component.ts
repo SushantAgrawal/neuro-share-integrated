@@ -86,12 +86,17 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     })
     let sub3 = modal.subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        this.score_1 = "";
-        this.score_2 = "";
-        this.scoreValue = "";
-        let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
-        this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
-        this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
+        let dt = d3.selectAll('.walk25Feet-axis');
+        if(dt["_groups"][0].length > 0)
+        {
+          this.score_1 = "";
+          this.score_2 = "";
+          this.scoreValue = "";
+          let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
+          this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
+          this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
+        }
+       
       })();
     })
     let sub4 = this.brokerService.filterOn(allHttpMessages.httpGetWalk25FeetInfo).subscribe(d => {
