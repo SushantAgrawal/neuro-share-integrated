@@ -107,3 +107,10 @@ $walk25feet-color:#31859b;
         padding-bottom: 6px;
     }
 }
+// .ns-back
+// {
+//     opacity: 0 !important;
+// }
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    opacity: 0;
+}

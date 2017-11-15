@@ -92,7 +92,8 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           this.score_1 = "";
           this.score_2 = "";
           this.scoreValue = "";
-          let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
+          //let dialogConfig = { hasBackdrop: true,backdropClass: 'ns-back', panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
+          let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };          
           this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
           this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
         }
