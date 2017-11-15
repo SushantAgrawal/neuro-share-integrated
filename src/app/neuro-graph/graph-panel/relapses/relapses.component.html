@@ -49,14 +49,19 @@
                         <md-option *ngFor="let mnth of month" [value]="mnth">{{mnth}}</md-option>
                     </md-select>
 
-                    <md-select panelClass="neuro-graph-dropdown ns-relapses-theme" placeholder="Year" [(ngModel)]="relapsesDetail.year" (change)="valChng()" floatPlaceholder="never">
+                    <md-select panelClass="neuro-graph-dropdown ns-relapses-theme" placeholder="Year" [(ngModel)]="relapsesDetail.year" (change)="valChng()"
+                        floatPlaceholder="never">
                         <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
                     </md-select>
+                  
                 </div>
                 <div class="ns-relapse-update" *ngIf="isEditSelected">
                     <button class="call-out-buttons" (click)="updateChart()">Update</button>
+                    
                 </div>
-
+                <md-error class="ng-error leftMargin" *ngIf="isDateOutOfRange == true">
+                    Relapse Date should be less than current date
+                </md-error>
             </div>
             <div class="ns-relapse-row">
                 <div class="ns-relapse-confirmed">Clinician Confirmed</div>
@@ -85,15 +90,17 @@
                 <div class="ns-relapse-col">Reported Relapse</div>
                 <div class="ns-relapse-value">
 
-                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown ns-relapses-theme" [(ngModel)]="relapsesDetail.month" floatPlaceholder="never">
+                    <md-select placeholder="Month" panelClass="neuro-graph-dropdown ns-relapses-theme" [(ngModel)]="relapsesDetail.month" floatPlaceholder="never" (change)="addChng()">
                         <md-option *ngFor="let mnth of month" [value]="mnth">{{mnth}}</md-option>
                     </md-select>
 
-                    <md-select placeholder="Year" panelClass="neuro-graph-dropdown ns-relapses-theme" [(ngModel)]="relapsesDetail.year" floatPlaceholder="never">
+                    <md-select placeholder="Year" panelClass="neuro-graph-dropdown ns-relapses-theme" [(ngModel)]="relapsesDetail.year" floatPlaceholder="never" (change)="addChng()">
                         <md-option *ngFor="let year of years" [value]="year">{{year}}</md-option>
                     </md-select>
                 </div>
-
+                <md-error class="ng-error leftMargin" *ngIf="isDateOutOfRange == true">
+                    Relapse Date should be less than current date
+                </md-error>
             </div>
             <div class="ns-relapse-row">
 
