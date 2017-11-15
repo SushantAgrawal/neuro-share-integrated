@@ -186,9 +186,9 @@ export class RelapsesComponent implements OnInit {
       var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
       this.relapsesData[objIndex].last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
       this.relapsesData[objIndex].clinician_confirmed = this.relapsesDetail.confirm;
-      this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month,
-        this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year,
-        this.removeChart();
+      this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month;
+      this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year;
+      this.removeChart();
       this.createChart();
 
       let obj = {
@@ -209,7 +209,7 @@ export class RelapsesComponent implements OnInit {
     if (this.relapsesDetail.year >= new Date().getFullYear() && new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() > new Date().getMonth()) {
       this.isDateOutOfRange = true;
     }
-    else{
+    else {
       var obj = {
         "relapse_id": this.relapsesData.length.toString(),
         "relapse_month": this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
@@ -223,12 +223,12 @@ export class RelapsesComponent implements OnInit {
         "clinician_confirmed": true,
         "relapseaxis": "2.0"
       }
-  
+
       this.relapsesData.push(obj);
       this.dialogRef.close();
       this.removeChart();
       this.createChart();
-  
+
       let objSave = {
         "pom_id": this.paramData.pom_id,
         "relapse_month": this.month[new Date(obj.last_updated_instant).getMonth()],
@@ -266,8 +266,7 @@ export class RelapsesComponent implements OnInit {
     this.isEditSelected = true;
     this.isDateOutOfRange = false;
   }
-  addChng()
-  {
+  addChng() {
     this.isDateOutOfRange = false;
   }
   createChart() {
