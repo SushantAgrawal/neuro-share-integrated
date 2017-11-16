@@ -59,7 +59,8 @@ export class RelapsesComponent implements OnInit {
             this.relapsisChartLoaded = true;
             if (this.relapsesOpenAddPopUp == true) {
               this.relapsesOpenAddPopUp = false;
-              if (typeof this.relapsesData != "undefined" && this.relapsesData != null) {
+              let dt = d3.select('#relapses').selectAll("*");
+              if (dt["_groups"][0].length > 0) {
                 this.isDateOutOfRange = false;
                 this.relapsesDetail = this.relapsesData[0];
                 this.relapsesDetail.month = "";
@@ -144,7 +145,8 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            if (typeof this.relapsesData == "undefined" || this.relapsesData == null) {
+            let dt = d3.select('#relapses').selectAll("*");
+            if (dt["_groups"][0].length == 0) {
               this.relapsesOpenAddPopUp = true;
               this
                 .brokerService
