@@ -396,6 +396,7 @@ export class EdssComponent implements OnInit {
   }
 
   showSecondLevel(data) {
+    this.dialog.openDialogs.pop();    
     let config = {
       hasBackdrop: true,
       panelClass: 'ns-edss-theme',
