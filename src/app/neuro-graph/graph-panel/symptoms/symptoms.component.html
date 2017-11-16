@@ -68,7 +68,7 @@
       <div >
         <div class="ns-symptoms-qx" *ngFor="let sympDetails of symptomsDataDetails.questData[0];">
           
-          <span class="ns-symptoms-name-quest">{{sympDetails["qx_code"]}} {{sympDetails["qx_text"]}}</span>
+          <span class="ns-symptoms-name-quest">{{sympDetails["qx_global_text"]}} {{sympDetails["qx_text"]}}</span>
           
           <div *ngFor="let sympAns of sympDetails['answer_options'];">
             <span class="ns-symptoms-name-det" *ngIf="sympAns!=sympDetails['answer_text']">{{sympAns}}</span>
