@@ -88,7 +88,6 @@ export class SymptomsComponent implements OnInit {
                       if (new Date(this.neuroGraphService.moment(reportedDate).format("MM/DD/YYYY")) >= new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY")))
                         reportedDate = element["qx_completed_at"];
                       if (elem.symptoms[i].score == "") {
-                        debugger;                        
                         newCnt--;
                       }
                     }
