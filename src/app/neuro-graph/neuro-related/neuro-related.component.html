@@ -40,7 +40,7 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-edss-theme">
-          <md-checkbox [checked]="true" (change)='changed($event,"edss")' >EDSS</md-checkbox>
+          <md-checkbox [checked]="true" [(ngModel)]="checkEDSS" (change)='changed($event,"edss")' >EDSS</md-checkbox>
           <!-- evalEvent [evalData]="{
             label:'EDSS',
             data: checked,
@@ -48,10 +48,10 @@
             }" -->
           <span class="plus-icon" (click)="openDialog('edss')">+</span></li>
         <li class="ns-25walk-theme">
-          <md-checkbox (change)='changed($event,"walk25Feet")'>25' Walk</md-checkbox><span class="plus-icon" (click)="openDialog('walk25Feet')">+</span>
+          <md-checkbox [(ngModel)]="checkwalk25Feet" (change)='changed($event,"walk25Feet")'>25' Walk</md-checkbox><span class="plus-icon" (click)="openDialog('walk25Feet')">+</span>
         </li>
         <li class="ns-relapses-theme">
-          <md-checkbox (change)='changed($event,"relapses")'>Relapses</md-checkbox><span class="plus-icon" (click)="openDialog('relapses')">+</span></li>
+          <md-checkbox [(ngModel)]="checkRelapses" (change)='changed($event,"relapses")'>Relapses</md-checkbox><span class="plus-icon" (click)="openDialog('relapses')">+</span></li>
         <li class="ns-images-theme">
           <md-checkbox (change)='changed($event,"imaging")'>Imaging</md-checkbox>
         </li>

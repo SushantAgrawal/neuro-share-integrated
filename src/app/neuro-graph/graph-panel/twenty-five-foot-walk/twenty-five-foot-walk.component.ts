@@ -34,10 +34,13 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   private scoreValue: any;
   private score_ids: any = 20;
   private Feet25WalkChartLoaded: boolean = false;
+  private walk25FeetOpenAddPopUp: boolean = false;
+
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
 
   }
   ngOnInit() {
+    //get walk data
     this.subscriptions = this
       .brokerService
       .filterOn(allHttpMessages.httpGetWalk25Feet)
@@ -49,6 +52,19 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           this.drawWalk25FeetAxis();
           this.drawWalk25FeetLineCharts();
           this.Feet25WalkChartLoaded = true;
+          if (this.walk25FeetOpenAddPopUp == true) {
+            this.walk25FeetOpenAddPopUp = false;
+            let dt = d3.selectAll('.walk25Feet-axis');
+            if (dt["_groups"][0].length > 0) {
+              this.score_1 = "";
+              this.score_2 = "";
+              this.scoreValue = "";
+              //let dialogConfig = { hasBackdrop: true,backdropClass: 'ns-back', panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
+              let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
+              this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
+              this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
+            }
+          }
         })();
       })
     let walk25Feet = this
@@ -84,25 +100,37 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         this.Feet25WalkChartLoaded = false;
       })();
     })
+    //add popup
     let sub3 = modal.subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         let dt = d3.selectAll('.walk25Feet-axis');
-        if(dt["_groups"][0].length > 0)
-        {
+        if (dt["_groups"][0].length == 0) {
+          this.walk25FeetOpenAddPopUp = true;
+          this
+            .brokerService
+            .emit(allMessages.neuroRelated, {
+              artifact: 'walk25Feet',
+              checked: true
+            });
+        }
+        else {
           this.score_1 = "";
           this.score_2 = "";
           this.scoreValue = "";
           //let dialogConfig = { hasBackdrop: true,backdropClass: 'ns-back', panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
-          let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };          
+          let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
           this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
           this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
         }
-       
+
       })();
     })
+    //get walk info
     let sub4 = this.brokerService.filterOn(allHttpMessages.httpGetWalk25FeetInfo).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         this.walk25FeetDataInfo = d.data;
+
+
       })();
     })
 
@@ -127,6 +155,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .add(sub5);
   }
   updateWalk(str) {
+   // debugger;
     if (str == "Update") {
       if (this.walk25FeetScoreDetail.walk_1_score == "" || this.walk25FeetScoreDetail.walk_1_score == null || parseFloat(this.walk25FeetScoreDetail.walk_1_score) == 0) {
         this.walk25FeetScoreDetail.scoreValue = parseFloat(this.walk25FeetScoreDetail.walk_2_score);
@@ -141,10 +170,10 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     }
     else {
       if (this.score_1 == "" || this.score_1 == null || parseFloat(this.score_1) == 0) {
-        this.scoreValue = parseFloat(this.score_2);
+        this.scoreValue = parseFloat(this.score_2 ==""?0:(this.score_2 ==null)?0:this.score_2);
       }
       else if (this.score_2 == "" || this.score_2 == null || parseFloat(this.score_2) == 0) {
-        this.scoreValue = parseFloat(this.score_1);
+        this.scoreValue = parseFloat(this.score_1 ==""?0:(this.score_1 ==null)?0:this.score_1);
       }
       else {
         this.scoreValue = ((parseFloat((this.score_1 = this.score_1 || 0).toString()) + parseFloat((this.score_2 = this.score_2 || 0).toString())) / 2)
@@ -210,7 +239,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   showSecondLevel(data) {
     this.showUpdate = false;
     let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', skipHide: true, preserveScope: true };
-    this.walk25FeetScoreDetail = {...data};
+    this.walk25FeetScoreDetail = { ...data };
     if (this.walk25FeetScoreDetail.save_csn_status == "Closed") {
       this.dialogRef = this.dialog.open(this.walk25FeetSecondLevelTemplate, config);
     }
@@ -224,7 +253,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let clinicianDataSetforAxis = this.walk25FeetData.map(d => {
       return {
         ...d,
-        scoreValue: parseFloat(d.walk_1_score) == 0? parseFloat(d.walk_2_score) : parseFloat(d.walk_2_score) == 0 ? parseFloat(d.walk_1_score) :((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2)
+        scoreValue: parseFloat(d.walk_1_score) == 0 ? parseFloat(d.walk_2_score) : parseFloat(d.walk_2_score) == 0 ? parseFloat(d.walk_1_score) : ((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2)
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
     let maxValue = Math.max.apply(Math, clinicianDataSetforAxis.map(function (o) { return o.scoreValue; })) + 10;

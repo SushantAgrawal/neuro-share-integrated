@@ -42,7 +42,7 @@ export class EdssComponent implements OnInit {
   datasetArea1: Array<any> = [];
   datasetArea2: Array<any> = [];
   datasetMean: Array<any> = [];
-
+  private edssOpenAddPopUp: boolean = false;
   constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
 
   }
@@ -124,7 +124,16 @@ export class EdssComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             let dt = d3.selectAll('.edss-charts');
-            if (dt["_groups"][0].length > 0) {
+            if (dt["_groups"][0].length == 0) {
+            this.edssOpenAddPopUp = true;
+            this
+              .brokerService
+              .emit(allMessages.neuroRelated, {
+                artifact: 'edss',
+                checked: true
+              });
+            }
+            else{
               this.scoreChartOpType = "Add";
               let dialogConfig = {
                 hasBackdrop: true,
@@ -214,6 +223,26 @@ export class EdssComponent implements OnInit {
             this.drawEdssYAxis();
             this.drawEdssLineCharts();
             this.edssChartLoaded = true;
+            if (this.edssOpenAddPopUp == true) {
+              this.edssOpenAddPopUp = false;
+              let dt = d3.selectAll('.edss-charts');
+              if (dt["_groups"][0].length > 0) {
+                this.scoreChartOpType = "Add";
+                let dialogConfig = {
+                  hasBackdrop: true,
+                  panelClass: 'ns-edss-theme',
+                  width: '670px',
+                  height: '675px'
+                };
+                this.scoreChartDialogRef = this
+                  .dialog
+                  .open(this.edssScoreChartTemplate, dialogConfig);
+                this
+                  .scoreChartDialogRef
+                  .updatePosition({ top: '65px', left: '60px' });
+              }
+            }
+
           })();
       });
 

@@ -35,6 +35,7 @@ export class RelapsesComponent implements OnInit {
   private datasetA: Array<any>;
   private relapsesData: Array<any>;
   private isEditSelected: boolean = false;
+  private relapsesOpenAddPopUp: boolean = false;
   private isDateOutOfRange: boolean = false;
   private relapsisChartLoaded: boolean = false;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
@@ -56,6 +57,19 @@ export class RelapsesComponent implements OnInit {
             this.relapsesData = d.data.relapses;
             this.createChart();
             this.relapsisChartLoaded = true;
+            if (this.relapsesOpenAddPopUp == true) {
+              this.relapsesOpenAddPopUp = false;
+              if (typeof this.relapsesData != "undefined" && this.relapsesData != null) {
+                this.isDateOutOfRange = false;
+                this.relapsesDetail = this.relapsesData[0];
+                this.relapsesDetail.month = "";
+                this.relapsesDetail.year = "";//new Date().getFullYear().toString();
+                let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
+                this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
+                this.dialogRef.updatePosition({ top: '335px', left: '255px' });
+              }
+            }
+
           })();
       })
     let relapses = this
@@ -130,7 +144,16 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            if (typeof this.relapsesData != "undefined" && this.relapsesData != null) {
+            if (typeof this.relapsesData == "undefined" || this.relapsesData == null) {
+              this.relapsesOpenAddPopUp = true;
+              this
+                .brokerService
+                .emit(allMessages.neuroRelated, {
+                  artifact: 'relapses',
+                  checked: true
+                });
+            }
+            else {
               this.isDateOutOfRange = false;
               this.relapsesDetail = this.relapsesData[0];
               this.relapsesDetail.month = "";
@@ -139,6 +162,7 @@ export class RelapsesComponent implements OnInit {
               this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
               this.dialogRef.updatePosition({ top: '335px', left: '255px' });
             }
+
           })();
       })
     //When zoom option changed

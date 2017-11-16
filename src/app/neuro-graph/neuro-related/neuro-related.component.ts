@@ -12,6 +12,9 @@ import {EvalService} from '@sutterhealth/analytics';
 export class NeuroRelatedComponent implements OnInit {
   display: Boolean = false;
   checkDMT:Boolean = true;
+  checkRelapses:Boolean = false;
+  checkwalk25Feet:Boolean = false;
+  checkEDSS:Boolean = true;
   constructor(private brokerService: BrokerService, private evalService:EvalService) { }
 
   ngOnInit() { 
@@ -28,6 +31,54 @@ export class NeuroRelatedComponent implements OnInit {
         : (() => {
           //make api call
           this.checkDMT=true;
+        })();
+    });
+
+    let relapses = this
+    .brokerService
+    .filterOn(allMessages.neuroRelated)
+    .filter(t => (t.data.artifact == 'relapses'));
+    
+    let sub2 = relapses
+    .filter(t => t.data.checked)
+    .subscribe(d => {
+      d.error
+        ? console.log(d.error)
+        : (() => {
+          //make api call
+          this.checkRelapses=true;
+        })();
+    });
+
+    let edss = this
+    .brokerService
+    .filterOn(allMessages.neuroRelated)
+    .filter(t => (t.data.artifact == 'edss'));
+    
+    let sub3 = edss
+    .filter(t => t.data.checked)
+    .subscribe(d => {
+      d.error
+        ? console.log(d.error)
+        : (() => {
+          //make api call
+          this.checkEDSS=true;
+        })();
+    });
+
+    let walk25Feet = this
+    .brokerService
+    .filterOn(allMessages.neuroRelated)
+    .filter(t => (t.data.artifact == 'walk25Feet'));
+    
+    let sub4 = walk25Feet
+    .filter(t => t.data.checked)
+    .subscribe(d => {
+      d.error
+        ? console.log(d.error)
+        : (() => {
+          //make api call
+          this.checkwalk25Feet=true;
         })();
     });
   }
