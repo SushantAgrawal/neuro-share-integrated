@@ -17,6 +17,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   dialogRef: any;
   lastOfficeDateLabel: string;
   encounterData: any;
+  progressNotes:Array<any>;
   constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
@@ -51,11 +52,32 @@ export class SharedGridComponent implements OnInit, OnDestroy {
             let sharedGrid = this.setupSharedGrid(sharedGridElement, this.chartState.canvasDimension);
 
             if (this.encounterData.length > 0)
+            {
               this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
-
+              let prevCSN = "0";
+              if (this.encounterData.length > 1) {
+                prevCSN = this.encounterData[1].contactSerialNumber;
+              }
+              this.getProgessNoteData(prevCSN);
+            }
+             
+              
           })();
       })
-    this.subscriptions.add(sub1);
+    let sub2 = this
+      .brokerService
+      .filterOn(allHttpMessages.httpGeProgressNote)
+      .subscribe(d => {
+        d.error
+          ? (() => {
+            console.log(d.error)
+          })
+          : (() => {
+            //debugger;
+            this.progressNotes = d.data["staged_objects"];
+          })();
+      })
+    this.subscriptions.add(sub1).add(sub2);
   };
 
   ngOnDestroy() {
@@ -81,6 +103,19 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       }
     ]);
   }
+  getProgessNoteData(prevCSN) {
+    this.brokerService.httpGet(allHttpMessages.httpGeProgressNote, [
+      {
+        name: 'pom_id',
+        value: this.neuroGraphService.get('queryParams').pom_id
+      },
+
+      {
+        name: 'csn',
+        value: prevCSN
+      }
+    ]);
+  }
 
   drawRootElement(state): void {
     d3.select('#shared-grid').selectAll("*").remove();
@@ -90,6 +125,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     this.drawVerticalGridLines(sharedGrid, state.canvasDimension, state.xScale);
     this.drawCommonXAxis(sharedGrid, state.canvasDimension, state.xScale);
     this.getReferenceLineData();
+
   };
 
   setupSharedGrid(nodeSelection, dimension) {

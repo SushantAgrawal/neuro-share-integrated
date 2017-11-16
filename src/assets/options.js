@@ -18,5 +18,6 @@ var gUrlMaps = {
     "http:get:walk25Feet": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
     "http:get:walk25Feet:info": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
     "http:get:symptoms": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/",
-    "http:get:referenceLine": "https://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/encounters/"
+    "http:get:referenceLine": "https://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/encounters/",
+    "http:get:progressNote": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/progress-note/"
 };

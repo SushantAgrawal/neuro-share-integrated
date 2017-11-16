@@ -32,7 +32,8 @@ export const allHttpMessages = {
   'httpGetWalk25Feet': 'http:get:walk25Feet',
   'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info',
   'httpGetSymptoms': 'http:get:symptoms',
-  'httpGetReferenceLine': 'http:get:referenceLine'
+  'httpGetReferenceLine': 'http:get:referenceLine',
+  'httpGeProgressNote': 'http:get:progressNote'
 };
 export const urlMaps = window["gUrlMaps"];
 
