@@ -48,7 +48,7 @@
           <div class="ns-small-box-text">{{symp.score}}</div>
           <div class="ns-symptoms-trend-box" id="TrendLine_{{symp.qxid}}_{{symp.trendScore}}_{{symp.nameTrend}}"></div>
           
-          <div class="ns-symptoms-quest-unit">
+          <div class="ns-symptoms-quest-unit" *ngIf="symp.qx_code.length>0" >
             <button class="call-out-buttons" (click)="showThirdLayer(symp)">See Qx</button>
           </div>
         </div>

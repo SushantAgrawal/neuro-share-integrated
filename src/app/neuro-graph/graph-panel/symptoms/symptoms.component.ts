@@ -56,10 +56,10 @@ export class SymptomsComponent implements OnInit {
                 qxCompleted: new Date(this.neuroGraphService.moment(d["qx_completed_at"]).format("MM/DD/YYYY")),
               }
             }).sort((a, b) => b.qxCompleted - a.qxCompleted)
-
+            let index = 0;
+            
             this.questionaireData.forEach(element => {
               let symptomsDataLocal: Array<any> = [];
-
               for (let i = 0; i < element.symptoms.length; i++) {
                 let symptomStatus: any = "";
                 let reportedDate: any;
@@ -67,7 +67,16 @@ export class SymptomsComponent implements OnInit {
                 reportedDate = element["qx_completed_at"];
                 qData.push(element.responses.filter(item => element.symptoms[i].qx_code.some(f => f == item["qx_code"])));
                 let prevCnt = 0;
-                let newCnt = this.questionaireData.length - 2;
+                let newCnt =this.questionaireData.length;
+                if(index == 0)
+                {
+                   newCnt = this.questionaireData.length - 1;
+                  
+                }
+                else{
+                   newCnt = this.questionaireData.length - 2;
+                  
+                }
                 let trend: Array<any> = [];
                 let answerOptions: Array<any> = [];
                 let answerText: any = "";
@@ -79,6 +88,7 @@ export class SymptomsComponent implements OnInit {
                       if (new Date(this.neuroGraphService.moment(reportedDate).format("MM/DD/YYYY")) >= new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY")))
                         reportedDate = element["qx_completed_at"];
                       if (elem.symptoms[i].score == "") {
+                        debugger;                        
                         newCnt--;
                       }
                     }
@@ -169,7 +179,6 @@ export class SymptomsComponent implements OnInit {
                     });
                   }
                 }
-
                 if (newCnt == 0) {
                   symptomStatus = "New";
                   trend = [];
@@ -206,6 +215,7 @@ export class SymptomsComponent implements OnInit {
                 symptoms: symptomsDataLocal
 
               });
+              index++;                          
             });
             this.createChartSymptoms();
             this.symptomsChartLoaded = true;
