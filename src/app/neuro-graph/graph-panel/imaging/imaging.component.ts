@@ -35,8 +35,7 @@ export class ImagingComponent implements OnInit {
   private datasetC: Array<any> = [];
   private dialogRef: any;
   private reportDialogRef: any;
-  private hasReportIcon: boolean = true;
-  private hasBrainIcon: boolean = true;
+  private imagingReportDetails:any;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService : NeuroGraphService) { }
 
   ngOnInit() {
@@ -126,8 +125,10 @@ export class ImagingComponent implements OnInit {
     this.dialogRef = this.dialog.open(this.imagingSecondLevelTemplate, dialogConfig);
   }
 
-  showResult() {
+  showResult(imagingObj) {
+    //debugger;
     this.dialog.openDialogs.pop();
+    this.imagingReportDetails = imagingObj;
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-images-theme', width: '490px', height: '600px' };
     this.reportDialogRef = this.dialog.open(this.imagingThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '50px', left: "860px" });
