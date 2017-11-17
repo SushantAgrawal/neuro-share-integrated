@@ -88,6 +88,12 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           this.dmtSecondLayerLocalData = dmtResponse.DMTs;
           this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds;
           this.relapsesLocalData = relapsesLocalData.relapses;
+          this
+            .brokerService
+            .emit(allMessages.checkboxDisable, {
+              artifact: 'dmt',
+              disabled: true
+            });
         })();
     });
     let neuroRelated = this.brokerService.filterOn(allMessages.neuroRelated);
@@ -443,7 +449,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .selectAll('rect')
       .data(dataset)
       .enter();
-   
+
     //Draws rectangles
     let rect = rectangles
       .append('rect')

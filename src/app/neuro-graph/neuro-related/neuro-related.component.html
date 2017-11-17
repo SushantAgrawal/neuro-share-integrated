@@ -14,7 +14,7 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-dmt-theme">
-          <md-checkbox [(ngModel)]="checkDMT" (change)='changed($event,"dmt")' >DMT</md-checkbox>
+          <md-checkbox [(ngModel)]="checkDMT" (change)='changed($event,"dmt")' [disabled]="!isDMTEnable" >DMT</md-checkbox>
           <!-- evalEvent [evalData]="{
             label:'DMT',
             data: checked,
@@ -22,10 +22,10 @@
             }" -->
         </li>
         <li class="ns-othermeds-theme">
-          <md-checkbox  (change)='changed($event,"otherMeds")'>Other Meds</md-checkbox>
+          <md-checkbox  (change)='changed($event,"otherMeds")' [disabled]="!isDMTEnable">Other Meds</md-checkbox>
         </li>
         <li class="ns-vitaminD-theme">
-          <md-checkbox (change)='changed($event,"vitaminD")'>Vitamin D</md-checkbox>
+          <md-checkbox (change)='changed($event,"vitaminD")' [disabled]="!isDMTEnable">Vitamin D</md-checkbox>
         </li>
         <li class="ns-referrals-theme">
           <md-checkbox (change)='changed($event,"referrals")'>Referrals</md-checkbox>
@@ -40,7 +40,7 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-edss-theme">
-          <md-checkbox [checked]="true" [(ngModel)]="checkEDSS" (change)='changed($event,"edss")' >EDSS</md-checkbox>
+          <md-checkbox [checked]="true" [(ngModel)]="checkEDSS" (change)='changed($event,"edss")' [disabled]="!isEDSSEnable">EDSS</md-checkbox>
           <!-- evalEvent [evalData]="{
             label:'EDSS',
             data: checked,
@@ -48,15 +48,15 @@
             }" -->
           <span class="plus-icon" (click)="openDialog('edss')">+</span></li>
         <li class="ns-25walk-theme">
-          <md-checkbox [(ngModel)]="checkwalk25Feet" (change)='changed($event,"walk25Feet")'>25' Walk</md-checkbox><span class="plus-icon" (click)="openDialog('walk25Feet')">+</span>
+          <md-checkbox [(ngModel)]="checkwalk25Feet" (change)='changed($event,"walk25Feet")' [disabled]="!isWalk25FeetEnable">25' Walk</md-checkbox><span class="plus-icon" (click)="openDialog('walk25Feet')">+</span>
         </li>
         <li class="ns-relapses-theme">
-          <md-checkbox [(ngModel)]="checkRelapses" (change)='changed($event,"relapses")'>Relapses</md-checkbox><span class="plus-icon" (click)="openDialog('relapses')">+</span></li>
+          <md-checkbox [(ngModel)]="checkRelapses"  (change)='changed($event,"relapses")' [disabled]="!isRelapsesEnable">Relapses</md-checkbox><span class="plus-icon" (click)="openDialog('relapses')">+</span></li>
         <li class="ns-images-theme">
-          <md-checkbox (change)='changed($event,"imaging")'>Imaging</md-checkbox>
+          <md-checkbox  (change)='changed($event,"imaging")' [disabled]="!isImagingEnable">Imaging</md-checkbox>
         </li>
         <li class="ns-symptoms-theme">
-          <md-checkbox (change)='changed($event,"symptoms")'>Symptoms</md-checkbox>
+          <md-checkbox (change)='changed($event,"symptoms")' [disabled]="!isSymptomsEnable">Symptoms</md-checkbox>
         </li>
       </ul>
     </div>
@@ -68,7 +68,7 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-labs-theme">
-          <md-checkbox [checked]="true" (change)='changed($event,"labs")' >Labs</md-checkbox>
+          <md-checkbox [checked]="true" (change)='changed($event,"labs")' [disabled]="!isLabEnable">Labs</md-checkbox>
           <!-- evalEvent [evalData]="{
             label:'Labs',
             data: checked,

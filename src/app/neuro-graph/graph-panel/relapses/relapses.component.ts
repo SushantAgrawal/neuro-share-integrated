@@ -70,7 +70,12 @@ export class RelapsesComponent implements OnInit {
                 this.dialogRef.updatePosition({ top: '335px', left: '255px' });
               }
             }
-
+            this
+              .brokerService
+              .emit(allMessages.checkboxDisable, {
+                artifact: 'relapses',
+                disabled: true
+              });
           })();
       })
     let relapses = this

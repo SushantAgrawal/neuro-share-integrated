@@ -65,6 +65,12 @@ export class TwentyFiveFootWalkComponent implements OnInit {
               this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
             }
           }
+          this
+            .brokerService
+            .emit(allMessages.checkboxDisable, {
+              artifact: 'walk25Feet',
+              disabled: true
+            });
         })();
       })
     let walk25Feet = this
@@ -155,7 +161,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .add(sub5);
   }
   updateWalk(str) {
-   // debugger;
+    // debugger;
     if (str == "Update") {
       if (this.walk25FeetScoreDetail.walk_1_score == "" || this.walk25FeetScoreDetail.walk_1_score == null || parseFloat(this.walk25FeetScoreDetail.walk_1_score) == 0) {
         this.walk25FeetScoreDetail.scoreValue = parseFloat(this.walk25FeetScoreDetail.walk_2_score);
@@ -170,10 +176,10 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     }
     else {
       if (this.score_1 == "" || this.score_1 == null || parseFloat(this.score_1) == 0) {
-        this.scoreValue = parseFloat(this.score_2 ==""?0:(this.score_2 ==null)?0:this.score_2);
+        this.scoreValue = parseFloat(this.score_2 == "" ? 0 : (this.score_2 == null) ? 0 : this.score_2);
       }
       else if (this.score_2 == "" || this.score_2 == null || parseFloat(this.score_2) == 0) {
-        this.scoreValue = parseFloat(this.score_1 ==""?0:(this.score_1 ==null)?0:this.score_1);
+        this.scoreValue = parseFloat(this.score_1 == "" ? 0 : (this.score_1 == null) ? 0 : this.score_1);
       }
       else {
         this.scoreValue = ((parseFloat((this.score_1 = this.score_1 || 0).toString()) + parseFloat((this.score_2 = this.score_2 || 0).toString())) / 2)

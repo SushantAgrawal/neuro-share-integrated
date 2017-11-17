@@ -6,7 +6,8 @@ export const allMessages = {
   'toggleVirtualCaseload': 'toggle:virtual:caseload',
   'graphScaleUpdated': 'graph:scale:updated',
   'timelineScroll': 'timeline:scroll',
-  'demographicEnableCheckBox':'demographic:enable:check:box'
+  'demographicEnableCheckBox':'demographic:enable:check:box',
+  'checkboxDisable': 'checkbox:disable',
 };
 
 export const manyHttpMessages = {

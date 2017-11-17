@@ -125,15 +125,15 @@ export class EdssComponent implements OnInit {
           : (() => {
             let dt = d3.selectAll('.edss-charts');
             if (dt["_groups"][0].length == 0) {
-            this.edssOpenAddPopUp = true;
-            this
-              .brokerService
-              .emit(allMessages.neuroRelated, {
-                artifact: 'edss',
-                checked: true
-              });
+              this.edssOpenAddPopUp = true;
+              this
+                .brokerService
+                .emit(allMessages.neuroRelated, {
+                  artifact: 'edss',
+                  checked: true
+                });
             }
-            else{
+            else {
               this.scoreChartOpType = "Add";
               let dialogConfig = {
                 hasBackdrop: true,
@@ -242,7 +242,12 @@ export class EdssComponent implements OnInit {
                   .updatePosition({ top: '65px', left: '60px' });
               }
             }
-
+            this
+              .brokerService
+              .emit(allMessages.checkboxDisable, {
+                artifact: 'edss',
+                disabled: true
+              });
           })();
       });
 
@@ -396,7 +401,7 @@ export class EdssComponent implements OnInit {
   }
 
   showSecondLevel(data) {
-    this.dialog.openDialogs.pop();    
+    this.dialog.openDialogs.pop();
     let config = {
       hasBackdrop: true,
       panelClass: 'ns-edss-theme',

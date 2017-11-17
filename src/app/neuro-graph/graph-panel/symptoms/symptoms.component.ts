@@ -57,7 +57,7 @@ export class SymptomsComponent implements OnInit {
               }
             }).sort((a, b) => b.qxCompleted - a.qxCompleted)
             let index = 0;
-            
+
             this.questionaireData.forEach(element => {
               let symptomsDataLocal: Array<any> = [];
               for (let i = 0; i < element.symptoms.length; i++) {
@@ -67,15 +67,14 @@ export class SymptomsComponent implements OnInit {
                 reportedDate = element["qx_completed_at"];
                 qData.push(element.responses.filter(item => element.symptoms[i].qx_code.some(f => f == item["qx_code"])));
                 let prevCnt = 0;
-                let newCnt =this.questionaireData.length;
-                if(index == 0)
-                {
-                   newCnt = this.questionaireData.length - 1;
-                  
+                let newCnt = this.questionaireData.length;
+                if (index == 0) {
+                  newCnt = this.questionaireData.length - 1;
+
                 }
-                else{
-                   newCnt = this.questionaireData.length - 2;
-                  
+                else {
+                  newCnt = this.questionaireData.length - 2;
+
                 }
                 let trend: Array<any> = [];
                 let answerOptions: Array<any> = [];
@@ -214,10 +213,16 @@ export class SymptomsComponent implements OnInit {
                 symptoms: symptomsDataLocal
 
               });
-              index++;                          
+              index++;
             });
             this.createChartSymptoms();
             this.symptomsChartLoaded = true;
+            this
+              .brokerService
+              .emit(allMessages.checkboxDisable, {
+                artifact: 'symptoms',
+                disabled: true
+              });
           })();
       })
     let symptoms = this
@@ -369,7 +374,7 @@ export class SymptomsComponent implements OnInit {
       return {
         ...d,
         questionnaireDate_mod: new Date(this.neuroGraphService.moment(d.questionnaireDate).format("MM/DD/YYYY")),
-       
+
       }
     }).sort((a, b) => a.questionnaireDate_mod - b.questionnaireDate_mod);
 
@@ -412,7 +417,7 @@ export class SymptomsComponent implements OnInit {
       .attr("width", "32")
       .attr("viewBox", "0 0 40 40")
       .html(svgImage)
-      .style('cursor', 'pointer')      
+      .style('cursor', 'pointer')
       .attr('d', this.pathUpdate)
       .on('click', d => {
         this.showSecondLevel(d);

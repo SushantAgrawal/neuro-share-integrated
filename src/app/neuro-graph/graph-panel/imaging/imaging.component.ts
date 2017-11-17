@@ -4,7 +4,7 @@ import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
 import { allMessages, allHttpMessages } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
-import {NeuroGraphService} from '../../neuro-graph.service';
+import { NeuroGraphService } from '../../neuro-graph.service';
 
 @Component({
   selector: '[app-imaging]',
@@ -35,8 +35,8 @@ export class ImagingComponent implements OnInit {
   private datasetC: Array<any> = [];
   private dialogRef: any;
   private reportDialogRef: any;
-  private imagingReportDetails:any;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService : NeuroGraphService) { }
+  private imagingReportDetails: any;
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService: NeuroGraphService) { }
 
   ngOnInit() {
     this.subscriptions = this
@@ -44,13 +44,19 @@ export class ImagingComponent implements OnInit {
       .filterOn(allHttpMessages.httpGetImaging)
       .subscribe(d => {
         d.error
-          ?  (() => {
+          ? (() => {
             console.log(d.error)
           })
           : (() => {
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
             this.createChart();
             this.imagingChartLoaded = true;
+            this
+              .brokerService
+              .emit(allMessages.checkboxDisable, {
+                artifact: 'imaging',
+                disabled: true
+              });
           })();
       })
 
