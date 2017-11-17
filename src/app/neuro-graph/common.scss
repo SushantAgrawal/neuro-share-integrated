@@ -241,8 +241,9 @@ body {
     padding: 10px;
 }
 .cds-panel .cds-items{
-    margin-bottom: 2px;
-
+    height: 24px;
+    padding-bottom: 5px;
+    overflow: hidden;
 }
 .cds-items:after {
     @extend .clearBoth;
@@ -258,14 +259,26 @@ body {
 }
 .cds-items-info {
     @extend .right-float;
-    padding-right: 5px;
-}
-.cds-items-info .material-icons {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
-    color:#a5a5a5;
-}
+    .custom-i{ 
+        width: 18px; 
+        height: 18px; 
+        display: inline-block; 
+        text-align:center;
+        font-weight: 700;
+        font-size: 10pt;
+        line-height: 18px;
+        color: #a5a5a5; 
+        border: solid 2px #a5a5a5; 
+        background-color: #ffffff;
+        cursor: pointer;
+        -webkit-transition-duration: 0.4s;
+        transition-duration: 0.4s;
+        @include border-radius(50%);
+        font-family: $font-Loto;
+    }}
+
+
+
 /*------------  Neuro Related ---------------------*/
 
 .grouping-checkboxes {
@@ -456,3 +469,4 @@ body {
  -webkit-border-radius: 50% 50% 50% 50%;
  border-radius: 50% 50% 50% 50%;
 }
+
