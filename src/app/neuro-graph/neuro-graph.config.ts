@@ -6,7 +6,7 @@ export const allMessages = {
   'toggleVirtualCaseload': 'toggle:virtual:caseload',
   'graphScaleUpdated': 'graph:scale:updated',
   'timelineScroll': 'timeline:scroll',
-  'demographicEnableCheckBox':'demographic:enable:check:box',
+  'demographicEnableCheckBox': 'demographic:enable:check:box',
   'checkboxEnable': 'checkbox:enable',
 };
 
@@ -244,8 +244,12 @@ export const GRAPH_SETTINGS = {
     containerHeight: 110,
     chartsWidth: 665,
     dmtColor: "#607D8B",
+    dmtOverlapColor: "#303945",
     vitaminDColor: "#FBC02D",
-    otherMedsColor: "#D8DFE2"
+    vitaminDOverlapColor: "#A07A1C",
+    otherMedsColor: "#D8DFE2",
+    otherMedsOverlapColor: "#898E90"
+
   },
   edss: {
     positionTop: 300,

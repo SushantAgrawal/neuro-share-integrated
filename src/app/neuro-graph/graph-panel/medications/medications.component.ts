@@ -372,7 +372,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.dmt, dmt);
       this.dialogRef = this.dialog.open(this.dmtSecondLevelTemplate, config);
     };
-    this.drawChart(this.dmtArray, this.medType.dmt, GRAPH_SETTINGS.medications.dmtColor, openSecondLayer);
+    this.drawChart(this.dmtArray, this.medType.dmt, GRAPH_SETTINGS.medications.dmtColor, GRAPH_SETTINGS.medications.dmtOverlapColor, openSecondLayer);
   }
 
   drawVitaminD() {
@@ -381,7 +381,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.vitaminD, false);
       this.dialogRef = this.dialog.open(this.vitaminDSecondLevelTemplate, config);
     };
-    this.drawChart(this.vitaminDArray, this.medType.vitaminD, GRAPH_SETTINGS.medications.vitaminDColor, openSecondLayer);
+    this.drawChart(this.vitaminDArray, this.medType.vitaminD, GRAPH_SETTINGS.medications.vitaminDColor, GRAPH_SETTINGS.medications.vitaminDOverlapColor, openSecondLayer);
   }
 
   drawOtherMeds() {
@@ -391,7 +391,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.otherMeds, otherMeds);
       this.dialogRef = this.dialog.open(this.otherMedsSecondLevelTemplate, config);
     };
-    this.drawChart(this.otherMedsArray, this.medType.otherMeds, GRAPH_SETTINGS.medications.otherMedsColor, openSecondLayer);
+    this.drawChart(this.otherMedsArray, this.medType.otherMeds, GRAPH_SETTINGS.medications.otherMedsColor, GRAPH_SETTINGS.medications.otherMedsOverlapColor, openSecondLayer);
   }
 
   removeDmt() {
@@ -420,7 +420,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     return capitalize + ' ...';
   }
 
-  drawChart(allData: Array<any>, containterId, barColor, onClickCallback) {
+  drawChart(allData: Array<any>, containterId, barColor, overlapColor, onClickCallback) {
     let dataset = allData.filter(d => {
       //let dt = new Date(Date.parse(d.date.medStart || d.date.orderDate));
       //return dt >= this.chartState.xDomain.currentMinValue && dt <= this.chartState.xDomain.currentMaxValue;
@@ -482,17 +482,17 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .on("click", d => {
         onClickCallback(d);
       })
-    //overlapping areas
-    let overlapColor = "grey";
-    if (containterId == "dmt") {
-      overlapColor = "#303945";
-    }
-    else if (containterId == "otherMeds") {
-      overlapColor = "#898e90";
-    }
-    else if (containterId == "vitaminD") {
-      overlapColor = "#a07a1c";
-    }
+    // //overlapping areas
+    // let overlapColor = "grey";
+    // if (containterId == "dmt") {
+    //   overlapColor = "#303945";
+    // }
+    // else if (containterId == "otherMeds") {
+    //   overlapColor = "#898e90";
+    // }
+    // else if (containterId == "vitaminD") {
+    //   overlapColor = "#a07a1c";
+    // }
     rect.each((d1, i, currentNodes) => {
       const current = currentNodes[i];
       let x1 = parseFloat(current.getAttribute("x"));
