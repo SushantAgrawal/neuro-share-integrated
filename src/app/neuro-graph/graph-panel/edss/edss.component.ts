@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   Input,
   ViewChild,
   TemplateRef,
@@ -15,7 +16,7 @@ import { allMessages, allHttpMessages, medication, GRAPH_SETTINGS, edssScoreChar
 
 @Component({ selector: '[app-edss]', templateUrl: './edss.component.html', styleUrls: ['./edss.component.scss'], encapsulation: ViewEncapsulation.None })
 
-export class EdssComponent implements OnInit {
+export class EdssComponent implements OnInit, OnDestroy {
   @Input() chartState: any;
   @ViewChild('edssSecondLevelTemplate') edssSecondLevelTemplate: TemplateRef<any>;
   @ViewChild('edssScoreChartTemplate') edssScoreChartTemplate: TemplateRef<any>;
@@ -42,10 +43,13 @@ export class EdssComponent implements OnInit {
   datasetArea1: Array<any> = [];
   datasetArea2: Array<any> = [];
   datasetMean: Array<any> = [];
-  private edssOpenAddPopUp: boolean = false;
-  constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
+  edssOpenAddPopUp: boolean = false;
+  registerDrag: any;
 
+  constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
+    this.registerDrag = c => neuroGraphService.registerDrag();
   }
+
   ngOnInit() {
     this.edssPopupQuestions = edssScoreChart;
     this.edssPopupQuestions.map(x => x.checked = false);
@@ -304,6 +308,7 @@ export class EdssComponent implements OnInit {
       .subscriptions
       .unsubscribe();
   }
+
   onSelectChartScore(index) {
     this
       .edssPopupQuestions
@@ -408,6 +413,13 @@ export class EdssComponent implements OnInit {
     this.secondLayerDialogRef = this
       .dialog
       .open(this.edssSecondLevelTemplate, config);
+
+
+    // setTimeout(() => {
+    //   let element: any = document.querySelector(('.cdk-overlay-pane'));
+    //   element.style.position = 'absolute';
+    //   this.neuroGraphService.dragElement(element);
+    // }, 3000)
   }
 
   drawEdssYAxis() {
