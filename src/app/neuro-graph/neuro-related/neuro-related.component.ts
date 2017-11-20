@@ -7,14 +7,17 @@ import { BrokerService } from '../broker/broker.service';
 import { allMessages, allHttpMessages, manyHttpMessages } from '../neuro-graph.config';
 // import {RelapsesComponent} from '../graph-panel/relapses/relapses.component';
 import { EvalService } from '@sutterhealth/analytics';
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Component({ selector: 'app-neuro-related', templateUrl: './neuro-related.component.html', styleUrls: ['./neuro-related.component.scss'], encapsulation: ViewEncapsulation.None })
-export class NeuroRelatedComponent implements OnInit {
+export class NeuroRelatedComponent implements OnInit, OnDestroy {
+  subscriptions: any;
   display: Boolean = false;
   checkDMT: Boolean = true;
   checkRelapses: Boolean = false;
   checkwalk25Feet: Boolean = false;
   checkEDSS: Boolean = true;
+
   isEDSSEnable: boolean = true;
   isDMTEnable: boolean = true;
   isRelapsesEnable: boolean = true;
@@ -29,160 +32,129 @@ export class NeuroRelatedComponent implements OnInit {
       .brokerService
       .filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'dmt'));
-
-    let sub1 = dmt
-      .filter(t => t.data.checked)
-      .subscribe(d => {
-        d.error
-          ? console.log(d.error)
-          : (() => {
-            //make api call
-            this.checkDMT = true;
-          })();
-      });
-
     let relapses = this
       .brokerService
       .filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'relapses'));
-
-    let sub2 = relapses
-      .filter(t => t.data.checked)
-      .subscribe(d => {
-        d.error
-          ? console.log(d.error)
-          : (() => {
-            //make api call
-            this.checkRelapses = true;
-          })();
-      });
-
     let edss = this
       .brokerService
       .filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'edss'));
-
-    let sub3 = edss
-      .filter(t => t.data.checked)
-      .subscribe(d => {
-        d.error
-          ? console.log(d.error)
-          : (() => {
-            //make api call
-            this.checkEDSS = true;
-          })();
-      });
-
     let walk25Feet = this
       .brokerService
       .filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'walk25Feet'));
 
-    let sub4 = walk25Feet
+    let sub0 = dmt
       .filter(t => t.data.checked)
       .subscribe(d => {
         d.error
           ? console.log(d.error)
           : (() => {
-            //debugger;
-            //make api call
+            this.checkDMT = true;
+          })();
+      });
+    let sub1 = relapses
+      .filter(t => t.data.checked)
+      .subscribe(d => {
+        d.error
+          ? console.log(d.error)
+          : (() => {
+            this.checkRelapses = true;
+          })();
+      });
+    let sub2 = edss
+      .filter(t => t.data.checked)
+      .subscribe(d => {
+        d.error
+          ? console.log(d.error)
+          : (() => {
+            this.checkEDSS = true;
+          })();
+      });
+    let sub3 = walk25Feet
+      .filter(t => t.data.checked)
+      .subscribe(d => {
+        d.error
+          ? console.log(d.error)
+          : (() => {
             this.checkwalk25Feet = true;
           })();
       });
 
-    let disableData = this
+    let sub4 = this
       .brokerService
-      .filterOn(allMessages.neuroRelated)
-
-    let sub5 = disableData
-      .filter(t => t.data.checked)
+      .filterOn(allMessages.checkboxEnable)
       .subscribe(d => {
         d.error
           ? console.log(d.error)
           : (() => {
-            //debugger;
-            //make api call
-            if (d.data.artifact == 'walk25Feet')
-              this.isWalk25FeetEnable = false;
-            else if (d.data.artifact == 'relapses')
-              this.isRelapsesEnable = false;
-            else if (d.data.artifact == 'edss')
-              this.isEDSSEnable = false;
-            else if (d.data.artifact == 'dmt' || d.data.artifact == 'otherMeds' || d.data.artifact == 'vitaminD')
-              this.isDMTEnable = false;
-            else if (d.data.artifact == 'imaging')
-              this.isImagingEnable = false;
-            else if (d.data.artifact == 'symptoms')
-              this.isSymptomsEnable = false;
-            else if (d.data.artifact == 'labs')
-              this.isLabEnable = false;
+            this.toggleCheckBox(d.data, true);
           })();
       });
 
-    let enableData = this
-      .brokerService
-      .filterOn(allMessages.checkboxDisable);
+    this.subscriptions = sub0
+      .add(sub1)
+      .add(sub2)
+      .add(sub3)
+      .add(sub4);
+  }
 
-    let sub6 = enableData
-      .filter(t => t.data.disabled)
-      .subscribe(d => {
-        d.error
-          ? console.log(d.error)
-          : (() => {
-            if (d.data.artifact == 'walk25Feet')
-              this.isWalk25FeetEnable = true;
-            else if (d.data.artifact == 'relapses')
-              this.isRelapsesEnable = true;
-            else if (d.data.artifact == 'edss')
-              this.isEDSSEnable = true;
-            else if (d.data.artifact == 'dmt' || d.data.artifact == 'otherMeds' || d.data.artifact == 'vitaminD')
-              this.isDMTEnable = true;
-            else if (d.data.artifact == 'imaging')
-              this.isImagingEnable = true;
-            else if (d.data.artifact == 'symptoms')
-              this.isSymptomsEnable = true;
-            else if (d.data.artifact == 'labs')
-              this.isLabEnable = true;
-          })();
-      });
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  toggleCheckBox(value, enable) {
+    if (value == 'walk25Feet')
+      this.isWalk25FeetEnable = enable;
+    else if (value == 'relapses')
+      this.isRelapsesEnable = enable;
+    else if (value == 'edss')
+      this.isEDSSEnable = enable;
+    else if (value == 'dmt' || value == 'otherMeds' || value == 'vitaminD')
+      this.isDMTEnable = enable;
+    else if (value == 'imaging')
+      this.isImagingEnable = enable;
+    else if (value == 'symptoms')
+      this.isSymptomsEnable = enable;
+    else if (value == 'labs')
+      this.isLabEnable = enable;
   }
 
   ngAfterViewInit() {
-    this
-      .brokerService
-      .emit(allMessages.neuroRelated, {
-        artifact: 'dmt',
-        checked: true
-      });
-    this
-      .brokerService
-      .emit(allMessages.neuroRelated, {
-        artifact: 'edss',
-        checked: true
-      });
-    this
-      .brokerService
-      .emit(allMessages.neuroRelated, {
-        artifact: 'labs',
-        checked: true
-      });
+    this.brokerService.emit(allMessages.neuroRelated, {
+      artifact: 'dmt',
+      checked: true
+    });
+    this.brokerService.emit(allMessages.neuroRelated, {
+      artifact: 'edss',
+      checked: true
+    });
+    this.brokerService.emit(allMessages.neuroRelated, {
+      artifact: 'labs',
+      checked: true
+    });
+
+    setTimeout(() => {
+      this.isDMTEnable = false;
+      this.isEDSSEnable = false;
+      this.isLabEnable = false;
+    }, 500)
   };
 
   changed(e, value) {
+    this.toggleCheckBox(value, !e.checked);
+
     let evalData = {
       label: value,
       data: e.checked,
       type: 'checkbox'
     };
-    this
-      .evalService
-      .sendEvent(evalData);
-    this
-      .brokerService
-      .emit(allMessages.neuroRelated, {
-        artifact: value,
-        checked: e.checked
-      });
+    this.evalService.sendEvent(evalData);
+    this.brokerService.emit(allMessages.neuroRelated, {
+      artifact: value,
+      checked: e.checked
+    });
   }
 
   openDialog(type) {

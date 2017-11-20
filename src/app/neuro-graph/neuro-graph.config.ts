@@ -7,7 +7,7 @@ export const allMessages = {
   'graphScaleUpdated': 'graph:scale:updated',
   'timelineScroll': 'timeline:scroll',
   'demographicEnableCheckBox':'demographic:enable:check:box',
-  'checkboxDisable': 'checkbox:disable',
+  'checkboxEnable': 'checkbox:enable',
 };
 
 export const manyHttpMessages = {

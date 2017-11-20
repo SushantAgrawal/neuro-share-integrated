@@ -51,7 +51,8 @@ export class RelapsesComponent implements OnInit {
       .subscribe(d => {
         d.error
           ? (() => {
-            console.log(d.error)
+            console.log(d.error);
+            this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
           })
           : (() => {
             this.relapsesData = d.data.relapses;
@@ -70,12 +71,7 @@ export class RelapsesComponent implements OnInit {
                 this.dialogRef.updatePosition({ top: '335px', left: '255px' });
               }
             }
-            this
-              .brokerService
-              .emit(allMessages.checkboxDisable, {
-                artifact: 'relapses',
-                disabled: true
-              });
+            this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
           })();
       })
     let relapses = this

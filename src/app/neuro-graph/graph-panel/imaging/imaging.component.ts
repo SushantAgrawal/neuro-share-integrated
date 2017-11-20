@@ -45,18 +45,14 @@ export class ImagingComponent implements OnInit {
       .subscribe(d => {
         d.error
           ? (() => {
-            console.log(d.error)
+            console.log(d.error);
+            this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
           })
           : (() => {
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
             this.createChart();
             this.imagingChartLoaded = true;
-            this
-              .brokerService
-              .emit(allMessages.checkboxDisable, {
-                artifact: 'imaging',
-                disabled: true
-              });
+            this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
           })();
       })
 
@@ -132,7 +128,6 @@ export class ImagingComponent implements OnInit {
   }
 
   showResult(imagingObj) {
-    //debugger;
     this.dialog.openDialogs.pop();
     this.imagingReportDetails = imagingObj;
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-images-theme', width: '490px', height: '600px' };

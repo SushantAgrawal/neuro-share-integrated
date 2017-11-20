@@ -69,7 +69,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     this.subscriptions = this.brokerService.filterOn('MEDICATIONS_ALL_DATA').subscribe(d => {
       d.error
         ? (() => {
-          console.log(d.error)
+          console.log(d.error);
+          this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
         })
         : (() => {
           this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
@@ -88,12 +89,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           this.dmtSecondLayerLocalData = dmtResponse.DMTs;
           this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds;
           this.relapsesLocalData = relapsesLocalData.relapses;
-          this
-            .brokerService
-            .emit(allMessages.checkboxDisable, {
-              artifact: 'dmt',
-              disabled: true
-            });
+          this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
         })();
     });
     let neuroRelated = this.brokerService.filterOn(allMessages.neuroRelated);

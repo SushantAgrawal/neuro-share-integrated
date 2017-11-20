@@ -46,7 +46,8 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .filterOn(allHttpMessages.httpGetWalk25Feet)
       .subscribe(d => {
         d.error ? (() => {
-          console.log(d.error)
+          console.log(d.error);
+          this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
         }) : (() => {
           this.walk25FeetData = d.data["25fw_scores"];
           this.drawWalk25FeetAxis();
@@ -65,12 +66,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
               this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
             }
           }
-          this
-            .brokerService
-            .emit(allMessages.checkboxDisable, {
-              artifact: 'walk25Feet',
-              disabled: true
-            });
+          this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
         })();
       })
     let walk25Feet = this

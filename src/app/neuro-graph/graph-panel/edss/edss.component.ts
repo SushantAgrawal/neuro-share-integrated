@@ -191,7 +191,8 @@ export class EdssComponent implements OnInit {
       .subscribe(d => {
         d.error
           ? (() => {
-            console.log(d.error)
+            console.log(d.error);
+            this.brokerService.emit(allMessages.checkboxEnable, 'edss');
           })
           : (() => {
             let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
@@ -242,12 +243,7 @@ export class EdssComponent implements OnInit {
                   .updatePosition({ top: '65px', left: '60px' });
               }
             }
-            this
-              .brokerService
-              .emit(allMessages.checkboxDisable, {
-                artifact: 'edss',
-                disabled: true
-              });
+            this.brokerService.emit(allMessages.checkboxEnable, 'edss');
           })();
       });
 

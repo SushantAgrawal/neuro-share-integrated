@@ -46,7 +46,8 @@ export class SymptomsComponent implements OnInit {
       .subscribe(d => {
         d.error
           ? (() => {
-            console.log(d.error)
+            console.log(d.error);
+            this.brokerService.emit(allMessages.checkboxEnable, 'symptoms');
           })
           : (() => {
             //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
@@ -217,12 +218,7 @@ export class SymptomsComponent implements OnInit {
             });
             this.createChartSymptoms();
             this.symptomsChartLoaded = true;
-            this
-              .brokerService
-              .emit(allMessages.checkboxDisable, {
-                artifact: 'symptoms',
-                disabled: true
-              });
+            this.brokerService.emit(allMessages.checkboxEnable, 'symptoms');
           })();
       })
     let symptoms = this
