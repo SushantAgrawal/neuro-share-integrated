@@ -61,7 +61,7 @@ export class EdssComponent implements OnInit {
         d.error
           ? (() => {
             console.log(d.error)
-          })
+          })()
           : (() => {
             this
               .brokerService
@@ -193,7 +193,7 @@ export class EdssComponent implements OnInit {
           ? (() => {
             console.log(d.error);
             this.brokerService.emit(allMessages.checkboxEnable, 'edss');
-          })
+          })()
           : (() => {
             let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
             let quesData = d.data[1][allHttpMessages.httpGetAllQuestionnaire].questionaires;

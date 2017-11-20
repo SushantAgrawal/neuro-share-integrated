@@ -139,7 +139,7 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
       this.isDMTEnable = false;
       this.isEDSSEnable = false;
       this.isLabEnable = false;
-    }, 500)
+    }, 0)
   };
 
   changed(e, value) {

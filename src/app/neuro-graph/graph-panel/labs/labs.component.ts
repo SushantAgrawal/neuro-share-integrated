@@ -37,7 +37,7 @@ export class LabsComponent implements OnInit {
           ? (() => {
             console.log(d.error);
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
-          })
+          })()
           : (() => {
             //this.labsData = d.data.EPIC.labOrder;
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));

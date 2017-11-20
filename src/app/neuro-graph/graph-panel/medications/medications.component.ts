@@ -71,7 +71,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         ? (() => {
           console.log(d.error);
           this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
-        })
+        })()
         : (() => {
           this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
           if (this.selectedMed[this.medType.dmt]) {

@@ -47,7 +47,7 @@ export class ImagingComponent implements OnInit {
           ? (() => {
             console.log(d.error);
             this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
-          })
+          })()
           : (() => {
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
             this.createChart();

@@ -53,7 +53,7 @@ export class RelapsesComponent implements OnInit {
           ? (() => {
             console.log(d.error);
             this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
-          })
+          })()
           : (() => {
             this.relapsesData = d.data.relapses;
             this.createChart();
