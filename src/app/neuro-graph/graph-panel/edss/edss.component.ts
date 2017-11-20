@@ -608,6 +608,10 @@ export class EdssComponent implements OnInit {
   }
 
   drawVirtualCaseload() {
+    this.datasetArea1 = [];
+    this.datasetArea2 = [];
+    this.datasetMean = [];
+
     let line = d3.line<any>().x((d: any) => this.chartState.xScale(d.lastUpdatedDate)).y((d: any) => this.yScale(d.scoreValue));
 
     let svg = d3
@@ -630,11 +634,7 @@ export class EdssComponent implements OnInit {
       .push({ xDate: this.chartState.xDomain.currentMinValue, m: this.edssVirtualLoadDatam[0] });
 
     for (let i = 0; i < this.edssVirtualLoadDataLength; i++) {
-      let scaleMinYear = this
-        .chartState
-        .xDomain
-        .currentMinValue
-        .getFullYear();
+      let scaleMinYear = this.chartState.xDomain.currentMinValue.getFullYear();
       let date = new Date(scaleMinYear, 5, 30).getTime();
       if (i == 1) {
         date = new Date(scaleMinYear + 1, 5, 30).getTime();
