@@ -14,7 +14,7 @@ var gUrlMaps = {
     "http:get:otherMeds": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds/",
     "http:get:imaging": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/imaging-orders/",
     "http:get:labs": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/lab-orders/",
-    "http:get:virtualCaseLoad": "https://private-anon-221223bd22-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/",
+    "http:get:virtualCaseLoad": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/",
     "http:get:walk25Feet": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
     "http:get:walk25Feet:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
     "http:get:symptoms": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/",
