@@ -47,7 +47,7 @@ export class EdssComponent implements OnInit, OnDestroy {
   registerDrag: any;
 
   constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
-    this.registerDrag = c => neuroGraphService.registerDrag();
+    this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
 
   ngOnInit() {

@@ -35,6 +35,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   dmtArray: Array<any> = [];
   vitaminDArray: Array<any> = [];
   otherMedsArray: Array<any> = [];
+  registerDrag: any;
   selectedMed = {
     dmt: false,
     otherMeds: false,
@@ -63,7 +64,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     'December'
   ];
 
-  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) { }
+  constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
+    this.registerDrag = e => neuroGraphService.registerDrag(e);
+  }
 
   ngOnInit() {
     this.subscriptions = this.brokerService.filterOn('MEDICATIONS_ALL_DATA').subscribe(d => {

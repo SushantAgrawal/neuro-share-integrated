@@ -82,7 +82,7 @@ export class NeuroGraphService {
     }
   }
 
-  registerDrag() {
+  registerDrag(event) {
     const element: any = document.querySelector(('.cdk-overlay-pane'));
     element.style.position = 'absolute';
     this.dragElement(element);
