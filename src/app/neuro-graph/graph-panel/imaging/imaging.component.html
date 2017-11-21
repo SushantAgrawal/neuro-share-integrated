@@ -24,7 +24,7 @@
     </div>
 </ng-template>
 <ng-template #imagingThirdLevelTemplate>
-    <div class="modal-header">
+    <div class="modal-header draggable" (mousedown)="registerDrag($event)">
         <h4 class="modal-title">Imaging Report</h4>
         <button type="button" class="close" aria-label="Close" (click)="reportDialogRef.close()">
             <span aria-hidden="true">&times;</span>

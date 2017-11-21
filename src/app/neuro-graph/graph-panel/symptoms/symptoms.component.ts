@@ -36,7 +36,7 @@ export class SymptomsComponent implements OnInit {
   private symptomsChartLoaded: boolean = false;
   registerDrag: any;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
-    this.registerDrag = e => neuroGraphService.registerDrag(e);    
+    this.registerDrag = e => neuroGraphService.registerDrag(e);
     this.paramData = this.neuroGraphService.get('queryParams')
     this.setInnerSVGPolyfill();
   }
@@ -132,12 +132,23 @@ export class SymptomsComponent implements OnInit {
                         cnt = cnt - 20;
                       }
                       else if (elem.symptoms[i].score != "") {
-                        trend.push({
-                          index: Number(elem.symptoms[i].score),
-                          x: cnt,
-                          score: elem.symptoms[i].score
+                        if (isNaN(elem.symptoms[i].score)) {
+                          trend.push({
+                            index: Number(elem.symptoms[i].score),
+                            x: cnt,
+                            score: elem.symptoms[i].score
 
-                        });
+                          });
+                        }
+                        else {
+                          trend.push({
+                            index: Number(elem.symptoms[i].score),
+                            x: cnt,
+                            score: elem.symptoms[i].score * 10
+
+                          });
+                        }
+
                         cnt = cnt - 20;
                       }
                     }
@@ -172,12 +183,23 @@ export class SymptomsComponent implements OnInit {
                     });
                   }
                   else if (element.symptoms[i].score != "") {
-                    trend.push({
-                      index: Number(element.symptoms[i].score),
-                      x: 60,
-                      score: element.symptoms[i].score
+                    if (isNaN(element.symptoms[i].score)) {
+                      trend.push({
+                        index: Number(element.symptoms[i].score),
+                        x: 60,
+                        score: element.symptoms[i].score
 
-                    });
+                      });
+                    }
+                    else {
+                      trend.push({
+                        index: Number(element.symptoms[i].score),
+                        x: 60,
+                        score: element.symptoms[i].score * 10
+
+                      });
+                    }
+
                   }
                 }
                 if (newCnt == 0) {
@@ -198,7 +220,7 @@ export class SymptomsComponent implements OnInit {
                 var data = {
                   name: element.symptoms[i].title,
                   nameTrend: element.symptoms[i].title.split(' ').join('_'),
-                  score: element.symptoms[i].score,
+                  score: isNaN(element.symptoms[i].score) ? element.symptoms[i].score : element.symptoms[i].score * 10,
                   trendScore: trendScore,
                   qx_code: element.symptoms[i].qx_code,
                   symptomStatus: symptomStatus,
