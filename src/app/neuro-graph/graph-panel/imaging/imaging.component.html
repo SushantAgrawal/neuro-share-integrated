@@ -2,8 +2,8 @@
     <div class="modal-header" (mousedown)="registerDrag($event)">
         <h4 class="modal-title">Imaging</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
-    <span aria-hidden="true">&times;</span>
-    </button>
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
         <div class="imaging-container">
@@ -15,7 +15,7 @@
             <div class="ns-imaging-row" *ngFor="let imaging of imagingDataDetails; let i = index;">
                 <div class="ns-imaging-col">{{imaging.displayName}}</div>
                 <div class="ns-imaging-col">{{imaging.orderFormatDate}}</div>
-                <div class="ns-imaging-icon" >
+                <div class="ns-imaging-icon">
                     <span *ngIf="imaging['image_launch_url']!=''" class="icon-brainneuroshare"></span>
                     <span *ngIf="imaging.impression.length > 0" class="icon-documentneuroshare" style="cursor:pointer;" (click)="showResult(imaging)"></span>
                 </div>
@@ -24,35 +24,35 @@
     </div>
 </ng-template>
 <ng-template #imagingThirdLevelTemplate>
-    <div class="modal-header" (mousedown)="registerDrag($event)">
+    <div class="modal-header">
         <h4 class="modal-title">Imaging Report</h4>
         <button type="button" class="close" aria-label="Close" (click)="reportDialogRef.close()">
-        <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
         <div class="imaging-container">
-                <div class="ns-imaging-header-study">
-                        <div class="ns-imaging-study">Study Name</div>
-                        <div class="ns-imaging-study">Study Date</div>
-                        <div class="ns-imaging-study">Reading Radiologist</div>
-                </div>
+            <div class="ns-imaging-header-study">
+                <div class="ns-imaging-study">Study Name</div>
+                <div class="ns-imaging-study">Study Date</div>
+                <div class="ns-imaging-study">Reading Radiologist</div>
+            </div>
 
-            <div class="ns-imaging-row" >
+            <div class="ns-imaging-row">
                 <div *ngIf="imagingReportDetails.impression.length > 0">
                     <div class="ns-imaging-sub-header">
-                    <div class="ns-imaging-study">{{imagingReportDetails.displayName}}</div>
-                    <div class="ns-imaging-study">{{imagingReportDetails.resultDate}}</div>
-                    <div class="ns-imaging-study">{{imagingReportDetails.readingRadiologist}}</div>
+                        <div class="ns-imaging-study">{{imagingReportDetails.displayName}}</div>
+                        <div class="ns-imaging-study">{{imagingReportDetails.resultDate}}</div>
+                        <div class="ns-imaging-study">{{imagingReportDetails.readingRadiologist}}</div>
                     </div>
                     <div class="ns-imgression">
-                    <span class="ns-imaging-study">Study Results</span>
-                    <div *ngFor="let imp of imagingReportDetails.impression;">
-                    {{imp}}
-                    </div>
+                        <span class="ns-imaging-study">Study Results</span>
+                        <div *ngFor="let imp of imagingReportDetails.impression;">
+                            {{imp}}
+                        </div>
                     </div>
                     <div *ngFor="let nar of imagingReportDetails.narrative;">
-                   {{nar}}
+                        {{nar}}
                     </div>
                 </div>
             </div>

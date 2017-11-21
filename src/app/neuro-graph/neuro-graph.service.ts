@@ -45,13 +45,7 @@ export class NeuroGraphService {
 
   dragElement(elmnt) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    if (document.getElementById(elmnt.id + 'header')) {
-      /* if present, the header is where you move the DIV from:*/
-      document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown;
-    } else {
-      /* otherwise, move the DIV from anywhere inside the DIV:*/
-      elmnt.onmousedown = dragMouseDown;
-    }
+    elmnt.onmousedown = dragMouseDown;
 
     function dragMouseDown(e) {
       e = e || window.event;
@@ -83,8 +77,12 @@ export class NeuroGraphService {
   }
 
   registerDrag(event) {
-    const element: any = document.querySelector(('.cdk-overlay-pane'));
-    element.style.position = 'absolute';
-    this.dragElement(element);
+    function findAncestor(el, cls) {
+      while ((el = el.parentNode) && el.className.indexOf(cls) < 0);
+      return el;
+    }
+    let divToMove = findAncestor(event.target, 'cdk-overlay-pane');
+    divToMove.style.position = 'absolute';
+    this.dragElement(divToMove);
   }
 }
