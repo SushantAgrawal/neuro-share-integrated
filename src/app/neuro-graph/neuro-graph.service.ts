@@ -82,7 +82,17 @@ export class NeuroGraphService {
       return el;
     }
     let divToMove = findAncestor(event.target, 'cdk-overlay-pane');
+    let divMarginTop = divToMove.style.marginTop;
+    let divMarginLeft = divToMove.style.marginLeft;
     divToMove.style.position = 'absolute';
+    if (divMarginTop) {
+      divToMove.style.top = divMarginTop;
+      divToMove.style.marginTop = '';
+    }
+    if (divMarginLeft) {
+      divToMove.style.left = divMarginLeft;
+      divToMove.style.marginLeft = '';
+    }
     this.dragElement(divToMove);
   }
 }

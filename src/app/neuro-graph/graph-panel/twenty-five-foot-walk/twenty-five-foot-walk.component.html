@@ -73,7 +73,7 @@
   </div>
 </ng-template>
 <ng-template #walk25FeetAddSecondLevelTemplate>
-  <div class="modal-header">
+  <div class="modal-header draggable" (mousedown)="registerDrag($event)">
     <h4 class="modal-title">25' Walk Test</h4> <button type="button" class="btn-info-walk25feet" (click)="walk25FeetInfo();"><span>i</span></button>
     <button type="button" class="close" aria-label="Close" (click)="Walk25FeetChartDialogRef.close()">
                 <span aria-hidden="true">&times;</span>
