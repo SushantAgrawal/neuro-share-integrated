@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ChangeDetectorRef
 } from '@angular/core';
 import { BrokerService } from '../broker/broker.service';
 import { allMessages, allHttpMessages, manyHttpMessages } from '../neuro-graph.config';
@@ -25,7 +26,7 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
   isImagingEnable: boolean = true;
   isSymptomsEnable: boolean = true;
   isLabEnable: boolean = true;
-  constructor(private brokerService: BrokerService, private evalService: EvalService) { }
+  constructor(private brokerService: BrokerService, private evalService: EvalService,private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     let dmt = this
@@ -119,6 +120,7 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
       this.isSymptomsEnable = enable;
     else if (value == 'labs')
       this.isLabEnable = enable;
+      this.cd.detectChanges();
   }
 
   ngAfterViewInit() {
@@ -139,7 +141,7 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
       this.isDMTEnable = false;
       this.isEDSSEnable = false;
       this.isLabEnable = false;
-    }, 0)
+    })
   };
 
   changed(e, value) {
