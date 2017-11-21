@@ -6,7 +6,7 @@
     style="display:none;overflow:hidden;"></svg>
 
 <ng-template #dmtSecondLevelTemplate>
-    <div class="modal-header" (mousedown)="registerDrag($event)">
+    <div class="modal-header draggable" (mousedown)="registerDrag($event)">
         <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
@@ -106,7 +106,7 @@
 </ng-template>
 
 <ng-template #vitaminDSecondLevelTemplate>
-    <div class="modal-header" (mousedown)="registerDrag($event)">
+    <div class="modal-header draggable" (mousedown)="registerDrag($event)">
         <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>
@@ -141,7 +141,7 @@
 </ng-template>
 
 <ng-template #otherMedsSecondLevelTemplate>
-    <div class="modal-header" (mousedown)="registerDrag($event)">
+    <div class="modal-header draggable" (mousedown)="registerDrag($event)">
         <h4 class="modal-title" [attr.data-medicationId]="medSecondLayerModel.medicationId">{{medSecondLayerModel.name}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
             <span aria-hidden="true">&times;</span>

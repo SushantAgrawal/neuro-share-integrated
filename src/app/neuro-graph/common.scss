@@ -23,6 +23,10 @@ body {
     font-size: 12px!important;
 }
 
+.draggable{
+    cursor: move;
+}
+
 @mixin border-radius($radius) {
     -webkit-border-radius: $radius!important;
     -moz-border-radius: $radius!important;

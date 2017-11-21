@@ -1,5 +1,5 @@
 <ng-template #walk25FeetSecondLevelTemplate>
-  <div class="modal-header" (mousedown)="registerDrag($event)">
+  <div class="modal-header draggable" (mousedown)="registerDrag($event)">
     <h4 class="modal-title">25' Walk Test</h4>
     <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
       <span aria-hidden="true">&times;</span>
@@ -29,7 +29,7 @@
   </div>
 </ng-template>
 <ng-template #walk25FeetEditSecondLevelTemplate>
-  <div class="modal-header" (mousedown)="registerDrag($event)">
+  <div class="modal-header draggable" (mousedown)="registerDrag($event)">
     <h4 class="modal-title">25' Walk Test</h4>
     <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
       <span aria-hidden="true">&times;</span>

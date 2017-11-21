@@ -1,5 +1,5 @@
 <ng-template #symptomSecondLevelTemplate>
-  <div class="modal-header" (mousedown)="registerDrag($event)">
+  <div class="modal-header draggable" (mousedown)="registerDrag($event)">
     <h4 class="modal-title">Symptoms</h4>
     <button type="button" class="close" aria-symptomel="Close" (click)="dialogRef.close()">
       <span aria-hidden="true">&times;</span>
@@ -59,7 +59,7 @@
 </ng-template>
 
 <ng-template #symptomsThirdLevelTemplate>
-  <div class="modal-header" (mousedown)="registerDrag($event)">
+  <div class="modal-header draggable" (mousedown)="registerDrag($event)">
     <h4 class="modal-title">{{symptomsDataDetails.name}} - {{symptomsDataDetails.score}}</h4>
     <button type="button" class="close" aria-symptomel="Close" (click)="questDialogRef.close()">
       <span aria-hidden="true">&times;</span>
