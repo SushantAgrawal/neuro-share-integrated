@@ -38,8 +38,10 @@ export class RelapsesComponent implements OnInit {
   private relapsesOpenAddPopUp: boolean = false;
   private isDateOutOfRange: boolean = false;
   private relapsisChartLoaded: boolean = false;
+  registerDrag: any;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.paramData = this.neuroGraphService.get('queryParams')
+    this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
   ngOnInit() {
     for (var i = 2017; i >= 1917; i--) {

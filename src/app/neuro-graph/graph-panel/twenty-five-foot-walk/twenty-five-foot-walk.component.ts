@@ -35,9 +35,9 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   private score_ids: any = 20;
   private Feet25WalkChartLoaded: boolean = false;
   private walk25FeetOpenAddPopUp: boolean = false;
-
+  registerDrag: any;
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
-
+    this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
   ngOnInit() {
     //get walk data

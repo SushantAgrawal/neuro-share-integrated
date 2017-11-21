@@ -1,5 +1,5 @@
 <ng-template #labSecondLevelTemplate>
-  <div class="modal-header">
+  <div class="modal-header" (mousedown)="registerDrag($event)">
     <h4 class="modal-title">Labs</h4>
     <button type="button" class="close" aria-label="Close" (click)="dialogRef.close()">
     <span aria-hidden="true">&times;</span>

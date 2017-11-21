@@ -36,7 +36,11 @@ export class ImagingComponent implements OnInit {
   private dialogRef: any;
   private reportDialogRef: any;
   private imagingReportDetails: any;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService: NeuroGraphService) { }
+  registerDrag: any;
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService: NeuroGraphService)
+   { 
+    this.registerDrag = e => neuroGraphService.registerDrag(e);
+   }
 
   ngOnInit() {
     this.subscriptions = this

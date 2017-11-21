@@ -34,7 +34,9 @@ export class SymptomsComponent implements OnInit {
   private questionaireData: Array<any>;
   private questionaireSymptomData: Array<any> = [];
   private symptomsChartLoaded: boolean = false;
+  registerDrag: any;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
+    this.registerDrag = e => neuroGraphService.registerDrag(e);    
     this.paramData = this.neuroGraphService.get('queryParams')
     this.setInnerSVGPolyfill();
   }

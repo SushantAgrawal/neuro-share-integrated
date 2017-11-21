@@ -1,5 +1,5 @@
 <ng-template #relapsesSecondLevelTemplate>
-    <div class="modal-header">
+    <div class="modal-header" (mousedown)="registerDrag($event)">
         <h4 class="modal-title">Relapse</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialog.closeAll()">
             <span aria-hidden="true">&times;</span>
@@ -27,7 +27,7 @@
     </div>
 </ng-template>
 <ng-template #relapsesEditSecondLevelTemplate>
-    <div class="modal-header">
+    <div class="modal-header" (mousedown)="registerDrag($event)">
         <h4 class="modal-title">Relapse</h4>
         <button type="button" class="close" aria-label="Close" (click)="dialog.closeAll()">
             <span aria-hidden="true">&times;</span>

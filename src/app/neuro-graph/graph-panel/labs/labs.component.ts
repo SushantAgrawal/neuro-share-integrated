@@ -26,7 +26,11 @@ export class LabsComponent implements OnInit {
   private isCollapsed: Boolean = true;
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) { }
+  registerDrag: any;
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) 
+  {
+    this.registerDrag = e => neuroGraphService.registerDrag(e);
+  }
 
   ngOnInit() {
     this.subscriptions = this
