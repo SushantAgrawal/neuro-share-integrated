@@ -529,9 +529,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
               .style('cursor', 'pointer')
-              .on("click", d => {
-                onClickCallback(d);
-              })
+              // .on("click", d => {
+              //   onClickCallback(d);
+              // })
           }
           else if (x1 > x2 && (x2 + width2) == x1 && y1 == y2) {
             let x = x1;
@@ -543,14 +543,14 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('ry', 0)
               .attr('x', x)
               .attr('y', y)
-              .attr('width', 2)
+              .attr('width', 1)
               .attr('height', 6)
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
               .style('cursor', 'pointer')
-              .on("click", d => {
-                onClickCallback(d);
-              })
+              // .on("click", d => {
+              //   onClickCallback(d);
+              // })
           }
         }
 
