@@ -388,6 +388,7 @@ export class SymptomsComponent implements OnInit {
     this.dialog.openDialogs.pop();
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-symptoms-theme', width: '350px', height: '350px' };
     this.questDialogRef = this.dialog.open(this.symptomsThirdLevelTemplate, dialogConfig);
+    this.questDialogRef.updatePosition({ top: '250px', left: '465px' });
   }
 
   createChartSymptoms() {
