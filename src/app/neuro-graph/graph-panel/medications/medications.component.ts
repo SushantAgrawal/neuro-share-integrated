@@ -373,6 +373,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let openSecondLayer = (selectedData) => {
       let dmt = this.dmtSecondLayerLocalData.find(x => x.dmt_order_id === selectedData.orderIdentifier.toString());
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.dmt, dmt);
+      this.dialog.openDialogs.pop();
       this.dialogRef = this.dialog.open(this.dmtSecondLevelTemplate, config);
       this.dialogRef.updatePosition({ top: `${d3.event.clientY - 300}px`, left: `${d3.event.clientX - 200}px` });
     };

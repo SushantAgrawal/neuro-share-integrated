@@ -321,7 +321,7 @@ export class SymptomsComponent implements OnInit {
 
   showSecondLevel(data) {
     this.symptomsData = data;
-    let dialogConfig = { hasBackdrop: false, panelClass: 'ns-symptoms-theme', width: '750px' };
+    let dialogConfig = { panelClass: 'ns-symptoms-theme', width: '750px' };
     this.dialogRef = this.dialog.open(this.symptomSecondLevelTemplate, dialogConfig);
     this.dialogRef.updatePosition({ top: '153px', left: '278px' });
     this.dialogRef.afterOpen().subscribe((ref: MdDialogRef<any>) => {
@@ -386,7 +386,7 @@ export class SymptomsComponent implements OnInit {
   showThirdLayer(dataDet) {
     this.symptomsDataDetails = dataDet;
     this.dialog.openDialogs.pop();
-    let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-symptoms-theme', width: '350px', height: '350px' };
+    let dialogConfig = { panelClass: 'ns-symptoms-theme', width: '350px', height: '350px' };
     this.questDialogRef = this.dialog.open(this.symptomsThirdLevelTemplate, dialogConfig);
     this.questDialogRef.updatePosition({ top: '250px', left: '465px' });
   }

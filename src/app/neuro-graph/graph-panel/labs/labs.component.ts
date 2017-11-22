@@ -27,8 +27,7 @@ export class LabsComponent implements OnInit {
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
   registerDrag: any;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) 
-  {
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
 
