@@ -249,6 +249,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     else {
       this.dialogRef = this.dialog.open(this.walk25FeetEditSecondLevelTemplate, config);
     }
+    this.dialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 120}px` });
   }
   drawWalk25FeetAxis() {
     d3.selectAll('.walk25Feet-axis').remove();

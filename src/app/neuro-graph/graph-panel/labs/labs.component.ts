@@ -160,6 +160,7 @@ export class LabsComponent implements OnInit {
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-labs-theme', width: '730px', data: this.labsDataDetails };
 
     this.dialogRef = this.dialog.open(this.labSecondLevelTemplate, dialogConfig);
+    this.dialogRef.updatePosition({ top: '153px', left: '290px' });
     this.dialogRef.afterOpen().subscribe((ref: MdDialogRef<any>) => {
       this.plottrendline();
     });

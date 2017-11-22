@@ -323,6 +323,7 @@ export class SymptomsComponent implements OnInit {
     this.symptomsData = data;
     let dialogConfig = { hasBackdrop: false, panelClass: 'ns-symptoms-theme', width: '750px' };
     this.dialogRef = this.dialog.open(this.symptomSecondLevelTemplate, dialogConfig);
+    this.dialogRef.updatePosition({ top: '153px', left: '278px' });
     this.dialogRef.afterOpen().subscribe((ref: MdDialogRef<any>) => {
       this.plottrendlineSymptoms();
     });

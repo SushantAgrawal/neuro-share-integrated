@@ -374,6 +374,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       let dmt = this.dmtSecondLayerLocalData.find(x => x.dmt_order_id === selectedData.orderIdentifier.toString());
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.dmt, dmt);
       this.dialogRef = this.dialog.open(this.dmtSecondLevelTemplate, config);
+      this.dialogRef.updatePosition({ top: `${d3.event.clientY - 300}px`, left: `${d3.event.clientX - 200}px` });
     };
     this.drawChart(this.dmtArray, this.medType.dmt, GRAPH_SETTINGS.medications.dmtColor, GRAPH_SETTINGS.medications.dmtOverlapColor, openSecondLayer);
   }
@@ -383,6 +384,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let openSecondLayer = (selectedData) => {
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.vitaminD, false);
       this.dialogRef = this.dialog.open(this.vitaminDSecondLevelTemplate, config);
+      this.dialogRef.updatePosition({ top: `${d3.event.clientY - 200}px`, left: `${d3.event.clientX - 150}px` });
     };
     this.drawChart(this.vitaminDArray, this.medType.vitaminD, GRAPH_SETTINGS.medications.vitaminDColor, GRAPH_SETTINGS.medications.vitaminDOverlapColor, openSecondLayer);
   }
@@ -393,6 +395,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       let otherMeds = this.otherMedsSecondLayerLocalData.find(x => x.other_med_order_id === selectedData.orderIdentifier.toString());
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.otherMeds, otherMeds);
       this.dialogRef = this.dialog.open(this.otherMedsSecondLevelTemplate, config);
+      this.dialogRef.updatePosition({ top: `${d3.event.clientY - 250}px`, left: `${d3.event.clientX - 200}px` });
     };
     this.drawChart(this.otherMedsArray, this.medType.otherMeds, GRAPH_SETTINGS.medications.otherMedsColor, GRAPH_SETTINGS.medications.otherMedsOverlapColor, openSecondLayer);
   }

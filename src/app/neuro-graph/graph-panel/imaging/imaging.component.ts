@@ -129,6 +129,7 @@ export class ImagingComponent implements OnInit {
     this.imagingDataDetails = data.orderDetails;
     let dialogConfig = { hasBackdrop: true, skipHide: true, panelClass: 'ns-images-theme', width: '375px' };
     this.dialogRef = this.dialog.open(this.imagingSecondLevelTemplate, dialogConfig);
+    this.dialogRef.updatePosition({ top: `${d3.event.clientY - 180}px`, left: `${d3.event.clientX - 190}px` });
   }
 
   showResult(imagingObj) {

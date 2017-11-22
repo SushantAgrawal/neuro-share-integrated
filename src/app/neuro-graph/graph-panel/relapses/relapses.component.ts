@@ -275,10 +275,13 @@ export class RelapsesComponent implements OnInit {
       this.isDateOutOfRange = false;
       let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '405px' };
       this.dialogRef = this.dialog.open(this.relapsesEditSecondLevelTemplate, dialogConfig);
+      this.dialogRef.updatePosition({ top: `${d3.event.clientY - 140}px`, left: `${d3.event.clientX - 202}px` });
+
     }
     else {
       let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '350px' };
       this.dialogRef = this.dialog.open(this.relapsesSecondLevelTemplate, dialogConfig);
+      this.dialogRef.updatePosition({ top: `${d3.event.clientY - 130}px`, left: `${d3.event.clientX - 175}px` });
     }
   }
 

@@ -410,16 +410,8 @@ export class EdssComponent implements OnInit, OnDestroy {
     };
     this.edssScoreDetail = { ...data };
     this.selectedDataPoint = data;
-    this.secondLayerDialogRef = this
-      .dialog
-      .open(this.edssSecondLevelTemplate, config);
-
-
-    // setTimeout(() => {
-    //   let element: any = document.querySelector(('.cdk-overlay-pane'));
-    //   element.style.position = 'absolute';
-    //   this.neuroGraphService.dragElement(element);
-    // }, 3000)
+    this.secondLayerDialogRef = this.dialog.open(this.edssSecondLevelTemplate, config);
+    this.secondLayerDialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 100}px` });
   }
 
   drawEdssYAxis() {
