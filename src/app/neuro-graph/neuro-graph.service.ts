@@ -77,22 +77,22 @@ export class NeuroGraphService {
   }
 
   registerDrag(event) {
-    // function findAncestor(el, cls) {
-    //   while ((el = el.parentNode) && el.className.indexOf(cls) < 0);
-    //   return el;
-    // }
-    // let divToMove = findAncestor(event.target, 'cdk-overlay-pane');
-    // let divMarginTop = divToMove.style.marginTop;
-    // let divMarginLeft = divToMove.style.marginLeft;
-    // divToMove.style.position = 'absolute';
-    // if (divMarginTop) {
-    //   divToMove.style.top = divMarginTop;
-    //   divToMove.style.marginTop = '';
-    // }
-    // if (divMarginLeft) {
-    //   divToMove.style.left = divMarginLeft;
-    //   divToMove.style.marginLeft = '';
-    // }
-    // this.dragElement(divToMove);
+    function findAncestor(el, cls) {
+      while ((el = el.parentNode) && el.className.indexOf(cls) < 0);
+      return el;
+    }
+    let divToMove = findAncestor(event.target, 'cdk-overlay-pane');
+    let divMarginTop = divToMove.style.marginTop;
+    let divMarginLeft = divToMove.style.marginLeft;
+    divToMove.style.position = 'absolute';
+    if (divMarginTop) {
+      divToMove.style.top = divMarginTop;
+      divToMove.style.marginTop = '';
+    }
+    if (divMarginLeft) {
+      divToMove.style.left = divMarginLeft;
+      divToMove.style.marginLeft = '';
+    }
+    this.dragElement(divToMove);
   }
 }
