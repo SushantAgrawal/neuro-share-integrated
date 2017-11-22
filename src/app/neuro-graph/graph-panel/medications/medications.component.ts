@@ -543,7 +543,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('ry', 0)
               .attr('x', x)
               .attr('y', y)
-              .attr('width', 1)
+              .attr('width', 2)
               .attr('height', 6)
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
@@ -579,7 +579,11 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('text-anchor', 'start')
       .attr('text-height', 40)
       .attr('fill', 'black')
-      .style('text-transform', 'capitalize');
+      .style('text-transform', 'capitalize')
+      .style('cursor', 'pointer')
+      .on("click", d => {
+        onClickCallback(d);
+      });
     this.arrangeLabels(labels);
 
     //Adjusts height
