@@ -193,6 +193,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     this.reportDialogRef.updatePosition({ top: '150px', left: "500px" });
   }
   updateWalk25FeetScore(str) {
+    //debugger;
     if (str == "Update") {
       if (this.walk25FeetScoreDetail.walk_1_score == null || this.walk25FeetScoreDetail.walk_1_score == "") {
         this.walk25FeetScoreDetail.walk_1_score = 0;
@@ -218,7 +219,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         this.dialogRef.close();
       }
       else {
-        if (Number(this.score_1) || Number(this.score_2)) {
+        if ((Number(this.score_1) || Number(this.score_2)) && !(this.score_1 == 0 && this.score_2 == 0)) {
           this.walk25FeetData.push({
             "score_id": this.score_ids.toString(),
             "walk_1_score": this.score_1.toString(),
@@ -228,9 +229,9 @@ export class TwentyFiveFootWalkComponent implements OnInit {
             "save_csn": this.neuroGraphService.get("queryParams").csn,
             "save_csn_status": this.neuroGraphService.get("queryParams").encounter_status
           });
+          this.Walk25FeetChartDialogRef.close();
         }
 
-        this.Walk25FeetChartDialogRef.close();
       }
       this.score_ids = this.score_ids + 1;
       this.removeChart();

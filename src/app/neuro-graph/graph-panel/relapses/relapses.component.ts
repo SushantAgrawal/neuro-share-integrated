@@ -239,33 +239,36 @@ export class RelapsesComponent implements OnInit {
       this.isDateOutOfRange = true;
     }
     else {
-      var obj = {
-        "relapse_id": this.relapsesData.length.toString(),
-        "relapse_month": this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
-        "relapse_year": this.relapsesDetail.year,
-        "last_updated_provider_id": "",
-        "save_csn": this.paramData.csn,
-        "save_csn_status": this.paramData.encounter_status,
-        "last_updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
-        "patient_reported": true,
-        "qx_id": "",
-        "clinician_confirmed": true,
-        "relapseaxis": "2.0"
+      if (this.relapsesDetail.year != "" && this.relapsesDetail.month != "") {
+        var obj = {
+          "relapse_id": this.relapsesData.length.toString(),
+          "relapse_month": this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
+          "relapse_year": this.relapsesDetail.year,
+          "last_updated_provider_id": "",
+          "save_csn": this.paramData.csn,
+          "save_csn_status": this.paramData.encounter_status,
+          "last_updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
+          "patient_reported": true,
+          "qx_id": "",
+          "clinician_confirmed": true,
+          "relapseaxis": "2.0"
+        }
+
+        this.relapsesData.push(obj);
+        this.dialogRef.close();
+        this.removeChart();
+        this.createChart();
+
+        let objSave = {
+          "pom_id": this.paramData.pom_id,
+          "relapse_month": this.month[new Date(obj.last_updated_instant).getMonth()],
+          "relapse_year": this.relapsesDetail.year,
+          "provider_id": "",
+          "encounter_csn": this.paramData.csn,
+          "updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year
+        }
       }
 
-      this.relapsesData.push(obj);
-      this.dialogRef.close();
-      this.removeChart();
-      this.createChart();
-
-      let objSave = {
-        "pom_id": this.paramData.pom_id,
-        "relapse_month": this.month[new Date(obj.last_updated_instant).getMonth()],
-        "relapse_year": this.relapsesDetail.year,
-        "provider_id": "",
-        "encounter_csn": this.paramData.csn,
-        "updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year
-      }
     }
   }
   showSecondLevel(data) {
