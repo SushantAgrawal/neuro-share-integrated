@@ -68,8 +68,12 @@ $ns-labs-red:#e53935;
     float: left; margin-right: 5px; width: 270px; height: 30px; padding: 5px;
     .ns-labs-name{
         font-size:10pt;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
-    .ns-labs-resultDate, ns-labs-orderDate{
+    .ns-labs-resultDate, .ns-labs-orderDate{
         font-size: 8pt;
         padding-top: 2px;
     }
