@@ -57,6 +57,21 @@ export class LabsComponent implements OnInit {
             this.createChart();
             this.labsChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
+            //custom error handling
+            var isValidDate = true;
+            this.labsData.forEach(obj => {
+              if (obj.orderDate == '' || obj.orderDate == 'No result') {
+                isValidDate = false;
+              }
+            });
+            
+            var ErrorCode: string = '';
+            if (this.labsData.length == 0)
+              ErrorCode = 'M-002';
+            else if (!isValidDate)
+              ErrorCode = 'D-001';
+            if (ErrorCode != '')
+              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
       })
 

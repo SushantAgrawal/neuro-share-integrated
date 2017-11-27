@@ -74,15 +74,15 @@ export class RelapsesComponent implements OnInit {
               }
             }
             this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
-            
+
+            //custom error handling
             var isValidDate = true;
             d.data.relapses.forEach(obj => {
               if (obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result') {
                 isValidDate = false;
               }
             });
-            var dt = d.data.relapses.filter(obj => obj.relapse_month == '' || obj.relapse_year == '2017' || obj.relapse_month == 'No result' || obj.relapse_year == 'year');
-            //custom error handling
+
             var ErrorCode: string = '';
             if (d.data.relapses.length == 0)
               ErrorCode = 'M-002';
