@@ -66,7 +66,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       })
     let sub2 = this
       .brokerService
-      .filterOn(allHttpMessages.httpGeProgressNote)
+      .filterOn(allHttpMessages.httpGetProgressNote)
       .subscribe(d => {
         d.error
           ? (() => {
@@ -104,7 +104,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     ]);
   }
   getProgessNoteData(prevCSN) {
-    this.brokerService.httpGet(allHttpMessages.httpGeProgressNote, [
+    this.brokerService.httpGet(allHttpMessages.httpGetProgressNote, [
       {
         name: 'pom_id',
         value: this.neuroGraphService.get('queryParams').pom_id
