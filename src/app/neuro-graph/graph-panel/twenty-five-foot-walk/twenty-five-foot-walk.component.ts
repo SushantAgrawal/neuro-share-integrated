@@ -68,6 +68,22 @@ export class TwentyFiveFootWalkComponent implements OnInit {
               }
             }
             this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
+
+            //custom error handling
+            var isValidDate = true;
+            this.walk25FeetData.forEach(obj => {
+              if (obj.walk_1_score == '' || obj.walk_2_score == '' || obj.walk_1_score == 'No result' || obj.walk_2_score == 'No result') {
+                isValidDate = false;
+              }
+            });
+
+            var ErrorCode: string = '';
+            if (this.walk25FeetData.length == 0)
+              ErrorCode = 'M-002';
+            else if (!isValidDate)
+              ErrorCode = 'D-002';
+            if (ErrorCode != '')
+              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
       })
     let walk25Feet = this
