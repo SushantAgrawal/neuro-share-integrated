@@ -8,6 +8,8 @@ export const allMessages = {
   'timelineScroll': 'timeline:scroll',
   'demographicEnableCheckBox': 'demographic:enable:check:box',
   'checkboxEnable': 'checkbox:enable',
+  'showCustomError': 'show:custom:error'
+  
 };
 
 export const manyHttpMessages = {
@@ -34,7 +36,7 @@ export const allHttpMessages = {
   'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info',
   'httpGetSymptoms': 'http:get:symptoms',
   'httpGetReferenceLine': 'http:get:referenceLine',
-  'httpGeProgressNote': 'http:get:progressNote'
+  'httpGetProgressNote': 'http:get:progressNote'
 };
 export const urlMaps = window["gUrlMaps"];
 

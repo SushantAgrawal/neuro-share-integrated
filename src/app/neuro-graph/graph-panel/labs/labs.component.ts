@@ -27,6 +27,8 @@ export class LabsComponent implements OnInit {
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
   registerDrag: any;
+  private labsDataStatic: any;
+
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
@@ -42,11 +44,34 @@ export class LabsComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
           })()
           : (() => {
+            // var statData = this.labsDataStatic;
+            // var staticDataArray:Array<any>=[]; 
+            // Object.keys(statData).forEach(key=>{
+            //   var obj =    statData[key];
+            //   obj.procedureCode =  key;  
+            //   staticDataArray.push(obj) 
+            // }); 
+            //this.labsData =staticDataArray.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             //this.labsData = d.data.EPIC.labOrder;
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
             this.labsChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
+            //custom error handling
+            var isValidDate = true;
+            this.labsData.forEach(obj => {
+              if (obj.orderDate == '' || obj.orderDate == 'No result') {
+                isValidDate = false;
+              }
+            });
+            
+            var ErrorCode: string = '';
+            if (this.labsData.length == 0)
+              ErrorCode = 'M-002';
+            else if (!isValidDate)
+              ErrorCode = 'D-001';
+            if (ErrorCode != '')
+              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
       })
 
@@ -174,7 +199,10 @@ export class LabsComponent implements OnInit {
   plottrendline() {
     if (this.labsDataDetails[0].component.length > 0) {
       this.labsDataDetails[0].component.forEach(elems => {
-        this.drawtrendLine(this.labsDataDetails[0].procedureCode, elems.id, elems.trendData)
+        if(elems.trendData.length > 0)
+        {
+          this.drawtrendLine(this.labsDataDetails[0].procedureCode, elems.id, elems.trendData)          
+        }
       });
     }
 
@@ -191,7 +219,6 @@ export class LabsComponent implements OnInit {
       .y((d: any) => scale(d.y))
 
     //Drawing container
-
     let svg = d3
       .select('#TrendLine_' + labId + '_' + compId)
       .append('svg')
