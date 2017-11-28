@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 import { URLSearchParams, RequestOptions, Headers } from '@angular/http';
 import * as moment from 'moment';
 import { SdkService, EndpointsService } from '@sutterhealth/data-services';
 import { SessionService } from '@sutterhealth/user-authentication';
-import { urlMaps, allMessages } from './neuro-graph.config';
+import { urlMaps, allMessages, applicationErrorMessages } from './neuro-graph.config';
 import { BrokerService } from './broker/broker.service';
 
 @Injectable()
 export class NeuroGraphService {
   global: any = {};
   moment: any;
-  isIdle: boolean = true;
   msUrlBase: string;
   resourceMaps: {};
-  errorMessageId: string = 'data.service:error';
-  successMessageId: string = 'data.service:success';
-  warningMessageId: string = 'data.service:warning';
+  genericErrorMessageId: string = 'data.service:error';
+  genericSuccessMessageId: string = 'data.service:success';
+  genericWarningMessageId: string = 'data.service:warning';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -128,26 +128,20 @@ export class NeuroGraphService {
   }
 
   // Http methods
-  httpGet(
-    resourceId: string,
-    params?: { name: string, value: string }[],
-    headers?: { name: string, value: string }[],
-    carryBag?: any
-  ) {
+  httpGet(messsageId: string, params?: { name: string, value: string }[], headers?: { name: string, value: string }[], carryBag?: any) {
     try {
-      this.isIdle = false;
-      const resourcePath = this.resourceMaps[resourceId];
+      const resourcePath = this.resourceMaps[messsageId];
       const url = `${this.msUrlBase}${resourcePath}`;
-      const options = new RequestOptions();
+      const requestOptions = new RequestOptions();
       if (headers) {
         const objHeaders = new Headers();
         headers.map(x => objHeaders.append(x.name, x.value));
-        options.headers = objHeaders;
+        requestOptions.headers = objHeaders;
       }
       if (params) {
         const objParams = new URLSearchParams();
         params.map(x => objParams.append(x.name, x.value));
-        options.params = objParams;
+        requestOptions.params = objParams;
       }
 
       // If SDK service needs the token to be passed
@@ -159,19 +153,72 @@ export class NeuroGraphService {
       // });
 
       //If SDK service sets the token
-      this.sdk._requestGet(url, options).subscribe(data => {
-        this.brokerService.emit(resourceId, data);
-        this.isIdle = true;
+      this.sdk._requestGet(url, requestOptions).subscribe(data => {
+        this.brokerService.emit(messsageId, data);
       }, error => {
-        this.brokerService.emit(resourceId, { error: error });
-        this.brokerService.emit(this.errorMessageId, { error: error });
-        this.isIdle = true;
+        this.brokerService.emit(messsageId, { error: error });
+        this.brokerService.emit(this.genericErrorMessageId, { error: error });
       });
 
     } catch (err) {
-      this.brokerService.emit(resourceId, { error: 'Unknown error encountered while making http get request.' });
-      this.brokerService.emit(this.errorMessageId, { error: 'Unknown error encountered while making http get request.' });
-      this.isIdle = true;
+      this.brokerService.emit(messsageId, { error: applicationErrorMessages.httpGetUnknownError });
+      this.brokerService.emit(this.genericErrorMessageId, { error: applicationErrorMessages.httpGetUnknownError });
     }
   };
+
+  httpGetMany(messsageId: string, queries: [{ resourceId: string, params?: [{ name: string, value: string }], headers?: [{ name: string, value: string }] }], carryBag?: any) {
+    try {
+      let requestCollection = queries.map(rqst => {
+        const resourcePath = this.resourceMaps[rqst.resourceId];
+        const url = `${this.msUrlBase}${resourcePath}`;
+        const requestOptions = new RequestOptions();
+        if (rqst.headers) {
+          const objHeaders = new Headers();
+          rqst.headers.map(x => objHeaders.append(x.name, x.value));
+          requestOptions.headers = objHeaders;
+        }
+        if (rqst.params) {
+          const objParams = new URLSearchParams();
+          rqst.params.map(x => objParams.append(x.name, x.value));
+          requestOptions.params = objParams;
+        }
+        return ({ url: url, requestOptions: requestOptions });
+      });
+
+      let emptyUrl = requestCollection.find(x => !Boolean(x.url));
+      if (emptyUrl) {
+        this.brokerService.emit(this.genericErrorMessageId, { error: applicationErrorMessages.idNotMappedToUrl });
+        return;
+      }
+
+      let forks;
+
+      // If SDK service needs the token to be passed
+      // this.session.getToken().subscribe(t => {
+      //   temp.map(x => {
+      //     x.requestOptions.params.append('token', t);
+      //     return this.sdk._requestGet(x.url, x.requestOptions).map(res => res.json());
+      //   });
+      // });
+
+      //If SDK service sets the token
+      forks = requestCollection.map(x => this.sdk._requestGet(x.url, x.requestOptions).map(res => res.json()));
+
+      Observable.forkJoin(forks).subscribe(d => {
+        d = d.map((response, i) => {
+          let resourceId = queries[i].resourceId;
+          let output = {};
+          output[resourceId] = response;
+          return (output);
+        });
+        this.brokerService.emit(messsageId, d);
+      }, err => {
+        this.brokerService.emit(messsageId, { error: err });
+        this.brokerService.emit(this.genericErrorMessageId, { error: err });
+      });
+    } catch (err) {
+      this.brokerService.emit(messsageId, { error: applicationErrorMessages.httpGetUnknownError });
+      this.brokerService.emit(this.genericErrorMessageId, { error: applicationErrorMessages.httpGetUnknownError });
+    }
+  }
 }
