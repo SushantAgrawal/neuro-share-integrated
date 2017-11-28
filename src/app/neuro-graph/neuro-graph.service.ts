@@ -69,7 +69,8 @@ export class NeuroGraphService {
   }
 
   // Misc methods
-  demographicBarPush(pushObject?: any) {
+  pushObject(obj?: any) {
+    //ToDo: Check which checkbox to be checked.
     this.brokerService.emit(allMessages.demographicEnableCheckBox, true);
   }
 
