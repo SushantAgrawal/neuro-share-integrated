@@ -85,9 +85,10 @@ export class RelapsesComponent implements OnInit {
 
             var ErrorCode: string = '';
             if (d.data.relapses.length == 0)
-              ErrorCode = 'M-002';
-            else if (!isValidDate)
-              ErrorCode = 'D-002';
+              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
+            if (!isValidDate)
+              ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
+
             if (ErrorCode != '')
               this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();

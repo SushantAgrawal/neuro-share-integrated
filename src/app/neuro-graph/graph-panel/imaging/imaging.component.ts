@@ -37,10 +37,9 @@ export class ImagingComponent implements OnInit {
   private reportDialogRef: any;
   private imagingReportDetails: any;
   registerDrag: any;
-  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService: NeuroGraphService)
-   { 
+  constructor(private brokerService: BrokerService, public dialog: MdDialog, public reportDialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
-   }
+  }
 
   ngOnInit() {
     this.subscriptions = this
@@ -57,6 +56,21 @@ export class ImagingComponent implements OnInit {
             this.createChart();
             this.imagingChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
+            //custom error handling
+            var isValidDate = true;
+            this.imagingData.forEach(obj => {
+              if (obj.orderDate == '' || obj.orderDate == 'No result') {
+                isValidDate = false;
+              }
+            });
+
+            var ErrorCode: string = '';
+            if (this.imagingData.length == 0)
+              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
+           if (!isValidDate)
+              ErrorCode = ErrorCode.indexOf('D-001') != -1 ? ErrorCode : ErrorCode == '' ? 'D-001' : ErrorCode + ',' + 'D-001';
+            if (ErrorCode != '')
+              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
       })
 

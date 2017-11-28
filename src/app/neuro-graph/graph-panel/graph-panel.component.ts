@@ -57,6 +57,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   //#region Lifecycle events
   ngOnInit() {
     this.setDefaultState();
+
     let obsEdss = this.brokerService.filterOn(allMessages.neuroRelated).filter(t => (t.data.artifact == 'edss'));
     let sub0 = obsEdss.filter(t => t.data.checked).subscribe(d => {
       d.error
@@ -84,8 +85,14 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     });
 
     let sub4 = this.brokerService.filterOn(allMessages.showCustomError).subscribe(d => {
-      var msg = errorMessages[d.data].message;
-      this.showError(msg);
+      var array = d.data.split(',');
+      var errMsg: Array<any> = [];
+      array.forEach(element => {
+        var msg = element + ' : ' + errorMessages[element].message;
+        errMsg.push(msg);
+      });
+
+      this.showError(errMsg);
     });
 
     this.subscriptions = sub0.add(sub1).add(sub2).add(sub3).add(sub4);

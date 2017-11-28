@@ -248,6 +248,34 @@ export class EdssComponent implements OnInit, OnDestroy {
               }
             }
             this.brokerService.emit(allMessages.checkboxEnable, 'edss');
+
+            //custom error handling
+            var isValidDate = true;
+            var isComplete = true;
+            quesData.forEach(obj => {
+              if (obj.status.toUpperCase() != "COMPLETED") {
+                isComplete = false;
+              }
+              else if (obj.edss_score == 'No result' || obj.edss_score == '') {
+                isValidDate = false;
+              }
+            });
+            edssData.forEach(obj => {
+              if (obj.score == 'No result' || obj.score == '') {
+                isValidDate = false;
+              }
+            });
+            var ErrorCode: string = '';
+            if (edssData.length == 0)
+              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
+            if (quesData.length == 0)
+              ErrorCode = ErrorCode.indexOf('M-001') != -1 ? ErrorCode : ErrorCode == '' ? 'M-001' : ErrorCode + ',' + 'M-001';
+            if (!isComplete)
+              ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
+            if (!isValidDate)
+              ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
+            if (ErrorCode != '')
+              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
       });
 
@@ -411,7 +439,7 @@ export class EdssComponent implements OnInit, OnDestroy {
     this.edssScoreDetail = { ...data };
     this.selectedDataPoint = data;
     this.secondLayerDialogRef = this.dialog.open(this.edssSecondLevelTemplate, config);
-    if(d3.event){
+    if (d3.event) {
       this.secondLayerDialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 100}px` });
     }
   }

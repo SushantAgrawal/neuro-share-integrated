@@ -220,7 +220,7 @@ export class SymptomsComponent implements OnInit {
                 var data = {
                   name: element.symptoms[i].title,
                   nameTrend: element.symptoms[i].title.split(' ').join('_'),
-                  score: isNaN(element.symptoms[i].score) ? element.symptoms[i].score : element.symptoms[i].score * 10,
+                  score: isNaN(element.symptoms[i].score) ? element.symptoms[i].score : element.symptoms[i].score == 0 ? '' : element.symptoms[i].score * 10,
                   trendScore: trendScore,
                   qx_code: element.symptoms[i].qx_code,
                   symptomStatus: symptomStatus,
@@ -243,6 +243,30 @@ export class SymptomsComponent implements OnInit {
             this.createChartSymptoms();
             this.symptomsChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'symptoms');
+
+            //custom error handling
+            var isValidDate = true;
+            var isComplete = true;
+            this.questionaireSymptomData.forEach(obj => {
+              if (obj.status.toUpperCase() != "COMPLETED") {
+                isComplete = false;
+              }
+              obj.symptoms.forEach(symp => {
+                if (symp.score == 'No result') {
+                  isValidDate = false;
+                }
+              });
+            });
+            var ErrorCode: string = '';
+            if (this.questionaireSymptomData.length == 0)
+              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
+            if (!isValidDate)
+              ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
+            if (!isComplete)
+              ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
+
+            if (ErrorCode != '')
+              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
       })
     let symptoms = this

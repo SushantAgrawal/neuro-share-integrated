@@ -64,12 +64,12 @@ export class LabsComponent implements OnInit {
                 isValidDate = false;
               }
             });
-            
+
             var ErrorCode: string = '';
             if (this.labsData.length == 0)
-              ErrorCode = 'M-002';
-            else if (!isValidDate)
-              ErrorCode = 'D-001';
+              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
+            if (!isValidDate)
+              ErrorCode = ErrorCode.indexOf('D-001') != -1 ? ErrorCode : ErrorCode == '' ? 'D-001' : ErrorCode + ',' + 'D-001';
             if (ErrorCode != '')
               this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
@@ -199,9 +199,8 @@ export class LabsComponent implements OnInit {
   plottrendline() {
     if (this.labsDataDetails[0].component.length > 0) {
       this.labsDataDetails[0].component.forEach(elems => {
-        if(elems.trendData.length > 0)
-        {
-          this.drawtrendLine(this.labsDataDetails[0].procedureCode, elems.id, elems.trendData)          
+        if (elems.trendData.length > 0) {
+          this.drawtrendLine(this.labsDataDetails[0].procedureCode, elems.id, elems.trendData)
         }
       });
     }

@@ -239,6 +239,30 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     this.otherMedsArray = medicationOrders
       .filter(x => x.type == this.medType.otherMeds)
       .sort((a, b) => Date.parse(b.date.medStart) - Date.parse(a.date.medStart));;
+    //custom error handling
+    var isValidDate = true;
+    this.dmtArray.forEach(obj => {
+      if (obj.date.length == 0) {
+        isValidDate = false;
+      }
+    });
+    this.vitaminDArray.forEach(obj => {
+      if (obj.date.length == 0) {
+        isValidDate = false;
+      }
+    });
+    this.otherMedsArray.forEach(obj => {
+      if (obj.date.length == 0) {
+        isValidDate = false;
+      }
+    });
+    var ErrorCode: string = '';
+    if (this.dmtArray.length == 0 || this.vitaminDArray.length == 0 || this.otherMedsArray.length == 0)
+      ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
+    if (!isValidDate)
+      ErrorCode = ErrorCode.indexOf('D-001') != -1 ? ErrorCode : ErrorCode == '' ? 'D-001' : ErrorCode + ',' + 'D-001';
+    if (ErrorCode != '')
+      this.brokerService.emit(allMessages.showCustomError, ErrorCode);
   }
 
   //Clean up needed
@@ -529,9 +553,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
               .style('cursor', 'pointer')
-              // .on("click", d => {
-              //   onClickCallback(d);
-              // })
+            // .on("click", d => {
+            //   onClickCallback(d);
+            // })
           }
           else if (x1 > x2 && (x2 + width2) == x1 && y1 == y2) {
             let x = x1;
@@ -548,9 +572,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
               .style('cursor', 'pointer')
-              // .on("click", d => {
-              //   onClickCallback(d);
-              // })
+            // .on("click", d => {
+            //   onClickCallback(d);
+            // })
           }
         }
 
