@@ -129,6 +129,7 @@ export class NeuroGraphService {
 
   // Http methods
   httpGet(messsageId: string, params?: { name: string, value: string }[], headers?: { name: string, value: string }[], carryBag?: any) {
+    //ToDo :Toggle Progress Bar
     try {
       const resourcePath = this.resourceMaps[messsageId];
       const url = `${this.msUrlBase}${resourcePath}`;
@@ -167,6 +168,7 @@ export class NeuroGraphService {
   };
 
   httpGetMany(messsageId: string, queries: [{ resourceId: string, params?: [{ name: string, value: string }], headers?: [{ name: string, value: string }] }], carryBag?: any) {
+    //ToDo :Toggle Progress Bar
     try {
       let requestCollection = queries.map(rqst => {
         const resourcePath = this.resourceMaps[rqst.resourceId];
