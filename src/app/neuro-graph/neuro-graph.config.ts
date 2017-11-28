@@ -296,6 +296,11 @@ export const errorMessages = {
   'M-002': { type: 'Missing Data Notification', message: 'Data from the access data source (ex: EPIC/EHR) are not available.' },
 }
 
+export const applicationErrorMessages = {
+  idNotMappedToUrl: 'Message id is not mapped to http url in config.ts file at application root.',
+  httpGetUnknownError: 'Unknown error encountered while making http get request'
+}
+
 export const edssScoreChart = [{ score: '0.0', title: 'Normal neurological exam.' }
   , { score: '1.0', title: 'No Disability, minimal signs in one FS.' }
   , { score: '1.5', title: 'No disability, minimal signs in more than one FS.' }
