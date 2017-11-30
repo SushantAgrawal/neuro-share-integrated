@@ -381,7 +381,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .attr('r', 7)
       .style('fill', GRAPH_SETTINGS.walk25Feet.color)
       .style('cursor', 'pointer')
-      .on('mouseover', d => {
+      .on('click', d => {
         this.showSecondLevel(d);
       })
     //Adds labels for clinician data

@@ -510,7 +510,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('stroke', 'none')
       .attr('fill', barColor)
       .style('cursor', 'pointer')
-      .on("mouseover", d => {
+      .on("click", d => {
         onClickCallback(d);
       })
     // //overlapping areas
@@ -605,7 +605,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('fill', 'black')
       .style('text-transform', 'capitalize')
       .style('cursor', 'pointer')
-      .on("mouseover", d => {
+      .on("click", d => {
         onClickCallback(d);
       });
     this.arrangeLabels(labels);
