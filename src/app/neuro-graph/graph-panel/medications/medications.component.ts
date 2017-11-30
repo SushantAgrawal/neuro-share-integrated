@@ -232,13 +232,15 @@ export class MedicationsComponent implements OnInit, OnDestroy {
 
     this.dmtArray = medicationOrders
       .filter(x => x.type == this.medType.dmt)
-      .sort((a, b) => Date.parse(b.date.medStart) - Date.parse(a.date.medStart));
+      .sort((a, b) => Date.parse(b.date.orderDate) - Date.parse(a.date.orderDate));
     this.vitaminDArray = medicationOrders
       .filter(x => x.type == this.medType.vitaminD)
-      .sort((a, b) => Date.parse(b.date.medStart) - Date.parse(a.date.medStart));;
+      .sort((a, b) => Date.parse(b.date.orderDate) - Date.parse(a.date.orderDate));
     this.otherMedsArray = medicationOrders
       .filter(x => x.type == this.medType.otherMeds)
-      .sort((a, b) => Date.parse(b.date.medStart) - Date.parse(a.date.medStart));;
+      .sort((a, b) => Date.parse(b.date.orderDate) - Date.parse(a.date.orderDate));
+
+
     //custom error handling
     var isValidDate = true;
     this.dmtArray.forEach(obj => {
