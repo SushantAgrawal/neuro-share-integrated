@@ -66,6 +66,10 @@
           <span [(ngModel)]="walk25FeetScoreDetail.scoreValue" ngDefaultControl> {{walk25FeetScoreDetail.scoreValue}}</span>
         </div>
       </div>
+      <div class="ns-row-walk25feet">
+        <div class="ns-walk25feet-col">Recorded</div>
+        <div class="ns-walk25feet-value">{{walk25FeetScoreDetail.recordedDate}}</div>
+      </div>
       <div class="ns-row-walk25feet" *ngIf="showUpdate == true">
         <div class="ns-walk25feet-update">
           <button class="call-out-buttons" (click)="updateWalk25FeetScore('Update')">Update</button>

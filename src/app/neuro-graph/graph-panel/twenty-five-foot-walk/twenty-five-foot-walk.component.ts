@@ -259,7 +259,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   showSecondLevel(data) {
     this.showUpdate = false;
     let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', skipHide: true, preserveScope: true };
-    this.walk25FeetScoreDetail = { ...data };
+    this.walk25FeetScoreDetail = { ...data,recordedDate:this.neuroGraphService.moment(data.last_updated_instant).format("MM/DD/YYYY") };
     if (this.walk25FeetScoreDetail.save_csn_status == "Closed") {
       this.dialogRef = this.dialog.open(this.walk25FeetSecondLevelTemplate, config);
     }
@@ -381,7 +381,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .attr('r', 7)
       .style('fill', GRAPH_SETTINGS.walk25Feet.color)
       .style('cursor', 'pointer')
-      .on('click', d => {
+      .on('mouseover', d => {
         this.showSecondLevel(d);
       })
     //Adds labels for clinician data
