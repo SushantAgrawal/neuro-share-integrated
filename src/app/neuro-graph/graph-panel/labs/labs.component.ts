@@ -44,15 +44,7 @@ export class LabsComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
           })()
           : (() => {
-            // var statData = this.labsDataStatic;
-            // var staticDataArray:Array<any>=[]; 
-            // Object.keys(statData).forEach(key=>{
-            //   var obj =    statData[key];
-            //   obj.procedureCode =  key;  
-            //   staticDataArray.push(obj) 
-            // }); 
-            //this.labsData =staticDataArray.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
-            //this.labsData = d.data.EPIC.labOrder;
+            
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
             this.labsChartLoaded = true;
