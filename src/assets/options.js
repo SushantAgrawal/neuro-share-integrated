@@ -28,10 +28,12 @@ var gUrlMaps = {
 //To be removed later
 var gUrlMaps_temp = {
     "http:get:medications": "http://10.10.1.33:3000/medications-orders/", //Response does not match with mock!!
-    "http:get:edss": "http://10.10.1.33:3000/edss-score/", //Response does not match with mock!!
+    //"http:get:edss": "http://10.10.1.33:3000/edss-score/", //Response does not match with mock!!
+    "http:get:edss": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/edss-score/", //Response does not match with mock!!
     "http:get:cds:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds-info/",//NA.
 
-    "http:get:cds:user:data": "http://10.10.1.33:3000/cds/",//Response does not match with mock!!
+    //"http:get:cds:user:data": "http://10.10.1.33:3000/cds/",//Response does not match with mock!!
+    "http:get:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",//Response does not match with mock!!
     "http:put:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",//Response does not match with mock!!
     "http:post:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",//Response does not match with mock!!
 

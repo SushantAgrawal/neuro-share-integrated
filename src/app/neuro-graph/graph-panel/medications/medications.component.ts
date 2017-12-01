@@ -77,13 +77,17 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         })()
         : (() => {
           this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
+          debugger;
           if (this.selectedMed[this.medType.dmt]) {
+            this.checkForError(this.dmtArray);
             this.drawDmt();
           }
           if (this.selectedMed[this.medType.vitaminD]) {
+            this.checkForError(this.vitaminDArray);
             this.drawVitaminD();
           }
           if (this.selectedMed[this.medType.otherMeds]) {
+            this.checkForError(this.otherMedsArray);
             this.drawOtherMeds();
           }
           let dmtResponse = d.data[1][allHttpMessages.httpGetDmt];
@@ -218,14 +222,30 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let otherMedsIds = medication.otherMeds.ids;
     let mappedCodes = medication.otherMeds.mappedCodes;
 
+    let hasMatchedMappedCodes = (med) => {
+      let matched = [];
+      med.associatedDiagnoses.forEach(ad => {
+        ad.codeSets.forEach(cs => {
+          cs.mappedCode.forEach(mc => {
+            if (mappedCodes.find(c => c === mc))
+              matched.push(mc)
+          });
+        });
+      });
+      return matched.length > 0
+    }
+
     medicationOrders.forEach(x => {
-      if (x.medication && genericNames.find(gn => gn === x.medication.simple_generic_name.toLowerCase())) {
+      if (x.medication && genericNames.find(gn => gn === x.medication.simpleGenericName[0].toLowerCase())) {
         x.type = this.medType.dmt
-      } else if (x.medication && vitaminDIds.find(id => id === x.medication.id)) {
+      } else if (x.medication && vitaminDIds.find(id => id.toString() === x.medication.id)) {
         x.type = this.medType.vitaminD
-      } else if (x.medication && otherMedsIds.find(id => id === x.medication.id)) {
+      } else if (x.medication && otherMedsIds.find(id => id.toString() === x.medication.id)) {
         x.type = this.medType.otherMeds
-      } else if (searchObject(x, 'mapped_code', mappedCodes).length > 0) {
+        // } else if (searchObject(x, 'mappedCode', mappedCodes).length > 0) {
+        //   x.type = this.medType.otherMeds
+        // }
+      } else if (hasMatchedMappedCodes(x)) {
         x.type = this.medType.otherMeds
       }
     });
@@ -239,32 +259,15 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     this.otherMedsArray = medicationOrders
       .filter(x => x.type == this.medType.otherMeds)
       .sort((a, b) => Date.parse(b.date.orderDate) - Date.parse(a.date.orderDate));
+  }
 
-
-    //custom error handling
-    var isValidDate = true;
-    this.dmtArray.forEach(obj => {
-      if (obj.date.length == 0) {
-        isValidDate = false;
-      }
-    });
-    this.vitaminDArray.forEach(obj => {
-      if (obj.date.length == 0) {
-        isValidDate = false;
-      }
-    });
-    this.otherMedsArray.forEach(obj => {
-      if (obj.date.length == 0) {
-        isValidDate = false;
-      }
-    });
-    var ErrorCode: string = '';
-    if (this.dmtArray.length == 0 || this.vitaminDArray.length == 0 || this.otherMedsArray.length == 0)
-      ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-    if (!isValidDate)
-      ErrorCode = ErrorCode.indexOf('D-001') != -1 ? ErrorCode : ErrorCode == '' ? 'D-001' : ErrorCode + ',' + 'D-001';
-    if (ErrorCode != '')
-      this.brokerService.emit(allMessages.showCustomError, ErrorCode);
+  checkForError(meds: Array<any>) {
+    if (meds.length == 0) {
+      this.brokerService.emit(allMessages.showCustomError, 'M-002');
+    }
+    else if (!meds.every(m => m.date.length != 0)) {
+      this.brokerService.emit(allMessages.showCustomError, 'D-001');
+    }
   }
 
   //Clean up needed
