@@ -417,7 +417,7 @@ export class EdssComponent implements OnInit, OnDestroy {
   onUpdateSecondLayer() {
     let match = this
       .clinicianDataSet
-      .find(x => x.score_id == this.edssScoreDetail.score_id);
+      .find(x => x.save_csn == this.edssScoreDetail.save_csn);
     if (match) {
       match.score = this.edssScoreDetail.score
       match.scoreValue = this.edssScoreDetail.scoreValue
