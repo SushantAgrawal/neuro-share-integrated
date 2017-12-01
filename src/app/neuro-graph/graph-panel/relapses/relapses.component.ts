@@ -76,21 +76,10 @@ export class RelapsesComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
 
             //custom error handling
-            var isValidDate = true;
-            d.data.relapses.forEach(obj => {
-              if (obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result') {
-                isValidDate = false;
-              }
-            });
-
-            var ErrorCode: string = '';
             if (d.data.relapses.length == 0)
-              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-            if (!isValidDate)
-              ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
-
-            if (ErrorCode != '')
-              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
+              this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))              
+              this.brokerService.emit(allMessages.showCustomError, 'D-002');
           })();
       })
     let relapses = this

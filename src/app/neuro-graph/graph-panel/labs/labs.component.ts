@@ -44,34 +44,17 @@ export class LabsComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
           })()
           : (() => {
-            // var statData = this.labsDataStatic;
-            // var staticDataArray:Array<any>=[]; 
-            // Object.keys(statData).forEach(key=>{
-            //   var obj =    statData[key];
-            //   obj.procedureCode =  key;  
-            //   staticDataArray.push(obj) 
-            // }); 
-            //this.labsData =staticDataArray.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
-            //this.labsData = d.data.EPIC.labOrder;
+
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
             this.createChart();
             this.labsChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
             //custom error handling
-            var isValidDate = true;
-            this.labsData.forEach(obj => {
-              if (obj.orderDate == '' || obj.orderDate == 'No result') {
-                isValidDate = false;
-              }
-            });
-
-            var ErrorCode: string = '';
             if (this.labsData.length == 0)
-              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-            if (!isValidDate)
-              ErrorCode = ErrorCode.indexOf('D-001') != -1 ? ErrorCode : ErrorCode == '' ? 'D-001' : ErrorCode + ',' + 'D-001';
-            if (ErrorCode != '')
-              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
+              this.brokerService.emit(allMessages.showCustomError, 'M-002');
+            else if (this.labsData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
+              this.brokerService.emit(allMessages.showCustomError, 'D-001');
+          
           })();
       })
 

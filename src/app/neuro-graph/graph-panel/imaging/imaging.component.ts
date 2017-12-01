@@ -57,20 +57,11 @@ export class ImagingComponent implements OnInit {
             this.imagingChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
             //custom error handling
-            var isValidDate = true;
-            this.imagingData.forEach(obj => {
-              if (obj.orderDate == '' || obj.orderDate == 'No result') {
-                isValidDate = false;
-              }
-            });
-
-            var ErrorCode: string = '';
             if (this.imagingData.length == 0)
-              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-           if (!isValidDate)
-              ErrorCode = ErrorCode.indexOf('D-001') != -1 ? ErrorCode : ErrorCode == '' ? 'D-001' : ErrorCode + ',' + 'D-001';
-            if (ErrorCode != '')
-              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
+              this.brokerService.emit(allMessages.showCustomError, 'M-002');
+            else if (this.imagingData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
+              this.brokerService.emit(allMessages.showCustomError, 'D-001');
+          
           })();
       })
 
