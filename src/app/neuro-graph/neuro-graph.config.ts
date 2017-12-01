@@ -34,7 +34,6 @@ export const allHttpMessages = {
   'httpGetVirtualCaseLoad': 'http:get:virtualCaseLoad',
   'httpGetWalk25Feet': 'http:get:walk25Feet',
   'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info',
-  'httpGetSymptoms': 'http:get:symptoms',
   'httpGetReferenceLine': 'http:get:referenceLine',
   'httpGetProgressNote': 'http:get:progressNote'
 };
