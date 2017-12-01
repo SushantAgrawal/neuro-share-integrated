@@ -251,22 +251,21 @@ export class SymptomsComponent implements OnInit {
               if (obj.status.toUpperCase() != "COMPLETED") {
                 isComplete = false;
               }
-              obj.symptoms.forEach(symp => {
-                if (symp.score == 'No result') {
-                  isValidDate = false;
-                }
-              });
+              if (obj.symptoms.some(symp => symp.score == 'No result'))
+                isValidDate = false;
             });
             var ErrorCode: string = '';
             if (this.questionaireSymptomData.length == 0)
-              ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-            if (!isValidDate)
-              ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
-            if (!isComplete)
-              ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
+              this.brokerService.emit(allMessages.showCustomError, 'M-002');
+            else {
+              if (!isValidDate)
+                ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
+              if (!isComplete)
+                ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
+              if (ErrorCode != '')
+                this.brokerService.emit(allMessages.showCustomError, ErrorCode);
+            }
 
-            if (ErrorCode != '')
-              this.brokerService.emit(allMessages.showCustomError, ErrorCode);
           })();
       })
     let symptoms = this
