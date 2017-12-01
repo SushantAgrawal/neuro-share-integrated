@@ -44,7 +44,7 @@ export class SymptomsComponent implements OnInit {
 
     this.subscriptions = this
       .brokerService
-      .filterOn(allHttpMessages.httpGetSymptoms)
+      .filterOn(allHttpMessages.httpGetAllQuestionnaire)
       .subscribe(d => {
         d.error
           ? (() => {
@@ -262,10 +262,10 @@ export class SymptomsComponent implements OnInit {
                 ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
               if (!isComplete)
                 ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
-              if (ErrorCode != '')
+                if (ErrorCode != '')
                 this.brokerService.emit(allMessages.showCustomError, ErrorCode);
             }
-
+           
           })();
       })
     let symptoms = this
@@ -284,7 +284,7 @@ export class SymptomsComponent implements OnInit {
             //make api call
             this
               .brokerService
-              .httpGet(allHttpMessages.httpGetSymptoms, [
+              .httpGet(allHttpMessages.httpGetAllQuestionnaire, [
                 {
                   name: 'pom_id',
                   value: this.neuroGraphService.get('queryParams').pom_id
