@@ -73,7 +73,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
             console.log(d.error)
           })
           : (() => {
-            //debugger;
             this.progressNotes = d.data["staged_objects"];
           })();
       })

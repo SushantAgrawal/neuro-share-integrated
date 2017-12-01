@@ -212,7 +212,6 @@ export class RelapsesComponent implements OnInit {
     this.createChart();
   }
   updateChart() {
-    //debugger;
     if (this.relapsesDetail.year >= new Date().getFullYear() && new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() > new Date().getMonth()) {
       this.isDateOutOfRange = true;
     }

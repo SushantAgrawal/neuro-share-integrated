@@ -77,7 +77,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         })()
         : (() => {
           this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
-          debugger;
           if (this.selectedMed[this.medType.dmt]) {
             this.checkForError(this.dmtArray);
             this.drawDmt();
@@ -543,7 +542,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         let width2 = parseFloat(next.getAttribute("width"));
         if (current !== next) {
           if (x1 > x2 && (x2 + width2) > x1 && y1 == y2) {
-            //debugger;
             let x = x1;
             let y = y1;
             let width = Math.abs(width2 - Math.abs(x2 - x1));
