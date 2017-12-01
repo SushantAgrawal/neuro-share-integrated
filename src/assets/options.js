@@ -1,5 +1,6 @@
 var gUrlMaps = {
-    "http:get:medications": "https://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/medications-orders/",
+    //"http:get:medications": "https://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/medications-orders/",
+    "http:get:medications": "http://10.10.1.33:3000/medications-orders/",
     "http:get:edss": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/edss-score/",
     "http:get:cds:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds-info/",
 
