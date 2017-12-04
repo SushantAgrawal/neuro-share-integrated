@@ -1,10 +1,10 @@
 var gUrlMaps = {
     //------------------------------------------ Apiary Mock ----------------------------------------------------------------------------//
-    //"http:get:walk25Feet:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
+    "http:get:walk25Feet:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
     //"http:get:walk25Feet": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
     "http:get:all:questionnaire": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/",
     "http:get:cds:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds-info/",
-    "http:get:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
+    //"http:get:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
     "http:put:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
     "http:post:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
     //"http:get:dmt": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",
@@ -22,11 +22,11 @@ var gUrlMaps = {
     "http:delete:relapse": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/",
 
     //---------------------------------------------- Local Server -----------------------------------------------------//
-    "http:get:walk25Feet:info": "http://10.10.1.33:3000/25walk-info/",
+    //"http:get:walk25Feet:info": "http://10.10.1.33:3000/25walk-info/",
     "http:get:walk25Feet": "http://10.10.1.33:3000/25walk/",
     //"http:get:all:questionnaire": "http://10.10.1.33:3000/all-questionnaire-responses/",
     //"http:get:cds:info": "http://10.10.1.33:3000/cds-info/",
-    //"http:get:cds:user:data": "http://10.10.1.33:3000/cds/",
+    "http:get:cds:user:data": "http://10.10.1.33:3000/cds/",
     "http:get:dmt": "http://10.10.1.33:3000/dmt/",
     "http:get:edss": "http://10.10.1.33:3000/edss-score/",
     "http:get:referenceLine": "http://10.10.1.33:3000/encounters/",
