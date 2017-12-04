@@ -275,7 +275,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       medicationId: data.medication.id,
       orderIdentifier: data.orderIdentifier,
       name: data.name,
-      simpleGenericName: data.medication.simple_generic_name,
+      simpleGenericName: data.medication.simpleGenericName,
       orderDate: data.date.orderDate,
       medEnd: data.date.medEnd,
       medQuantity: data.medQuantity,
