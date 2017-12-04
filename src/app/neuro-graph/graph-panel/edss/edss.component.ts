@@ -199,7 +199,7 @@ export class EdssComponent implements OnInit, OnDestroy {
             this.brokerService.emit(allMessages.checkboxEnable, 'edss');
           })()
           : (() => {
-            let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
+            let edssData = d.data[0][allHttpMessages.httpGetEdss].EDDSs;
             let quesData = d.data[1][allHttpMessages.httpGetAllQuestionnaire].questionaires;
             //Use moment js later
             let getParsedDate = (dtString) => {
