@@ -17,7 +17,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   dialogRef: any;
   lastOfficeDateLabel: string;
   encounterData: any;
-  progressNotes:Array<any>;
+  progressNotes: Array<any>;
   constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
@@ -51,8 +51,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
             let sharedGridElement = d3.select('#shared-grid');
             let sharedGrid = this.setupSharedGrid(sharedGridElement, this.chartState.canvasDimension);
 
-            if (this.encounterData.length > 0)
-            {
+            if (this.encounterData.length > 0) {
               this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
               let prevCSN = "0";
               if (this.encounterData.length > 1) {
@@ -60,8 +59,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
               }
               this.getProgessNoteData(prevCSN);
             }
-             
-              
+
+
           })();
       })
     let sub2 = this
@@ -216,14 +215,15 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .style("opacity", "0.4")
       .style("stroke", "grey")
       .style("fill", "none");
-
+    
     if (today > currentDate) {
       let rectPrev = nodeSelection.append("rect")
         .attr("x", xScale(previousDate) - 40)
         .attr("y", "20")
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
-        .attr("fill", "#EBEBEB");
+        .attr("fill", "#EBEBEB")
+        .attr('stroke', '#BCBCBC');
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
@@ -243,7 +243,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("y", "20")
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
-        .attr("fill", "#EBEBEB");
+        .attr("fill", "#EBEBEB") 
+        .attr('stroke', '#BCBCBC');
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
@@ -278,7 +279,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
-        .attr("fill", "#EBEBEB");
+        .attr("fill", "#EBEBEB")
+        .attr('stroke', '#BCBCBC');
       let axisText = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
@@ -294,7 +296,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
-        .attr("fill", "#EBEBEB");
+        .attr("fill", "#EBEBEB")
+        .attr('stroke', '#BCBCBC');
       let axisText = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
