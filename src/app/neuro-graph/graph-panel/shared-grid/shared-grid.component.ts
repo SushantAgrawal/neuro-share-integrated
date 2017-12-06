@@ -88,7 +88,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   getReferenceLineData() {
     this.brokerService.httpGet(allHttpMessages.httpGetReferenceLine, [
       {
-        name: 'pom_id',
+        name: 'pom-id',
         value: this.neuroGraphService.get('queryParams').pom_id
       },
       {
