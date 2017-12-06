@@ -164,7 +164,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
             }
           ];
-          let qParamsehr: any = [
+          let qParamsEhr: any = [
             {
               name: 'pom-id',
               value: this.neuroGraphService.get('queryParams').pom_id
@@ -181,7 +181,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           this.brokerService.httpGetMany('MEDICATIONS_ALL_DATA', [
             {
               urlId: allHttpMessages.httpGetMedications,
-              queryParams: qParamsehr
+              queryParams: qParamsEhr
             },
             {
               urlId: allHttpMessages.httpGetDmt,
