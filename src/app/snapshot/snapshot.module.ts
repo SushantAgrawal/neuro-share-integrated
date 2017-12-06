@@ -9,11 +9,7 @@ import { PatientConcernsModule } from '@sutterhealth/patient-concerns';
 
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { NeuroGraphModule } from "@sutterhealth/neuro-graph";
-<<<<<<< HEAD
-// import {NeuroGraphModule} from "../neuro-graph/neuro-graph.module";
-=======
 //import {NeuroGraphModule} from "../neuro-graph/neuro-graph.module";
->>>>>>> dd20a54cf9e3e41fa7ccdf51f87a8dd061da6585
 
 import {
   MdTooltipModule,

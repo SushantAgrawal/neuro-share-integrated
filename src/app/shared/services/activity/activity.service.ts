@@ -9,7 +9,7 @@ import { ProgressNotesGeneratorService } from '@sutterhealth/progress-notes';
 export class ActivityService {
 
     private activitySource = new Subject<string>();
-    private patientData: MSPatientData;
+    private patientData: any;
 
     activityData$ = this.activitySource.asObservable();
 
