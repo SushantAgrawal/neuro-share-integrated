@@ -48,9 +48,9 @@ export class BrokerService {
         this.subject.next({ id: id, data: d, body: body, carryBag: carryBag });
         (--this.counter == 0) && (this.isHide = true);
       }, err => {
-        this.subject.next({ id: id, data: { error: err }, carryBag: carryBag });
+        this.subject.next({ id: id, error: err, carryBag: carryBag });
+        this.subject.next({ id: this.errorMessageId, error: messages.httpPostUnknownError });
         (--this.counter == 0) && (this.isHide = true);
-        this.subject.next({ id: this.errorMessageId, error: messages.httpGetUnknownError });
       });
   };
 
@@ -67,9 +67,9 @@ export class BrokerService {
         this.subject.next({ id: id, data: d, body: body, carryBag: carryBag });
         (--this.counter == 0) && (this.isHide = true);
       }, err => {
-        this.subject.next({ id: id, data: { error: err }, carryBag: carryBag });
+        this.subject.next({ id: id, error: err, carryBag: carryBag });
+        this.subject.next({ id: this.errorMessageId, error: messages.httpPutUnknownError });
         (--this.counter == 0) && (this.isHide = true);
-        this.subject.next({ id: this.errorMessageId, error: messages.httpGetUnknownError });
       });
   };
 
