@@ -1,7 +1,9 @@
 var gUrlMaps = {
     //------------------------------------------ Apiary Mock ----------------------------------------------------------------------------//
     "http:get:walk25Feet:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
-    //"http:get:walk25Feet": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
+    "http:get:walk25Feet": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
+    "http:post:walk25Feet": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
+    "http:put:walk25Feet": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk/",
     "http:get:all:questionnaire": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/all-questionnaire-responses/",
     //"http:get:cds:info": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds-info/",
     //"http:get:cds:user:data": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
@@ -25,7 +27,7 @@ var gUrlMaps = {
 
     //---------------------------------------------- Local Server -----------------------------------------------------//
     //"http:get:walk25Feet:info": "http://61.16.131.166:3000/25walk-info/",
-    "http:get:walk25Feet": "http://61.16.131.166:3000/25walk/",
+    //"http:get:walk25Feet": "http://61.16.131.166:3000/25walk/",
     //"http:get:all:questionnaire": "http://61.16.131.166:3000/all-questionnaire-responses/",
     "http:get:cds:info": "http://61.16.131.166:3000/cds-info/",
     "http:get:cds:user:data": "http://61.16.131.166:3000/cds/",

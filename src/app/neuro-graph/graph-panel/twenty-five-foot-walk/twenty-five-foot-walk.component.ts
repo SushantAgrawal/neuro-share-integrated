@@ -32,7 +32,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   private score_1: any;
   private score_2: any;
   private scoreValue: any;
-  private score_ids: any = 20;
   private Feet25WalkChartLoaded: boolean = false;
   private walk25FeetOpenAddPopUp: boolean = false;
   registerDrag: any;
@@ -154,15 +153,58 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       })();
     })
 
+    //On Add
+    let sub6 = this
+      .brokerService
+      .filterOn(allHttpMessages.httpPostWalk25Feet)
+      .subscribe(d => {
+        d.error ? console.log(d.error) : (() => {
+          let currentDate = new Date();
+          this.walk25FeetData.push({
+            score_id: d.data.score_id,
+            walk_1_score: this.score_1.toString(),
+            walk_2_score: this.score_2.toString(),
+            last_updated_provider_id: this.neuroGraphService.get("queryParams").provider_id,
+            last_updated_instant: this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY'),
+            save_csn: this.neuroGraphService.get("queryParams").csn,
+            save_csn_status: this.neuroGraphService.get("queryParams").csn_status
+          });
+          this.Walk25FeetChartDialogRef.close();
+          this.removeChart();
+          this.drawWalk25FeetAxis();
+          this.drawWalk25FeetLineCharts();
+        })();
+      });
+
+    //On Update
+    let sub7 = this
+      .brokerService
+      .filterOn(allHttpMessages.httpPutWalk25Feet)
+      .subscribe(d => {
+        d.error ? console.log(d.error) : (() => {
+          let currentDate = new Date();
+          let objIndex = this.walk25FeetData.findIndex((obj => obj.score_id == this.walk25FeetScoreDetail.score_id));
+          this.walk25FeetData[objIndex].last_updated_instant = this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY');
+          this.walk25FeetData[objIndex].walk_1_score = this.walk25FeetScoreDetail.walk_1_score;
+          this.walk25FeetData[objIndex].walk_2_score = this.walk25FeetScoreDetail.walk_2_score;
+          this.dialogRef.close();
+          this.removeChart();
+          this.drawWalk25FeetAxis();
+          this.drawWalk25FeetLineCharts();
+        })();
+      });
+
     let info = this.brokerService.httpGet(allHttpMessages.httpGetWalk25FeetInfo);
-    this
-      .subscriptions
+    this.subscriptions
       .add(sub1)
       .add(sub2)
       .add(sub3)
       .add(sub4)
-      .add(sub5);
+      .add(sub5)
+      .add(sub6)
+      .add(sub7);
   }
+
   updateWalk(str) {
     if (str == "Update") {
       if (this.walk25FeetScoreDetail.walk_1_score == "" || this.walk25FeetScoreDetail.walk_1_score == null || parseFloat(this.walk25FeetScoreDetail.walk_1_score) == 0) {
@@ -188,66 +230,59 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       }
     }
   }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
+
   walk25FeetInfo() {
     let dialogConfig = { hasBackdrop: false, skipHide: true, panelClass: 'ns-25walk-theme', width: '300px', height: '340px' };
     this.dialog.openDialogs.pop();
     this.reportDialogRef = this.dialog.open(this.walk25FeetThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '150px', left: "500px" });
   }
-  updateWalk25FeetScore(str) {
-    if (str == "Update") {
-      if (this.walk25FeetScoreDetail.walk_1_score == null || this.walk25FeetScoreDetail.walk_1_score == "") {
-        this.walk25FeetScoreDetail.walk_1_score = 0;
-      }
-      if (this.walk25FeetScoreDetail.walk_2_score == null || this.walk25FeetScoreDetail.walk_2_score == "") {
-        this.walk25FeetScoreDetail.walk_2_score = 0;
-      }
-    }
 
-    if (this.score_1 == null || this.score_1 == "") {
-      this.score_1 = 0;
+  getPayload(score1, score2) {
+    let currentDate = new Date();
+    let payload: any = {
+      pom_id: this.neuroGraphService.get("queryParams").pom_id.toString(),
+      walk_1_score: score1.toString(),
+      walk_2_score: score2.toString(),
+      provider_id: this.neuroGraphService.get("queryParams").provider_id,
+      save_csn: this.neuroGraphService.get("queryParams").csn,
+      save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
+      updated_instant: this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY')
     }
-    if (this.score_2 == null || this.score_2 == "") {
-      this.score_2 = 0;
-    }
-    if ((str == "Update" && this.walk25FeetScoreDetail.walk_1_score >= 0 && this.walk25FeetScoreDetail.walk_1_score <= 300 && this.walk25FeetScoreDetail.walk_2_score >= 0 && this.walk25FeetScoreDetail.walk_2_score <= 300) || (str != "Update" && this.score_1 >= 0 && this.score_1 <= 300 && this.score_2 >= 0 && this.score_2 <= 300)) {
-      let currentDate = new Date();
-      if (str == "Update") {
-        var objIndex = this.walk25FeetData.findIndex((obj => obj.score_id == this.walk25FeetScoreDetail.score_id));
-        this.walk25FeetData[objIndex].last_updated_instant = this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY');//`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`;
-        this.walk25FeetData[objIndex].walk_1_score = this.walk25FeetScoreDetail.walk_1_score;
-        this.walk25FeetData[objIndex].walk_2_score = this.walk25FeetScoreDetail.walk_2_score;
-        this.dialogRef.close();
-      }
-      else {
-        if ((Number(this.score_1) || Number(this.score_2)) && !(this.score_1 == 0 && this.score_2 == 0)) {
-          this.walk25FeetData.push({
-            "score_id": this.score_ids.toString(),
-            "walk_1_score": this.score_1.toString(),
-            "walk_2_score": this.score_2.toString(),
-            "last_updated_provider_id": "G00123",
-            "last_updated_instant": this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY'),//`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
-            "save_csn": this.neuroGraphService.get("queryParams").csn,
-            "save_csn_status": this.neuroGraphService.get("queryParams").csn_status
-          });
-          this.Walk25FeetChartDialogRef.close();
-        }
-
-      }
-      this.score_ids = this.score_ids + 1;
-      this.removeChart();
-      this.drawWalk25FeetAxis();
-      this.drawWalk25FeetLineCharts();
-    }
-
+    return payload;
   }
+
+  saveWalk25FeetScore(opMode) {
+    let currentDate = new Date();
+    if (opMode === 'Update') {
+      this.walk25FeetScoreDetail.walk_1_score = this.walk25FeetScoreDetail.walk_1_score || 0;
+      this.walk25FeetScoreDetail.walk_2_score = this.walk25FeetScoreDetail.walk_2_score || 0;
+      if (this.walk25FeetScoreDetail.walk_1_score >= 0
+        && this.walk25FeetScoreDetail.walk_1_score <= 300
+        && this.walk25FeetScoreDetail.walk_2_score >= 0
+        && this.walk25FeetScoreDetail.walk_2_score <= 300) {
+        let payload = this.getPayload(this.walk25FeetScoreDetail.walk_1_score, this.walk25FeetScoreDetail.walk_2_score);
+        payload.score_id = this.walk25FeetScoreDetail.score_id;
+        this.brokerService.httpPut(allHttpMessages.httpPutWalk25Feet, payload);
+      }
+    }
+    else {
+      this.score_1 = this.score_1 || 0;
+      this.score_2 = this.score_2 || 0;
+      if ((Number(this.score_1) || Number(this.score_2)) && !(this.score_1 == 0 && this.score_2 == 0)) {
+        this.brokerService.httpPost(allHttpMessages.httpPostWalk25Feet, this.getPayload(this.score_1, this.score_2));
+      }
+    }
+  }
+
   showSecondLevel(data) {
     this.showUpdate = false;
     let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', skipHide: true, preserveScope: true };
-    this.walk25FeetScoreDetail = { ...data,recordedDate:this.neuroGraphService.moment(data.last_updated_instant).format("MM/DD/YYYY") };
+    this.walk25FeetScoreDetail = { ...data, recordedDate: this.neuroGraphService.moment(data.last_updated_instant).format("MM/DD/YYYY") };
     if (this.walk25FeetScoreDetail.save_csn_status == "Closed") {
       this.dialogRef = this.dialog.open(this.walk25FeetSecondLevelTemplate, config);
     }
@@ -256,6 +291,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     }
     this.dialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 120}px` });
   }
+
   drawWalk25FeetAxis() {
     d3.selectAll('.walk25Feet-axis').remove();
 
@@ -308,7 +344,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .attr('dy', 10)
       .text('Secs')
   }
-
 
   drawWalk25FeetLineCharts() {
     //Use moment js later
