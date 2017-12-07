@@ -251,7 +251,7 @@ export class RelapsesComponent implements OnInit {
           "relapse_year": this.relapsesDetail.year,
           "last_updated_provider_id": "",
           "save_csn": this.paramData.csn,
-          "save_csn_status": this.paramData.encounter_status,
+          "save_csn_status": this.paramData.csn_status,
           "last_updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
           "patient_reported": true,
           "qx_id": "",

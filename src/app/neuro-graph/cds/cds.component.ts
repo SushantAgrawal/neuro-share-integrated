@@ -86,7 +86,7 @@ export class CdsComponent implements OnInit {
             this.csnState.encounterStatus = this
               .neuroGraphService
               .get('queryParams')
-              .encounter_status;
+              .csn_status;
             this.cdsUserData = this
               .cdsUserData
               .find(x => x.save_csn == this.csnState.csn);

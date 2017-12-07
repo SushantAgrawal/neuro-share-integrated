@@ -231,7 +231,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
             "last_updated_provider_id": "G00123",
             "last_updated_instant": this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY'),//`${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
             "save_csn": this.neuroGraphService.get("queryParams").csn,
-            "save_csn_status": this.neuroGraphService.get("queryParams").encounter_status
+            "save_csn_status": this.neuroGraphService.get("queryParams").csn_status
           });
           this.Walk25FeetChartDialogRef.close();
         }

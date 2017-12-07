@@ -18,6 +18,8 @@ export const manyHttpMessages = {
 export const allHttpMessages = {
   'httpGetMedications': 'http:get:medications',
   'httpGetEdss': 'http:get:edss',
+  'httpPostEdss': 'http:post:edss',
+  'httpPutEdss': 'http:put:edss',
   'httpGetCdsInfo': 'http:get:cds:info',
   'httpGetCdsUserData': 'http:get:cds:user:data',
   'httpPutCdsUserData': 'http:put:cds:user:data',

@@ -42,8 +42,9 @@ export class NeuroGraphService {
       return (prevValue);
     }, {});
     urlObject.pom_id || (urlObject.pom_id = 82043);
-    urlObject.encounter_status || (urlObject.encounter_status = 'Open');
+    urlObject.provider_id || (urlObject.provider_id = 'G00276');
     urlObject.csn || (urlObject.csn = "865482572");
+    urlObject.csn_status || (urlObject.csn_status = "Open");
     this.set('queryParams', urlObject);
 
     //Environment Setup

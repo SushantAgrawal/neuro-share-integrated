@@ -368,7 +368,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           save_csn_status: this
             .neuroGraphService
             .get("queryParams")
-            .encounter_status
+            .csn_status
         });
     }
     this
@@ -400,7 +400,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           save_csn_status: this
             .neuroGraphService
             .get("queryParams")
-            .encounter_status
+            .csn_status
         });
     }
     this
