@@ -307,7 +307,7 @@ export class EdssComponent implements OnInit, OnDestroy {
             }
           })();
       })
-
+    //On Add
     let sub7 = this
       .brokerService
       .filterOn(allHttpMessages.httpPostEdss)
@@ -331,6 +331,7 @@ export class EdssComponent implements OnInit, OnDestroy {
         })();
       });
 
+    //On Update
     let sub8 = this
       .brokerService
       .filterOn(allHttpMessages.httpPutEdss)
@@ -341,7 +342,7 @@ export class EdssComponent implements OnInit, OnDestroy {
           selectedScore.scoreValue = this.edssScoreDetail.scoreValue;
           this.removeChart();
           this.drawEdssLineCharts();
-          this.scoreChartDialogRef.close();
+          this.secondLayerDialogRef.close();
         })();
       });
 
@@ -405,7 +406,6 @@ export class EdssComponent implements OnInit, OnDestroy {
         this.edssScoreDetail.showUpdate = false;
       }
       this.showSecondLevel(this.edssScoreDetail);
-      //Call Update API
     }
     this.removeChart();
     this.drawEdssLineCharts();
@@ -438,14 +438,7 @@ export class EdssComponent implements OnInit, OnDestroy {
     if (match) {
       let payload = this.getPayload(this.edssScoreDetail.score);
       this.brokerService.httpPut(allHttpMessages.httpPutEdss, this.getPayload(this.edssScoreDetail.score), { selectedScore: match });
-      // match.score = this.edssScoreDetail.score
-      // match.scoreValue = this.edssScoreDetail.scoreValue
     }
-    // this.removeChart();
-    // this.drawEdssLineCharts();
-    // this
-    //   .secondLayerDialogRef
-    //   .close();
   }
 
   showSecondLevel(data) {
