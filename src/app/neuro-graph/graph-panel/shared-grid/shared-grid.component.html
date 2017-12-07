@@ -9,7 +9,7 @@
     <div class="progressnote-container">
       <div class="ns-progressnote-div" *ngFor="let pNote of progressNotes;">
         <span class="ns-progressnote-header">{{pNote.title}}</span>
-        <div class="ns-progressnote-det" [innerHTML]="pNote.data"></div>
+        <div class="ns-progressnote-det" [innerHTML]="pNote.text"></div>
       </div>
     </div>
   </div>

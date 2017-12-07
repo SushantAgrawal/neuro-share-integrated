@@ -17,7 +17,7 @@ var gUrlMaps = {
     //"http:get:medications": "https://private-242c4d-ehr2.apiary-mock.com/maestro/api/ehr/medications-orders/",
     //"http:get:virtualCaseLoad": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/ms-population-data/",
     //"http:get:otherMeds": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds/",
-    "http:get:progressNote": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/progress-note/",
+    //"http:get:progressNote": "https://private-anon-de7de3ee9d-ehr2.apiary-mock.com/maestro/api/ehr/notes/",
     "http:get:relapse": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/",
     "http:put:relapse": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/",
     "http:post:relapse": "https://private-anon-7ea2a62b33-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/",
@@ -37,6 +37,6 @@ var gUrlMaps = {
     "http:get:medications": "http://61.16.131.166:3000/medications-orders/",
     "http:get:virtualCaseLoad": "http://61.16.131.166:3000/ms-population-data/",
     "http:get:otherMeds": "http://61.16.131.166:3000/other-meds/",
-    //"http:get:progressNote": "http://61.16.131.166:3000/progress-note/",
+    "http:get:progressNote": "http://61.16.131.166:3000/progress-note/",
     //"http:get:relapse": "http://61.16.131.166:3000/relapse/",
 };

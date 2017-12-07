@@ -67,13 +67,10 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .brokerService
       .filterOn(allHttpMessages.httpGetProgressNote)
       .subscribe(d => {
-        d.error
-          ? (() => {
-            console.log(d.error)
-          })
-          : (() => {
-            this.progressNotes = d.data["staged_objects"];
-          })();
+        d.error ? (() => { console.log(d.error) }) : (() => {
+          //this.progressNotes = d.data["staged_objects"];
+          d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes);
+        })();
       })
     this.subscriptions.add(sub1).add(sub2);
   };
@@ -107,7 +104,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         name: 'pom_id',
         value: this.neuroGraphService.get('queryParams').pom_id
       },
-
       {
         name: 'csn',
         value: prevCSN
@@ -215,7 +211,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .style("opacity", "0.4")
       .style("stroke", "grey")
       .style("fill", "none");
-    
+
     if (today > currentDate) {
       let rectPrev = nodeSelection.append("rect")
         .attr("x", xScale(previousDate) - 40)
@@ -243,7 +239,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("y", "20")
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
-        .attr("fill", "#EBEBEB") 
+        .attr("fill", "#EBEBEB")
         .attr('stroke', '#BCBCBC');
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
