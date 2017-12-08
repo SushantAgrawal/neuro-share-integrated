@@ -78,7 +78,7 @@ export class RelapsesComponent implements OnInit {
             //custom error handling
             if (d.data.relapses.length == 0)
               this.brokerService.emit(allMessages.showCustomError, 'M-002');
-              else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))              
+            else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))
               this.brokerService.emit(allMessages.showCustomError, 'D-002');
           })();
       })
@@ -98,6 +98,14 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
+            var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+            this.relapsesData[objIndex].last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
+            this.relapsesData[objIndex].clinician_confirmed = this.relapsesDetail.confirm;
+            this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month;
+            this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year;
+            this.dialogRef.close();
+            this.removeChart();
+            this.createChart();
           })();
       })
 
@@ -108,7 +116,23 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-
+            var obj = {
+              relapse_id: this.relapsesData.length.toString(),
+              relapse_month: this.relapsesDetail.month,
+              relapse_year: this.relapsesDetail.year,
+              last_updated_provider_id: this.paramData.provider_id,
+              save_csn: this.paramData.csn,
+              save_csn_status: this.paramData.csn_status,
+              last_updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
+              patient_reported: true,
+              qx_id: "",
+              clinician_confirmed: true,
+              relapseaxis: "2.0"
+            }
+            this.relapsesData.push(obj);
+            this.dialogRef.close();
+            this.removeChart();
+            this.createChart();
           })();
       })
 
@@ -211,71 +235,80 @@ export class RelapsesComponent implements OnInit {
     this.removeChart();
     this.createChart();
   }
+
   updateChart() {
     if (this.relapsesDetail.year >= new Date().getFullYear() && new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() > new Date().getMonth()) {
       this.isDateOutOfRange = true;
     }
     else {
-      this.dialogRef.close();
       var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
-      this.relapsesData[objIndex].last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
-      this.relapsesData[objIndex].clinician_confirmed = this.relapsesDetail.confirm;
-      this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month;
-      this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year;
-      this.removeChart();
-      this.createChart();
-
       let obj = {
-        "pom_id": this.paramData.pom_id,
-        "relapse_id": this.relapsesData[objIndex].relapse_id,
-        "provider_id": this.relapsesData[objIndex].last_updated_provider_id,
-        "encounter_csn": this.paramData.csn,
-        "updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
-        "clinician_confirmed": this.relapsesData[objIndex].clinician_confirmed
+        pom_id: this.paramData.pom_id,
+        relapse_id: this.relapsesData[objIndex].relapse_id,
+        provider_id: this.relapsesData[objIndex].last_updated_provider_id,
+        save_csn: this.paramData.csn,
+        save_csn_status: this.paramData.csn_status,
+        updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
+        clinician_confirmed: this.relapsesData[objIndex].clinician_confirmed
       };
+      this.brokerService.httpPut(allHttpMessages.httpPutRelapse, obj);
+
+      // var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+      // this.relapsesData[objIndex].last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
+      // this.relapsesData[objIndex].clinician_confirmed = this.relapsesDetail.confirm;
+      // this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month;
+      // this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year;
+      // this.dialogRef.close();
+      // this.removeChart();
+      // this.createChart();
     }
 
   }
+
   removeChart() {
     d3.select('#relapses').selectAll("*").remove();
   }
+
   addChart() {
     if (this.relapsesDetail.year >= new Date().getFullYear() && new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() > new Date().getMonth()) {
       this.isDateOutOfRange = true;
     }
     else {
       if (this.relapsesDetail.year != "" && this.relapsesDetail.month != "") {
-        var obj = {
-          "relapse_id": this.relapsesData.length.toString(),
-          "relapse_month": this.relapsesDetail.month,// (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString(),
-          "relapse_year": this.relapsesDetail.year,
-          "last_updated_provider_id": "",
-          "save_csn": this.paramData.csn,
-          "save_csn_status": this.paramData.csn_status,
-          "last_updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
-          "patient_reported": true,
-          "qx_id": "",
-          "clinician_confirmed": true,
-          "relapseaxis": "2.0"
-        }
-
-        this.relapsesData.push(obj);
-        this.dialogRef.close();
-        this.removeChart();
-        this.createChart();
-
+        let updatedInstant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
         let objSave = {
-          "pom_id": this.paramData.pom_id,
-          "relapse_month": this.month[new Date(obj.last_updated_instant).getMonth()],
-          "relapse_year": this.relapsesDetail.year,
-          "provider_id": "",
-          "encounter_csn": this.paramData.csn,
-          "updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year
+          pom_id: this.paramData.pom_id,
+          relapse_month: this.month[new Date(updatedInstant).getMonth()],
+          relapse_year: this.relapsesDetail.year,
+          provider_id: this.paramData.provider_id,
+          save_csn: this.paramData.csn,
+          save_csn_status: this.paramData.csn_status,
+          updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year
         }
+        this.brokerService.httpPost(allHttpMessages.httpPostRelapse, objSave);
+
+        // var obj = {
+        //   "relapse_id": this.relapsesData.length.toString(),
+        //   "relapse_month": this.relapsesDetail.month,
+        //   "relapse_year": this.relapsesDetail.year,
+        //   "last_updated_provider_id": "",
+        //   "save_csn": this.paramData.csn,
+        //   "save_csn_status": this.paramData.csn_status,
+        //   "last_updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
+        //   "patient_reported": true,
+        //   "qx_id": "",
+        //   "clinician_confirmed": true,
+        //   "relapseaxis": "2.0"
+        // }
+        // this.relapsesData.push(obj);
+        // this.dialogRef.close();
+        // this.removeChart();
+        // this.createChart();
       }
 
     }
   }
+
   showSecondLevel(data) {
     this.relapsesDetail = { ...data };
     if (data.save_csn_status == "Open") {
@@ -302,13 +335,16 @@ export class RelapsesComponent implements OnInit {
     }
     this.isEditSelected = true;
   }
+
   valChng() {
     this.isEditSelected = true;
     this.isDateOutOfRange = false;
   }
+
   addChng() {
     this.isDateOutOfRange = false;
   }
+
   createChart() {
     this.datasetB = this.relapsesData.map(d => {
       let relMonth = this.month.indexOf(d.relapse_month);
