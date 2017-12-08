@@ -1,21 +1,21 @@
-import {Component, OnInit, ChangeDetectorRef, ViewEncapsulation} from '@angular/core';
-import {BrokerService} from '../broker/broker.service';
-import {NeuroGraphService} from '../neuro-graph.service';
-import {Observable} from 'rxjs/Observable';
-import {MdDialog} from '@angular/material';
-import {cdsMap, allMessages, manyHttpMessages, allHttpMessages} from '../neuro-graph.config';
-import {InfoPopupComponent} from './info-popup/info-popup.component';
-import {ProgressNotesGeneratorService} from '@sutterhealth/progress-notes';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
+import { BrokerService } from '../broker/broker.service';
+import { NeuroGraphService } from '../neuro-graph.service';
+import { Observable } from 'rxjs/Observable';
+import { MdDialog } from '@angular/material';
+import { cdsMap, allMessages, manyHttpMessages, allHttpMessages } from '../neuro-graph.config';
+import { InfoPopupComponent } from './info-popup/info-popup.component';
+import { ProgressNotesGeneratorService } from '@sutterhealth/progress-notes';
 
-@Component({selector: 'app-cds', templateUrl: './cds.component.html', styleUrls: ['./cds.component.scss'], encapsulation: ViewEncapsulation.None})
+@Component({ selector: 'app-cds', templateUrl: './cds.component.html', styleUrls: ['./cds.component.scss'], encapsulation: ViewEncapsulation.None })
 export class CdsComponent implements OnInit {
-  selectedCdsInfo : any = {};
-  subscriptions : any;
-  cdsInfo : any;
-  cdsUserData : any;
-  cdsState : any = {};
-  csnState : any = {};
-  constructor(private brokerService : BrokerService, private changeDetector : ChangeDetectorRef, private neuroGraphService : NeuroGraphService, public dialog : MdDialog, private progressNotesGeneratorService : ProgressNotesGeneratorService) {
+  selectedCdsInfo: any = {};
+  subscriptions: any;
+  cdsInfo: any;
+  cdsUserData: any;
+  cdsState: any = {};
+  csnState: any = {};
+  constructor(private brokerService: BrokerService, private changeDetector: ChangeDetectorRef, private neuroGraphService: NeuroGraphService, public dialog: MdDialog, private progressNotesGeneratorService: ProgressNotesGeneratorService) {
     this.cdsState = {
       review_relapses: {
         checked: false
@@ -56,7 +56,7 @@ export class CdsComponent implements OnInit {
       .filterOn(allMessages.neuroRelated)
       .subscribe(d => {
         let cdsSource = d.data.artifact;
-        let cdsTarget : [any] = cdsMap[cdsSource];
+        let cdsTarget: [any] = cdsMap[cdsSource];
         let checked = d.data.checked;
         checked && (cdsTarget && cdsTarget.forEach(x => this.cdsState[x].checked = true));
         this
@@ -102,15 +102,18 @@ export class CdsComponent implements OnInit {
     let sub4 = this
       .brokerService
       .filterOn(allHttpMessages.httpPostCdsUserData)
-      .subscribe(d => d.error
-        ? console.log(d.error)
-        : console.log(d.data));
+      .subscribe(d => {
+        d.error ? console.log(d.error) : (() => {
+          //ToDo:
+          console.log(d.data);
+        })();
+      });
     let sub5 = this
       .brokerService
       .filterOn(allMessages.demographicEnableCheckBox)
       .subscribe(d => d.error
         ? console.log(d.error)
-        : this.cdsState.review_ms_type_status.checked=true);
+        : this.cdsState.review_ms_type_status.checked = true);
     this
       .brokerService
       .httpGet(allHttpMessages.httpGetCdsInfo);
@@ -140,7 +143,7 @@ export class CdsComponent implements OnInit {
       .httpPost(allHttpMessages.httpPostCdsUserData, this.getCdsStateData());
   }
   getCdsStateData() {
-    let cdsStateData : any = {};
+    let cdsStateData: any = {};
     Object
       .keys(this.cdsState)
       .forEach(x => {
