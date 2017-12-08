@@ -10,7 +10,7 @@ var gUrlMaps = {
 
     "http:get:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/",
     "http:post:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses",
-    "http:put:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses",
+    "http:put:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapse",
 
     //"http:get:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",
     //"http:post:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",

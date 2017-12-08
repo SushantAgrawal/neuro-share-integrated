@@ -242,8 +242,9 @@ export class RelapsesComponent implements OnInit {
     }
     else {
       var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+      debugger;
       let obj = {
-        pom_id: this.paramData.pom_id,
+        pom_id: this.paramData.pom_id.toString(),
         relapse_id: this.relapsesData[objIndex].relapse_id,
         provider_id: this.relapsesData[objIndex].last_updated_provider_id,
         save_csn: this.paramData.csn,
@@ -251,6 +252,7 @@ export class RelapsesComponent implements OnInit {
         updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
         clinician_confirmed: this.relapsesData[objIndex].clinician_confirmed
       };
+      console.log(JSON.stringify(obj));
       this.brokerService.httpPut(allHttpMessages.httpPutRelapse, obj);
 
       // var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
