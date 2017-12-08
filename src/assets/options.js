@@ -13,12 +13,12 @@ var gUrlMaps = {
     "http:put:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapse",
 
     //"http:get:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",
-    //"http:post:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",
-    //"http:put:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",
+    "http:post:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt",
+    "http:put:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt",
 
     //"http:get:otherMeds": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds/",
-    //"http:post:otherMeds": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds/",
-    //"http:put:otherMeds": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds/",
+    "http:post:otherMeds": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds",
+    "http:put:otherMeds": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds",
 
     //"http:get:cds:user:data": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
     "http:post:cds:user:data": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
@@ -53,12 +53,12 @@ var gUrlMaps = {
     //"http:put:relapse": "http://61.16.131.166:3000/relapse/",
 
     "http:get:dmt": "http://61.16.131.166:3000/dmt/",
-    "http:post:dmt": "http://61.16.131.166:3000/dmt/",
-    "http:put:dmt": "http://61.16.131.166:3000/dmt/",
+    //"http:post:dmt": "http://61.16.131.166:3000/dmt/",
+    //"http:put:dmt": "http://61.16.131.166:3000/dmt/",
 
     "http:get:otherMeds": "http://61.16.131.166:3000/other-meds/",
-    "http:post:otherMeds": "http://61.16.131.166:3000/other-meds/",
-    "http:put:otherMeds": "http://61.16.131.166:3000/other-meds/",
+    //"http:post:otherMeds": "http://61.16.131.166:3000/other-meds/",
+    //"http:put:otherMeds": "http://61.16.131.166:3000/other-meds/",
 
     "http:get:cds:user:data": "http://61.16.131.166:3000/cds/",
     //"http:post:cds:user:data": "http://61.16.131.166:3000/cds/",

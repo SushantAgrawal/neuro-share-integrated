@@ -36,6 +36,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   vitaminDArray: Array<any> = [];
   otherMedsArray: Array<any> = [];
   registerDrag: any;
+  queryParams: any;
   selectedMed = {
     dmt: false,
     otherMeds: false,
@@ -66,6 +67,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
 
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
+    this.queryParams = this.neuroGraphService.get("queryParams");
   }
 
   ngOnInit() {
@@ -134,7 +136,63 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         }
       })();
     })
-    this.subscriptions.add(subScaleUpdate);
+
+    let subDmtPost = this.brokerService.filterOn(allHttpMessages.httpPostDmt).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        let params =
+          this.dmtSecondLayerLocalData.push({
+            dmt_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
+            patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
+            reason_stopped: this.medSecondLayerModel.reasonStopped,
+            other_reason: this.medSecondLayerModel.otherReason,
+            last_updated_provider_id: this.queryParams.provider_id,
+            last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+            save_csn: this.queryParams.csn,
+            save_csn_status: this.queryParams.csn_status
+          });
+        this.dialogRef.close();
+      })();
+    })
+
+    let subDmtPut = this.brokerService.filterOn(allHttpMessages.httpPutDmt).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        let med = d.carryBag.dmt;
+        med.patient_reported_start = `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`;
+        med.reason_stopped = this.medSecondLayerModel.reasonStopped;
+        med.other_reason = this.medSecondLayerModel.otherReason;
+        med.otherReason = this.medSecondLayerModel.otherReason;
+        this.dialogRef.close();
+      })();
+    })
+
+    let subOtherMedsPost = this.brokerService.filterOn(allHttpMessages.httpPostOtherMeds).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        this.otherMedsSecondLayerLocalData.push({
+          other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
+          reason_for_med: this.medSecondLayerModel.reasonForMed,
+          last_updated_provider_id: this.queryParams.provider_id,
+          last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+          save_csn: this.queryParams.csn,
+          save_csn_status: this.queryParams.csn_status
+        });
+        this.dialogRef.close();
+      })();
+    })
+
+    let subOtherMedsPut = this.brokerService.filterOn(allHttpMessages.httpPutOtherMeds).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        let med = d.carryBag.otherMed;
+        med.reason_for_med = this.medSecondLayerModel.reasonForMed;
+        this.dialogRef.close();
+      })();
+    })
+
+    this.subscriptions
+      .add(subScaleUpdate)
+      .add(subDmtPost)
+      .add(subDmtPut)
+      .add(subOtherMedsPost)
+      .add(subOtherMedsPut)
   }
 
   ngOnDestroy() {
@@ -340,60 +398,42 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   }
 
   updateDmt() {
-    let dmt = this
-      .dmtSecondLayerLocalData
-      .find(x => x.dmt_order_id === this.medSecondLayerModel.orderIdentifier.toString());
-    if (dmt) {
-      dmt.patient_reported_start = `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`;
-      dmt.reason_stopped = this.medSecondLayerModel.reasonStopped;
-      dmt.other_reason = this.medSecondLayerModel.otherReason;
-      dmt.otherReason = this.medSecondLayerModel.otherReason;
-    } else {
-      this
-        .dmtSecondLayerLocalData
-        .push({
-          dmt_order_id: this
-            .medSecondLayerModel
-            .orderIdentifier
-            .toString(),
-          patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
-          reason_stopped: this.medSecondLayerModel.reasonStopped,
-          other_reason: this.medSecondLayerModel.otherReason,
-          last_updated_provider_id: "",
-          last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-          save_csn: this.neuroGraphService.get("queryParams").csn,
-          save_csn_status: this.neuroGraphService.get("queryParams").csn_status
-        });
+    let dmt = this.dmtSecondLayerLocalData.find(x => x.dmt_order_id === this.medSecondLayerModel.orderIdentifier.toString());
+    let payload = {
+      pom_id: this.queryParams.pom_id,
+      dmt_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
+      patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
+      reason_stopped: this.medSecondLayerModel.reasonStopped,
+      provider_id: this.queryParams.provider_id,
+      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+      save_csn: this.queryParams.csn,
+      save_csn_status: this.queryParams.csn_status
     }
-    this
-      .dialogRef
-      .close();
+    if (dmt) {
+      this.brokerService.httpPut(allHttpMessages.httpPutDmt, payload, { dmt });
+    } else {
+      this.brokerService.httpPost(allHttpMessages.httpPostDmt, payload);
+    }
   }
 
   updateOtherMeds() {
-    let othreMeds = this
+    let otherMed = this
       .otherMedsSecondLayerLocalData
       .find(x => x.other_med_order_id === this.medSecondLayerModel.orderIdentifier.toString());
-    if (othreMeds) {
-      othreMeds.reason_for_med = this.medSecondLayerModel.reasonForMed;
-    } else {
-      this
-        .otherMedsSecondLayerLocalData
-        .push({
-          other_med_order_id: this
-            .medSecondLayerModel
-            .orderIdentifier
-            .toString(),
-          reason_for_med: this.medSecondLayerModel.reasonForMed,
-          last_updated_provider_id: "",
-          last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-          save_csn: this.neuroGraphService.get("queryParams").csn,
-          save_csn_status: this.neuroGraphService.get("queryParams").csn_status
-        });
+    let payload = {
+      pom_id: this.queryParams.pom_id,
+      other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
+      reason_for_med: this.medSecondLayerModel.reasonForMed,
+      last_updated_provider_id: this.queryParams.provider_id,
+      last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+      save_csn: this.queryParams.csn,
+      save_csn_status: this.queryParams.csn_status
     }
-    this
-      .dialogRef
-      .close();
+    if (otherMed) {
+      this.brokerService.httpPut(allHttpMessages.httpPutOtherMeds, payload, { otherMed });
+    } else {
+      this.brokerService.httpPut(allHttpMessages.httpPostOtherMeds, payload);
+    }
   }
 
   //#region Drawing
