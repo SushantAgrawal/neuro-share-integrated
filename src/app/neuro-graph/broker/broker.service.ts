@@ -60,8 +60,7 @@ export class BrokerService {
     let url = this.urlMaps[id];
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    let option = new RequestOptions()
-    this.http.put(url, body)
+    this.http.put(url, body, { headers: headers })
       .map(response => response.json())
       .subscribe(d => {
         this.subject.next({ id: id, data: d, body: body, carryBag: carryBag });
