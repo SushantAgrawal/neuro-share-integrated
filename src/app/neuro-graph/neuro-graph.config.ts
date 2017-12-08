@@ -9,51 +9,47 @@ export const allMessages = {
   'demographicEnableCheckBox': 'demographic:enable:check:box',
   'checkboxEnable': 'checkbox:enable',
   'showCustomError': 'show:custom:error'
-  
+
 };
 
 export const manyHttpMessages = {
   'httpGetInitialApiCall': 'http:get:initial:api:call',
 };
 export const allHttpMessages = {
-  'httpGetMedications': 'http:get:medications',
+  'httpGetWalk25Feet': 'http:get:walk25Feet',
+  'httpPostWalk25Feet': 'http:post:walk25Feet',
+  'httpPutWalk25Feet': 'http:put:walk25Feet',
 
   'httpGetEdss': 'http:get:edss',
   'httpPostEdss': 'http:post:edss',
   'httpPutEdss': 'http:put:edss',
-
-  'httpGetCdsInfo': 'http:get:cds:info',
-
-  'httpGetCdsUserData': 'http:get:cds:user:data',
-  'httpPutCdsUserData': 'http:put:cds:user:data',
-  'httpPostCdsUserData': 'http:post:cds:user:data',
-
-  'httpGetDmt': 'http:get:dmt',
 
   'httpGetRelapse': 'http:get:relapse',
   'httpPutRelapse': 'http:put:relapse',
   'httpPostRelapse': 'http:post:relapse',
   'httpDeleteRelapse': 'http:delete:relapse',
 
-  'httpGetAllQuestionnaire': 'http:get:all:questionnaire',
+  'httpGetDmt': 'http:get:dmt',
+  'httpPostDmt': 'http:post:dmt',
+  'httpPutDmt': 'http:put:dmt',
 
   'httpGetOtherMeds': 'http:get:otherMeds',
+  'httpPostOtherMeds': 'http:post:otherMeds',
+  'httpPutOtherMeds': 'http:put:otherMeds',
 
+  'httpGetCdsUserData': 'http:get:cds:user:data',
+  'httpPutCdsUserData': 'http:put:cds:user:data',
+  'httpPostCdsUserData': 'http:post:cds:user:data',
+
+  'httpGetAllQuestionnaire': 'http:get:all:questionnaire',
   'httpGetImaging': 'http:get:imaging',
-
   'httpGetLabs': 'http:get:labs',
-
   'httpGetVirtualCaseLoad': 'http:get:virtualCaseLoad',
-
-  'httpGetWalk25Feet': 'http:get:walk25Feet',
-  'httpPostWalk25Feet': 'http:post:walk25Feet',
-  'httpPutWalk25Feet': 'http:put:walk25Feet',
-  
-
   'httpGetWalk25FeetInfo': 'http:get:walk25Feet:info',
+  'httpGetCdsInfo': 'http:get:cds:info',
 
-  'httpGetReferenceLine': 'http:get:referenceLine',
-
+  'httpGetMedications': 'http:get:medications',
+  'httpGetEncounters': 'http:get:encounters',
   'httpGetProgressNote': 'http:get:progressNote'
 };
 export const urlMaps = window["gUrlMaps"];

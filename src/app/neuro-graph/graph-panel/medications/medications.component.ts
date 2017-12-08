@@ -361,14 +361,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           other_reason: this.medSecondLayerModel.otherReason,
           last_updated_provider_id: "",
           last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-          save_csn: this
-            .neuroGraphService
-            .get("queryParams")
-            .csn,
-          save_csn_status: this
-            .neuroGraphService
-            .get("queryParams")
-            .csn_status
+          save_csn: this.neuroGraphService.get("queryParams").csn,
+          save_csn_status: this.neuroGraphService.get("queryParams").csn_status
         });
     }
     this
@@ -393,14 +387,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           reason_for_med: this.medSecondLayerModel.reasonForMed,
           last_updated_provider_id: "",
           last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-          save_csn: this
-            .neuroGraphService
-            .get("queryParams")
-            .csn,
-          save_csn_status: this
-            .neuroGraphService
-            .get("queryParams")
-            .csn_status
+          save_csn: this.neuroGraphService.get("queryParams").csn,
+          save_csn_status: this.neuroGraphService.get("queryParams").csn_status
         });
     }
     this

@@ -31,7 +31,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     })
     let sub1 = this
       .brokerService
-      .filterOn(allHttpMessages.httpGetReferenceLine)
+      .filterOn(allHttpMessages.httpGetEncounters)
       .subscribe(d => {
         d.error
           ? (() => {
@@ -83,7 +83,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   //#region Graph Drawing
 
   getReferenceLineData() {
-    this.brokerService.httpGet(allHttpMessages.httpGetReferenceLine, [
+    this.brokerService.httpGet(allHttpMessages.httpGetEncounters, [
       {
         name: 'pom-id',
         value: this.neuroGraphService.get('queryParams').pom_id
