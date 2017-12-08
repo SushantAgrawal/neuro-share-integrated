@@ -11,7 +11,6 @@ var gUrlMaps = {
     "http:get:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses/",
     "http:post:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses",
     "http:put:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses",
-    "http:delete:relapse": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses",
 
     //"http:get:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",
     //"http:post:dmt": "https://private-anon-38e9a00da6-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt/",
@@ -38,6 +37,7 @@ var gUrlMaps = {
 
 
 
+
     //---------------------------------------------- Staging Server -----------------------------------------------------//
 
     //"http:get:walk25Feet": "http://61.16.131.166:3000/25walk/",
@@ -49,9 +49,8 @@ var gUrlMaps = {
     //"http:put:edss": "http://61.16.131.166:3000/edss-score/",
 
     //"http:get:relapse": "http://61.16.131.166:3000/relapse/",
-    //"http:get:relapse": "http://61.16.131.166:3000/relapse/",
-    //"http:get:relapse": "http://61.16.131.166:3000/relapse/",
-    //"http:get:relapse": "http://61.16.131.166:3000/relapse/",
+    //"http:post:relapse": "http://61.16.131.166:3000/relapse/",
+    //"http:put:relapse": "http://61.16.131.166:3000/relapse/",
 
     "http:get:dmt": "http://61.16.131.166:3000/dmt/",
     "http:post:dmt": "http://61.16.131.166:3000/dmt/",
