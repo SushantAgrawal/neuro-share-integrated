@@ -79,8 +79,19 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         })()
         : (() => {
           this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
+          
+          let dmtResponse = d.data[1][allHttpMessages.httpGetDmt];
+          let otherMedsResponse = d.data[2][allHttpMessages.httpGetOtherMeds];
+          let relapsesLocalData = d.data[3][allHttpMessages.httpGetRelapse];
+          this.dmtSecondLayerLocalData = dmtResponse.DMTs;
+          this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds;
+          this.relapsesLocalData = relapsesLocalData.relapses;
+
           if (this.selectedMed[this.medType.dmt]) {
             this.checkForError(this.dmtArray);
+            if (!this.relapsesLocalData || this.relapsesLocalData.length == 0) {
+              this.brokerService.emit(allMessages.showCustomError, 'M-002');
+            }
             this.drawDmt();
           }
           if (this.selectedMed[this.medType.vitaminD]) {
@@ -91,12 +102,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             this.checkForError(this.otherMedsArray);
             this.drawOtherMeds();
           }
-          let dmtResponse = d.data[1][allHttpMessages.httpGetDmt];
-          let otherMedsResponse = d.data[2][allHttpMessages.httpGetOtherMeds];
-          let relapsesLocalData = d.data[3][allHttpMessages.httpGetRelapse];
-          this.dmtSecondLayerLocalData = dmtResponse.DMTs;
-          this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds;
-          this.relapsesLocalData = relapsesLocalData.relapses;
+         
           this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
         })();
     });
@@ -384,15 +390,17 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       medOrderedDt.setDate(1);
       let medEndDt = (new Date(data.date.medEnd))
       medEndDt.setDate(1);
-      model.noOfRelapses = this
-        .relapsesLocalData
-        .filter(r => {
-          let relapseMonthNo = this.months.indexOf(r.relapse_month);
-          let relapseYear = parseInt(r.relapse_year);
-          let relapseDate = new Date(relapseYear, relapseMonthNo, 1);
-          return relapseDate >= medOrderedDt && relapseDate <= medEndDt;
-        })
-        .length;
+      if (this.relapsesLocalData) {
+        model.noOfRelapses = this
+          .relapsesLocalData
+          .filter(r => {
+            let relapseMonthNo = this.months.indexOf(r.relapse_month);
+            let relapseYear = parseInt(r.relapse_year);
+            let relapseDate = new Date(relapseYear, relapseMonthNo, 1);
+            return relapseDate >= medOrderedDt && relapseDate <= medEndDt;
+          })
+          .length;
+      }
     }
     return model;
   }
