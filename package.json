@@ -3,13 +3,24 @@
     "version": "0.0.0",
     "license": "None",
     "angular-cli": {},
+    "config": {
+        "source":"\"C:/Projects/Sutter Health/git/personal/neuro-share-integrated/src/app/neuro-graph\"",
+        "dest":"\"C:/Projects/Sutter Health/git/personal/neuro-share-npm-library-generator\""
+    },
     "scripts": {
         "ng": "ng",
         "start": "ng serve --host 0.0.0.0 --disable-host-check --preserve-symlinks",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
-        "build": "ng build && cp ./src/options.js dist/"
+        "build": "ng build && cp ./src/options.js dist/",
+        "copy1":"shx cp -rf %npm_package_config_source%/* %npm_package_config_dest%/src",
+        "rem1":"shx rm -f %npm_package_config_dest%/src/index.ts",
+        "copy2":"shx mv %npm_package_config_dest%/src/neuro-graph.module.ts %npm_package_config_dest%/src/index.ts",
+        "cd1":"cd %npm_package_config_dest%/src && npm version patch",
+        "build1":"cd %npm_package_config_dest% && npm run build",
+        "pub1":"cd %npm_package_config_dest%/dist && npm link",
+        "libgen":"npm run copy1 && npm run rem1 && npm run copy2 && npm run cd1 && npm run build1 && npm run pub1"
     },
     "private": true,
     "dependencies": {
@@ -27,7 +38,7 @@
         "@angular/router": "4.4.5",
         "@sutterhealth/analytics": "^1.1.10",
         "@sutterhealth/data-services": "^1.4.15",
-        "@sutterhealth/neuro-graph": "^0.1.15",
+        "@sutterhealth/neuro-graph": "^0.1.17",
         "@sutterhealth/patient-concerns": "0.1.22",
         "@sutterhealth/progress-notes": "0.1.1",
         "@sutterhealth/user-authentication": "^1.0.4",
