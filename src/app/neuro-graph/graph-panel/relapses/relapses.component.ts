@@ -58,7 +58,9 @@ export class RelapsesComponent implements OnInit {
           })()
           : (() => {
             this.relapsesData = d.data.relapses;
-            this.createChart();
+            if (d.data && d.data.relapses && d.data.relapses.length > 0) {
+              this.createChart();
+            }
             this.relapsisChartLoaded = true;
             if (this.relapsesOpenAddPopUp == true) {
               this.relapsesOpenAddPopUp = false;
@@ -67,7 +69,7 @@ export class RelapsesComponent implements OnInit {
                 this.isDateOutOfRange = false;
                 this.relapsesDetail = this.relapsesData[0];
                 this.relapsesDetail.month = "";
-                this.relapsesDetail.year = "";//new Date().getFullYear().toString();
+                this.relapsesDetail.year = "";
                 let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
                 this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
                 this.dialogRef.updatePosition({ top: '335px', left: '255px' });
@@ -76,7 +78,7 @@ export class RelapsesComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
 
             //custom error handling
-            if (d.data.relapses.length == 0)
+            if (!d.data || !d.data.relapses || d.data.relapses.length == 0)
               this.brokerService.emit(allMessages.showCustomError, 'M-002');
             else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))
               this.brokerService.emit(allMessages.showCustomError, 'D-002');

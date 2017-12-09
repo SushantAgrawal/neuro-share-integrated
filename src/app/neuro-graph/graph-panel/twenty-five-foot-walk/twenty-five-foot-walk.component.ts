@@ -50,8 +50,10 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         })()
           : (() => {
             this.walk25FeetData = d.data["25fw_scores"];
-            this.drawWalk25FeetAxis();
-            this.drawWalk25FeetLineCharts();
+            if (this.walk25FeetData && this.walk25FeetData.length > 0) {
+              this.drawWalk25FeetAxis();
+              this.drawWalk25FeetLineCharts();
+            }
             this.Feet25WalkChartLoaded = true;
             if (this.walk25FeetOpenAddPopUp == true) {
               this.walk25FeetOpenAddPopUp = false;
@@ -69,7 +71,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
 
             //custom error handling
-            if (this.walk25FeetData.length == 0)
+            if (!this.walk25FeetData || this.walk25FeetData.length == 0)
               this.brokerService.emit(allMessages.showCustomError, 'M-002');
             else if (this.walk25FeetData.some(obj => obj.walk_1_score == '' || obj.walk_2_score == '' || obj.walk_1_score == 'No result' || obj.walk_2_score == 'No result'))
               this.brokerService.emit(allMessages.showCustomError, 'D-002');

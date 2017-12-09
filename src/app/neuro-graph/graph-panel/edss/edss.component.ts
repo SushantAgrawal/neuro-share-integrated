@@ -206,27 +206,32 @@ export class EdssComponent implements OnInit, OnDestroy {
               let dtPart = dtString.split(' ')[0];
               return Date.parse(dtPart);
             }
+            if (edssData) {
+              this.clinicianDataSet = edssData.map(d => {
+                return {
+                  ...d,
+                  lastUpdatedDate: getParsedDate(d.last_updated_instant),
+                  reportedBy: "Clinician",
+                  scoreValue: parseFloat(d.score)
+                }
+              }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
+            }
+            if (quesData) {
+              this.patientDataSet = quesData.map(d => {
+                return {
+                  ...d,
+                  lastUpdatedDate: getParsedDate(d.qx_completed_at),
+                  reportedBy: "Patient",
+                  scoreValue: parseFloat(d.edss_score)
+                }
+              }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
+            }
 
-            this.clinicianDataSet = edssData.map(d => {
-              return {
-                ...d,
-                lastUpdatedDate: getParsedDate(d.last_updated_instant),
-                reportedBy: "Clinician",
-                scoreValue: parseFloat(d.score)
-              }
-            }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
+            if (this.clinicianDataSet && this.patientDataSet) {
+              this.drawEdssYAxis();
+              this.drawEdssLineCharts();
+            }
 
-            this.patientDataSet = quesData.map(d => {
-              return {
-                ...d,
-                lastUpdatedDate: getParsedDate(d.qx_completed_at),
-                reportedBy: "Patient",
-                scoreValue: parseFloat(d.edss_score)
-              }
-            }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
-
-            this.drawEdssYAxis();
-            this.drawEdssLineCharts();
             this.edssChartLoaded = true;
             if (this.edssOpenAddPopUp == true) {
               this.edssOpenAddPopUp = false;
@@ -251,15 +256,15 @@ export class EdssComponent implements OnInit, OnDestroy {
 
             //custom error handling
             var ErrorCode: string = '';
-            if (edssData.length == 0)
+            if (!edssData || edssData.length == 0)
               ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-            if (quesData.length == 0)
+            if (!quesData || quesData.length == 0)
               ErrorCode = ErrorCode.indexOf('M-001') != -1 ? ErrorCode : ErrorCode == '' ? 'M-001' : ErrorCode + ',' + 'M-001';
-            if (quesData.some(m => m.status.toUpperCase() != "COMPLETED"))
+            if (!quesData || quesData.some(m => m.status.toUpperCase() != "COMPLETED"))
               ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
-            if (quesData.some(m => m.edss_score == 'No result' || m.edss_score == ''))
+            if (!quesData || quesData.some(m => m.edss_score == 'No result' || m.edss_score == ''))
               ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
-            if (edssData.some(m => m.score == 'No result' || m.score == ''))
+            if (!edssData || edssData.some(m => m.score == 'No result' || m.score == ''))
               ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
             if (ErrorCode != '')
               this.brokerService.emit(allMessages.showCustomError, ErrorCode);
