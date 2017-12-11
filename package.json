@@ -19,7 +19,7 @@
         "copy2": "shx mv %npm_package_config_dest%/src/neuro-graph.module.ts %npm_package_config_dest%/src/index.ts",
         "cd1": "cd %npm_package_config_dest%/src && npm version patch",
         "build1": "cd %npm_package_config_dest% && npm run build",
-        "pub1": "cd %npm_package_config_dest%/dist && npm link",
+        "pub1": "cd %npm_package_config_dest%/dist && npm publish",
         "libgen": "npm run copy1 && npm run rem1 && npm run copy2 && npm run cd1 && npm run build1 && npm run pub1"
     },
     "private": true,
@@ -38,7 +38,7 @@
         "@angular/router": "4.4.5",
         "@sutterhealth/analytics": "^1.1.10",
         "@sutterhealth/data-services": "^1.4.15",
-        "@sutterhealth/neuro-graph": "^0.1.18",
+        "@sutterhealth/neuro-graph": "^0.1.19",
         "@sutterhealth/patient-concerns": "0.1.22",
         "@sutterhealth/progress-notes": "0.1.1",
         "@sutterhealth/user-authentication": "^1.0.4",
