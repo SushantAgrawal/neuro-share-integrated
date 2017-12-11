@@ -39,7 +39,12 @@ export class SharedGridComponent implements OnInit, OnDestroy {
           })
           : (() => {
             let encounters: Array<any> = [];
-            encounters = d.data.EPIC.encounters;
+            if (d.data && d.data.EPIC && d.data.EPIC.encounters) {
+              encounters = d.data.EPIC.encounters;
+            }
+            else {
+              encounters = [];
+            }
             let filteredEncounter = encounters.filter(t => t.contactType == 'Office Visit');
             this.encounterData = filteredEncounter.map(d => {
               return {

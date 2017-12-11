@@ -69,7 +69,7 @@ export class CdsComponent implements OnInit {
       .subscribe(d => {
         d.error
           ? console.log(d.error)
-          : this.cdsInfo = d.data.cds;
+          : this.cdsInfo = d.data.cds || [];
       });
     let sub2 = this
       .brokerService
@@ -78,7 +78,7 @@ export class CdsComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            this.cdsUserData = d.data.cds;
+            this.cdsUserData = d.data.cds || [];
             this.csnState.csn = this
               .neuroGraphService
               .get('queryParams')
@@ -90,7 +90,9 @@ export class CdsComponent implements OnInit {
             this.cdsUserData = this
               .cdsUserData
               .find(x => x.save_csn == this.csnState.csn);
-            this.setChkBoxes();
+            if (this.cdsUserData) {
+              this.setChkBoxes();
+            }
           })();
       });
     let sub3 = this
