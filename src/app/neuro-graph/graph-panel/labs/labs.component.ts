@@ -44,15 +44,16 @@ export class LabsComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
           })()
           : (() => {
-
-            this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
+            if (d.data && d.data.EPIC && d.data.EPIC.labOrder) {
+              this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
+            }
             if (this.labsData && this.labsData.length > 0) {
               this.createChart();
             }
             this.labsChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
             //custom error handling
-            if (this.labsData.length == 0)
+            if (!this.labsData || this.labsData.length == 0)
               this.brokerService.emit(allMessages.showCustomError, 'M-002');
             else if (this.labsData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
               this.brokerService.emit(allMessages.showCustomError, 'D-001');
