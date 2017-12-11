@@ -46,7 +46,9 @@ export class LabsComponent implements OnInit {
           : (() => {
 
             this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["Lab Component ID"] == item.procedureCode));
-            this.createChart();
+            if (this.labsData && this.labsData.length > 0) {
+              this.createChart();
+            }
             this.labsChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'labs');
             //custom error handling
@@ -54,7 +56,7 @@ export class LabsComponent implements OnInit {
               this.brokerService.emit(allMessages.showCustomError, 'M-002');
             else if (this.labsData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
               this.brokerService.emit(allMessages.showCustomError, 'D-001');
-          
+
           })();
       })
 

@@ -53,7 +53,9 @@ export class ImagingComponent implements OnInit {
           })()
           : (() => {
             this.imagingData = d.data.EPIC.patient[0].imagingOrders;
-            this.createChart();
+            if (this.imagingData && this.imagingData.length > 0) {
+              this.createChart();
+            }
             this.imagingChartLoaded = true;
             this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
             //custom error handling
@@ -61,7 +63,7 @@ export class ImagingComponent implements OnInit {
               this.brokerService.emit(allMessages.showCustomError, 'M-002');
             else if (this.imagingData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
               this.brokerService.emit(allMessages.showCustomError, 'D-001');
-          
+
           })();
       })
 
