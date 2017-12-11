@@ -244,7 +244,6 @@ export class RelapsesComponent implements OnInit {
     }
     else {
       var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
-      debugger;
       let obj = {
         pom_id: this.paramData.pom_id.toString(),
         relapse_id: this.relapsesData[objIndex].relapse_id,

@@ -79,13 +79,13 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         })()
         : (() => {
           this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
-          
+
           let dmtResponse = d.data[1][allHttpMessages.httpGetDmt];
           let otherMedsResponse = d.data[2][allHttpMessages.httpGetOtherMeds];
           let relapsesLocalData = d.data[3][allHttpMessages.httpGetRelapse];
-          this.dmtSecondLayerLocalData = dmtResponse.DMTs;
-          this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds;
-          this.relapsesLocalData = relapsesLocalData.relapses;
+          this.dmtSecondLayerLocalData = dmtResponse.DMTs || [];
+          this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds || [];
+          this.relapsesLocalData = relapsesLocalData.relapses || [];
 
           if (this.selectedMed[this.medType.dmt]) {
             this.checkForError(this.dmtArray);
@@ -102,7 +102,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             this.checkForError(this.otherMedsArray);
             this.drawOtherMeds();
           }
-         
+
           this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
         })();
     });
@@ -425,9 +425,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   }
 
   updateOtherMeds() {
-    let otherMed = this
-      .otherMedsSecondLayerLocalData
-      .find(x => x.other_med_order_id === this.medSecondLayerModel.orderIdentifier.toString());
+    let otherMed = this.otherMedsSecondLayerLocalData.find(x => x.other_med_order_id === this.medSecondLayerModel.orderIdentifier.toString());
     let payload = {
       pom_id: this.queryParams.pom_id,
       other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
@@ -449,7 +447,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   drawDmt() {
     let config = { hasBackdrop: true, panelClass: 'ns-dmt-theme', width: '400px' };
     let openSecondLayer = (selectedData) => {
-      let dmt = this.dmtSecondLayerLocalData.find(x => x.dmt_order_id === selectedData.orderIdentifier.toString());
+      let dmt;
+      this.dmtSecondLayerLocalData && (dmt = this.dmtSecondLayerLocalData.find(x => x.dmt_order_id === selectedData.orderIdentifier.toString()));
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.dmt, dmt);
       this.dialog.openDialogs.pop();
       this.dialogRef = this.dialog.open(this.dmtSecondLevelTemplate, config);
@@ -471,7 +470,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   drawOtherMeds() {
     let config = { hasBackdrop: true, panelClass: 'ns-othermeds-theme', width: '400px' };
     let openSecondLayer = (selectedData) => {
-      let otherMeds = this.otherMedsSecondLayerLocalData.find(x => x.other_med_order_id === selectedData.orderIdentifier.toString());
+      let otherMeds
+      this.otherMedsSecondLayerLocalData && (otherMeds = this.otherMedsSecondLayerLocalData.find(x => x.other_med_order_id === selectedData.orderIdentifier.toString()));
       this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.otherMeds, otherMeds);
       this.dialogRef = this.dialog.open(this.otherMedsSecondLevelTemplate, config);
       this.dialogRef.updatePosition({ top: `${d3.event.clientY - 250}px`, left: `${d3.event.clientX - 200}px` });
