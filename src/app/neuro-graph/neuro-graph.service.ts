@@ -41,10 +41,16 @@ export class NeuroGraphService {
       (elementArray.length > 0) && (prevValue[elementArray[0]] = elementArray[1]);
       return (prevValue);
     }, {});
-    urlObject.pom_id || (urlObject.pom_id = 82043);
-    urlObject.provider_id || (urlObject.provider_id = 'G00276');
-    urlObject.csn || (urlObject.csn = "865482572");
-    urlObject.csn_status || (urlObject.csn_status = "Open");
+    // urlObject.pom_id || (urlObject.pom_id = 82043);
+    // urlObject.provider_id || (urlObject.provider_id = 'G00276');
+    // urlObject.csn || (urlObject.csn = "865482572");
+    // urlObject.csn_status || (urlObject.csn_status = "Open");
+
+    urlObject.pom_id || (urlObject.pom_id = 0);
+    urlObject.provider_id || (urlObject.provider_id = '');
+    urlObject.csn || (urlObject.csn = '');
+    urlObject.csn_status || (urlObject.csn_status = '');
+
     this.set('queryParams', urlObject);
 
     //Environment Setup
