@@ -53,6 +53,8 @@ export class SymptomsComponent implements OnInit {
           })()
           : (() => {
             //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
+            d.data && (this.questionaireData = d.data.questionaires || []);
+
             if (this.questionaireData && this.questionaireData.length > 0) {
 
               this.questionaireData = d.data.questionaires.map(d => {
