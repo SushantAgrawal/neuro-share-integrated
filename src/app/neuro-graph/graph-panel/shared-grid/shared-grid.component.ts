@@ -106,7 +106,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   getProgessNoteData(prevCSN) {
     this.brokerService.httpGet(allHttpMessages.httpGetProgressNote, [
       {
-        name: 'pom_id',
+        name: 'pom-id',
         value: this.neuroGraphService.get('queryParams').pom_id
       },
       {
