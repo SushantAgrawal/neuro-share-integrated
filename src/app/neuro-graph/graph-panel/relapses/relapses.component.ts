@@ -61,19 +61,20 @@ export class RelapsesComponent implements OnInit {
             if (d.data && d.data.relapses && d.data.relapses.length > 0) {
               this.createChart();
             }
+            else{
+              this.relapsesData =[];
+            }
             this.relapsisChartLoaded = true;
             if (this.relapsesOpenAddPopUp == true) {
               this.relapsesOpenAddPopUp = false;
               let dt = d3.select('#relapses').selectAll("*");
-              if (dt["_groups"][0].length > 0) {
+              //if (dt["_groups"][0].length > 0) {
                 this.isDateOutOfRange = false;
-                this.relapsesDetail = this.relapsesData[0];
-                this.relapsesDetail.month = "";
-                this.relapsesDetail.year = "";
+                this.relapsesDetail = {month:"",year:""};
                 let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
                 this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
                 this.dialogRef.updatePosition({ top: '335px', left: '255px' });
-              }
+              //}
             }
             this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
 

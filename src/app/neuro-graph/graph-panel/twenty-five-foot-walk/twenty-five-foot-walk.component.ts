@@ -5,7 +5,7 @@ import { allMessages, allHttpMessages, manyHttpMessages } from '../../neuro-grap
 import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { NeuroGraphService } from '../../neuro-graph.service';
-
+//import { AuthenticationService } from '@sutterhealth/user-authentication';
 @Component({
   selector: '[app-twenty-five-foot-walk]',
   templateUrl: './twenty-five-foot-walk.component.html',
@@ -34,9 +34,11 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   private scoreValue: any;
   private Feet25WalkChartLoaded: boolean = false;
   private walk25FeetOpenAddPopUp: boolean = false;
+
   registerDrag: any;
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
+   
   }
   ngOnInit() {
     //get walk data
@@ -49,16 +51,21 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
         })()
           : (() => {
+            //debugger;
             this.walk25FeetData = d.data["25fw_scores"];
             if (this.walk25FeetData && this.walk25FeetData.length > 0) {
               this.drawWalk25FeetAxis();
               this.drawWalk25FeetLineCharts();
             }
+            else
+            {
+              this.walk25FeetData =[];
+            }
             this.Feet25WalkChartLoaded = true;
             if (this.walk25FeetOpenAddPopUp == true) {
               this.walk25FeetOpenAddPopUp = false;
               let dt = d3.selectAll('.walk25Feet-axis');
-              if (dt["_groups"][0].length > 0) {
+              //if (dt["_groups"][0].length > 0) {
                 this.score_1 = "";
                 this.score_2 = "";
                 this.scoreValue = "";
@@ -66,7 +73,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
                 let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
                 this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
                 this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
-              }
+              //}
             }
             this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
 

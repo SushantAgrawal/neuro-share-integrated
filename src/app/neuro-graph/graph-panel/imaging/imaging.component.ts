@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation, ViewChild, TemplateRef } f
 import * as d3 from 'd3';
 import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { BrokerService } from '../../broker/broker.service';
-import { allMessages, allHttpMessages } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages, imagingConfig } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { NeuroGraphService } from '../../neuro-graph.service';
 
@@ -53,7 +53,7 @@ export class ImagingComponent implements OnInit {
           })()
           : (() => {
             if (d.data && d.data.EPIC && d.data.EPIC.patient && d.data.EPIC.patient[0]) {
-              this.imagingData = d.data.EPIC.patient[0].imagingOrders;
+              this.imagingData = d.data.EPIC.patient[0].imagingOrders.filter(item => imagingConfig.some(f => f["CPT code"] == item.procedureCPTCode));
             }
             if (this.imagingData && this.imagingData.length > 0) {
               this.createChart();
@@ -148,7 +148,10 @@ export class ImagingComponent implements OnInit {
     this.reportDialogRef = this.dialog.open(this.imagingThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '70px', left: "860px" });
   }
-
+  showImage(url)
+  {
+    window.open(url, "_blank");
+  }
   removeChart() {
     d3.select('#imaging').selectAll("*").remove();
     this.datasetB = [];

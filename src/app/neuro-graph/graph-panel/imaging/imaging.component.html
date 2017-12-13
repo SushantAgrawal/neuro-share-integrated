@@ -16,7 +16,7 @@
                 <div class="ns-imaging-col">{{imaging.displayName}}</div>
                 <div class="ns-imaging-col">{{imaging.orderFormatDate}}</div>
                 <div class="ns-imaging-icon">
-                    <span *ngIf="imaging['image_launch_url']!=''" class="icon-brainneuroshare"></span>
+                    <span *ngIf="imaging['image_launch_url']!=''" class="icon-brainneuroshare" style="cursor:pointer;" (click)="showImage(imaging['image_launch_url'])"></span>
                     <span *ngIf="imaging.impression.length > 0" class="icon-documentneuroshare" style="cursor:pointer;" (click)="showResult(imaging)"></span>
                 </div>
             </div>

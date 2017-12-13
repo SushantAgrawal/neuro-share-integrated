@@ -287,7 +287,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   //#region Error
   showError(err) {
     this.snackBar.open(err, "Dismiss", {
-      duration: 5000,
+      duration: 10000,
       extraClasses: ['neuro-error-snackbar']
     });
   }
