@@ -28,7 +28,7 @@
           <md-checkbox (change)='changed($event,"vitaminD")' [disabled]="!isDMTEnable">Vitamin D</md-checkbox>
         </li>
         <li class="ns-referrals-theme">
-          <md-checkbox (change)='changed($event,"referrals")'>Referrals</md-checkbox>
+          <md-checkbox (change)='changed($event,"referrals")' [disabled]="true">Referrals</md-checkbox>
         </li>
       </ul>
     </div>
@@ -75,11 +75,11 @@
             type: 'checkbox'
             }" -->
         </li>
-        <li class="ns-vaccinations-theme">
+        <li class="ns-vaccinations-theme" style="display:none;">
           <md-checkbox (change)='changed($event,"vaccinations")'>Vaccinations</md-checkbox>
         </li>
         <li class="ns-dme-theme">
-          <md-checkbox (change)='changed($event,"dme")'>DME</md-checkbox><span class="plus-icon">+</span></li>
+          <md-checkbox (change)='changed($event,"dme")' [disabled]="true">DME</md-checkbox><span class="plus-icon" style="color:#b0b0b0;">+</span></li>
       </ul>
     </div>
   </div>
@@ -90,13 +90,13 @@
     <div class="related-items">
       <ul class="related-items-ul">
         <li class="ns-encounters-theme">
-          <md-checkbox (change)='changed($event,"office")'>Office</md-checkbox>
+          <md-checkbox (change)='changed($event,"office")' [disabled]="true">Office</md-checkbox>
         </li>
         <li class="ns-encounters-theme">
-          <md-checkbox (change)='changed($event,"mho")'>MHO</md-checkbox>
+          <md-checkbox (change)='changed($event,"mho")' [disabled]="true">MHO</md-checkbox>
         </li>
         <li class="ns-encounters-theme">
-          <md-checkbox (change)='changed($event,"phone")'>Phone</md-checkbox>
+          <md-checkbox (change)='changed($event,"phone")' [disabled]="true">Phone</md-checkbox>
         </li>
       </ul>
     </div>
