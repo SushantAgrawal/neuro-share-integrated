@@ -44,7 +44,7 @@ export class RelapsesComponent implements OnInit {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
   ngOnInit() {
-    for (var i = 2017; i >= 1917; i--) {
+    for (let i = 2017; i >= 1917; i--) {
       this.years.push(i.toString());
     }
     this.subscriptions = this
@@ -101,11 +101,11 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
-            this.relapsesData[objIndex].last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
-            this.relapsesData[objIndex].clinician_confirmed = this.relapsesDetail.confirm;
-            this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month;
-            this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year;
+            let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+            matched.last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
+            matched.clinician_confirmed = this.relapsesDetail.confirm;
+            matched.relapse_month = this.relapsesDetail.month;
+            matched.relapse_year = this.relapsesDetail.year;
             this.dialogRef.close();
             this.removeChart();
             this.createChart();
@@ -119,8 +119,8 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            var obj = {
-              relapse_id: d.data.relapse_id, 
+            let obj = {
+              relapse_id: d.data.relapse_id,
               relapse_month: this.relapsesDetail.month,
               relapse_year: this.relapsesDetail.year,
               last_updated_provider_id: this.paramData.provider_id,
@@ -230,7 +230,7 @@ export class RelapsesComponent implements OnInit {
 
   deleteChart() {
     this.dialogRef.close();
-    var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+    let objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
     if (objIndex > -1) {
       this.relapsesData.splice(objIndex, 1);
     }
@@ -243,7 +243,7 @@ export class RelapsesComponent implements OnInit {
       this.isDateOutOfRange = true;
     }
     else {
-      var matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+      let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
       let obj = {
         pom_id: this.paramData.pom_id.toString(),
         relapse_id: matched.relapse_id,
@@ -253,7 +253,7 @@ export class RelapsesComponent implements OnInit {
         updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
         clinician_confirmed: matched.clinician_confirmed
       };
-      this.brokerService.httpPut(allHttpMessages.httpPutRelapse, obj);
+      this.brokerService.httpPut(allHttpMessages.httpPutRelapse, { selectedRelapse: obj });
     }
 
   }
