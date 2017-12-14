@@ -148,9 +148,10 @@ export class ImagingComponent implements OnInit {
     this.reportDialogRef = this.dialog.open(this.imagingThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '70px', left: "860px" });
   }
-  showImage(url)
-  {
-    window.open(url, "_blank");
+  showImage(url) {
+    var win = window.open(url, 'Images',
+      'width=650, height=450, top=100, left=350, resizable=1, menubar=no', true);
+    win.focus();
   }
   removeChart() {
     d3.select('#imaging').selectAll("*").remove();
