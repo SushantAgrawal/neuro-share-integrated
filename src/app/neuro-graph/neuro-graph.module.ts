@@ -22,6 +22,7 @@ import { EvalModule } from '@sutterhealth/analytics';
 
 import { TwentyFiveFootWalkComponent } from './graph-panel/twenty-five-foot-walk/twenty-five-foot-walk.component';
 import { SymptomsComponent } from './graph-panel/symptoms/symptoms.component';
+import { AuthenticationModule, AuthenticationService } from '@sutterhealth/user-authentication';
 
 export * from './graph-panel/graph-panel.component';
 export * from './cds/cds.component';
@@ -45,6 +46,7 @@ export const ROUTES: Routes = [];
     MatProgressSpinnerModule,
     MatSnackBarModule,
     EvalModule.forRoot(),
+    AuthenticationModule
   ],
   declarations: [
     GraphPanelComponent,
@@ -65,7 +67,7 @@ export const ROUTES: Routes = [];
     GraphPanelComponent,
     NeuroRelatedComponent
   ],
-  providers: [NeuroGraphService],
+  providers: [NeuroGraphService,AuthenticationService],
   bootstrap: [InfoPopupComponent]
 })
 export class NeuroGraphModule { }

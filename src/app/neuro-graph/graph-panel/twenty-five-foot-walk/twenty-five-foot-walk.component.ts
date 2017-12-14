@@ -5,7 +5,7 @@ import { allMessages, allHttpMessages, manyHttpMessages } from '../../neuro-grap
 import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { NeuroGraphService } from '../../neuro-graph.service';
-//import { AuthenticationService } from '@sutterhealth/user-authentication';
+
 @Component({
   selector: '[app-twenty-five-foot-walk]',
   templateUrl: './twenty-five-foot-walk.component.html',
