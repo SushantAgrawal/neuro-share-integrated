@@ -327,6 +327,7 @@ export class EdssComponent implements OnInit, OnDestroy {
           let currentDate = new Date();
           let selectedScore = d.carryBag.selectedScore;
           this.clinicianDataSet.push({
+            score_id: d.data.score_id,
             last_updated_instant: `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
             last_updated_provider_id: this.neuroGraphService.get("queryParams").provider_id,
             save_csn: this.neuroGraphService.get("queryParams").csn,
@@ -387,7 +388,6 @@ export class EdssComponent implements OnInit, OnDestroy {
   getPayload(score) {
     let currentDate = new Date();
     let payload = {
-      score_id: "1",
       pom_id: this.neuroGraphService.get('queryParams').pom_id.toString(),
       score: score.toString(),
       provider_id: this.neuroGraphService.get("queryParams").provider_id,
@@ -447,8 +447,9 @@ export class EdssComponent implements OnInit, OnDestroy {
   onUpdateSecondLayer() {
     let match = this.clinicianDataSet.find(x => x.save_csn == this.edssScoreDetail.save_csn);
     if (match) {
-      let payload = this.getPayload(this.edssScoreDetail.score);
-      this.brokerService.httpPut(allHttpMessages.httpPutEdss, this.getPayload(this.edssScoreDetail.score), { selectedScore: match });
+      let payload: any = this.getPayload(this.edssScoreDetail.score);
+      payload.score_id = this.edssScoreDetail.score_id;
+      this.brokerService.httpPut(allHttpMessages.httpPutEdss, payload, { selectedScore: match });
     }
   }
 

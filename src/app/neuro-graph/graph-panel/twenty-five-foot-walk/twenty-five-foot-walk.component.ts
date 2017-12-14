@@ -51,7 +51,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
         })()
           : (() => {
-            //debugger;
             this.walk25FeetData = d.data["25fw_scores"];
             if (this.walk25FeetData && this.walk25FeetData.length > 0) {
               this.drawWalk25FeetAxis();

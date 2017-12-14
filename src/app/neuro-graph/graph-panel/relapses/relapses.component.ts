@@ -120,7 +120,7 @@ export class RelapsesComponent implements OnInit {
           ? console.log(d.error)
           : (() => {
             var obj = {
-              relapse_id: this.relapsesData.length.toString(),
+              relapse_id: d.data.relapse_id,
               relapse_month: this.relapsesDetail.month,
               relapse_year: this.relapsesDetail.year,
               last_updated_provider_id: this.paramData.provider_id,
