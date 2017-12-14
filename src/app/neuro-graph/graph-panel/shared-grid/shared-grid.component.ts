@@ -285,7 +285,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       axisTextPrev.append('tspan')
         .attr('x', xScale(previousDate) - 30)
         .attr('dy', 0)
-        .text(this.lastOfficeDateLabel);
+        .text(this.lastOfficeDateLabel)
+        .style('cursor', 'pointer')
+        .on('click', d => {
+          this.showProgressNote();
+        });
     }
     else {
       let rectPrev = nodeSelection.append("rect")
@@ -294,7 +298,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
         .attr("fill", "#EBEBEB")
-        .attr('stroke', '#BCBCBC');
+        .attr('stroke', '#BCBCBC')
+        .style('cursor', 'pointer')
+        .on('click', d => {
+          this.showProgressNote();
+        });
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
