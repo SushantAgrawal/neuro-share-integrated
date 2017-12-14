@@ -58,11 +58,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
             if (this.encounterData.length > 0) {
               this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
-              let prevCSN = "0";
-              if (this.encounterData.length > 1) {
-                prevCSN = this.encounterData[1].contactSerialNumber;
-              }
-              this.getProgessNoteData(prevCSN);
             }
 
 
@@ -75,6 +70,9 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         d.error ? (() => { console.log(d.error) }) : (() => {
           //this.progressNotes = d.data["staged_objects"];
           d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes);
+          let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
+          this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
+          this.dialogRef.updatePosition({ top: '150px', left: '850px' });
         })();
       })
     this.subscriptions.add(sub1).add(sub2);
@@ -315,9 +313,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   };
 
   showProgressNote() {
-    let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
-    this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
-    this.dialogRef.updatePosition({ top: '150px', left: '850px' });
+    let prevCSN = "0";
+    if (this.encounterData.length > 1) {
+      prevCSN = this.encounterData[1].contactSerialNumber;
+    }
+    this.getProgessNoteData(prevCSN);
   };
 
   drawVerticalGridLines(nodeSelection, dimension, xScale) {
