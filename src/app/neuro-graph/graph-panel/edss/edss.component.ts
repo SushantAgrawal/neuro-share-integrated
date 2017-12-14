@@ -172,12 +172,12 @@ export class EdssComponent implements OnInit, OnDestroy {
                     value: this.neuroGraphService.get('queryParams').pom_id
                   },
                   {
-                    name: 'startDate',
-                    value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+                    name: 'start_year',
+                    value: this.chartState.dataBufferPeriod.fromDate.getFullYear()
                   },
                   {
-                    name: 'endDate',
-                    value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+                    name: 'end_year',
+                    value: this.chartState.dataBufferPeriod.toDate.getFullYear()
                   }
                 ]);
             } else {
