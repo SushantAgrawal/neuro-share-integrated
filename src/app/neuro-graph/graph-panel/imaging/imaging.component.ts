@@ -150,7 +150,7 @@ export class ImagingComponent implements OnInit {
   }
   showImage(url) {
     var win = window.open(url, 'Images',
-      'width=650, height=450, top=100, left=350, resizable=1, menubar=no', true);
+      'width=550, height=500, top=100, left=750, resizable=1, menubar=no', true);
     win.focus();
   }
   removeChart() {
