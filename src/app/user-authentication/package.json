@@ -1,0 +1,35 @@
+{
+    "name": "@sutterhealth/user-authentication",
+    "version": "1.1.8",
+    "scripts": {
+        "release": "np --yolo --any-branch --no-publish"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SutterRDD/ui-toolkit-authentication"
+    },
+    "author": {
+        "name": "Mauricio Siller",
+        "email": "penam6@sutterhealth.org"
+    },
+    "keywords": [
+        "angular"
+    ],
+    "license": "NONE",
+    "bugs": {
+        "url": "https://github.com/SutterRDD/ui-toolkit-authentication/issues"
+    },
+    "main": "sutter-health-user-authentication.umd.js",
+    "module": "sutter-health-user-authentication.js",
+    "jsnext:main": "sutter-health-user-authentication.js",
+    "typings": "sutter-health-user-authentication.d.ts",
+    "peerDependencies": {
+        "@angular/core": "^4.0.0",
+        "rxjs": "^5.1.0",
+        "zone.js": "^0.8.4",
+        "@angular/http": "^4.3.6",
+        "@angular/router": "^4.3.6",
+        "ng-http-interceptor": "^3.1.2",
+        "@sutterhealth/data-services": "^1.1.4"
+    }
+}

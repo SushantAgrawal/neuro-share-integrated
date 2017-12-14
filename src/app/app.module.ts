@@ -35,7 +35,7 @@ import { ServicesSdkModule, SdkService } from "@sutterhealth/data-services";
 
 //Authentication Module
 import { AuthenticationModule, AuthenticationService } from '@sutterhealth/user-authentication';
-
+// import { AuthenticationModule, AuthenticationService } from './user-authentication/user-authentication.module';
 //Widgets Module
 import { WidgetsModule, FeedbackReportComponent } from '@sutterhealth/widgets';
 
