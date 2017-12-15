@@ -52,20 +52,24 @@ export class ImagingComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
           })()
           : (() => {
-            if (d.data && d.data.EPIC && d.data.EPIC.patient && d.data.EPIC.patient[0]) {
-              this.imagingData = d.data.EPIC.patient[0].imagingOrders.filter(item => imagingConfig.some(f => f["CPT code"] == item.procedureCPTCode));
+            try {
+              if (d.data && d.data.EPIC && d.data.EPIC.patient && d.data.EPIC.patient[0]) {
+                this.imagingData = d.data.EPIC.patient[0].imagingOrders.filter(item => imagingConfig.some(f => f["CPT code"] == item.procedureCPTCode));
+              }
+              if (this.imagingData && this.imagingData.length > 0) {
+                this.createChart();
+              }
+              this.imagingChartLoaded = true;
+              this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
+              //custom error handling
+              if (!this.imagingData || this.imagingData.length == 0)
+                this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              else if (this.imagingData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
+                this.brokerService.emit(allMessages.showCustomError, 'D-001');
             }
-            if (this.imagingData && this.imagingData.length > 0) {
-              this.createChart();
+            catch (ex) {
+              console.log(ex);
             }
-            this.imagingChartLoaded = true;
-            this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
-            //custom error handling
-            if (!this.imagingData || this.imagingData.length == 0)
-              this.brokerService.emit(allMessages.showCustomError, 'M-002');
-            else if (this.imagingData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
-              this.brokerService.emit(allMessages.showCustomError, 'D-001');
-
           })();
       })
 
@@ -148,9 +152,10 @@ export class ImagingComponent implements OnInit {
     this.reportDialogRef = this.dialog.open(this.imagingThirdLevelTemplate, dialogConfig);
     this.reportDialogRef.updatePosition({ top: '70px', left: "860px" });
   }
-  showImage(url)
-  {
-    window.open(url, "_blank");
+  showImage(url) {
+    var win = window.open(url, 'Images',
+      'width=550, height=500, top=100, left=750, resizable=1, menubar=no', true);
+    win.focus();
   }
   removeChart() {
     d3.select('#imaging').selectAll("*").remove();

@@ -38,7 +38,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   registerDrag: any;
   constructor(private brokerService: BrokerService, private dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
-   
+
   }
   ngOnInit() {
     //get walk data
@@ -51,36 +51,37 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
         })()
           : (() => {
-            this.walk25FeetData = d.data["25fw_scores"];
-            if (this.walk25FeetData && this.walk25FeetData.length > 0) {
-              this.drawWalk25FeetAxis();
-              this.drawWalk25FeetLineCharts();
-            }
-            else
-            {
-              this.walk25FeetData =[];
-            }
-            this.Feet25WalkChartLoaded = true;
-            if (this.walk25FeetOpenAddPopUp == true) {
-              this.walk25FeetOpenAddPopUp = false;
-              let dt = d3.selectAll('.walk25Feet-axis');
-              //if (dt["_groups"][0].length > 0) {
+
+            try {
+              this.walk25FeetData = d.data["25fw_scores"];
+              if (this.walk25FeetData && this.walk25FeetData.length > 0) {
+                this.drawWalk25FeetAxis();
+                this.drawWalk25FeetLineCharts();
+              }
+              else {
+                this.walk25FeetData = [];
+              }
+              this.Feet25WalkChartLoaded = true;
+              if (this.walk25FeetOpenAddPopUp == true) {
+                this.walk25FeetOpenAddPopUp = false;
+                let dt = d3.selectAll('.walk25Feet-axis');
                 this.score_1 = "";
                 this.score_2 = "";
                 this.scoreValue = "";
-                //let dialogConfig = { hasBackdrop: true,backdropClass: 'ns-back', panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
                 let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
                 this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
                 this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
-              //}
+              }
+              this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
+              //custom error handling
+              if (!this.walk25FeetData || this.walk25FeetData.length == 0)
+                this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              else if (this.walk25FeetData.some(obj => obj.walk_1_score == '' || obj.walk_2_score == '' || obj.walk_1_score == 'No result' || obj.walk_2_score == 'No result'))
+                this.brokerService.emit(allMessages.showCustomError, 'D-002');
             }
-            this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
-
-            //custom error handling
-            if (!this.walk25FeetData || this.walk25FeetData.length == 0)
-              this.brokerService.emit(allMessages.showCustomError, 'M-002');
-            else if (this.walk25FeetData.some(obj => obj.walk_1_score == '' || obj.walk_2_score == '' || obj.walk_1_score == 'No result' || obj.walk_2_score == 'No result'))
-              this.brokerService.emit(allMessages.showCustomError, 'D-002');
+            catch (ex) {
+              console.log(ex);
+            }
           })();
       })
     let walk25Feet = this
@@ -133,7 +134,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           this.score_1 = "";
           this.score_2 = "";
           this.scoreValue = "";
-          //let dialogConfig = { hasBackdrop: true,backdropClass: 'ns-back', panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
           let dialogConfig = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', preserveScope: true, skipHide: true };
           this.Walk25FeetChartDialogRef = this.dialog.open(this.walk25FeetAddSecondLevelTemplate, dialogConfig);
           this.Walk25FeetChartDialogRef.updatePosition({ top: '325px', left: '255px' });
@@ -354,7 +354,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   }
 
   drawWalk25FeetLineCharts() {
-    //Use moment js later
     let getParsedDate = (dtString) => {
       let dtPart = dtString.split(' ')[0];
       return Date.parse(dtPart);

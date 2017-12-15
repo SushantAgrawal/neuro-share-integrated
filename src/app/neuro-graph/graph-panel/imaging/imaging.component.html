@@ -17,7 +17,7 @@
                 <div class="ns-imaging-col">{{imaging.orderFormatDate}}</div>
                 <div class="ns-imaging-icon">
                     <span *ngIf="imaging['image_launch_url']!=''" class="icon-brainneuroshare" style="cursor:pointer;" (click)="showImage(imaging['image_launch_url'])"></span>
-                    <span *ngIf="imaging.impression.length > 0" class="icon-documentneuroshare" style="cursor:pointer;" (click)="showResult(imaging)"></span>
+                    <span *ngIf="imaging.impression.length > 0 || imaging.narrative.length > 0" class="icon-documentneuroshare" style="cursor:pointer;" (click)="showResult(imaging)"></span>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="ns-imaging-row">
-                <div *ngIf="imagingReportDetails.impression.length > 0">
+                <div *ngIf="imagingReportDetails.impression.length > 0 || imagingReportDetails.narrative.length > 0">
                     <div class="ns-imaging-sub-header">
                         <div class="ns-imaging-study">{{imagingReportDetails.displayName}}</div>
                         <div class="ns-imaging-study">{{imagingReportDetails.resultDate}}</div>

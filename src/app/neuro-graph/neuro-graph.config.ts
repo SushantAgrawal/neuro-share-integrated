@@ -627,7 +627,6 @@ export const labsConfig = [
 ];
 
 export const imagingConfig = [
-  [
     {
       "proc_id": 358790,
       "proc_name": "HCHG MRI BRAIN FUNC TEST SELECT OR VISUAL STIM BY TECH",
@@ -1360,5 +1359,4 @@ export const imagingConfig = [
       "proc_type": "Charge",
       "CPT code": 612
     }
-  ]
 ];

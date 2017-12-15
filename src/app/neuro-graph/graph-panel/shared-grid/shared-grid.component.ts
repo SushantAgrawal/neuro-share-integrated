@@ -30,9 +30,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       })();
     })
     let sub1 = this
-      .brokerService
-      .filterOn(allHttpMessages.httpGetEncounters)
-      .subscribe(d => {
+      .brokerService.filterOn(allHttpMessages.httpGetEncounters).subscribe(d => {
         d.error
           ? (() => {
             console.log(d.error)
@@ -41,9 +39,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
             let encounters: Array<any> = [];
             if (d.data && d.data.EPIC && d.data.EPIC.encounters) {
               encounters = d.data.EPIC.encounters;
-            }
-            else {
-              encounters = [];
             }
             let filteredEncounter = encounters.filter(t => t.contactType == 'Office Visit');
             this.encounterData = filteredEncounter.map(d => {
@@ -58,23 +53,17 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
             if (this.encounterData.length > 0) {
               this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
-              let prevCSN = "0";
-              if (this.encounterData.length > 1) {
-                prevCSN = this.encounterData[1].contactSerialNumber;
-              }
-              this.getProgessNoteData(prevCSN);
             }
-
-
           })();
-      })
-    let sub2 = this
-      .brokerService
-      .filterOn(allHttpMessages.httpGetProgressNote)
+      });
+
+    let sub2 = this.brokerService.filterOn(allHttpMessages.httpGetProgressNote)
       .subscribe(d => {
         d.error ? (() => { console.log(d.error) }) : (() => {
-          //this.progressNotes = d.data["staged_objects"];
           d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes);
+          let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
+          this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
+          this.dialogRef.updatePosition({ top: '150px', left: '850px' });
         })();
       })
     this.subscriptions.add(sub1).add(sub2);
@@ -102,7 +91,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
       }
     ]);
-  }
+  };
+
   getProgessNoteData(prevCSN) {
     this.brokerService.httpGet(allHttpMessages.httpGetProgressNote, [
       {
@@ -114,7 +104,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         value: prevCSN
       }
     ]);
-  }
+  };
 
   drawRootElement(state): void {
     d3.select('#shared-grid').selectAll("*").remove();
@@ -137,14 +127,14 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
   drawCommonXAxis(nodeSelection, dimension, xScale) {
     let xAxis;
-    if (this.chartState.zoomMonthsSpan == 6) {
+    if (this.chartState.zoomMonthsSpan == 1) {
+      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(30);
+    }
+    else if (this.chartState.zoomMonthsSpan == 6) {
       xAxis = d3.axisBottom(xScale).tickSize(0).ticks(180);
     }
     else if (this.chartState.zoomMonthsSpan == 3) {
       xAxis = d3.axisBottom(xScale).tickSize(0).ticks(90);
-    }
-    else if (this.chartState.zoomMonthsSpan == 1) {
-      xAxis = d3.axisBottom(xScale).tickSize(0).ticks(30);
     }
     else {
       xAxis = d3.axisBottom(xScale).tickSize(0);
@@ -177,6 +167,73 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         });
         axis.selectAll('.mid-year-tick').style('display', 'block').style('font-size', '12px');
       });
+  };
+
+  drawVerticalGridLines(nodeSelection, dimension, xScale) {
+    let xAxisGridLines;
+
+    if (this.chartState.zoomMonthsSpan == 1) {
+      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(30);
+    }
+    else if (this.chartState.zoomMonthsSpan == 6 || this.chartState.zoomMonthsSpan == 3) {
+      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(this.chartState.zoomMonthsSpan);
+    }
+    else {
+      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(this.chartState.zoomMonthsSpan);
+    }
+
+    nodeSelection.append('g')
+      .attr('class', 'grid-lines')
+      .call(g => {
+        let axis = g.call(xAxisGridLines)
+        axis.select('.domain').remove();
+        axis.selectAll('text').remove();
+
+        axis.selectAll('line')
+        .style('stroke-width', '1px')
+        .style('stroke', (d)=>{
+          return d.getMonth() == 6 ? '#a7a7a7' : '#E4E4E4';
+        });
+        
+
+        axis.selectAll('line')
+        .attr('y2', (d) => {
+          if (this.chartState.zoomMonthsSpan == 1) {
+            return 0;
+          }
+          else if (this.chartState.zoomMonthsSpan == 6 || this.chartState.zoomMonthsSpan == 3) {
+            return d.getDate() == 1 ? dimension.offsetHeight - 10 : 0;
+          }
+          else {
+            return dimension.offsetHeight - 10;
+          }
+        });
+      });
+  };
+
+  drawScrollArrows(nodeSelection, dimension) {
+    let arc = d3.symbol().type(d3.symbolTriangle).size(100);
+    let hAdj = 7;
+    let vAdj = 8;
+    nodeSelection.append('path')
+      .attr('d', arc)
+      .attr('class', 'x-axis-arrow')
+      .style('fill', '#C8C8C8')
+      .style('cursor', 'pointer')
+      .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
+      .on('click', d => { this.scroll('backward'); });
+
+    nodeSelection.append('path')
+      .attr('d', arc)
+      .attr('class', 'x-axis-arrow')
+      .style('fill', '#C8C8C8')
+      .style('cursor', 'pointer')
+      .attr('transform', `translate(${dimension.marginLeft + dimension.width + hAdj}, ${dimension.marginTop + vAdj}) rotate(90)`)
+      .on('click', d => { this.scroll('forward'); });
+  };
+
+  scroll(direction) {
+    this.brokerService.emit(allMessages.timelineScroll, direction);
   };
 
   drawReferenceLines(nodeSelection, dimension, xScale) {
@@ -224,19 +281,23 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
         .attr("fill", "#EBEBEB")
-        .attr('stroke', '#BCBCBC');
+        .attr('stroke', '#BCBCBC')
+        .style('cursor', 'pointer')
+        .on('click', d => {
+          this.showProgressNote();
+        });
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
         .style('font-weight', 'bold')
-        .style('cursor', 'pointer')
       axisTextPrev.append('tspan')
         .attr('x', xScale(previousDate) - 30)
         .attr('dy', 0)
         .text(this.lastOfficeDateLabel)
+        .style('cursor', 'pointer')
         .on('click', d => {
           this.showProgressNote();
-        })
+        });
     }
     else {
       let rectPrev = nodeSelection.append("rect")
@@ -245,7 +306,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
         .attr("fill", "#EBEBEB")
-        .attr('stroke', '#BCBCBC');
+        .attr('stroke', '#BCBCBC')
+        .style('cursor', 'pointer')
+        .on('click', d => {
+          this.showProgressNote();
+        });
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
         .style('font-size', '12px')
@@ -315,75 +380,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   };
 
   showProgressNote() {
-    let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
-    this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
-    this.dialogRef.updatePosition({ top: '150px', left: '850px' });
-  };
-
-  drawVerticalGridLines(nodeSelection, dimension, xScale) {
-    let xAxisGridLines;
-
-    if (this.chartState.zoomMonthsSpan == 6) {
-      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(6);
+    let prevCSN = "0";
+    if (this.encounterData.length > 1) {
+      prevCSN = this.encounterData[1].contactSerialNumber;
     }
-    else if (this.chartState.zoomMonthsSpan == 3) {
-      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(3);
-    }
-    else if (this.chartState.zoomMonthsSpan == 1) {
-      xAxisGridLines = d3.axisBottom(xScale).tickSize(0).ticks(30);
-    }
-    else {
-      xAxisGridLines = d3.axisBottom(xScale).tickSize(0);
-    }
-
-    nodeSelection.append('g')
-      .attr('class', 'grid-lines')
-      .call(g => {
-        let axis = g.call(xAxisGridLines)
-        axis.select('.domain').remove();
-        axis.selectAll('text').remove();
-        axis.selectAll('line').style('stroke', '#E4E4E4').style('stroke-width', '1px');
-        axis.selectAll('line').attr('y2', (d) => {
-          if (this.chartState.zoomMonthsSpan == 6) {
-            return d.getDate() == 1 ? dimension.offsetHeight : 0;
-          }
-          else if (this.chartState.zoomMonthsSpan == 3) {
-            return d.getDate() == 1 ? dimension.offsetHeight : 0;
-          }
-          else if (this.chartState.zoomMonthsSpan == 1) {
-            //return d.getDate() % 2 == 0 ? dimension.offsetHeight : 0;
-            return 0;
-          }
-          else {
-            return d.getMonth() == 0 ? dimension.offsetHeight : 0;
-          }
-        });
-      });
-  };
-
-  drawScrollArrows(nodeSelection, dimension) {
-    let arc = d3.symbol().type(d3.symbolTriangle).size(100);
-    let hAdj = 7;
-    let vAdj = 8;
-    nodeSelection.append('path')
-      .attr('d', arc)
-      .attr('class', 'x-axis-arrow')
-      .style('fill', '#C8C8C8')
-      .style('cursor', 'pointer')
-      .attr('transform', `translate(${dimension.marginLeft - hAdj}, ${dimension.marginTop + vAdj}) rotate(270)`)
-      .on('click', d => { this.scroll('backward'); });
-
-    nodeSelection.append('path')
-      .attr('d', arc)
-      .attr('class', 'x-axis-arrow')
-      .style('fill', '#C8C8C8')
-      .style('cursor', 'pointer')
-      .attr('transform', `translate(${dimension.marginLeft + dimension.width + hAdj}, ${dimension.marginTop + vAdj}) rotate(90)`)
-      .on('click', d => { this.scroll('forward'); });
-  };
-
-  scroll(direction) {
-    this.brokerService.emit(allMessages.timelineScroll, direction);
+    this.getProgessNoteData(prevCSN);
   };
 
   //#endregion

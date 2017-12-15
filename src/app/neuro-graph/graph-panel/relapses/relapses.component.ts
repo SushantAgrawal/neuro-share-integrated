@@ -44,7 +44,7 @@ export class RelapsesComponent implements OnInit {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
   ngOnInit() {
-    for (var i = 2017; i >= 1917; i--) {
+    for (let i = 2017; i >= 1917; i--) {
       this.years.push(i.toString());
     }
     this.subscriptions = this
@@ -57,32 +57,35 @@ export class RelapsesComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
           })()
           : (() => {
-            this.relapsesData = d.data.relapses;
-            if (d.data && d.data.relapses && d.data.relapses.length > 0) {
-              this.createChart();
-            }
-            else{
-              this.relapsesData =[];
-            }
-            this.relapsisChartLoaded = true;
-            if (this.relapsesOpenAddPopUp == true) {
-              this.relapsesOpenAddPopUp = false;
-              let dt = d3.select('#relapses').selectAll("*");
-              //if (dt["_groups"][0].length > 0) {
+            try {
+              this.relapsesData = d.data.relapses;
+              if (d.data && d.data.relapses && d.data.relapses.length > 0) {
+                this.createChart();
+              }
+              else {
+                this.relapsesData = [];
+              }
+              this.relapsisChartLoaded = true;
+              if (this.relapsesOpenAddPopUp == true) {
+                this.relapsesOpenAddPopUp = false;
+                let dt = d3.select('#relapses').selectAll("*");
                 this.isDateOutOfRange = false;
-                this.relapsesDetail = {month:"",year:""};
+                this.relapsesDetail = { month: "", year: "" };
                 let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
                 this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
                 this.dialogRef.updatePosition({ top: '335px', left: '255px' });
-              //}
-            }
-            this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
+              }
+              this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
 
-            //custom error handling
-            if (!d.data || !d.data.relapses || d.data.relapses.length == 0)
-              this.brokerService.emit(allMessages.showCustomError, 'M-002');
-            else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))
-              this.brokerService.emit(allMessages.showCustomError, 'D-002');
+              //custom error handling
+              if (!d.data || !d.data.relapses || d.data.relapses.length == 0)
+                this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))
+                this.brokerService.emit(allMessages.showCustomError, 'D-002');
+            }
+            catch (ex) {
+              console.log(ex);
+            }
           })();
       })
     let relapses = this
@@ -101,11 +104,11 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
-            this.relapsesData[objIndex].last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
-            this.relapsesData[objIndex].clinician_confirmed = this.relapsesDetail.confirm;
-            this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month;
-            this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year;
+            let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+            matched.last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
+            matched.clinician_confirmed = this.relapsesDetail.confirm;
+            matched.relapse_month = this.relapsesDetail.month;
+            matched.relapse_year = this.relapsesDetail.year;
             this.dialogRef.close();
             this.removeChart();
             this.createChart();
@@ -119,7 +122,7 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            var obj = {
+            let obj = {
               relapse_id: d.data.relapse_id,
               relapse_month: this.relapsesDetail.month,
               relapse_year: this.relapsesDetail.year,
@@ -147,7 +150,6 @@ export class RelapsesComponent implements OnInit {
             console.log(d.error)
           })
           : (() => {
-            //make api call
             this
               .brokerService
               .httpGet(allHttpMessages.httpGetRelapse, [
@@ -195,7 +197,7 @@ export class RelapsesComponent implements OnInit {
               this.isDateOutOfRange = false;
               this.relapsesDetail = this.relapsesData[0];
               this.relapsesDetail.month = "";
-              this.relapsesDetail.year = "";//new Date().getFullYear().toString();
+              this.relapsesDetail.year = "";
               let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
               this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
               this.dialogRef.updatePosition({ top: '335px', left: '255px' });
@@ -231,7 +233,7 @@ export class RelapsesComponent implements OnInit {
 
   deleteChart() {
     this.dialogRef.close();
-    var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+    let objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
     if (objIndex > -1) {
       this.relapsesData.splice(objIndex, 1);
     }
@@ -244,27 +246,17 @@ export class RelapsesComponent implements OnInit {
       this.isDateOutOfRange = true;
     }
     else {
-      var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+      let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
       let obj = {
         pom_id: this.paramData.pom_id.toString(),
-        relapse_id: this.relapsesData[objIndex].relapse_id,
-        provider_id: this.relapsesData[objIndex].last_updated_provider_id,
+        relapse_id: matched.relapse_id,
+        provider_id: matched.last_updated_provider_id,
         save_csn: this.paramData.csn,
         save_csn_status: this.paramData.csn_status,
         updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
-        clinician_confirmed: this.relapsesData[objIndex].clinician_confirmed
+        clinician_confirmed: matched.clinician_confirmed
       };
-      console.log(JSON.stringify(obj));
-      this.brokerService.httpPut(allHttpMessages.httpPutRelapse, obj);
-
-      // var objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
-      // this.relapsesData[objIndex].last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
-      // this.relapsesData[objIndex].clinician_confirmed = this.relapsesDetail.confirm;
-      // this.relapsesData[objIndex].relapse_month = this.relapsesDetail.month;
-      // this.relapsesData[objIndex].relapse_year = this.relapsesDetail.year;
-      // this.dialogRef.close();
-      // this.removeChart();
-      // this.createChart();
+      this.brokerService.httpPut(allHttpMessages.httpPutRelapse, { selectedRelapse: obj });
     }
 
   }
@@ -290,26 +282,7 @@ export class RelapsesComponent implements OnInit {
           updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year
         }
         this.brokerService.httpPost(allHttpMessages.httpPostRelapse, objSave);
-
-        // var obj = {
-        //   "relapse_id": this.relapsesData.length.toString(),
-        //   "relapse_month": this.relapsesDetail.month,
-        //   "relapse_year": this.relapsesDetail.year,
-        //   "last_updated_provider_id": "",
-        //   "save_csn": this.paramData.csn,
-        //   "save_csn_status": this.paramData.csn_status,
-        //   "last_updated_instant": (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
-        //   "patient_reported": true,
-        //   "qx_id": "",
-        //   "clinician_confirmed": true,
-        //   "relapseaxis": "2.0"
-        // }
-        // this.relapsesData.push(obj);
-        // this.dialogRef.close();
-        // this.removeChart();
-        // this.createChart();
       }
-
     }
   }
 
