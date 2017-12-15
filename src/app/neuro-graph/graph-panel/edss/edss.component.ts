@@ -329,22 +329,28 @@ export class EdssComponent implements OnInit, OnDestroy {
       .filterOn(allHttpMessages.httpPostEdss)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          let currentDate = new Date();
-          let selectedScore = d.carryBag.selectedScore;
-          this.clinicianDataSet.push({
-            score_id: d.data.score_id,
-            last_updated_instant: `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
-            last_updated_provider_id: this.neuroGraphService.get("queryParams").provider_id,
-            save_csn: this.neuroGraphService.get("queryParams").csn,
-            save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
-            score: selectedScore.score,
-            lastUpdatedDate: currentDate.getTime(),
-            reportedBy: "Clinician",
-            scoreValue: parseFloat(selectedScore.score)
-          })
-          this.removeChart();
-          this.drawEdssLineCharts();
-          this.scoreChartDialogRef.close();
+          try {
+            let currentDate = new Date();
+            let selectedScore = d.carryBag.selectedScore;
+            this.clinicianDataSet.push({
+              score_id: d.data.score_id,
+              last_updated_instant: `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
+              last_updated_provider_id: this.neuroGraphService.get("queryParams").provider_id,
+              save_csn: this.neuroGraphService.get("queryParams").csn,
+              save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
+              score: selectedScore.score,
+              lastUpdatedDate: currentDate.getTime(),
+              reportedBy: "Clinician",
+              scoreValue: parseFloat(selectedScore.score)
+            })
+            this.removeChart();
+            this.drawEdssLineCharts();
+            this.scoreChartDialogRef.close();
+          }
+          catch (ex) {
+            console.log(ex);
+            this.brokerService.emit(allMessages.showLogicalError, 'EDSS');
+          }
         })();
       });
 
@@ -354,12 +360,18 @@ export class EdssComponent implements OnInit, OnDestroy {
       .filterOn(allHttpMessages.httpPutEdss)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          let selectedScore = d.carryBag.selectedScore;
-          selectedScore.score = this.edssScoreDetail.score;
-          selectedScore.scoreValue = this.edssScoreDetail.scoreValue;
-          this.removeChart();
-          this.drawEdssLineCharts();
-          this.secondLayerDialogRef.close();
+          try {
+            let selectedScore = d.carryBag.selectedScore;
+            selectedScore.score = this.edssScoreDetail.score;
+            selectedScore.scoreValue = this.edssScoreDetail.scoreValue;
+            this.removeChart();
+            this.drawEdssLineCharts();
+            this.secondLayerDialogRef.close();
+          }
+          catch (ex) {
+            console.log(ex);
+            this.brokerService.emit(allMessages.showLogicalError, 'EDSS');
+          }
         })();
       });
 
