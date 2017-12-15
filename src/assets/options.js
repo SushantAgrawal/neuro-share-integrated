@@ -53,7 +53,7 @@ var gUrlMaps = {
     "http:post:walk25Feet": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk",
     "http:put:walk25Feet": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk",
 
-    "http:get:edss": "http://localhost:3000/edss-score/",
+    "http:get:edss": "http://61.16.131.166:3000/edss-score/",
     "http:post:edss": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/edss-score",
     "http:put:edss": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/edss-score",
 
@@ -87,7 +87,7 @@ var gUrlMaps = {
 
     "http:get:cds:info": "http://61.16.131.166:3000/cds-info/",
 
-    "http:get:medications": "http://localhost:3000/medications-orders/",
+    "http:get:medications": "http://61.16.131.166:3000/medications-orders/",
 
     "http:get:encounters": "http://61.16.131.166:3000/encounters/",
 
