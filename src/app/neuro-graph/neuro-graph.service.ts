@@ -135,7 +135,7 @@ export class NeuroGraphService {
     this.dragElement(divToMove);
   }
 
-  // Http methods
+  // Http methods. To be removed later.
   httpGet(messsageId: string, params?: { name: string, value: string }[], headers?: { name: string, value: string }[], carryBag?: any) {
     //ToDo :Toggle Progress Bar
     try {
