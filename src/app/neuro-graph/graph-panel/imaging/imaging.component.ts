@@ -69,6 +69,7 @@ export class ImagingComponent implements OnInit {
             }
             catch (ex) {
               console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'imaging');
             }
           })();
       })

@@ -81,6 +81,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
             }
             catch (ex) {
               console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'walk25Feet');
             }
           })();
       })
@@ -167,20 +168,26 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .filterOn(allHttpMessages.httpPostWalk25Feet)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          let currentDate = new Date();
-          this.walk25FeetData.push({
-            score_id: d.data.score_id,
-            walk_1_score: this.score_1.toString(),
-            walk_2_score: this.score_2.toString(),
-            last_updated_provider_id: this.neuroGraphService.get("queryParams").provider_id,
-            last_updated_instant: this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY'),
-            save_csn: this.neuroGraphService.get("queryParams").csn,
-            save_csn_status: this.neuroGraphService.get("queryParams").csn_status
-          });
-          this.Walk25FeetChartDialogRef.close();
-          this.removeChart();
-          this.drawWalk25FeetAxis();
-          this.drawWalk25FeetLineCharts();
+          try {
+            let currentDate = new Date();
+            this.walk25FeetData.push({
+              score_id: d.data.score_id,
+              walk_1_score: this.score_1.toString(),
+              walk_2_score: this.score_2.toString(),
+              last_updated_provider_id: this.neuroGraphService.get("queryParams").provider_id,
+              last_updated_instant: this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY'),
+              save_csn: this.neuroGraphService.get("queryParams").csn,
+              save_csn_status: this.neuroGraphService.get("queryParams").csn_status
+            });
+            this.Walk25FeetChartDialogRef.close();
+            this.removeChart();
+            this.drawWalk25FeetAxis();
+            this.drawWalk25FeetLineCharts();
+          }
+          catch (ex) {
+            console.log(ex);
+            this.brokerService.emit(allMessages.showLogicalError, 'walk25Feet');
+          }
         })();
       });
 
@@ -190,15 +197,21 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .filterOn(allHttpMessages.httpPutWalk25Feet)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          let currentDate = new Date();
-          let objIndex = this.walk25FeetData.findIndex((obj => obj.score_id == this.walk25FeetScoreDetail.score_id));
-          this.walk25FeetData[objIndex].last_updated_instant = this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY');
-          this.walk25FeetData[objIndex].walk_1_score = this.walk25FeetScoreDetail.walk_1_score;
-          this.walk25FeetData[objIndex].walk_2_score = this.walk25FeetScoreDetail.walk_2_score;
-          this.dialogRef.close();
-          this.removeChart();
-          this.drawWalk25FeetAxis();
-          this.drawWalk25FeetLineCharts();
+          try {
+            let currentDate = new Date();
+            let objIndex = this.walk25FeetData.findIndex((obj => obj.score_id == this.walk25FeetScoreDetail.score_id));
+            this.walk25FeetData[objIndex].last_updated_instant = this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY');
+            this.walk25FeetData[objIndex].walk_1_score = this.walk25FeetScoreDetail.walk_1_score;
+            this.walk25FeetData[objIndex].walk_2_score = this.walk25FeetScoreDetail.walk_2_score;
+            this.dialogRef.close();
+            this.removeChart();
+            this.drawWalk25FeetAxis();
+            this.drawWalk25FeetLineCharts();
+          }
+          catch (ex) {
+            console.log(ex);
+            this.brokerService.emit(allMessages.showLogicalError, 'walk25Feet');
+          }
         })();
       });
 
