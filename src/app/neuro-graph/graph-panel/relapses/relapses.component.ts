@@ -85,6 +85,7 @@ export class RelapsesComponent implements OnInit {
             }
             catch (ex) {
               console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'relapses');
             }
           })();
       })
@@ -104,14 +105,20 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
-            matched.last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
-            matched.clinician_confirmed = this.relapsesDetail.confirm;
-            matched.relapse_month = this.relapsesDetail.month;
-            matched.relapse_year = this.relapsesDetail.year;
-            this.dialogRef.close();
-            this.removeChart();
-            this.createChart();
+            try {
+              let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
+              matched.last_updated_instant = (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year;
+              matched.clinician_confirmed = this.relapsesDetail.confirm;
+              matched.relapse_month = this.relapsesDetail.month;
+              matched.relapse_year = this.relapsesDetail.year;
+              this.dialogRef.close();
+              this.removeChart();
+              this.createChart();
+            }
+            catch (ex) {
+              console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'relapses');
+            }
           })();
       })
 
@@ -122,23 +129,29 @@ export class RelapsesComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            let obj = {
-              relapse_id: d.data.relapse_id,
-              relapse_month: this.relapsesDetail.month,
-              relapse_year: this.relapsesDetail.year,
-              last_updated_provider_id: this.paramData.provider_id,
-              save_csn: this.paramData.csn,
-              save_csn_status: this.paramData.csn_status,
-              last_updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
-              patient_reported: true,
-              qx_id: "",
-              clinician_confirmed: true,
-              relapseaxis: "2.0"
+            try {
+              let obj = {
+                relapse_id: d.data.relapse_id,
+                relapse_month: this.relapsesDetail.month,
+                relapse_year: this.relapsesDetail.year,
+                last_updated_provider_id: this.paramData.provider_id,
+                save_csn: this.paramData.csn,
+                save_csn_status: this.paramData.csn_status,
+                last_updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
+                patient_reported: true,
+                qx_id: "",
+                clinician_confirmed: true,
+                relapseaxis: "2.0"
+              }
+              this.relapsesData.push(obj);
+              this.dialogRef.close();
+              this.removeChart();
+              this.createChart();
             }
-            this.relapsesData.push(obj);
-            this.dialogRef.close();
-            this.removeChart();
-            this.createChart();
+            catch (ex) {
+              console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'relapses');
+            }
           })();
       })
 
