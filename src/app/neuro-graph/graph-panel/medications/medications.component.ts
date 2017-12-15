@@ -105,6 +105,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           }
           catch (e) {
             console.log(e);
+            this.brokerService.emit(allMessages.showLogicalError, 'Medication');
           }
         })();
     });
@@ -147,7 +148,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
 
     let subDmtPost = this.brokerService.filterOn(allHttpMessages.httpPostDmt).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        let params =
+        try {
           this.dmtSecondLayerLocalData.push({
             dmt_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
             patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
@@ -158,40 +159,59 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             save_csn: this.queryParams.csn,
             save_csn_status: this.queryParams.csn_status
           });
-        this.dialogRef.close();
+          this.dialogRef.close();
+        } catch (ex) {
+          console.log(ex);
+          this.brokerService.emit(allMessages.showLogicalError, 'Medication');
+        }
       })();
     })
 
     let subDmtPut = this.brokerService.filterOn(allHttpMessages.httpPutDmt).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        let med = d.carryBag.dmt;
-        med.patient_reported_start = `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`;
-        med.reason_stopped = this.medSecondLayerModel.reasonStopped;
-        med.other_reason = this.medSecondLayerModel.otherReason;
-        med.otherReason = this.medSecondLayerModel.otherReason;
-        this.dialogRef.close();
+        try {
+          let med = d.carryBag.dmt;
+          med.patient_reported_start = `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`;
+          med.reason_stopped = this.medSecondLayerModel.reasonStopped;
+          med.other_reason = this.medSecondLayerModel.otherReason;
+          med.otherReason = this.medSecondLayerModel.otherReason;
+          this.dialogRef.close();
+        } catch (ex) {
+          console.log(ex);
+          this.brokerService.emit(allMessages.showLogicalError, 'Medication');
+        }
       })();
     })
 
     let subOtherMedsPost = this.brokerService.filterOn(allHttpMessages.httpPostOtherMeds).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        this.otherMedsSecondLayerLocalData.push({
-          other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
-          reason_for_med: this.medSecondLayerModel.reasonForMed,
-          last_updated_provider_id: this.queryParams.provider_id,
-          last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-          save_csn: this.queryParams.csn,
-          save_csn_status: this.queryParams.csn_status
-        });
-        this.dialogRef.close();
+        try {
+          this.otherMedsSecondLayerLocalData.push({
+            other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
+            reason_for_med: this.medSecondLayerModel.reasonForMed,
+            last_updated_provider_id: this.queryParams.provider_id,
+            last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+            save_csn: this.queryParams.csn,
+            save_csn_status: this.queryParams.csn_status
+          });
+          this.dialogRef.close();
+        } catch (ex) {
+          console.log(ex);
+          this.brokerService.emit(allMessages.showLogicalError, 'Medication');
+        }
       })();
     })
 
     let subOtherMedsPut = this.brokerService.filterOn(allHttpMessages.httpPutOtherMeds).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        let med = d.carryBag.otherMed;
-        med.reason_for_med = this.medSecondLayerModel.reasonForMed;
-        this.dialogRef.close();
+        try {
+          let med = d.carryBag.otherMed;
+          med.reason_for_med = this.medSecondLayerModel.reasonForMed;
+          this.dialogRef.close();
+        } catch (ex) {
+          console.log(ex);
+          this.brokerService.emit(allMessages.showLogicalError, 'Medication');
+        }
       })();
     })
 
