@@ -57,32 +57,35 @@ export class RelapsesComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
           })()
           : (() => {
-            this.relapsesData = d.data.relapses;
-            if (d.data && d.data.relapses && d.data.relapses.length > 0) {
-              this.createChart();
-            }
-            else {
-              this.relapsesData = [];
-            }
-            this.relapsisChartLoaded = true;
-            if (this.relapsesOpenAddPopUp == true) {
-              this.relapsesOpenAddPopUp = false;
-              let dt = d3.select('#relapses').selectAll("*");
-              //if (dt["_groups"][0].length > 0) {
-              this.isDateOutOfRange = false;
-              this.relapsesDetail = { month: "", year: "" };
-              let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
-              this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
-              this.dialogRef.updatePosition({ top: '335px', left: '255px' });
-              //}
-            }
-            this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
+            try {
+              this.relapsesData = d.data.relapses;
+              if (d.data && d.data.relapses && d.data.relapses.length > 0) {
+                this.createChart();
+              }
+              else {
+                this.relapsesData = [];
+              }
+              this.relapsisChartLoaded = true;
+              if (this.relapsesOpenAddPopUp == true) {
+                this.relapsesOpenAddPopUp = false;
+                let dt = d3.select('#relapses').selectAll("*");
+                this.isDateOutOfRange = false;
+                this.relapsesDetail = { month: "", year: "" };
+                let dialogConfig = { hasBackdrop: true, panelClass: 'ns-relapses-theme', width: '250px' };
+                this.dialogRef = this.dialog.open(this.relapsesAddSecondLevelTemplate, dialogConfig);
+                this.dialogRef.updatePosition({ top: '335px', left: '255px' });
+              }
+              this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
 
-            //custom error handling
-            if (!d.data || !d.data.relapses || d.data.relapses.length == 0)
-              this.brokerService.emit(allMessages.showCustomError, 'M-002');
-            else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))
-              this.brokerService.emit(allMessages.showCustomError, 'D-002');
+              //custom error handling
+              if (!d.data || !d.data.relapses || d.data.relapses.length == 0)
+                this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              else if (this.relapsesData.some(obj => obj.relapse_month == '' || obj.relapse_year == '' || obj.relapse_month == 'No result' || obj.relapse_year == 'No result'))
+                this.brokerService.emit(allMessages.showCustomError, 'D-002');
+            }
+            catch (ex) {
+              console.log(ex);
+            }
           })();
       })
     let relapses = this
