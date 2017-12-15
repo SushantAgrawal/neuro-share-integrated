@@ -12,7 +12,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import * as d3 from 'd3';
 import { BrokerService } from '../../broker/broker.service';
 import { NeuroGraphService } from '../../neuro-graph.service';
-import { allMessages, allHttpMessages, medication, GRAPH_SETTINGS, edssScoreChart } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages, applicationErrorMessages, medication, GRAPH_SETTINGS, edssScoreChart } from '../../neuro-graph.config';
 
 @Component({ selector: '[app-edss]', templateUrl: './edss.component.html', styleUrls: ['./edss.component.scss'], encapsulation: ViewEncapsulation.None })
 
@@ -271,6 +271,7 @@ export class EdssComponent implements OnInit, OnDestroy {
             }
             catch (ex) {
               console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'EDSS');
             }
           })();
       });

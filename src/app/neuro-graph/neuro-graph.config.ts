@@ -8,8 +8,8 @@ export const allMessages = {
   'timelineScroll': 'timeline:scroll',
   'demographicEnableCheckBox': 'demographic:enable:check:box',
   'checkboxEnable': 'checkbox:enable',
-  'showCustomError': 'show:custom:error'
-
+  'showCustomError': 'show:custom:error',
+  'showLogicalError': 'show:logical:error'
 };
 
 export const manyHttpMessages = {
@@ -311,7 +311,8 @@ export const errorMessages = {
 
 export const applicationErrorMessages = {
   idNotMappedToUrl: 'Message id is not mapped to http url in config.ts file at application root.',
-  httpGetUnknownError: 'Unknown error encountered while making http get request'
+  httpGetUnknownError: 'Unknown error encountered while making http get request',
+  logicalError: 'Error occured while processing {{component}} data',
 }
 
 export const edssScoreChart = [{ score: '0.0', title: 'Normal neurological exam.' }
