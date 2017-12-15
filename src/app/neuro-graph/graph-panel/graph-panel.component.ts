@@ -88,7 +88,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
       var array = d.data.split(',');
       var errMsg: Array<any> = [];
       array.forEach(element => {
-        var msg = element + ' : ' + errorMessages[element].message;
+        var msg =  '  ' + element + ' : ' + errorMessages[element].message + '  ';
         errMsg.push(msg);
       });
 
