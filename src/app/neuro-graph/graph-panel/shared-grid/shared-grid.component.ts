@@ -36,23 +36,29 @@ export class SharedGridComponent implements OnInit, OnDestroy {
             console.log(d.error)
           })
           : (() => {
-            let encounters: Array<any> = [];
-            if (d.data && d.data.EPIC && d.data.EPIC.encounters) {
-              encounters = d.data.EPIC.encounters;
-            }
-            let filteredEncounter = encounters.filter(t => t.contactType == 'Office Visit');
-            this.encounterData = filteredEncounter.map(d => {
-              return {
-                ...d,
-                date: new Date(d.date),
+            try {
+              let encounters: Array<any> = [];
+              if (d.data && d.data.EPIC && d.data.EPIC.encounters) {
+                encounters = d.data.EPIC.encounters;
               }
-            }).sort((a, b) => b.date - a.date);
+              let filteredEncounter = encounters.filter(t => t.contactType == 'Office Visit');
+              this.encounterData = filteredEncounter.map(d => {
+                return {
+                  ...d,
+                  date: new Date(d.date),
+                }
+              }).sort((a, b) => b.date - a.date);
 
-            let sharedGridElement = d3.select('#shared-grid');
-            let sharedGrid = this.setupSharedGrid(sharedGridElement, this.chartState.canvasDimension);
+              let sharedGridElement = d3.select('#shared-grid');
+              let sharedGrid = this.setupSharedGrid(sharedGridElement, this.chartState.canvasDimension);
 
-            if (this.encounterData.length > 0) {
-              this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
+              if (this.encounterData.length > 0) {
+                this.drawReferenceLines(sharedGrid, this.chartState.canvasDimension, this.chartState.xScale);
+              }
+            }
+            catch (ex) {
+              console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'encounter');
             }
           })();
       });
@@ -190,24 +196,24 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         axis.selectAll('text').remove();
 
         axis.selectAll('line')
-        .style('stroke-width', '1px')
-        .style('stroke', (d)=>{
-          return d.getMonth() == 6 ? '#bbb4b4' : '#E4E4E4';
-        });
-        
+          .style('stroke-width', '1px')
+          .style('stroke', (d) => {
+            return d.getMonth() == 6 ? '#bbb4b4' : '#E4E4E4';
+          });
+
 
         axis.selectAll('line')
-        .attr('y2', (d) => {
-          if (this.chartState.zoomMonthsSpan == 1) {
-            return 0;
-          }
-          else if (this.chartState.zoomMonthsSpan == 6 || this.chartState.zoomMonthsSpan == 3) {
-            return d.getDate() == 1 ? dimension.offsetHeight - 10 : 0;
-          }
-          else {
-            return dimension.offsetHeight - 10;
-          }
-        });
+          .attr('y2', (d) => {
+            if (this.chartState.zoomMonthsSpan == 1) {
+              return 0;
+            }
+            else if (this.chartState.zoomMonthsSpan == 6 || this.chartState.zoomMonthsSpan == 3) {
+              return d.getDate() == 1 ? dimension.offsetHeight - 10 : 0;
+            }
+            else {
+              return dimension.offsetHeight - 10;
+            }
+          });
       });
   };
 

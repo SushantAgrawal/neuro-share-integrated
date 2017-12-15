@@ -284,23 +284,28 @@ export class EdssComponent implements OnInit, OnDestroy {
         d.error
           ? console.log(d.error)
           : (() => {
-            if (d.data && d.data[0] && d.data[0].edss) {
-              this.edssVirtualLoadData = d.data[0].edss;
-              this.edssVirtualLoadDataLength = d.data[0].edss.q1.length;
-              this.edssVirtualLoadDataq1 = d.data[0].edss.q1;
-              this.edssVirtualLoadDataq2 = d.data[0].edss.q2;
-              this.edssVirtualLoadDataq3 = d.data[0].edss.q3;
-              this.edssVirtualLoadDataq4 = d.data[0].edss.q4;
-              this.edssVirtualLoadDatam = d.data[0].edss.m;
-              this.removeChart();
-              this.drawVirtualCaseload();
-              this.drawEdssLineCharts();
-              this.virtualCaseloadLoaded = true;
+            try {
+              if (d.data && d.data[0] && d.data[0].edss) {
+                this.edssVirtualLoadData = d.data[0].edss;
+                this.edssVirtualLoadDataLength = d.data[0].edss.q1.length;
+                this.edssVirtualLoadDataq1 = d.data[0].edss.q1;
+                this.edssVirtualLoadDataq2 = d.data[0].edss.q2;
+                this.edssVirtualLoadDataq3 = d.data[0].edss.q3;
+                this.edssVirtualLoadDataq4 = d.data[0].edss.q4;
+                this.edssVirtualLoadDatam = d.data[0].edss.m;
+                this.removeChart();
+                this.drawVirtualCaseload();
+                this.drawEdssLineCharts();
+                this.virtualCaseloadLoaded = true;
+              }
+              else {
+                this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              }
             }
-            else {
-              this.brokerService.emit(allMessages.showCustomError, 'M-002');
+            catch (ex) {
+              console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'population');
             }
-
           })();
       });
 

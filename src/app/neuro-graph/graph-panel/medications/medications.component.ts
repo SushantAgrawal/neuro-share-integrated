@@ -210,7 +210,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           this.dialogRef.close();
         } catch (ex) {
           console.log(ex);
-          this.brokerService.emit(allMessages.showLogicalError, 'Medication');
+          this.brokerService.emit(allMessages.showLogicalError, 'treatments');
         }
       })();
     })

@@ -78,20 +78,25 @@ export class CdsComponent implements OnInit {
         d.error
           ? console.log(d.error)
           : (() => {
-            this.cdsUserData = d.data.cds || [];
-            this.csnState.csn = this
-              .neuroGraphService
-              .get('queryParams')
-              .csn;
-            this.csnState.encounterStatus = this
-              .neuroGraphService
-              .get('queryParams')
-              .csn_status;
-            this.cdsUserData = this
-              .cdsUserData
-              .find(x => x.save_csn == this.csnState.csn);
-            if (this.cdsUserData) {
-              this.setChkBoxes();
+            try {
+              this.cdsUserData = d.data.cds || [];
+              this.csnState.csn = this
+                .neuroGraphService
+                .get('queryParams')
+                .csn;
+              this.csnState.encounterStatus = this
+                .neuroGraphService
+                .get('queryParams')
+                .csn_status;
+              this.cdsUserData = this
+                .cdsUserData
+                .find(x => x.save_csn == this.csnState.csn);
+              if (this.cdsUserData) {
+                this.setChkBoxes();
+              }
+            } catch (ex) {
+              console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'CDS');
             }
           })();
       });
