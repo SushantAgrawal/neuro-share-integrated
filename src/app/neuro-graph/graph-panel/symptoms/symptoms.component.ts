@@ -52,225 +52,229 @@ export class SymptomsComponent implements OnInit {
             this.brokerService.emit(allMessages.checkboxEnable, 'symptoms');
           })()
           : (() => {
-            //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
-            d.data && (this.questionaireData = d.data.questionaires || []);
+            try {
+              //this.questionaireData = d.data.questionaires.sort((a:any, b:any) => new Date(a["qx_completed_at"]) - b["qx_completed_at"]);
+              d.data && (this.questionaireData = d.data.questionaires || []);
 
-            if (this.questionaireData && this.questionaireData.length > 0) {
+              if (this.questionaireData && this.questionaireData.length > 0) {
 
-              this.questionaireData = d.data.questionaires.map(d => {
-                return {
-                  ...d,
-                  qxCompleted: new Date(this.neuroGraphService.moment(d["qx_completed_at"]).format("MM/DD/YYYY")),
-                }
-              }).sort((a, b) => b.qxCompleted - a.qxCompleted)
-              let index = 0;
-
-              this.questionaireData.forEach(element => {
-                let symptomsDataLocal: Array<any> = [];
-                for (let i = 0; i < element.symptoms.length; i++) {
-                  let symptomStatus: any = "";
-                  let reportedDate: any;
-                  let qData: Array<any> = [];
-                  reportedDate = element["qx_completed_at"];
-                  qData.push(element.responses.filter(item => element.symptoms[i].qx_code.some(f => f == item["qx_code"])));
-                  let prevCnt = 0;
-                  let newCnt = this.questionaireData.length;
-                  if (index == 0) {
-                    newCnt = this.questionaireData.length - 1;
-
+                this.questionaireData = d.data.questionaires.map(d => {
+                  return {
+                    ...d,
+                    qxCompleted: new Date(this.neuroGraphService.moment(d["qx_completed_at"]).format("MM/DD/YYYY")),
                   }
-                  else {
-                    newCnt = this.questionaireData.length - 2;
+                }).sort((a, b) => b.qxCompleted - a.qxCompleted)
+                let index = 0;
 
-                  }
-                  let trend: Array<any> = [];
-                  let answerOptions: Array<any> = [];
-                  let answerText: any = "";
-                  let questionText: any = "";
-                  let cnt = 40;
-                  this.questionaireData.forEach(elem => {
-                    if (element["qx_id"] != elem["qx_id"] && new Date(this.neuroGraphService.moment(elem["qx_completed_at"]).format("MM/DD/YYYY")) < new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY"))) {
-                      if (element.symptoms[i].score != "") {
-                        if (new Date(this.neuroGraphService.moment(reportedDate).format("MM/DD/YYYY")) >= new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY")))
-                          reportedDate = element["qx_completed_at"];
-                        if (elem.symptoms[i].score == "") {
-                          newCnt--;
-                        }
-                      }
-                      else {
-                        if (elem.symptoms[i].score != "" && element.symptoms[i].score == "") {
-                          prevCnt++;
-                          reportedDate = elem["qx_completed_at"];
-                          element.symptoms[i].score = elem.symptoms[i].score;
-                          qData = [];
-                          qData.push(elem.responses.filter(item => elem.symptoms[i].qx_code.some(f => f == item["qx_code"])));
+                this.questionaireData.forEach(element => {
+                  let symptomsDataLocal: Array<any> = [];
+                  for (let i = 0; i < element.symptoms.length; i++) {
+                    let symptomStatus: any = "";
+                    let reportedDate: any;
+                    let qData: Array<any> = [];
+                    reportedDate = element["qx_completed_at"];
+                    qData.push(element.responses.filter(item => element.symptoms[i].qx_code.some(f => f == item["qx_code"])));
+                    let prevCnt = 0;
+                    let newCnt = this.questionaireData.length;
+                    if (index == 0) {
+                      newCnt = this.questionaireData.length - 1;
 
-                        }
-                      }
-                      if (cnt >= 20) {
-                        if (elem.symptoms[i].score == "Mild") {
-                          trend.push({
-                            index: 10,
-                            x: cnt,
-                            score: elem.symptoms[i].score
+                    }
+                    else {
+                      newCnt = this.questionaireData.length - 2;
 
-                          });
-                          cnt = cnt - 20;
+                    }
+                    let trend: Array<any> = [];
+                    let answerOptions: Array<any> = [];
+                    let answerText: any = "";
+                    let questionText: any = "";
+                    let cnt = 40;
+                    this.questionaireData.forEach(elem => {
+                      if (element["qx_id"] != elem["qx_id"] && new Date(this.neuroGraphService.moment(elem["qx_completed_at"]).format("MM/DD/YYYY")) < new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY"))) {
+                        if (element.symptoms[i].score != "") {
+                          if (new Date(this.neuroGraphService.moment(reportedDate).format("MM/DD/YYYY")) >= new Date(this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY")))
+                            reportedDate = element["qx_completed_at"];
+                          if (elem.symptoms[i].score == "") {
+                            newCnt--;
+                          }
                         }
-                        else if (elem.symptoms[i].score == "Moderate") {
-                          trend.push({
-                            index: 20,
-                            x: cnt,
-                            score: elem.symptoms[i].score
+                        else {
+                          if (elem.symptoms[i].score != "" && element.symptoms[i].score == "") {
+                            prevCnt++;
+                            reportedDate = elem["qx_completed_at"];
+                            element.symptoms[i].score = elem.symptoms[i].score;
+                            qData = [];
+                            qData.push(elem.responses.filter(item => elem.symptoms[i].qx_code.some(f => f == item["qx_code"])));
 
-                          });
-                          cnt = cnt - 20;
+                          }
                         }
-                        else if (elem.symptoms[i].score == "Severe") {
-                          trend.push({
-                            index: 30,
-                            x: cnt,
-                            score: elem.symptoms[i].score
-
-                          });
-                          cnt = cnt - 20;
-                        }
-                        else if (elem.symptoms[i].score != "") {
-                          if (isNaN(elem.symptoms[i].score)) {
+                        if (cnt >= 20) {
+                          if (elem.symptoms[i].score == "Mild") {
                             trend.push({
-                              index: Number(elem.symptoms[i].score),
+                              index: 10,
                               x: cnt,
                               score: elem.symptoms[i].score
 
                             });
+                            cnt = cnt - 20;
                           }
-                          else {
+                          else if (elem.symptoms[i].score == "Moderate") {
                             trend.push({
-                              index: Number(elem.symptoms[i].score),
+                              index: 20,
                               x: cnt,
-                              score: elem.symptoms[i].score * 10
+                              score: elem.symptoms[i].score
 
                             });
+                            cnt = cnt - 20;
                           }
+                          else if (elem.symptoms[i].score == "Severe") {
+                            trend.push({
+                              index: 30,
+                              x: cnt,
+                              score: elem.symptoms[i].score
 
-                          cnt = cnt - 20;
+                            });
+                            cnt = cnt - 20;
+                          }
+                          else if (elem.symptoms[i].score != "") {
+                            if (isNaN(elem.symptoms[i].score)) {
+                              trend.push({
+                                index: Number(elem.symptoms[i].score),
+                                x: cnt,
+                                score: elem.symptoms[i].score
+
+                              });
+                            }
+                            else {
+                              trend.push({
+                                index: Number(elem.symptoms[i].score),
+                                x: cnt,
+                                score: elem.symptoms[i].score * 10
+
+                              });
+                            }
+
+                            cnt = cnt - 20;
+                          }
                         }
+
                       }
 
-                    }
-
-                  });
-                  trend.reverse();
-                  if (prevCnt <= 0) {
-                    if (element.symptoms[i].score == "Mild") {
-                      trend.push({
-                        index: 10,
-                        x: 60,
-                        score: element.symptoms[i].score
-
-                      });
-                    }
-                    else if (element.symptoms[i].score == "Moderate") {
-                      trend.push({
-                        index: 20,
-                        x: 60,
-                        score: element.symptoms[i].score
-
-                      });
-                    }
-                    else if (element.symptoms[i].score == "Severe") {
-                      trend.push({
-                        index: 30,
-                        x: 60,
-                        score: element.symptoms[i].score
-
-                      });
-                    }
-                    else if (element.symptoms[i].score != "") {
-                      if (isNaN(element.symptoms[i].score)) {
+                    });
+                    trend.reverse();
+                    if (prevCnt <= 0) {
+                      if (element.symptoms[i].score == "Mild") {
                         trend.push({
-                          index: Number(element.symptoms[i].score),
+                          index: 10,
                           x: 60,
                           score: element.symptoms[i].score
 
                         });
                       }
-                      else {
+                      else if (element.symptoms[i].score == "Moderate") {
                         trend.push({
-                          index: Number(element.symptoms[i].score),
+                          index: 20,
                           x: 60,
-                          score: element.symptoms[i].score * 10
+                          score: element.symptoms[i].score
 
                         });
                       }
+                      else if (element.symptoms[i].score == "Severe") {
+                        trend.push({
+                          index: 30,
+                          x: 60,
+                          score: element.symptoms[i].score
+
+                        });
+                      }
+                      else if (element.symptoms[i].score != "") {
+                        if (isNaN(element.symptoms[i].score)) {
+                          trend.push({
+                            index: Number(element.symptoms[i].score),
+                            x: 60,
+                            score: element.symptoms[i].score
+
+                          });
+                        }
+                        else {
+                          trend.push({
+                            index: Number(element.symptoms[i].score),
+                            x: 60,
+                            score: element.symptoms[i].score * 10
+
+                          });
+                        }
+
+                      }
+                    }
+                    if (newCnt == 0) {
+                      symptomStatus = "New";
+                      trend = [];
 
                     }
+                    if (prevCnt > 0) {
+                      symptomStatus = "Previous";
+                    }
+                    let trendScore = 0;
+                    if (Number(element.symptoms[i].score)) {
+                      trendScore = (Number(element.symptoms[i].score)) * 10;
+                    }
+                    else {
+                      trendScore = element.symptoms[i].score;
+                    }
+                    var data = {
+                      name: element.symptoms[i].title,
+                      nameTrend: element.symptoms[i].title.split(' ').join('_'),
+                      score: isNaN(element.symptoms[i].score) ? element.symptoms[i].score : element.symptoms[i].score == 0 ? '' : element.symptoms[i].score * 10,
+                      trendScore: trendScore,
+                      qx_code: element.symptoms[i].qx_code,
+                      symptomStatus: symptomStatus,
+                      reportDate: this.neuroGraphService.moment(reportedDate).format("MM/DD/YYYY"),
+                      trends: trend,
+                      questData: qData,
+                      qxid: element["qx_id"]
+                    };
+                    symptomsDataLocal.push(data)
                   }
-                  if (newCnt == 0) {
-                    symptomStatus = "New";
-                    trend = [];
+                  this.questionaireSymptomData.push({
+                    questionnaireDate: this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY"),
+                    status: (element.status.charAt(0).toUpperCase() + element.status.substr(1).toLowerCase()),
+                    "qx_id": element["qx_id"],
+                    symptoms: symptomsDataLocal
 
-                  }
-                  if (prevCnt > 0) {
-                    symptomStatus = "Previous";
-                  }
-                  let trendScore = 0;
-                  if (Number(element.symptoms[i].score)) {
-                    trendScore = (Number(element.symptoms[i].score)) * 10;
-                  }
-                  else {
-                    trendScore = element.symptoms[i].score;
-                  }
-                  var data = {
-                    name: element.symptoms[i].title,
-                    nameTrend: element.symptoms[i].title.split(' ').join('_'),
-                    score: isNaN(element.symptoms[i].score) ? element.symptoms[i].score : element.symptoms[i].score == 0 ? '' : element.symptoms[i].score * 10,
-                    trendScore: trendScore,
-                    qx_code: element.symptoms[i].qx_code,
-                    symptomStatus: symptomStatus,
-                    reportDate: this.neuroGraphService.moment(reportedDate).format("MM/DD/YYYY"),
-                    trends: trend,
-                    questData: qData,
-                    qxid: element["qx_id"]
-                  };
-                  symptomsDataLocal.push(data)
-                }
-                this.questionaireSymptomData.push({
-                  questionnaireDate: this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY"),
-                  status: (element.status.charAt(0).toUpperCase() + element.status.substr(1).toLowerCase()),
-                  "qx_id": element["qx_id"],
-                  symptoms: symptomsDataLocal
-
+                  });
+                  index++;
                 });
-                index++;
-              });
-              this.createChartSymptoms();
-            }
-            this.symptomsChartLoaded = true;
-            this.brokerService.emit(allMessages.checkboxEnable, 'symptoms');
-
-            //custom error handling
-            var isValidDate = true;
-            var isComplete = true;
-            this.questionaireSymptomData.forEach(obj => {
-              if (obj.status.toUpperCase() != "COMPLETED") {
-                isComplete = false;
+                this.createChartSymptoms();
               }
-              if (obj.symptoms.some(symp => symp.score == 'No result'))
-                isValidDate = false;
-            });
-            var ErrorCode: string = '';
-            if (this.questionaireSymptomData.length == 0)
-              this.brokerService.emit(allMessages.showCustomError, 'M-002');
-            else {
-              if (!isValidDate)
-                ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
-              if (!isComplete)
-                ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
-              if (ErrorCode != '')
-                this.brokerService.emit(allMessages.showCustomError, ErrorCode);
-            }
+              this.symptomsChartLoaded = true;
+              this.brokerService.emit(allMessages.checkboxEnable, 'symptoms');
 
+              //custom error handling
+              var isValidDate = true;
+              var isComplete = true;
+              this.questionaireSymptomData.forEach(obj => {
+                if (obj.status.toUpperCase() != "COMPLETED") {
+                  isComplete = false;
+                }
+                if (obj.symptoms.some(symp => symp.score == 'No result'))
+                  isValidDate = false;
+              });
+              var ErrorCode: string = '';
+              if (this.questionaireSymptomData.length == 0)
+                this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              else {
+                if (!isValidDate)
+                  ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
+                if (!isComplete)
+                  ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
+                if (ErrorCode != '')
+                  this.brokerService.emit(allMessages.showCustomError, ErrorCode);
+              }
+            }
+            catch (ex) {
+              console.log(ex);
+            }
           })();
       })
     let symptoms = this
