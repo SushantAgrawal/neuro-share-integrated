@@ -78,32 +78,34 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
         })()
         : (() => {
-          this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
-
-          let dmtResponse = d.data[1][allHttpMessages.httpGetDmt];
-          let otherMedsResponse = d.data[2][allHttpMessages.httpGetOtherMeds];
-          let relapsesLocalData = d.data[3][allHttpMessages.httpGetRelapse];
-          this.dmtSecondLayerLocalData = dmtResponse.DMTs || [];
-          this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds || [];
-          this.relapsesLocalData = relapsesLocalData.relapses || [];
-
-          if (this.selectedMed[this.medType.dmt]) {
-            this.checkForError(this.dmtArray);
-            if (!this.relapsesLocalData || this.relapsesLocalData.length == 0) {
-              this.brokerService.emit(allMessages.showCustomError, 'M-002');
+          try {
+            this.prepareMedications(d.data[0][allHttpMessages.httpGetMedications]);
+            let dmtResponse = d.data[1][allHttpMessages.httpGetDmt];
+            let otherMedsResponse = d.data[2][allHttpMessages.httpGetOtherMeds];
+            let relapsesLocalData = d.data[3][allHttpMessages.httpGetRelapse];
+            this.dmtSecondLayerLocalData = dmtResponse.DMTs || [];
+            this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds || [];
+            this.relapsesLocalData = relapsesLocalData.relapses || [];
+            if (this.selectedMed[this.medType.dmt]) {
+              this.checkForError(this.dmtArray);
+              if (!this.relapsesLocalData || this.relapsesLocalData.length == 0) {
+                this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              }
+              this.drawDmt();
             }
-            this.drawDmt();
+            if (this.selectedMed[this.medType.vitaminD]) {
+              this.checkForError(this.vitaminDArray);
+              this.drawVitaminD();
+            }
+            if (this.selectedMed[this.medType.otherMeds]) {
+              this.checkForError(this.otherMedsArray);
+              this.drawOtherMeds();
+            }
+            this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
           }
-          if (this.selectedMed[this.medType.vitaminD]) {
-            this.checkForError(this.vitaminDArray);
-            this.drawVitaminD();
+          catch (e) {
+            console.log(e);
           }
-          if (this.selectedMed[this.medType.otherMeds]) {
-            this.checkForError(this.otherMedsArray);
-            this.drawOtherMeds();
-          }
-
-          this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
         })();
     });
     let neuroRelated = this.brokerService.filterOn(allMessages.neuroRelated);
@@ -289,12 +291,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   prepareMedications(data) {
     let medicationOrders: Array<any> = [];
     data && data.EPIC && data.EPIC.patients && (data.EPIC.patients.length > 0) && (medicationOrders = data.EPIC.patients[0].medicationOrders);
-    let genericNames = medication
-      .dmt
-      .genericNames
-      .toString()
-      .toLowerCase()
-      .split(',');
+    let genericNames = medication.dmt.genericNames.toString().toLowerCase().split(',');
     let vitaminDIds = medication.vitaminD.ids;
     let otherMedsIds = medication.otherMeds.ids;
     let mappedCodes = medication.otherMeds.mappedCodes;
@@ -313,15 +310,14 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     }
 
     medicationOrders.forEach(x => {
-      if (x.medication && genericNames.find(gn => gn === x.medication.simpleGenericName[0].toLowerCase())) {
+      if (x.medication && genericNames.find(gn => {
+        return x.medication.simpleGenericName && x.medication.simpleGenericName[0] && gn === x.medication.simpleGenericName[0].toLowerCase();
+      })) {
         x.type = this.medType.dmt
       } else if (x.medication && vitaminDIds.find(id => id.toString() === x.medication.id)) {
         x.type = this.medType.vitaminD
       } else if (x.medication && otherMedsIds.find(id => id.toString() === x.medication.id)) {
         x.type = this.medType.otherMeds
-        // } else if (searchObject(x, 'mappedCode', mappedCodes).length > 0) {
-        //   x.type = this.medType.otherMeds
-        // }
       } else if (hasMatchedMappedCodes(x)) {
         x.type = this.medType.otherMeds
       }
@@ -498,22 +494,19 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   }
 
   getShortenedName(input) {
-    let parts = input && input.split(' ');
-    let capitalize = parts[0]
-      .toLowerCase()
-      .replace(/\b(\w)/g, s => s.toUpperCase())
+    if (!input)
+      return '';
+    let parts = input.split(' ');
+    let capitalize = parts[0].toLowerCase().replace(/\b(\w)/g, s => s.toUpperCase())
     return capitalize + ' ...';
   }
 
   drawChart(allData: Array<any>, containterId, barColor, overlapColor, onClickCallback) {
     let dataset = allData.filter(d => {
-      //let dt = new Date(Date.parse(d.date.medStart || d.date.orderDate));
-      //return dt >= this.chartState.xDomain.currentMinValue && dt <= this.chartState.xDomain.currentMaxValue;
       let endDt = d.date.medEnd ? new Date(Date.parse(d.date.medEnd)) : this.chartState.xDomain.scaleMaxValue;
       return endDt >= this.chartState.xDomain.currentMinValue;
     });
 
-    //temporary fix to avoid overwrite
     d3.selectAll('#' + containterId).selectAll("*").remove();
 
     let svg = d3
