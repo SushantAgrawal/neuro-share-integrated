@@ -192,7 +192,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         axis.selectAll('line')
         .style('stroke-width', '1px')
         .style('stroke', (d)=>{
-          return d.getMonth() == 6 ? '#a7a7a7' : '#E4E4E4';
+          return d.getMonth() == 6 ? '#bbb4b4' : '#E4E4E4';
         });
         
 
