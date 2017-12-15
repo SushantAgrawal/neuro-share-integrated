@@ -188,8 +188,16 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         let axis = g.call(xAxisGridLines)
         axis.select('.domain').remove();
         axis.selectAll('text').remove();
-        axis.selectAll('line').style('stroke', '#E4E4E4').style('stroke-width', '1px');
-        axis.selectAll('line').attr('y2', (d) => {
+
+        axis.selectAll('line')
+        .style('stroke-width', '1px')
+        .style('stroke', (d)=>{
+          return d.getMonth() == 6 ? '#a7a7a7' : '#E4E4E4';
+        });
+        
+
+        axis.selectAll('line')
+        .attr('y2', (d) => {
           if (this.chartState.zoomMonthsSpan == 1) {
             return 0;
           }
