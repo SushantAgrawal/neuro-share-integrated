@@ -254,17 +254,13 @@ export class EdssComponent implements OnInit, OnDestroy {
               }
               this.brokerService.emit(allMessages.checkboxEnable, 'edss');
 
-              //custom error handling
+              //Business error handling
               var ErrorCode: string = '';
-              // if (!edssData || edssData.length == 0)
-              //   ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-              // if (!quesData || quesData.length == 0)
-              //   ErrorCode = ErrorCode.indexOf('M-001') != -1 ? ErrorCode : ErrorCode == '' ? 'M-001' : ErrorCode + ',' + 'M-001';
               if (!quesData || quesData.some(m => m.status && m.status.toUpperCase() != "COMPLETED"))
                 ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
-              if (!quesData || quesData.some(m => m.edss_score == 'No result' || m.edss_score == ''))
+              if (quesData && quesData.some(m => m.edss_score == 'No result' || m.edss_score == ''))
                 ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
-              if (!edssData || edssData.some(m => m.score == 'No result' || m.score == ''))
+              if (edssData && edssData.some(m => m.score == 'No result' || m.score == ''))
                 ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
               if (ErrorCode != '')
                 this.brokerService.emit(allMessages.showCustomError, ErrorCode);
@@ -691,26 +687,18 @@ export class EdssComponent implements OnInit, OnDestroy {
     this.datasetArea1 = [];
     this.datasetArea2 = [];
     this.datasetMean = [];
-
     let line = d3.line<any>().x((d: any) => this.chartState.xScale(d.lastUpdatedDate)).y((d: any) => this.yScale(d.scoreValue));
-
     let svg = d3
       .select('#edss')
       .append('g')
       .attr("clip-path", "url(#edss-clip)")
       .attr('class', 'edss-charts')
       .attr('transform', `translate(${GRAPH_SETTINGS.panel.marginLeft},${GRAPH_SETTINGS.edss.positionTop})`);
-
-    this
-      .datasetArea1
+    this.datasetArea1
       .push({ xDate: this.chartState.xDomain.currentMinValue, q2: this.edssVirtualLoadDataq2[0], q3: this.edssVirtualLoadDataq3[0] });
-
-    this
-      .datasetArea2
+    this.datasetArea2
       .push({ xDate: this.chartState.xDomain.currentMinValue, q1: this.edssVirtualLoadDataq1[0], q4: this.edssVirtualLoadDataq4[0] });
-
-    this
-      .datasetMean
+    this.datasetMean
       .push({ xDate: this.chartState.xDomain.currentMinValue, m: this.edssVirtualLoadDatam[0] });
 
     for (let i = 0; i < this.edssVirtualLoadDataLength; i++) {
@@ -721,29 +709,22 @@ export class EdssComponent implements OnInit, OnDestroy {
       } else if (i == 2) {
         date = new Date(scaleMinYear + 2, 5, 30).getTime();
       }
-      this
-        .datasetArea1
+      this.datasetArea1
         .push({ xDate: date, q2: this.edssVirtualLoadDataq2[i], q3: this.edssVirtualLoadDataq3[i] });
-
-      this
-        .datasetArea2
+      this.datasetArea2
         .push({ xDate: date, q1: this.edssVirtualLoadDataq1[i], q4: this.edssVirtualLoadDataq4[i] });
-
-      this
-        .datasetMean
+      this.datasetMean
         .push({ xDate: date, m: this.edssVirtualLoadDatam[i] });
     }
 
-    this
-      .datasetArea1
+    this.datasetArea1
       .push({
         xDate: this.chartState.xDomain.currentMaxValue,
         q2: this.edssVirtualLoadDataq2[this.edssVirtualLoadDataLength - 1],
         q3: this.edssVirtualLoadDataq3[this.edssVirtualLoadDataLength - 1]
       });
 
-    this
-      .datasetArea2
+    this.datasetArea2
       .push({
         xDate: this.chartState.xDomain.currentMaxValue,
         q1: this.edssVirtualLoadDataq1[this.edssVirtualLoadDataLength - 1],

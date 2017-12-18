@@ -416,7 +416,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             let relapseMonthNo = this.months.indexOf(r.relapse_month);
             let relapseYear = parseInt(r.relapse_year);
             let relapseDate = new Date(relapseYear, relapseMonthNo, 1);
-            return relapseDate >= medOrderedDt && relapseDate <= medEndDt;
+            return (relapseDate >= medOrderedDt) && (relapseDate <= medEndDt);
           })
           .length;
       }
