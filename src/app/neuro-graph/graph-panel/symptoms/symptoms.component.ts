@@ -477,28 +477,6 @@ export class SymptomsComponent implements OnInit {
       .on('click', d => {
         this.showSecondLevel(d);
       })
-    //   this.chart.selectAll('.dot-walk25feet')
-    //   .data(this.datasetB)
-    //   .enter()
-    //   .append('circle')
-    //   .attr('class', 'dot-walk25feet')
-    //   .attr('cx', d => (this.chartState.xScale(d.questionnaireDate_mod)) + 35)
-    //   .attr('cy', "-17")
-    //   .attr('r', 10)
-    //   .style('fill', "yellow")
-    //   .style('cursor', 'pointer')
-
-    // //Adds labels for clinician data
-    // this.chart.selectAll('.label-test')
-    //   .data(this.datasetB)
-    //   .enter()
-    //   .append('text')
-    //   .attr('class', 'label-test')
-    //   .style('font-size', '10px')
-    //   .attr("x", d =>
-    //     (this.chartState.xScale(d.questionnaireDate_mod)) + 32.5)
-    //   .attr("y", "-15")
-    //   .text("3");
 
   }
   setInnerSVGPolyfill() {
