@@ -54,9 +54,9 @@ export class LabsComponent implements OnInit {
               this.labsChartLoaded = true;
               this.brokerService.emit(allMessages.checkboxEnable, 'labs');
               //custom error handling
-              if (!this.labsData || this.labsData.length == 0)
-                this.brokerService.emit(allMessages.showCustomError, 'M-002');
-              else if (this.labsData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
+              //if (!this.labsData || this.labsData.length == 0)
+              //this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              if (this.labsData && this.labsData.length > 0 && this.labsData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
                 this.brokerService.emit(allMessages.showCustomError, 'D-001');
             }
             catch (ex) {

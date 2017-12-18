@@ -62,9 +62,9 @@ export class ImagingComponent implements OnInit {
               this.imagingChartLoaded = true;
               this.brokerService.emit(allMessages.checkboxEnable, 'imaging');
               //custom error handling
-              if (!this.imagingData || this.imagingData.length == 0)
-                this.brokerService.emit(allMessages.showCustomError, 'M-002');
-              else if (this.imagingData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
+              //if (!this.imagingData || this.imagingData.length == 0)
+              //this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              if (this.imagingData && this.imagingData.length > 0 && this.imagingData.some(m => m.orderDate == '' || m.orderDate == 'No result'))
                 this.brokerService.emit(allMessages.showCustomError, 'D-001');
             }
             catch (ex) {

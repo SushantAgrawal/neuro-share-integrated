@@ -261,16 +261,16 @@ export class SymptomsComponent implements OnInit {
                   isValidDate = false;
               });
               var ErrorCode: string = '';
-              if (this.questionaireSymptomData.length == 0)
-                this.brokerService.emit(allMessages.showCustomError, 'M-002');
-              else {
+              //if (this.questionaireSymptomData.length == 0) 
+              //this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              //else {
                 if (!isValidDate)
                   ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
                 if (!isComplete)
                   ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
                 if (ErrorCode != '')
                   this.brokerService.emit(allMessages.showCustomError, ErrorCode);
-              }
+             // }
             }
             catch (ex) {
               console.log(ex);
