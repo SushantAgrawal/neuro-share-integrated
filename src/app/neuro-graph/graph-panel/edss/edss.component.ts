@@ -256,11 +256,11 @@ export class EdssComponent implements OnInit, OnDestroy {
 
               //custom error handling
               var ErrorCode: string = '';
-              if (!edssData || edssData.length == 0)
-                ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
-              if (!quesData || quesData.length == 0)
-                ErrorCode = ErrorCode.indexOf('M-001') != -1 ? ErrorCode : ErrorCode == '' ? 'M-001' : ErrorCode + ',' + 'M-001';
-              if (!quesData || quesData.some(m => m.status.toUpperCase() != "COMPLETED"))
+              // if (!edssData || edssData.length == 0)
+              //   ErrorCode = ErrorCode.indexOf('M-002') != -1 ? ErrorCode : ErrorCode == '' ? 'M-002' : ErrorCode + ',' + 'M-002';
+              // if (!quesData || quesData.length == 0)
+              //   ErrorCode = ErrorCode.indexOf('M-001') != -1 ? ErrorCode : ErrorCode == '' ? 'M-001' : ErrorCode + ',' + 'M-001';
+              if (!quesData || quesData.some(m => m.status && m.status.toUpperCase() != "COMPLETED"))
                 ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
               if (!quesData || quesData.some(m => m.edss_score == 'No result' || m.edss_score == ''))
                 ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
