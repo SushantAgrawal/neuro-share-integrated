@@ -267,6 +267,7 @@ export class EdssComponent implements OnInit, OnDestroy {
             }
             catch (ex) {
               console.log(ex);
+              this.brokerService.emit(allMessages.checkboxEnable, 'edss');
               this.brokerService.emit(allMessages.showLogicalError, 'EDSS');
             }
           })();
