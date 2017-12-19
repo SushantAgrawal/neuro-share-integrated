@@ -86,6 +86,7 @@ export class RelapsesComponent implements OnInit {
             catch (ex) {
               console.log(ex);
               this.brokerService.emit(allMessages.showLogicalError, 'relapses');
+              this.brokerService.emit(allMessages.checkboxEnable, 'relapses');
             }
           })();
       })

@@ -275,6 +275,7 @@ export class SymptomsComponent implements OnInit {
             catch (ex) {
               console.log(ex);
               this.brokerService.emit(allMessages.showLogicalError, 'symptoms');
+              this.brokerService.emit(allMessages.checkboxEnable, 'symptoms');
             }
           })();
       })

@@ -62,6 +62,7 @@ export class LabsComponent implements OnInit {
             catch (ex) {
               console.log(ex);
               this.brokerService.emit(allMessages.showLogicalError, 'labs');
+              this.brokerService.emit(allMessages.checkboxEnable, 'labs');
             }
           })();
       })
