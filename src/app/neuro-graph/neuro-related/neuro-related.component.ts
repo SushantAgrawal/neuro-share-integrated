@@ -19,76 +19,57 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
   checkwalk25Feet: Boolean = false;
   checkEDSS: Boolean = true;
 
-  isEDSSEnable: boolean = true;
-  isDMTEnable: boolean = true;
+  isDMTEnable: boolean = false;
+  isEDSSEnable: boolean = false;
+  isLabEnable: boolean = false;
   isRelapsesEnable: boolean = true;
   isWalk25FeetEnable: boolean = true;
   isImagingEnable: boolean = true;
   isSymptomsEnable: boolean = true;
-  isLabEnable: boolean = true;
-  constructor(private brokerService: BrokerService, private evalService: EvalService,private cd: ChangeDetectorRef) { }
+  constructor(private brokerService: BrokerService, private evalService: EvalService, private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
-    let dmt = this
-      .brokerService
-      .filterOn(allMessages.neuroRelated)
+    let dmt = this.brokerService.filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'dmt'));
-    let relapses = this
-      .brokerService
-      .filterOn(allMessages.neuroRelated)
+    let relapses = this.brokerService.filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'relapses'));
-    let edss = this
-      .brokerService
-      .filterOn(allMessages.neuroRelated)
+    let edss = this.brokerService.filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'edss'));
-    let walk25Feet = this
-      .brokerService
-      .filterOn(allMessages.neuroRelated)
+    let walk25Feet = this.brokerService.filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'walk25Feet'));
 
-    let sub0 = dmt
-      .filter(t => t.data.checked)
+    let sub0 = dmt.filter(t => t.data.checked)
       .subscribe(d => {
-        d.error
-          ? console.log(d.error)
+        d.error ? console.log(d.error)
           : (() => {
             this.checkDMT = true;
           })();
       });
-    let sub1 = relapses
-      .filter(t => t.data.checked)
+    let sub1 = relapses.filter(t => t.data.checked)
       .subscribe(d => {
-        d.error
-          ? console.log(d.error)
+        d.error ? console.log(d.error)
           : (() => {
             this.checkRelapses = true;
           })();
       });
-    let sub2 = edss
-      .filter(t => t.data.checked)
+    let sub2 = edss.filter(t => t.data.checked)
       .subscribe(d => {
-        d.error
-          ? console.log(d.error)
+        d.error ? console.log(d.error)
           : (() => {
             this.checkEDSS = true;
           })();
       });
-    let sub3 = walk25Feet
-      .filter(t => t.data.checked)
+    let sub3 = walk25Feet.filter(t => t.data.checked)
       .subscribe(d => {
-        d.error
-          ? console.log(d.error)
+        d.error ? console.log(d.error)
           : (() => {
             this.checkwalk25Feet = true;
           })();
       });
 
-    let sub4 = this
-      .brokerService
-      .filterOn(allMessages.checkboxEnable)
+    let sub4 = this.brokerService.filterOn(allMessages.checkboxEnable)
       .subscribe(d => {
-        d.error
-          ? console.log(d.error)
+        d.error ? console.log(d.error)
           : (() => {
             this.toggleCheckBox(d.data, true);
           })();
@@ -120,7 +101,7 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
       this.isSymptomsEnable = enable;
     else if (value == 'labs')
       this.isLabEnable = enable;
-      this.cd.detectChanges();
+    this.cd.detectChanges();
   }
 
   ngAfterViewInit() {
@@ -136,12 +117,6 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
       artifact: 'labs',
       checked: true
     });
-
-    setTimeout(() => {
-      this.isDMTEnable = false;
-      this.isEDSSEnable = false;
-      this.isLabEnable = false;
-    })
   };
 
   changed(e, value) {
