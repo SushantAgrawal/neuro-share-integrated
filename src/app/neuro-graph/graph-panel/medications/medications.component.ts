@@ -88,9 +88,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             this.relapsesLocalData = relapsesLocalData.relapses || [];
             if (this.selectedMed[this.medType.dmt]) {
               this.checkForError(this.dmtArray);
-              // if (!this.relapsesLocalData || this.relapsesLocalData.length == 0) {
-              //   this.brokerService.emit(allMessages.showCustomError, 'M-002');
-              // }
               this.drawDmt();
             }
             if (this.selectedMed[this.medType.vitaminD]) {
