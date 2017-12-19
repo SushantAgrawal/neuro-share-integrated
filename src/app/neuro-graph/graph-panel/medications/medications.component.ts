@@ -88,9 +88,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             this.relapsesLocalData = relapsesLocalData.relapses || [];
             if (this.selectedMed[this.medType.dmt]) {
               this.checkForError(this.dmtArray);
-              if (!this.relapsesLocalData || this.relapsesLocalData.length == 0) {
-                this.brokerService.emit(allMessages.showCustomError, 'M-002');
-              }
+              // if (!this.relapsesLocalData || this.relapsesLocalData.length == 0) {
+              //   this.brokerService.emit(allMessages.showCustomError, 'M-002');
+              // }
               this.drawDmt();
             }
             if (this.selectedMed[this.medType.vitaminD]) {
@@ -355,10 +355,13 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   }
 
   checkForError(meds: Array<any>) {
-    if (meds.length == 0) {
-      this.brokerService.emit(allMessages.showCustomError, 'M-002');
-    }
-    else if (!meds.every(m => m.date.length != 0)) {
+    // if (meds.length == 0) {
+    //   this.brokerService.emit(allMessages.showCustomError, 'M-002');
+    // }
+    // else if (!meds.every(m => m.date.length != 0)) {
+    //   this.brokerService.emit(allMessages.showCustomError, 'D-001');
+    // }
+    if (!meds.every(m => m.date.length != 0)) {
       this.brokerService.emit(allMessages.showCustomError, 'D-001');
     }
   }
@@ -413,7 +416,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             let relapseMonthNo = this.months.indexOf(r.relapse_month);
             let relapseYear = parseInt(r.relapse_year);
             let relapseDate = new Date(relapseYear, relapseMonthNo, 1);
-            return relapseDate >= medOrderedDt && relapseDate <= medEndDt;
+            return (relapseDate >= medOrderedDt) && (relapseDate <= medEndDt);
           })
           .length;
       }
