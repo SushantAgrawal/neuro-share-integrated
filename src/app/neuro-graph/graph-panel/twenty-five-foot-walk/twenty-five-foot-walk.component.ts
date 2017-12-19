@@ -82,6 +82,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
             catch (ex) {
               console.log(ex);
               this.brokerService.emit(allMessages.showLogicalError, 'walk25Feet');
+              this.brokerService.emit(allMessages.checkboxEnable, 'walk25Feet');
             }
           })();
       })
