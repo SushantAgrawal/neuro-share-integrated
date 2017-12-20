@@ -281,7 +281,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
     if (today > currentDate) {
       let rectPrev = nodeSelection.append("rect")
-        .attr("x", xScale(previousDate) - 40)
+        .attr("x", xScale(previousDate) - 88)
         .attr("y", "20")
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
@@ -296,7 +296,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisTextPrev.append('tspan')
-        .attr('x', xScale(previousDate) - 30)
+        .attr('x', xScale(previousDate) - 78)
         .attr('dy', 0)
         .text(this.lastOfficeDateLabel)
         .style('cursor', 'pointer')
@@ -306,7 +306,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
     else {
       let rectPrev = nodeSelection.append("rect")
-        .attr("x", xScale(previousDate) - 40)
+        .attr("x", xScale(previousDate) - 88)
         .attr("y", "20")
         .attr("width", lastOfficewidth)
         .attr("height", lastOfficeheight)
@@ -322,11 +322,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-weight', 'bold')
         .style('cursor', 'pointer')
       axisTextPrev.append('tspan')
-        .attr('x', xScale(previousDate) - 10)
+        .attr('x', xScale(previousDate) - 63)
         .attr('dy', 0)
         .text(lastOfficeLabel1)
       axisTextPrev.append('tspan')
-        .attr('x', xScale(previousDate) - 30)
+        .attr('x', xScale(previousDate) - 78)
         .attr('dy', 15)
         .text(todayLastLabel)
         .on('click', d => {
@@ -346,7 +346,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
     if (today > currentDate) {
       let rect = nodeSelection.append("rect")
-        .attr("x", xScale(currentDate) - 25)
+        .attr("x", xScale(currentDate) + 2)
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
@@ -357,13 +357,13 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) - 15)
+        .attr('x', xScale(currentDate) + 8)
         .attr('dy', 0)
         .text(todayLabel)
     }
     else {
       let rect = nodeSelection.append("rect")
-        .attr("x", xScale(currentDate) - 40)
+        .attr("x", xScale(currentDate) + 2)
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
@@ -374,11 +374,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) - 20)
+        .attr('x', xScale(currentDate) + 12)
         .attr('dy', 0)
         .text(todayLabel1)
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) - 30)
+        .attr('x', xScale(currentDate) + 8)
         .attr('dy', 15)
         .text(todayLastLabel)
     }
