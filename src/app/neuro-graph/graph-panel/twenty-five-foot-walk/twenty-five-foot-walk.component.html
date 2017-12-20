@@ -45,24 +45,30 @@
         <div class="ns-walk25feet-col">25' Walk #1</div>
 
         <md-input-container class="ns-walk25feet-input">
-          <!-- <input mdInput type="number" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_1_score" (change)="updateWalk('Update')" aclRoleDisabled [rolePermission]="'provider'" -->
-          <input mdInput type="number" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_1_score" (change)="updateWalk('Update')"          
-          />
+          <!-- <fieldset aclRoleDisabled [rolePermission]="'provider'" class="ns-field-set">
+            <input mdInput type="number" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_1_score" (change)="updateWalk('Update')"
+            />
+          </fieldset> -->
+          <input mdInput type="number" min="0" max="300" step="any" (keypress)="omit_special_char($event)" [(ngModel)]="walk25FeetScoreDetail.walk_1_score" (change)="updateWalk('Update')"  />        
+
         </md-input-container>
-        <md-error class="ng-error" *ngIf="walk25FeetScoreDetail.walk_1_score < 0 || walk25FeetScoreDetail.walk_1_score > 300">
-          Value should be between 0-300
+        <md-error class="ng-error" *ngIf=" walk25FeetScoreDetail.walk_1_score < 0 || walk25FeetScoreDetail.walk_1_score > 300">
+          Invalid [Data Type, Range, or Value]. Please enter valid [Data Type, Range, or Value]
         </md-error>
       </div>
       <div class="ns-row-walk25feet">
         <div class="ns-walk25feet-col">25' Walk #2</div>
 
         <md-input-container class="ns-walk25feet-input">
-          <!-- <input mdInput type="number" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')" aclRoleDisabled [rolePermission]="'provider'" -->
-          <input mdInput type="number" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')"           
-          />
+          <!-- <fieldset aclRoleDisabled [rolePermission]="'provider'" class="ns-field-set">
+            <input mdInput type="number" min="0" max="300" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')"
+            />
+          </fieldset> -->
+          <input mdInput type="number" min="0" max="300" step="any" (keypress)="omit_special_char($event)" [(ngModel)]="walk25FeetScoreDetail.walk_2_score" (change)="updateWalk('Update')" />           
+
         </md-input-container>
-        <md-error class="ng-error" *ngIf="walk25FeetScoreDetail.walk_2_score < 0 || walk25FeetScoreDetail.walk_2_score > 300">
-          Value should be between 0-300
+        <md-error class="ng-error" *ngIf=" walk25FeetScoreDetail.walk_2_score < 0 || walk25FeetScoreDetail.walk_2_score > 300">
+          Invalid [Data Type, Range, or Value]. Please enter valid [Data Type, Range, or Value]
         </md-error>
       </div>
       <div class="ns-row-walk25feet">
@@ -80,6 +86,9 @@
           <!-- <button class="call-out-buttons" (click)="saveWalk25FeetScore('Update')" aclRole [rolePermission]="'provider'">Update</button> -->
           <button class="call-out-buttons" (click)="saveWalk25FeetScore('Update')">Update</button>          
         </div>
+        <md-error class="ng-error" *ngIf=" scoreNotValidate == true">
+          Please enter at least 1 walk value 
+        </md-error> 
       </div>
     </div>
   </div>
@@ -100,21 +109,24 @@
       <div class="ns-row-walk25feet">
         <div class="ns-walk25feet-col">25' Walk #1</div>
         <md-input-container class="ns-walk25feet-input">
-          <!-- <input mdInput type="number" min="0" max="300" [(ngModel)]="score_1" (change)="updateWalk('Add')" aclRoleDisabled [rolePermission]="'provider'"/> -->
-          <input mdInput type="number" min="0" max="300" [(ngModel)]="score_1" (change)="updateWalk('Add')" />          
+          <!-- <fieldset aclRoleDisabled [rolePermission]="'provider'" class="ns-field-set">
+            <input mdInput type="number" min="0" max="300" [(ngModel)]="score_1" (change)="updateWalk('Add')" /> </fieldset> -->
+          <input mdInput type="number" min="0" max="300" step="any" (keypress)="omit_special_char($event)" [(ngModel)]="score_1" (change)="updateWalk('Add')" />          
         </md-input-container>
+
         <md-error class="ng-error" *ngIf="score_1 < 0 || score_1 > 300">
-          Value should be between 0-300
-        </md-error>
+          Invalid [Data Type, Range, or Value]. Please enter valid [Data Type, Range, or Value]
+        </md-error>        
       </div>
       <div class="ns-row-walk25feet">
         <div class="ns-walk25feet-col">25' Walk #2</div>
         <md-input-container class="ns-walk25feet-input">
-          <!-- <input mdInput type="number" min="0" max="300" [(ngModel)]="score_2" (change)="updateWalk('Add')" aclRoleDisabled [rolePermission]="'provider'"/> -->
-          <input mdInput type="number" min="0" max="300" [(ngModel)]="score_2" (change)="updateWalk('Add')" />          
+          <!-- <fieldset aclRoleDisabled [rolePermission]="'provider'" class="ns-field-set">
+            <input mdInput type="number" min="0" max="300" [(ngModel)]="score_2" (change)="updateWalk('Add')" /> </fieldset> -->
+          <input mdInput type="number" min="0" max="300" step="any" (keypress)="omit_special_char($event)" [(ngModel)]="score_2" (change)="updateWalk('Add')" />          
         </md-input-container>
-        <md-error class="ng-error" *ngIf="score_2 < 0 || score_2 > 300">
-          Value should be between 0-300
+        <md-error class="ng-error" *ngIf=" score_2 < 0 || score_2 > 300">
+          Invalid [Data Type, Range, or Value]. Please enter valid [Data Type, Range, or Value]
         </md-error>
       </div>
       <div class="ns-row-walk25feet">
@@ -126,8 +138,11 @@
       <div class="ns-row-walk25feet">
         <div class="ns-walk25feet-update">
           <!-- <button class="call-out-buttons" (click)="saveWalk25FeetScore('Add')" aclRole [rolePermission]="'provider'">Add</button> -->
-          <button class="call-out-buttons" (click)="saveWalk25FeetScore('Add')" >Add</button>          
+          <button class="call-out-buttons" (click)="saveWalk25FeetScore('Add')" >Add</button> 
         </div>
+        <md-error class="ng-error" *ngIf=" scoreNotValidate == true">
+          Please enter at least 1 walk value 
+        </md-error> 
       </div>
     </div>
   </div>
