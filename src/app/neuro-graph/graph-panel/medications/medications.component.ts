@@ -102,6 +102,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           }
           catch (e) {
             console.log(e);
+            this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
             this.brokerService.emit(allMessages.showLogicalError, 'Medication');
           }
         })();
