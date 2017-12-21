@@ -260,20 +260,20 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     if (diff == 0)
       return;
     let mtNextMonthStart = this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).add(1, 'month').startOf('month');
-    //let currentMinValue = mtNextMonthStart.clone().toDate();
-    //let currentMaxValue = mtNextMonthStart.clone().add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
+    let currentMinValue = mtNextMonthStart.clone().toDate();
+    let currentMaxValue = mtNextMonthStart.clone().add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
 
-    let currentMinValue;
-    let currentMaxValue;
+    // let currentMinValue;
+    // let currentMaxValue;
 
-    if (this.state.zoomMonthsSpan < 12) {
-      currentMinValue = this.neuroGraphService.moment(this.state.xDomain.currentMinValue).add(1, 'month').startOf('month').toDate();
-      currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
-    }
-    else {
-      currentMinValue = this.neuroGraphService.moment(this.state.xDomain.currentMinValue).add(12, 'month').startOf('month').toDate();
-      currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
-    }
+    // if (this.state.zoomMonthsSpan < 12) {
+    //   currentMinValue = this.neuroGraphService.moment(this.state.xDomain.currentMinValue).add(1, 'month').startOf('month').toDate();
+    //   currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
+    // }
+    // else {
+    //   currentMinValue = this.neuroGraphService.moment(this.state.xDomain.currentMinValue).add(12, 'month').startOf('month').toDate();
+    //   currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
+    // }
 
     this.state.xDomain = {
       ...this.state.xDomain,
@@ -290,20 +290,20 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
     if (diff == 0)
       return;
     let mtLastSpanMinDate = this.neuroGraphService.moment(this.state.xDomain.currentMinValue);
-    //let currentMinValue = mtLastSpanMinDate.clone().subtract(this.state.zoomMonthsSpan, 'month').toDate();
-    //let currentMaxValue = mtLastSpanMinDate.clone().subtract(1, 'days').toDate();
+    let currentMinValue = mtLastSpanMinDate.clone().subtract(this.state.zoomMonthsSpan, 'month').toDate();
+    let currentMaxValue = mtLastSpanMinDate.clone().subtract(1, 'days').toDate();
     
-    let currentMinValue;
-    let currentMaxValue;
+    // let currentMinValue;
+    // let currentMaxValue;
 
-    if (this.state.zoomMonthsSpan < 12) {
-      currentMinValue = mtLastSpanMinDate.clone().subtract(1, 'month').toDate();
-      currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
-    }
-    else {
-      currentMinValue = mtLastSpanMinDate.clone().subtract(12, 'month').toDate();
-      currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
-    }
+    // if (this.state.zoomMonthsSpan < 12) {
+    //   currentMinValue = mtLastSpanMinDate.clone().subtract(1, 'month').toDate();
+    //   currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
+    // }
+    // else {
+    //   currentMinValue = mtLastSpanMinDate.clone().subtract(12, 'month').toDate();
+    //   currentMaxValue = this.neuroGraphService.moment(currentMinValue).add(this.state.zoomMonthsSpan, 'month').subtract(1, 'days').toDate();
+    // }
 
     this.state.xDomain = {
       ...this.state.xDomain,
