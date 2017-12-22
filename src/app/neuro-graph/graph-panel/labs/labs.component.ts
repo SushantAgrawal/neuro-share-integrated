@@ -28,7 +28,6 @@ export class LabsComponent implements OnInit {
   private labsChartLoaded: boolean = false;
   registerDrag: any;
   private labsDataStatic: any;
-
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
@@ -132,6 +131,7 @@ export class LabsComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
   showSecondLevel(data) {
+   
     this.labsDataDetails = data.orderDetails;
     let compArray: Array<any> = [];
     this.labsData.map(d => {
@@ -139,7 +139,7 @@ export class LabsComponent implements OnInit {
         ...d,
         resultDate: new Date(d.dates.resultDate),
       }
-    }).sort((a, b) => a.resultDate - b.resultDate).forEach(element => {
+    }).sort((a, b) => b.resultDate - a.resultDate).forEach(element => {
       if (element.component.length > 0) {
         if (element.component.length > 0 && element.dates.resultDate != "" && new Date(element.dates.resultDate) <= new Date(data.orderDetails[0].dates.resultDate)) {
           element.component.forEach(elem => {
@@ -154,9 +154,9 @@ export class LabsComponent implements OnInit {
           let selCompArray: Array<any> = [];
           selCompArray = compArray.filter((obj => obj.id == elem.id));
           let trendArray: Array<any> = [];
-          let i = 0;
+          let i = 120;
           selCompArray.forEach(elems => {
-            i = i + 30;
+            i = i - 30;
             let color = "#bfbfbf";
             if (elems.isValueInRange == true) {
               color = "#9dbb61";
@@ -164,7 +164,7 @@ export class LabsComponent implements OnInit {
             else {
               color = "#e53935";
             }
-            if (i <= 90) {
+            if (i > 0) {
               if (Number(elems.value) && elems.referenceLow != "")
                 trendArray.push({ "x": i, "y": Number(elems.value), "color": color })
 
