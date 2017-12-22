@@ -581,18 +581,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .on("click", d => {
         onClickCallback(d);
       })
-    // //overlapping areas
-    // let overlapColor = "grey";
-    // if (containterId == "dmt") {
-    //   overlapColor = "#303945";
-    // }
-    // else if (containterId == "otherMeds") {
-    //   overlapColor = "#898e90";
-    // }
-    // else if (containterId == "vitaminD") {
-    //   overlapColor = "#a07a1c";
-    // }
-    rect.each((d1, i, currentNodes) => {
+
+      rect.each((d1, i, currentNodes) => {
       const current = currentNodes[i];
       let x1 = parseFloat(current.getAttribute("x"));
       let y1 = parseFloat(current.getAttribute("y"));
@@ -620,14 +610,10 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
               .style('cursor', 'pointer')
-            // .on("click", d => {
-            //   onClickCallback(d);
-            // })
           }
           else if (x1 > x2 && (x2 + width2) == x1 && y1 == y2) {
             let x = x1;
             let y = y1;
-            //let width = Math.abs(width2 - Math.abs(x2 - x1));
             rectangles
               .append('rect')
               .attr('rx', 0)
@@ -639,9 +625,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
               .style('cursor', 'pointer')
-            // .on("click", d => {
-            //   onClickCallback(d);
-            // })
           }
         }
 
