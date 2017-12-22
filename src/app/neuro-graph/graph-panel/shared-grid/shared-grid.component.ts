@@ -246,7 +246,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     if (this.encounterData.length > 1) {
       previousDate = new Date(this.encounterData[1].date)
     }
-
     let today = new Date();
     let width = 50;
     let height = 25;
@@ -257,6 +256,10 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let todayLastLabel = "Office Visit";
     let todayLabel = "";
     let currentDate = new Date(this.encounterData[0].date);
+    if (today > currentDate) {
+      previousDate = currentDate;
+    }
+
     if (today > currentDate) {
       todayLabel = "Today";
       this.lastOfficeDateLabel = this.neuroGraphService.moment(previousDate).format("MM/DD/YYYY");
@@ -335,9 +338,9 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
 
     nodeSelection.append("line")
-      .attr("x1", xScale(currentDate))
+      .attr("x1", xScale(today))
       .attr("y1", 45)
-      .attr("x2", xScale(currentDate))
+      .attr("x2", xScale(today))
       .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
       .style("stroke-dasharray", "2,2")
       .style("opacity", "0.4")
@@ -346,7 +349,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
     if (today > currentDate) {
       let rect = nodeSelection.append("rect")
-        .attr("x", xScale(currentDate))
+        .attr("x", xScale(today))
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
@@ -357,13 +360,13 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) + 6)
+        .attr('x', xScale(today) + 6)
         .attr('dy', 0)
         .text(todayLabel)
     }
     else {
       let rect = nodeSelection.append("rect")
-        .attr("x", xScale(currentDate) )
+        .attr("x", xScale(currentDate))
         .attr("y", "20")
         .attr("width", width)
         .attr("height", height)
@@ -394,3 +397,5 @@ export class SharedGridComponent implements OnInit, OnDestroy {
 
   //#endregion
 }
+
+

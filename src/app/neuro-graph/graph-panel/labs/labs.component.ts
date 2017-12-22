@@ -375,7 +375,7 @@ export class LabsComponent implements OnInit {
 
     this.chart.append("text")
       .attr("transform", "translate(" + this.chartState.xScale(this.chartState.xDomain.currentMinValue) + "," + "3.0" + ")")
-      .attr("dy", 0)
+      .attr("dy", 15)
       .attr("text-anchor", "start")
       .attr("font-size", "10px")
       .text("Labs");

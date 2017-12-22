@@ -279,12 +279,12 @@ export const GRAPH_SETTINGS = {
   },
   imaging: {
     positionTop: 220,
-    chartHeight: 30,
+    chartHeight: 40,
     color: "#BE90D4"
   },
   labs: {
     positionTop: 180,
-    chartHeight: 30,
+    chartHeight: 40,
     color: "#00AAA5"
   },
   walk25Feet: {
