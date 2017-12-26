@@ -279,7 +279,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
       .style("stroke-dasharray", "2,2")
       .style("opacity", "0.4")
-      .style("stroke", "grey")
+      .style("stroke", "#000")
       .style("fill", "none");
 
     if (today > currentDate) {
@@ -344,7 +344,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .attr("y2", dimension.offsetHeight - dimension.marginTop - dimension.marginBottom)
       .style("stroke-dasharray", "2,2")
       .style("opacity", "0.4")
-      .style("stroke", "grey")
+      .style("stroke", "#000")
       .style("fill", "none");
 
     if (today > currentDate) {
