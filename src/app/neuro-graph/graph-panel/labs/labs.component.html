@@ -17,8 +17,8 @@
         <div class="ns-labs-row" *ngFor="let labs of labsDataDetails; let i = index;">
           <!-- <div class="ns-sub-labs-items" *ngIf="labs.component!=null"> -->
           <div class="ns-labs-row" *ngIf="labs.component.length > 1">
-            <div class="ns-labs-icon-plus" *ngIf="!labs.collapsed" (click)="labs.collapsed =!labs.collapsed;"><i class="material-icons">add</i></div>
-            <div class="ns-labs-icon-minus" *ngIf="labs.collapsed" (click)="labs.collapsed = !labs.collapsed;"><i class="material-icons">remove</i></div>
+            <div class="ns-labs-icon-plus" *ngIf="!labs.collapsed" (click)="labs.collapsed =!labs.collapsed;"><span class="ns-labs-plus-icon">+</span></div>
+            <div class="ns-labs-icon-minus" *ngIf="labs.collapsed" (click)="labs.collapsed = !labs.collapsed;"><span class="ns-labs-plus-icon">-</span></div>
             <div class="ns-small-bar ns-labs-red" *ngIf="labs.abnormal== true "></div>
             <div class="ns-small-bar ns-labs-green" *ngIf="labs.abnormal== false && labs.dates.resultDate!=''"></div>
             <div class="ns-small-bar ns-labs-grey" *ngIf="labs.dates.resultDate=='' "></div>

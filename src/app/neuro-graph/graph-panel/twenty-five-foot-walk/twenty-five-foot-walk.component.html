@@ -149,11 +149,11 @@
 </ng-template>
 <ng-template #walk25FeetThirdLevelTemplate>
   <div class="walk25feet-info-popup">
-    <div class="walk25feet-header">
+    <div class="modal-header walk25feet-header">
       <div class="walk25feet-header-title">{{walk25FeetDataInfo.title}}</div>
-      <div class="walk25feet-header-close">
-        <i (click)="reportDialogRef.close()" class="material-icons">clear</i>
-      </div>
+      <button type="button" class="close marginTop" aria-label="Close" (click)="reportDialogRef.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
     <div class="walk25feet-popup-content" *ngFor="let walk25feet of walk25FeetDataInfo.info;">
       {{walk25feet}}
