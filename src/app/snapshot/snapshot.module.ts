@@ -7,9 +7,13 @@ import { SnapshotComponent } from './snapshot.component';
 // Patient Concerns component
 import { PatientConcernsModule } from '@sutterhealth/patient-concerns';
 
-import { FlexLayoutModule } from "@angular/flex-layout";
 //import { NeuroGraphModule } from "@sutterhealth/neuro-graph";
 import { NeuroGraphModule } from "../neuro-graph/neuro-graph.module";
+
+import { FlexLayoutModule } from "@angular/flex-layout";
+//Progress Note
+import { ProgressNotesModule } from '@sutterhealth/progress-notes';
+import { DragulaModule } from 'ng2-dragula';
 
 import {
   MdTooltipModule,
@@ -35,7 +39,9 @@ import {
     PatientConcernsModule.forRoot(),
     MatInputModule,
     FlexLayoutModule,
-    NeuroGraphModule
+    NeuroGraphModule,
+    ProgressNotesModule,
+    DragulaModule
   ],
   declarations: [
     SnapshotComponent
