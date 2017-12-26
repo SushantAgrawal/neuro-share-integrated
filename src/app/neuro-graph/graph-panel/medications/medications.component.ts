@@ -269,11 +269,21 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             },
             {
               urlId: allHttpMessages.httpGetDmt,
-              queryParams: qParams
+              queryParams: [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]
             },
             {
               urlId: allHttpMessages.httpGetOtherMeds,
-              queryParams: qParams
+              queryParams: [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                }
+              ]
             },
             {
               urlId: allHttpMessages.httpGetRelapse,
@@ -582,7 +592,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         onClickCallback(d);
       })
 
-      rect.each((d1, i, currentNodes) => {
+    rect.each((d1, i, currentNodes) => {
       const current = currentNodes[i];
       let x1 = parseFloat(current.getAttribute("x"));
       let y1 = parseFloat(current.getAttribute("y"));
