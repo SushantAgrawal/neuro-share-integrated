@@ -27,7 +27,7 @@ export class LabsComponent implements OnInit {
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
   registerDrag: any;
-  private labsDataStatic: any;
+ 
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
@@ -131,7 +131,6 @@ export class LabsComponent implements OnInit {
     this.subscriptions.unsubscribe();
   }
   showSecondLevel(data) {
-   
     this.labsDataDetails = data.orderDetails;
     let compArray: Array<any> = [];
     this.labsData.map(d => {
@@ -139,9 +138,9 @@ export class LabsComponent implements OnInit {
         ...d,
         resultDate: new Date(d.dates.resultDate),
       }
-    }).sort((a, b) => b.resultDate - a.resultDate).forEach(element => {
+    }).sort((a, b) => b.resultDate - a.resultDate).sort((a, b) => b.id - a.id).forEach(element => {
       if (element.component.length > 0) {
-        if (element.component.length > 0 && element.dates.resultDate != "" && new Date(element.dates.resultDate) <= new Date(data.orderDetails[0].dates.resultDate)) {
+        if (element.component.length > 0 && element.dates.resultDate != "" && new Date(element.dates.resultDate) <= new Date(data.orderDetails[0].dates.resultDate) && element.id <= data.orderDetails[0].id) {
           element.component.forEach(elem => {
             compArray.push(elem);
           });
