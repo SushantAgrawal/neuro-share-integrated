@@ -337,6 +337,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       return matched.length > 0
     }
 
+    medicationOrders = medicationOrders.filter(m => m.orderStatus && m.orderStatus.toLowerCase() !== 'canceled' && m.orderStatus.toLowerCase() !== 'discontinued');
+
     medicationOrders.forEach(x => {
       if (x.medication && genericNames.find(gn => {
         return x.medication.simpleGenericName && x.medication.simpleGenericName[0] && gn === x.medication.simpleGenericName[0].toLowerCase();
@@ -556,10 +558,17 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .enter();
 
     //Draws rectangles
-    let rect = rectangles
+    let rectBars = rectangles
       .append('rect')
       .attr('rx', 0)
       .attr('ry', 0)
+      .attr('height', 6)
+      .attr('stroke', 'none')
+      .attr('fill', barColor)
+      .style('cursor', 'pointer')
+      .on("click", d => {
+        onClickCallback(d);
+      })
       .attr('x', d => {
         let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
         let pos = this.chartState.xScale(medStartDate);
@@ -576,30 +585,25 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
         let medEndDate = this.getEndDate(d.date.medEnd);
         let timelineMinDate = Date.parse(this.chartState.xDomain.currentMinValue)
-        let width = 0;
+        let barWidth = 0;
         if (medStartDate >= timelineMinDate) {
-          return this.chartState.xScale(medEndDate) - this.chartState.xScale(medStartDate);
+          barWidth = this.chartState.xScale(medEndDate) - this.chartState.xScale(medStartDate);
         }
         else {
-          return this.chartState.xScale(medEndDate) - this.chartState.xScale(this.chartState.xDomain.currentMinValue);
+          barWidth = this.chartState.xScale(medEndDate) - this.chartState.xScale(this.chartState.xDomain.currentMinValue);
         }
-      })
-      .attr('height', 6)
-      .attr('stroke', 'none')
-      .attr('fill', barColor)
-      .style('cursor', 'pointer')
-      .on("click", d => {
-        onClickCallback(d);
-      })
+        return barWidth <= 0 ? 1 : barWidth;
+      });
 
-    rect.each((d1, i, currentNodes) => {
+
+    //overlap area
+    rectBars.each((d1, i, currentNodes) => {
       const current = currentNodes[i];
       let x1 = parseFloat(current.getAttribute("x"));
       let y1 = parseFloat(current.getAttribute("y"));
       let width1 = parseFloat(current.getAttribute("width"));
 
-      //overlap area
-      rect.each((d2, j, nextNodes) => {
+      rectBars.each((d2, j, nextNodes) => {
         const next = nextNodes[j];
         let x2 = parseFloat(next.getAttribute("x"));
         let y2 = parseFloat(next.getAttribute("y"));
@@ -637,7 +641,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .style('cursor', 'pointer')
           }
         }
-
       });
     });
 
@@ -668,7 +671,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .on("click", d => {
         onClickCallback(d);
       });
-    this.arrangeLabels(labels);
+    //this.arrangeLabels(labels);
 
     //Adjusts height
     d3.select('#' + containterId)
