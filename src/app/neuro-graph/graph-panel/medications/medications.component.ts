@@ -547,15 +547,11 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('class', containterId + '-elements-wrapper')
       .attr('transform', 'translate(0, 5)');
 
-    //group on generic name
+    //group on medication id
     let groupsUnfiltered = dataset.map(d => d.medication.id);
     let groups = groupsUnfiltered.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
 
-    let rectangles = svg
-      .append('g')
-      .selectAll('rect')
-      .data(dataset)
-      .enter();
+    let rectangles = svg.append('g').selectAll('rect').data(dataset).enter();
 
     //Draws rectangles
     let rectBars = rectangles
@@ -572,7 +568,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       .attr('x', d => {
         let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
         let pos = this.chartState.xScale(medStartDate);
-        return pos < 0 ? 0 : pos;
+        return pos < 0 ? 0 : pos - 1;
       })
       .attr('y', function (d: any, i) {
         for (var j = 0; j < groups.length; j++) {
@@ -596,7 +592,79 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       });
 
 
-    //overlap area
+    //Draws labels
+    let labels = rectangles
+      .append('text')
+      .attr('class', containterId + '_text')
+      .text((d, i) => this.getShortenedName(d.name))
+      .attr('font-size', 11)
+      .attr('text-anchor', 'start')
+      .attr('text-height', 40)
+      .attr('fill', 'black')
+      .style('text-transform', 'capitalize')
+      .style('cursor', 'pointer')
+      .on("click", d => {
+        onClickCallback(d);
+      })
+      .attr('x', d => {
+        let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
+        let medEndDate = this.getEndDate(d.date.medEnd);
+        let width = this.chartState.xScale(medEndDate) - this.chartState.xScale(medStartDate);
+        let pos = this.chartState.xScale(medStartDate);
+        if (pos < 0) {
+          return 0;
+        }
+        else if (pos >= this.chartsWidth) {
+          return this.chartsWidth - 20;
+        }
+        else {
+          return pos;
+        }
+      })
+      .attr('y', function (d: any, i) {
+        for (let j = 0; j < groups.length; j++) {
+          if (d.medication.id == groups[j]) {
+            return j * 27 + 8;
+          }
+        }
+      });
+
+    this.markOverlaps(rectBars, rectangles, overlapColor);
+    this.arrangeLabels(labels);
+
+    //Adjusts height
+    d3.select('#' + containterId).attr('height', groups.length * 30);
+    d3.select('#' + containterId).style('display', 'block');
+  }
+
+  arrangeLabels(labels) {
+    let yPositionsAll = [];
+    labels.each((dCurrent, i, currentNodes) => {
+      yPositionsAll.push(parseFloat(currentNodes[i].getAttribute('y')));
+    });
+
+    let yPositions = yPositionsAll.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+
+    yPositions.forEach(pos => {
+      let tempItems = [];
+      labels.each((node, i, currentNodes) => {
+        let current = currentNodes[i];
+        let yPos = parseFloat(current.getAttribute('y'));
+        if (pos == yPos) {
+          tempItems.push(current);
+        }
+      });
+      tempItems.forEach((node, i, currentNodes) => {
+        if (i != tempItems.length - 1) {
+          let current = currentNodes[i];
+          let txt = current.textContent;
+          current.setAttribute('visibility', 'hidden');
+        }
+      });
+    });
+  }
+
+  markOverlaps(rectBars, rectangles, overlapColor) {
     rectBars.each((d1, i, currentNodes) => {
       const current = currentNodes[i];
       let x1 = parseFloat(current.getAttribute("x"));
@@ -639,63 +707,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
               .attr('stroke', 'none')
               .attr('fill', overlapColor)
               .style('cursor', 'pointer')
-          }
-        }
-      });
-    });
-
-    //Draws texts
-    let labels = rectangles
-      .append('text')
-      .text(d => this.getShortenedName(d.name))
-      .attr('x', d => {
-        let medStartDate = Date.parse(d.date.medStart || d.date.orderDate);
-        let medEndDate = this.getEndDate(d.date.medEnd);
-        let width = this.chartState.xScale(medEndDate) - this.chartState.xScale(medStartDate);
-        let pos = this.chartState.xScale(medStartDate);
-        return pos < 0 ? 0 : pos;
-      })
-      .attr('y', function (d: any, i) {
-        for (let j = 0; j < groups.length; j++) {
-          if (d.medication.id == groups[j]) {
-            return j * 27 + 8;
-          }
-        }
-      })
-      .attr('font-size', 11)
-      .attr('text-anchor', 'start')
-      .attr('text-height', 40)
-      .attr('fill', 'black')
-      .style('text-transform', 'capitalize')
-      .style('cursor', 'pointer')
-      .on("click", d => {
-        onClickCallback(d);
-      });
-    //this.arrangeLabels(labels);
-
-    //Adjusts height
-    d3.select('#' + containterId)
-      .attr('height', groups.length * 30);
-    d3.select('#' + containterId)
-      .style('display', 'block');
-  }
-
-  arrangeLabels(labels) {
-    labels.each((d1, i, currentNodes) => {
-      const current = currentNodes[i];
-      let y1 = parseFloat(current.getAttribute('y'));
-      const x1 = parseFloat(current.getAttribute('x'));
-      const textLength1 = current.textContent.length * 5;
-      labels.each((d2, j, nextNodes) => {
-        const next = nextNodes[j];
-        if (current !== next) {
-          const x2 = parseFloat(next.getAttribute('x'));
-          const y2 = parseFloat(next.getAttribute('y'));
-          const textLength2 = next.textContent.length * 5;
-          if ((Math.abs(x1 - x2) < Math.abs(textLength1)) && (Math.abs(y1) === Math.abs(y2))) {
-            next.setAttribute('y', (y2 + 10 * (i + 1)).toString());
-            current.setAttribute('y', (y2 + 10 * (i + 2)).toString());
-            y1 = parseFloat(next.getAttribute('y'));
           }
         }
       });
