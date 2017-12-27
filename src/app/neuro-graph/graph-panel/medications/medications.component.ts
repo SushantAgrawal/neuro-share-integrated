@@ -615,7 +615,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           return 0;
         }
         else if (pos >= this.chartsWidth) {
-          return this.chartsWidth - 20;
+          return this.chartsWidth;// - 20;
         }
         else {
           return pos;
