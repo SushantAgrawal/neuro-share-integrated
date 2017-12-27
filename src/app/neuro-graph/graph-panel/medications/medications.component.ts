@@ -588,7 +588,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         else {
           barWidth = this.chartState.xScale(medEndDate) - this.chartState.xScale(this.chartState.xDomain.currentMinValue);
         }
-        return barWidth <= 0 ? 1 : barWidth;
+        return barWidth <= 0 ? 2 : barWidth;
       });
 
 
