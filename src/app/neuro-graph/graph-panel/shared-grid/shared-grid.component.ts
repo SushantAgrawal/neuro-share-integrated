@@ -67,6 +67,12 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .subscribe(d => {
         d.error ? (() => { console.log(d.error) }) : (() => {
           d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes);
+          this.progressNotes.forEach(element => {
+            if(element.text.length > 0 && element.text[0].indexOf('{\\rtf')>-1)
+            {
+              element.text='<i>***RTF content has been omitted</i>';
+            }
+          });
           let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
           this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
           this.dialogRef.updatePosition({ top: '150px', left: '850px' });
