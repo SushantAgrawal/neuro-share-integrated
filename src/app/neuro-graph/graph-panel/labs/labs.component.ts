@@ -45,7 +45,9 @@ export class LabsComponent implements OnInit {
           : (() => {
             try {
               if (d.data && d.data.EPIC && d.data.EPIC.labOrder) {
-                this.labsData = d.data.EPIC.labOrder.filter(item => labsConfig.some(f => f["proc_code"] == item.procedureCode));
+                this.labsData = d.data.EPIC.labOrder
+                .filter(item => labsConfig.some(f => f["proc_code"] == item.procedureCode))
+                .filter(item =>  item.status.toUpperCase() != "CANCELED"); 
               }
               if (this.labsData && this.labsData.length > 0) {
                 this.createChart();
