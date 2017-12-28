@@ -54,7 +54,9 @@ export class ImagingComponent implements OnInit {
           : (() => {
             try {
               if (d.data && d.data.EPIC && d.data.EPIC.patient && d.data.EPIC.patient[0]) {
-                this.imagingData = d.data.EPIC.patient[0].imagingOrders.filter(item => imagingConfig.some(f => f["CPT code"] == item.procedureCPTCode));
+                this.imagingData = d.data.EPIC.patient[0].imagingOrders
+                .filter(item => imagingConfig.some(f => f["CPT code"] == item.procedureCPTCode ))
+                .filter(item =>  item.status.toUpperCase() != "CANCELED" && item.authorizingProvider!="");
               }
               if (this.imagingData && this.imagingData.length > 0) {
                 this.createChart();
@@ -122,8 +124,15 @@ export class ImagingComponent implements OnInit {
     let sub3 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.imagingChartLoaded) {
-          this.removeChart();
-          this.createChart();
+          if (d.data.fetchData) {
+            this.removeChart();
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: 'imaging', checked: true });
+          }
+          else {
+            this.removeChart();
+            this.createChart();
+          }
+         
         }
       })();
     })
@@ -179,12 +188,13 @@ export class ImagingComponent implements OnInit {
 
     let repeatCount = 0;
     let isComplete = "Empty";
-
-    for (let i = 0; i < this.datasetC.length; i++) {
+    let i = 0;
+    while (i < this.datasetC.length) {
+      let arrData:Array<number>=[];
       for (let j = 0; j < this.datasetC.length; j++) {
         if (this.datasetC[i].orderFormatDate == this.datasetC[j].orderFormatDate) {
           if (repeatCount == 0) {
-            if (this.datasetC[j].status == "Completed") {
+            if (this.datasetC[j].status.toUpperCase() == "COMPLETED") {
               isComplete = "Full";
             }
             this.datasetB.push({
@@ -192,22 +202,29 @@ export class ImagingComponent implements OnInit {
               'status': isComplete,
               'orderDetails': [this.datasetC[j]]
             })
+            arrData.push(j);
             repeatCount++;
           }
           else {
-            if (this.datasetC[j].status != "Completed" && isComplete == "Full") {
+            if (this.datasetC[j].status.toUpperCase() != "COMPLETED" && isComplete == "Full") {
               isComplete = "Half";
               this.datasetB[this.datasetB.length - 1].status = isComplete;
             }
-            else if (this.datasetC[j].status == "Completed" && isComplete == "Empty") {
+            else if (this.datasetC[j].status.toUpperCase() == "COMPLETED" && isComplete == "Empty") {
               isComplete = "Half";
               this.datasetB[this.datasetB.length - 1].status = isComplete;
             }
             this.datasetB[this.datasetB.length - 1].orderDetails.push(this.datasetC[j]);
-            this.datasetC.splice(j, 1);
+            //this.datasetC.splice(j, 1);
+            arrData.push(j);
           }
         }
       }
+      arrData.reverse();
+      arrData.forEach(element => {
+        this.datasetC.splice(element, 1);
+      });
+      arrData=[];
       repeatCount = 0;
       isComplete = "Empty";
     }
