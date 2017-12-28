@@ -337,7 +337,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       return matched.length > 0
     }
 
-    medicationOrders = medicationOrders.filter(m => m.orderStatus && m.orderStatus.toLowerCase() !== 'canceled' && m.orderStatus.toLowerCase() !== 'discontinued');
+    medicationOrders = medicationOrders.filter(m => m.orderStatus && m.orderStatus.toLowerCase() !== 'canceled');
 
     medicationOrders.forEach(x => {
       if (x.medication && genericNames.find(gn => {
