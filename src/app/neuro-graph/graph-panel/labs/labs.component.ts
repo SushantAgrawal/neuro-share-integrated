@@ -27,7 +27,7 @@ export class LabsComponent implements OnInit {
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
   registerDrag: any;
- 
+
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
@@ -114,8 +114,14 @@ export class LabsComponent implements OnInit {
     let sub3 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.labsChartLoaded) {
-          this.removeChart();
-          this.createChart();
+          if (d.data.fetchData) {
+            this.removeChart();
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: 'labs', checked: true });
+          }
+          else {
+            this.removeChart();
+            this.createChart();
+          }
         }
       })();
     })

@@ -157,9 +157,15 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let sub5 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.Feet25WalkChartLoaded) {
-          this.unloadChart();
-          this.drawWalk25FeetAxis();
-          this.drawWalk25FeetLineCharts();
+          if (d.data.fetchData) {
+            this.unloadChart();
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: 'walk25Feet', checked: true });
+          }
+          else {
+            this.unloadChart();
+            this.drawWalk25FeetAxis();
+            this.drawWalk25FeetLineCharts();
+          }
         }
       })();
     })

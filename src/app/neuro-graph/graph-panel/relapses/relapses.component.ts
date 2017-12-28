@@ -221,8 +221,14 @@ export class RelapsesComponent implements OnInit {
     let sub4 = this.brokerService.filterOn(allMessages.graphScaleUpdated).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         if (this.relapsisChartLoaded) {
-          this.removeChart();
-          this.createChart();
+          if (d.data.fetchData) {
+            this.removeChart();
+            this.brokerService.emit(allMessages.neuroRelated, { artifact: 'relapses', checked: true });
+          }
+          else {
+            this.removeChart();
+            this.createChart();
+          }
         }
       })();
     })
