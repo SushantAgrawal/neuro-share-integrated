@@ -13,7 +13,7 @@
     font-size: 14pt;
 }
 .cds-header-title{ float: left;}
-.cds-header-close{ float: right;}
+.cds-header-close{ float: right; cursor: pointer;}
 .cds-header-close i{ font-size: 10pt; cursor: pointer;}
 .cds-header:after, .urlContainer:after {
     clear: both;
