@@ -68,9 +68,8 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         d.error ? (() => { console.log(d.error) }) : (() => {
           d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes);
           this.progressNotes.forEach(element => {
-            if(element.text.length > 0 && element.text[0].indexOf('{\\rtf')>-1)
-            {
-              element.text='<i>***RTF content has been omitted</i>';
+            if (element.text.length > 0 && element.text[0].indexOf('{\\rtf') > -1) {
+              element.text = '<i>***RTF content has been omitted</i>';
             }
           });
           let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
@@ -100,7 +99,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       },
       {
         name: 'endDate',
-        value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+        value: this.neuroGraphService.moment(this.chartState.xDomain.scaleMaxValue).format('MM/DD/YYYY')
       }
     ]);
   };
@@ -366,7 +365,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(today) -42)
+        .attr('x', xScale(today) - 42)
         .attr('dy', 0)
         .text(todayLabel)
     }
@@ -383,11 +382,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) -58)
+        .attr('x', xScale(currentDate) - 58)
         .attr('dy', 0)
         .text(todayLabel1)
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) -52)
+        .attr('x', xScale(currentDate) - 52)
         .attr('dy', 15)
         .text(todayLastLabel)
     }
