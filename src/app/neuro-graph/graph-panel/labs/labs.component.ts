@@ -27,7 +27,6 @@ export class LabsComponent implements OnInit {
   private dialogRef: any;
   private labsChartLoaded: boolean = false;
   registerDrag: any;
-
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
@@ -46,8 +45,8 @@ export class LabsComponent implements OnInit {
             try {
               if (d.data && d.data.EPIC && d.data.EPIC.labOrder) {
                 this.labsData = d.data.EPIC.labOrder
-                .filter(item => labsConfig.some(f => f["proc_code"] == item.procedureCode))
-                .filter(item =>  item.status.toUpperCase() != "CANCELED"); 
+                  .filter(item => labsConfig.some(f => f["proc_code"] == item.procedureCode))
+                  .filter(item => item.status.toUpperCase() != "CANCELED");
               }
               if (this.labsData && this.labsData.length > 0) {
                 this.createChart();
@@ -140,26 +139,27 @@ export class LabsComponent implements OnInit {
   }
   showSecondLevel(data) {
     this.labsDataDetails = data.orderDetails;
-    let compArray: Array<any> = [];
-    this.labsData.map(d => {
-      return {
-        ...d,
-        resultDate: new Date(d.dates.resultDate),
-      }
-    }).sort((a, b) => b.resultDate - a.resultDate).sort((a, b) => b.id - a.id).forEach(element => {
-      if (element.component.length > 0) {
-        if (element.component.length > 0 && element.dates.resultDate != "" && new Date(element.dates.resultDate) <= new Date(data.orderDetails[0].dates.resultDate) && element.id <= data.orderDetails[0].id) {
-          element.component.forEach(elem => {
-            compArray.push(elem);
-          });
-        }
-      }
-    });
+
     this.labsDataDetails.forEach(element => {
+      let compArray: Array<any> = [];
+      this.labsData.map(d => {
+        return {
+          ...d,
+          resultDate: new Date(d.dates.resultDate),
+        }
+      }).sort((a, b) => b.resultDate - a.resultDate).sort((a, b) => b.id - a.id).forEach(innerelement => {
+        if (innerelement.component.length > 0) {
+          if (innerelement.component.length > 0 && innerelement.dates.resultDate != "" && new Date(innerelement.dates.resultDate) <= new Date(element.dates.resultDate) && innerelement.id <= element.id) {
+            innerelement.component.forEach(elem => {
+              compArray.push(elem);
+            });
+          }
+        }
+      });
       if (element.component.length > 0) {
         element.component.forEach(elem => {
           let selCompArray: Array<any> = [];
-          selCompArray = compArray.filter((obj => obj.id == elem.id));
+          selCompArray = compArray.filter((obj => obj.name == elem.name));
           let trendArray: Array<any> = [];
           let i = 120;
           selCompArray.forEach(elems => {
@@ -204,13 +204,15 @@ export class LabsComponent implements OnInit {
       });
   }
   plottrendline() {
-    if (this.labsDataDetails[0].component.length > 0) {
-      this.labsDataDetails[0].component.forEach(elems => {
-        if (elems.trendData.length > 0) {
-          this.drawtrendLine(this.labsDataDetails[0].procedureCode, elems.id, elems.trendData)
-        }
-      });
-    }
+    this.labsDataDetails.forEach(element => {
+      if (element.component.length > 0) {
+        element.component.forEach(elems => {
+          if (elems.trendData.length > 0) {
+            this.drawtrendLine(element.procedureCode, elems.id, elems.trendData)
+          }
+        });
+      }
+    });
 
   }
   drawtrendLine(labId, compId, trendData) {
@@ -273,8 +275,9 @@ export class LabsComponent implements OnInit {
     let outputCollection = [];
     let repeatCount = 0;
     let isComplete = "Empty";
-
-    for (let i = 0; i < tempDataset.length; i++) {
+    let i = 0;
+    while (i < tempDataset.length) {
+      let arrData: Array<number> = [];
       for (let j = 0; j < tempDataset.length; j++) {
         if (tempDataset[i].orderFormatDate == tempDataset[j].orderFormatDate) {
           if (repeatCount == 0) {
@@ -286,6 +289,7 @@ export class LabsComponent implements OnInit {
               'status': isComplete,
               'orderDetails': [tempDataset[j]]
             })
+            arrData.push(j);
             repeatCount++;
           }
           else {
@@ -298,10 +302,15 @@ export class LabsComponent implements OnInit {
               outputCollection[outputCollection.length - 1].status = isComplete;
             }
             outputCollection[outputCollection.length - 1].orderDetails.push(tempDataset[j]);
-            tempDataset.splice(j, 1);
+            arrData.push(j);
           }
         }
       }
+      arrData.reverse();
+      arrData.forEach(element => {
+        tempDataset.splice(element, 1);
+      });
+      arrData = [];
       repeatCount = 0;
       isComplete = "Empty";
     }
