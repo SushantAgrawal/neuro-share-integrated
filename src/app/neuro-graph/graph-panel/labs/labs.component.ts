@@ -48,7 +48,7 @@ export class LabsComponent implements OnInit {
                   .filter(item => labsConfig.some(f => f["proc_code"] == item.procedureCode))
                   .filter(item => item.status.toUpperCase() != "CANCELED");
               }
-              if (this.labsData && this.labsData.length > 0) {
+              if (d.data && d.data.EPIC && d.data.EPIC.labOrder && d.data.EPIC.labOrder.length > 0) {
                 this.createChart();
               }
               this.labsChartLoaded = true;
