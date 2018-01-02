@@ -104,15 +104,23 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     ]);
   };
 
-  getProgessNoteData(prevCSN) {
+  getProgessNoteData(lastVisitDate) {
     this.brokerService.httpGet(allHttpMessages.httpGetProgressNote, [
       {
         name: 'pom-id',
         value: this.neuroGraphService.get('queryParams').pom_id
       },
       {
-        name: 'csn',
-        value: prevCSN
+        name: 'noteCategory',
+        value: 'Progress Notes'
+      },
+      {
+        name: 'startDate',
+        value: this.neuroGraphService.moment(lastVisitDate).subtract(2, 'days').format('MM/DD/YYYY')
+      },
+      {
+        name: 'endDate',
+        value: this.neuroGraphService.moment(lastVisitDate).format('MM/DD/YYYY')
       }
     ]);
   };
@@ -277,7 +285,16 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       lastOfficeheight = 40;
     }
 
+    nodeSelection.append('clipPath')
+      .attr('id', 'ref-line-clip')
+      .append('rect')
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", this.chartState.canvasDimension.width)
+      .attr("height", dimension.offsetHeight)
+
     nodeSelection.append("line")
+      .attr("clip-path", "url(#ref-line-clip)")
       .attr("x1", xScale(previousDate))
       .attr("y1", 15)
       .attr("x2", xScale(previousDate))
@@ -297,7 +314,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr('stroke', '#BCBCBC')
         .style('cursor', 'pointer')
         .on('click', d => {
-          this.showProgressNote();
+          this.getProgessNoteData(previousDate);
         });
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
@@ -309,7 +326,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .text(this.lastOfficeDateLabel)
         .style('cursor', 'pointer')
         .on('click', d => {
-          this.showProgressNote();
+          this.getProgessNoteData(previousDate);
         });
     }
     else {
@@ -322,7 +339,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr('stroke', '#BCBCBC')
         .style('cursor', 'pointer')
         .on('click', d => {
-          this.showProgressNote();
+          this.getProgessNoteData(previousDate);
         });
       let axisTextPrev = nodeSelection.append('text')
         .attr('y', 35)
@@ -338,11 +355,12 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .attr('dy', 15)
         .text(todayLastLabel)
         .on('click', d => {
-          this.showProgressNote();
+          this.getProgessNoteData(previousDate);
         })
     }
 
     nodeSelection.append("line")
+      .attr("clip-path", "url(#ref-line-clip)")
       .attr("x1", xScale(today))
       .attr("y1", 15)
       .attr("x2", xScale(today))
@@ -392,13 +410,6 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
   };
 
-  showProgressNote() {
-    let prevCSN = "0";
-    if (this.encounterData.length > 1) {
-      prevCSN = this.encounterData[1].contactSerialNumber;
-    }
-    this.getProgessNoteData(prevCSN);
-  };
 
   //#endregion
 }
