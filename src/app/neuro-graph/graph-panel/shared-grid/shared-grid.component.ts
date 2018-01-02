@@ -285,7 +285,16 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       lastOfficeheight = 40;
     }
 
+    nodeSelection.append('clipPath')
+      .attr('id', 'ref-line-clip')
+      .append('rect')
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("width", this.chartState.canvasDimension.width)
+      .attr("height", dimension.offsetHeight)
+
     nodeSelection.append("line")
+      .attr("clip-path", "url(#ref-line-clip)")
       .attr("x1", xScale(previousDate))
       .attr("y1", 15)
       .attr("x2", xScale(previousDate))
@@ -351,6 +360,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
 
     nodeSelection.append("line")
+      .attr("clip-path", "url(#ref-line-clip)")
       .attr("x1", xScale(today))
       .attr("y1", 15)
       .attr("x2", xScale(today))
