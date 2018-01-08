@@ -118,12 +118,8 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           try {
             let dmtResponse = d.data[0][allHttpMessages.httpGetDmt];
             let relapsesLocalData = d.data[1][allHttpMessages.httpGetRelapse];
-            // if (!this.dmtSecondLayerLocalData) {
-            //   this.dmtSecondLayerLocalData = dmtResponse.DMTs || [];
-            // }
             this.dmtSecondLayerLocalData = dmtResponse.DMTs || [];
             this.relapsesLocalData = relapsesLocalData.relapses || [];
-
             let selectedData = d.carryBag;
             let dmt;
             this.dmtSecondLayerLocalData && (dmt = this.dmtSecondLayerLocalData.find(x => x.dmt_order_id === selectedData.orderIdentifier.toString()));
@@ -148,11 +144,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
         : (() => {
           try {
             let otherMedsResponse = d.data;
-            // if (!this.otherMedsSecondLayerLocalData) {
-            //   this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds || [];
-            // }
             this.otherMedsSecondLayerLocalData = otherMedsResponse.Other_Meds || [];
-
             let selectedData = d.carryBag;
             let otherMeds
             this.otherMedsSecondLayerLocalData && (otherMeds = this.otherMedsSecondLayerLocalData.find(x => x.other_med_order_id === selectedData.orderIdentifier.toString()));
@@ -203,16 +195,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let subDmtPost = this.brokerService.filterOn(allHttpMessages.httpPostDmt).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         try {
-          // this.dmtSecondLayerLocalData.push({
-          //   dmt_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
-          //   patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
-          //   reason_stopped: this.medSecondLayerModel.reasonStopped,
-          //   other_reason: this.medSecondLayerModel.otherReason,
-          //   last_updated_provider_id: this.queryParams.provider_id,
-          //   last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-          //   save_csn: this.queryParams.csn,
-          //   save_csn_status: this.queryParams.csn_status
-          // });
           this.dialogRef.close();
         } catch (ex) {
           console.log(ex);
@@ -224,11 +206,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let subDmtPut = this.brokerService.filterOn(allHttpMessages.httpPutDmt).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         try {
-          // let med = d.carryBag.dmt;
-          // med.patient_reported_start = `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`;
-          // med.reason_stopped = this.medSecondLayerModel.reasonStopped;
-          // med.other_reason = this.medSecondLayerModel.otherReason;
-          // med.otherReason = this.medSecondLayerModel.otherReason;
           this.dialogRef.close();
         } catch (ex) {
           console.log(ex);
@@ -240,14 +217,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let subOtherMedsPost = this.brokerService.filterOn(allHttpMessages.httpPostOtherMeds).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         try {
-          // this.otherMedsSecondLayerLocalData.push({
-          //   other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
-          //   reason_for_med: this.medSecondLayerModel.reasonForMed,
-          //   last_updated_provider_id: this.queryParams.provider_id,
-          //   last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-          //   save_csn: this.queryParams.csn,
-          //   save_csn_status: this.queryParams.csn_status
-          // });
           this.dialogRef.close();
         } catch (ex) {
           console.log(ex);
@@ -259,8 +228,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     let subOtherMedsPut = this.brokerService.filterOn(allHttpMessages.httpPutOtherMeds).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
         try {
-          // let med = d.carryBag.otherMed;
-          // med.reason_for_med = this.medSecondLayerModel.reasonForMed;
           this.dialogRef.close();
         } catch (ex) {
           console.log(ex);
