@@ -29,7 +29,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   isEdssSelected: boolean = true;
   virtualCaseloadEnabled: boolean = false;
   defaultScaleSpanInMonths = 36;
-  dataBufferStartDate = new Date(2015, 0, 1);
+  dataBufferStartDate = new Date((new Date()).getFullYear() - 2, 0, 1);
   scaleMinDate = new Date(1970, 0, 1);
   scaleMaxDate = new Date((new Date()).getFullYear(), 11, 31);
   graphSetting = GRAPH_SETTINGS;
@@ -198,9 +198,9 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
   }
 
   notifyUpdateAndDataShortage() {
-    //console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
-    //console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
-    //console.log(this.state.dataBufferPeriod.dataAvailable ? 'data available' : 'need fresh data');
+    console.log('Current Scale : ' + this.neuroGraphService.moment(this.state.xDomain.currentMinValue).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.xDomain.currentMaxValue).format('MMMM Do YYYY'));
+    console.log('Data Buffer : ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.fromDate).format('MMMM Do YYYY') + ' --- ' + this.neuroGraphService.moment(this.state.dataBufferPeriod.toDate).format('MMMM Do YYYY'));
+    console.log(this.state.dataBufferPeriod.dataAvailable ? 'data available' : 'need fresh data');
     this.brokerService.emit(allMessages.graphScaleUpdated, { fetchData: !this.state.dataBufferPeriod.dataAvailable });
   }
 

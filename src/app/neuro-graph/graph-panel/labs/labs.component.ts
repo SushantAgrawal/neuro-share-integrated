@@ -90,7 +90,7 @@ export class LabsComponent implements OnInit {
                 },
                 {
                   name: 'startDate',
-                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).subtract(60,'month').format('MM/DD/YYYY')
+                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).subtract(60, 'month').add(1, 'days').format('MM/DD/YYYY')
                 },
                 {
                   name: 'endDate',
