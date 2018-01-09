@@ -111,8 +111,7 @@ export class CdsComponent implements OnInit {
       .filterOn(allHttpMessages.httpPostCdsUserData)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          //ToDo:
-          console.log(d.data);
+          //console.log(d.data);
         })();
       });
     let sub5 = this
@@ -162,12 +161,13 @@ export class CdsComponent implements OnInit {
           cdsStateData[x] = "No";
         }
       });
-    cdsStateData.provider_id = this.cdsUserData.last_updated_provider_id;
-    cdsStateData.encounter_csn = this.cdsUserData.save_csn;
-    cdsStateData.updated_instant = this
-      .neuroGraphService
-      .moment()
-      .format('MM/DD/YYYY HH:mm:ss');
+
+    cdsStateData.pom_id = this.neuroGraphService.get('queryParams').pom_id;
+    cdsStateData.provider_id = this.neuroGraphService.get('queryParams').provider_id;
+    cdsStateData.save_csn = this.neuroGraphService.get('queryParams').csn;
+    cdsStateData.save_csn_status = this.neuroGraphService.get('queryParams').csn_status;
+    cdsStateData.updated_instant = this.neuroGraphService.moment().format('MM/DD/YYYY HH:mm:ss');
+    
     return (cdsStateData);
   }
   setChkBoxes() {
