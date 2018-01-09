@@ -129,6 +129,9 @@
         <md-error class="ng-error" *ngIf=" scoreNotValidate == true">
           Please enter at least 1 walk value 
         </md-error> 
+        <md-error class="ng-error" *ngIf=" scoreNotValidate != true && scoreNotSamedate == true">
+          Cannot add 2 different  25' Walk values on the same day 
+        </md-error> 
       </div>
     </div>
   </div>
