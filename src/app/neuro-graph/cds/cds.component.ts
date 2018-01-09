@@ -15,6 +15,8 @@ export class CdsComponent implements OnInit {
   cdsUserData: any;
   cdsState: any = {};
   csnState: any = {};
+  cdsUserDataExists: boolean = false;
+
   constructor(private brokerService: BrokerService, private changeDetector: ChangeDetectorRef, private neuroGraphService: NeuroGraphService, public dialog: MdDialog, private progressNotesGeneratorService: ProgressNotesGeneratorService) {
     this.cdsState = {
       review_relapses: {
@@ -93,6 +95,7 @@ export class CdsComponent implements OnInit {
                 .find(x => x.save_csn == this.csnState.csn);
               if (this.cdsUserData) {
                 this.setChkBoxes();
+                this.cdsUserDataExists = true;
               }
             } catch (ex) {
               console.log(ex);
@@ -111,7 +114,7 @@ export class CdsComponent implements OnInit {
       .filterOn(allHttpMessages.httpPostCdsUserData)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          //console.log(d.data);
+          this.cdsUserDataExists = true;
         })();
       });
     let sub5 = this
@@ -144,9 +147,12 @@ export class CdsComponent implements OnInit {
   }
 
   saveChkBoxesState() {
-    this
-      .brokerService
-      .httpPost(allHttpMessages.httpPostCdsUserData, this.getCdsStateData());
+    if (this.cdsUserDataExists) {
+      this.brokerService.httpPut(allHttpMessages.httpPutCdsUserData, this.getCdsStateData());
+    }
+    else {
+      this.brokerService.httpPost(allHttpMessages.httpPostCdsUserData, this.getCdsStateData());
+    }
   }
   getCdsStateData() {
     let cdsStateData: any = {};
@@ -167,7 +173,7 @@ export class CdsComponent implements OnInit {
     cdsStateData.save_csn = this.neuroGraphService.get('queryParams').csn;
     cdsStateData.save_csn_status = this.neuroGraphService.get('queryParams').csn_status;
     cdsStateData.updated_instant = this.neuroGraphService.moment().format('MM/DD/YYYY HH:mm:ss');
-    
+
     return (cdsStateData);
   }
   setChkBoxes() {
