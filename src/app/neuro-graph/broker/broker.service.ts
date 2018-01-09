@@ -73,6 +73,7 @@ export class BrokerService {
   };
 
   httpGet(id: string, queryParams?: { name: string, value: string }[], headers?: [any], carryBag?: any) {
+    //let timeStamp = +new Date()
     try {
       this.counter++;
       this.isHide = false;

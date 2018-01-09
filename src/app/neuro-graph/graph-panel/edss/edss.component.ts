@@ -200,6 +200,7 @@ export class EdssComponent implements OnInit, OnDestroy {
           })()
           : (() => {
             try {
+              this.unloadChart();
               let edssData = d.data[0][allHttpMessages.httpGetEdss].edss_scores;
               let quesData = d.data[1][allHttpMessages.httpGetAllQuestionnaire].questionaires;
               let getParsedDate = (dtString) => {
@@ -331,28 +332,42 @@ export class EdssComponent implements OnInit, OnDestroy {
       .filterOn(allHttpMessages.httpPostEdss)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          try {
-            let currentDate = new Date();
-            let selectedScore = d.carryBag.selectedScore;
-            this.clinicianDataSet.push({
-              score_id: d.data.score_id,
-              last_updated_instant: `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()}`,
-              last_updated_provider_id: this.neuroGraphService.get("queryParams").provider_id,
-              save_csn: this.neuroGraphService.get("queryParams").csn,
-              save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
-              score: selectedScore.score,
-              lastUpdatedDate: currentDate.getTime(),
-              reportedBy: "Clinician",
-              scoreValue: parseFloat(selectedScore.score)
-            })
-            this.removeChart();
-            this.drawEdssLineCharts();
-            this.scoreChartDialogRef.close();
-          }
-          catch (ex) {
-            console.log(ex);
-            this.brokerService.emit(allMessages.showLogicalError, 'EDSS');
-          }
+          this.brokerService.httpGetMany('FETCH_EDSS_QUES', [
+            {
+              urlId: allHttpMessages.httpGetEdss,
+              queryParams: [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                },
+                {
+                  name: 'startDate',
+                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+                },
+                {
+                  name: 'endDate',
+                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+                }
+              ]
+            }, {
+              urlId: allHttpMessages.httpGetAllQuestionnaire,
+              queryParams: [
+                {
+                  name: 'pom_id',
+                  value: this.neuroGraphService.get('queryParams').pom_id
+                },
+                {
+                  name: 'startDate',
+                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+                },
+                {
+                  name: 'endDate',
+                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+                }
+              ]
+            }
+          ]);
+
         })();
       });
 
