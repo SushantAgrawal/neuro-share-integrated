@@ -71,8 +71,8 @@ var gUrlMaps = {
     "http:put:otherMeds": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds",
 
     "http:get:cds:user:data": "http://10.10.1.33:3000/cds/",
-    "http:post:cds:user:data": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds",
-    "http:put:cds:user:data": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds",
+    "http:post:cds:user:data": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
+    "http:put:cds:user:data": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
 
 
     "http:get:all:questionnaire": "http://10.10.1.33:3000/all-questionnaire-responses/",
