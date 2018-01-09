@@ -529,7 +529,8 @@ export class EdssComponent implements OnInit, OnDestroy {
     //Axis text
     let axisText = svg
       .append('text')
-      .attr('y', GRAPH_SETTINGS.edss.chartHeight)
+      .attr('y', -25)
+      .style('font-weight', 'bold')
       .style('font-size', '10px');
     axisText
       .append('tspan')

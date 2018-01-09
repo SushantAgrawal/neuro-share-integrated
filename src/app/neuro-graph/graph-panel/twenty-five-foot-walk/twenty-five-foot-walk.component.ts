@@ -362,6 +362,8 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       .select('#walk25feet')
       .append('g')
       .attr('class', 'walk25Feet-axis')
+      .attr('transform', `translate(0,${GRAPH_SETTINGS.walk25Feet.positionTop})`);
+
     let oneDecimalFormat = d3.format("10");
 
     //Draws Y Axis
@@ -375,14 +377,15 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         yAxis.selectAll('text')
           .attr('x', '0')
           .attr('fill', GRAPH_SETTINGS.walk25Feet.color)
-          .attr('transform', `translate(${GRAPH_SETTINGS.panel.offsetWidth - GRAPH_SETTINGS.panel.marginLeft + 5} ,${GRAPH_SETTINGS.walk25Feet.positionTop})`)
+          .attr('transform', `translate(${GRAPH_SETTINGS.panel.offsetWidth - GRAPH_SETTINGS.panel.marginLeft + 5} , 0)`)
           .style('font-size', '1.2em')
           .style('font-weight', 'bold')
       });
 
     //Axis text
     let axisText = svg.append('text')
-      .attr('y', 2 * GRAPH_SETTINGS.walk25Feet.chartHeight + 100)
+      .attr('y', -25)
+      .style('font-weight', 'bold')
       .style('font-size', '10px');
     axisText.append('tspan')
       .attr('x', GRAPH_SETTINGS.panel.offsetWidth - GRAPH_SETTINGS.panel.marginLeft - 20)

@@ -267,7 +267,7 @@ export const GRAPH_SETTINGS = {
 
   },
   edss: {
-    positionTop: 300,
+    positionTop: 320,
     chartHeight: 200,
     maxValueY: 9,
     color: "#EA700D"
@@ -288,7 +288,7 @@ export const GRAPH_SETTINGS = {
     color: "#00AAA5"
   },
   walk25Feet: {
-    positionTop: 300,
+    positionTop: 320,
     chartHeight: 200,
     maxValueY: 30,
     color: "#31859B"
