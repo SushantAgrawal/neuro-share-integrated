@@ -13,6 +13,8 @@
 .header{width: 100%; border-bottom: solid 1px #ea700d;}
 .questionContainer{font-size: 9pt; border-collapse:collapse; border-spacing:0;}
 .buttonContainer{ float: right; margin-top: 10px; margin-right: 15px;}
+.controlContainer:after{clear:both;display: block;content:''}
+.errorContainer{ float: left; margin-top: 10px; margin-right: 15px;color:#ff0000; padding-left: 15px;}
 .questionContainer tr:nth-child(even){background-color: #fceadb;}
 .questionContainer tr td{padding: 4px 5px 4px 10px;}
 .ns-edss-theme .modal-body{ padding: 0px;}

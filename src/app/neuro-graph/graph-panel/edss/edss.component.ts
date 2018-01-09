@@ -45,6 +45,7 @@ export class EdssComponent implements OnInit, OnDestroy {
   datasetMean: Array<any> = [];
   edssOpenAddPopUp: boolean = false;
   registerDrag: any;
+  addScoreError: boolean = false;
 
   constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
@@ -398,8 +399,25 @@ export class EdssComponent implements OnInit, OnDestroy {
       return;
     };
     if (this.scoreChartOpType == 'Add') {
-      this.brokerService.httpPost(allHttpMessages.httpPostEdss, this.getPayload(selectedScore.score));
-    } else {
+      //Check Date
+      let today = new Date();
+      let scoreOnThisDate = this.clinicianDataSet.find(s => {
+        let scoreDt = new Date(s.lastUpdatedDate);
+        return scoreDt.getFullYear() == today.getFullYear()
+          && scoreDt.getMonth() == today.getMonth()
+          && scoreDt.getDate() == today.getDate()
+      });
+
+      if (!scoreOnThisDate) {
+        this.addScoreError = false;
+        this.brokerService.httpPost(allHttpMessages.httpPostEdss, this.getPayload(selectedScore.score));
+        this.scoreChartDialogRef.close();
+      }
+      else {
+        this.addScoreError = true;
+      }
+    }
+    else {
       if (this.edssScoreDetail.score !== selectedScore.score) {
         this.edssScoreDetail.score = selectedScore.score;
         this.edssScoreDetail.scoreValue = parseFloat(selectedScore.score);
@@ -408,10 +426,8 @@ export class EdssComponent implements OnInit, OnDestroy {
         this.edssScoreDetail.showUpdate = false;
       }
       this.showSecondLevel(this.edssScoreDetail);
+      this.scoreChartDialogRef.close();
     }
-    //this.removeChart();
-    //this.drawEdssLineCharts();
-    this.scoreChartDialogRef.close();
   }
 
   onClickSecondLayerScore() {

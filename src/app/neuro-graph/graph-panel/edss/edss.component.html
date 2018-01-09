@@ -51,9 +51,14 @@
                 <td>{{question.title}}</td>
             </tr>
         </table>
-        <div class="buttonContainer">
-            <button class="call-out-buttons" *ngIf="scoreChartOpType=='Add'" (click)="onSubmitChartScore($event)">Add</button>
-            <button class="call-out-buttons" *ngIf="scoreChartOpType=='Update'" (click)="onSubmitChartScore($event)">Select</button>
+        <div class="controlContainer">
+            <div class="errorContainer" *ngIf="addScoreError==true">
+                <span>Cannot add multiple EDSS scores on the same date.</span>
+            </div>
+            <div class="buttonContainer">
+                <button class="call-out-buttons" *ngIf="scoreChartOpType=='Add'" (click)="onSubmitChartScore($event)">Add</button>
+                <button class="call-out-buttons" *ngIf="scoreChartOpType=='Update'" (click)="onSubmitChartScore($event)">Select</button>
+            </div>
         </div>
     </div>
 </ng-template>
