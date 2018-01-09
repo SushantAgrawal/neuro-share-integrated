@@ -38,6 +38,7 @@ export class RelapsesComponent implements OnInit {
   private relapsesOpenAddPopUp: boolean = false;
   private isDateOutOfRange: boolean = false;
   private relapsisChartLoaded: boolean = false;
+  private isSymptomsChecked: boolean = false;
   registerDrag: any;
   constructor(private brokerService: BrokerService, public dialog: MdDialog, private neuroGraphService: NeuroGraphService) {
     this.paramData = this.neuroGraphService.get('queryParams')
@@ -232,7 +233,36 @@ export class RelapsesComponent implements OnInit {
         }
       })();
     })
+    //handle overlap with symptoms
+   
+    let subSympChecked = this
+    .brokerService
+    .filterOn(allMessages.neuroRelated)
+    .filter(t => (t.data.artifact == 'symptoms')).filter(t => t.data.checked).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        this.isSymptomsChecked = true;
+        if(this.relapsisChartLoaded)
+        {
+          this.removeChart();
+          this.createChart();
+        }
+      
+      })();
+    });
 
+    let subSympUnchecked = this
+    .brokerService
+    .filterOn(allMessages.neuroRelated)
+    .filter(t => (t.data.artifact == 'symptoms')).filter(t => !t.data.checked).subscribe(d => {
+      d.error ? console.log(d.error) : (() => {
+        this.isSymptomsChecked = false;
+        if(this.relapsisChartLoaded)
+        {
+          this.removeChart();
+          this.createChart();
+        }
+      })();
+    });
     this
       .subscriptions
       .add(sub1)
@@ -240,7 +270,9 @@ export class RelapsesComponent implements OnInit {
       .add(sub3)
       .add(sub4)
       .add(putRelapse)
-      .add(postRelapse);
+      .add(postRelapse)
+      .add(subSympChecked)
+      .add(subSympUnchecked);
   }
 
   ngOnDestroy() {
@@ -381,16 +413,20 @@ export class RelapsesComponent implements OnInit {
       .attr("transform", "translate(" + GRAPH_SETTINGS.panel.marginLeft + "," + GRAPH_SETTINGS.relapse.positionTop + ")")
       .attr("clip-path", "url(#relapses-clip)");
 
-    this.pathUpdate = this.chart.append("path")
-      .datum([
-        { "lastUpdatedDate": this.chartState.xDomain.currentMinValue },
-        { "lastUpdatedDate": this.chartState.xDomain.currentMaxValue }
-      ])
-      .attr("class", "line")
-      .attr("d", this.line)
-      .attr("stroke", "red")
-      .attr("stroke-width", "1.5")
-      .attr("fill", "none");
+    if (!this.isSymptomsChecked) {
+      this.pathUpdate = this.chart.append("path")
+        .datum([
+          { "lastUpdatedDate": this.chartState.xDomain.currentMinValue },
+          { "lastUpdatedDate": this.chartState.xDomain.currentMaxValue }
+        ])
+        .attr("class", "line")
+        .attr("d", this.line)
+        .attr("stroke", "red")
+        .attr("stroke-width", "1.5")
+        .attr("fill", "none");
+
+    }
+
 
     let arc = d3.symbol().type(d3.symbolTriangle).size(100);
     this.chart.selectAll(".triangle")
