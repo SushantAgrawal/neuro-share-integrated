@@ -73,25 +73,33 @@ export class BrokerService {
   };
 
   httpGet(id: string, queryParams?: { name: string, value: string }[], headers?: [any], carryBag?: any) {
-    //let timeStamp = +new Date()
     try {
       this.counter++;
       this.isHide = false;
       let url = this.urlMaps[id];
+
       let myParams = new URLSearchParams();
       queryParams && (queryParams.map(x => myParams.append(x.name, x.value)));
+      myParams.append('timeSpan', (+new Date()).toString())
 
       let myHeaders = new Headers();
       headers && (headers.map(x => myHeaders.append(x.name, x.value)));
-      let options;
-      (headers || queryParams) && (options = new RequestOptions({
-        headers: headers
-          ? myHeaders
-          : null,
-        params: queryParams
-          ? myParams
-          : null
-      }));
+
+      // let options;
+      // (headers || queryParams) && (options = new RequestOptions({
+      //   headers: headers
+      //     ? myHeaders
+      //     : null,
+      //   params: queryParams
+      //     ? myParams
+      //     : null
+      // }));
+
+      let options = new RequestOptions({
+        headers: headers ? myHeaders : null,
+        params: myParams
+      })
+
       if (url) {
         this.http.get(url, options)
           .map(response => response.json())
@@ -121,19 +129,29 @@ export class BrokerService {
       this.counter++;
       let temp = queries.map(t => {
         let url = this.urlMaps[t.urlId];
+
         let myParams = new URLSearchParams();
         t.queryParams && (t.queryParams.forEach(x => myParams.append(x.name, x.value)));
+        myParams.append('timeSpan', (+new Date()).toString())
+
         let myHeaders = new Headers();
         t.headers && (t.headers.forEach(x => myHeaders.append(x.name, x.value)));
-        let options;
-        (t.headers || t.queryParams) && (options = new RequestOptions({
-          headers: t.headers
-            ? myHeaders
-            : null,
-          params: t.queryParams
-            ? myParams
-            : null
-        }));
+
+        // let options;
+        // (t.headers || t.queryParams) && (options = new RequestOptions({
+        //   headers: t.headers
+        //     ? myHeaders
+        //     : null,
+        //   params: t.queryParams
+        //     ? myParams
+        //     : null
+        // }));
+
+        let options = new RequestOptions({
+          headers: t.headers ? myHeaders : null,
+          params: myParams
+        })
+
         return ({ url: url, options: options });
       });
       let emptyUrl = temp.find(x => !Boolean(x.url));

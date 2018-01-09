@@ -67,43 +67,7 @@ export class EdssComponent implements OnInit, OnDestroy {
             console.log(d.error)
           })()
           : (() => {
-            this
-              .brokerService
-              .httpGetMany('FETCH_EDSS_QUES', [
-                {
-                  urlId: allHttpMessages.httpGetEdss,
-                  queryParams: [
-                    {
-                      name: 'pom_id',
-                      value: this.neuroGraphService.get('queryParams').pom_id
-                    },
-                    {
-                      name: 'startDate',
-                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
-                    },
-                    {
-                      name: 'endDate',
-                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
-                    }
-                  ]
-                }, {
-                  urlId: allHttpMessages.httpGetAllQuestionnaire,
-                  queryParams: [
-                    {
-                      name: 'pom_id',
-                      value: this.neuroGraphService.get('queryParams').pom_id
-                    },
-                    {
-                      name: 'startDate',
-                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
-                    },
-                    {
-                      name: 'endDate',
-                      value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
-                    }
-                  ]
-                }
-              ]);
+            this.requestForEdssData();
           })();
       });
 
@@ -332,42 +296,7 @@ export class EdssComponent implements OnInit, OnDestroy {
       .filterOn(allHttpMessages.httpPostEdss)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          this.brokerService.httpGetMany('FETCH_EDSS_QUES', [
-            {
-              urlId: allHttpMessages.httpGetEdss,
-              queryParams: [
-                {
-                  name: 'pom_id',
-                  value: this.neuroGraphService.get('queryParams').pom_id
-                },
-                {
-                  name: 'startDate',
-                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
-                },
-                {
-                  name: 'endDate',
-                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
-                }
-              ]
-            }, {
-              urlId: allHttpMessages.httpGetAllQuestionnaire,
-              queryParams: [
-                {
-                  name: 'pom_id',
-                  value: this.neuroGraphService.get('queryParams').pom_id
-                },
-                {
-                  name: 'startDate',
-                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
-                },
-                {
-                  name: 'endDate',
-                  value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
-                }
-              ]
-            }
-          ]);
-
+          this.requestForEdssData()
         })();
       });
 
@@ -377,18 +306,8 @@ export class EdssComponent implements OnInit, OnDestroy {
       .filterOn(allHttpMessages.httpPutEdss)
       .subscribe(d => {
         d.error ? console.log(d.error) : (() => {
-          try {
-            let selectedScore = d.carryBag.selectedScore;
-            selectedScore.score = this.edssScoreDetail.score;
-            selectedScore.scoreValue = this.edssScoreDetail.scoreValue;
-            this.removeChart();
-            this.drawEdssLineCharts();
-            this.secondLayerDialogRef.close();
-          }
-          catch (ex) {
-            console.log(ex);
-            this.brokerService.emit(allMessages.showLogicalError, 'EDSS');
-          }
+          this.secondLayerDialogRef.close();
+          this.requestForEdssData()
         })();
       });
 
@@ -402,6 +321,44 @@ export class EdssComponent implements OnInit, OnDestroy {
       .add(sub6)
       .add(sub7)
       .add(sub8);
+  }
+
+  requestForEdssData() {
+    this.brokerService.httpGetMany('FETCH_EDSS_QUES', [
+      {
+        urlId: allHttpMessages.httpGetEdss,
+        queryParams: [
+          {
+            name: 'pom_id',
+            value: this.neuroGraphService.get('queryParams').pom_id
+          },
+          {
+            name: 'startDate',
+            value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+          },
+          {
+            name: 'endDate',
+            value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+          }
+        ]
+      }, {
+        urlId: allHttpMessages.httpGetAllQuestionnaire,
+        queryParams: [
+          {
+            name: 'pom_id',
+            value: this.neuroGraphService.get('queryParams').pom_id
+          },
+          {
+            name: 'startDate',
+            value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+          },
+          {
+            name: 'endDate',
+            value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+          }
+        ]
+      }
+    ]);
   }
 
   ngOnDestroy() {
@@ -441,7 +398,7 @@ export class EdssComponent implements OnInit, OnDestroy {
       return;
     };
     if (this.scoreChartOpType == 'Add') {
-      this.brokerService.httpPost(allHttpMessages.httpPostEdss, this.getPayload(selectedScore.score), { selectedScore });
+      this.brokerService.httpPost(allHttpMessages.httpPostEdss, this.getPayload(selectedScore.score));
     } else {
       if (this.edssScoreDetail.score !== selectedScore.score) {
         this.edssScoreDetail.score = selectedScore.score;
@@ -452,8 +409,8 @@ export class EdssComponent implements OnInit, OnDestroy {
       }
       this.showSecondLevel(this.edssScoreDetail);
     }
-    this.removeChart();
-    this.drawEdssLineCharts();
+    //this.removeChart();
+    //this.drawEdssLineCharts();
     this.scoreChartDialogRef.close();
   }
 
