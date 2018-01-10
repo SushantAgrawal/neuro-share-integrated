@@ -379,7 +379,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       model.allowEdit = secondLayerData.save_csn_status !== 'Closed';
       if (medType == this.medType.dmt) {
         model.reasonStopped = secondLayerData.reason_stopped;
-        model.otherReason = secondLayerData.other_reason;
+        model.otherReason = secondLayerData.reason_stopped_text;
         let dtParts = secondLayerData.patient_reported_start.split('/');
         if (dtParts.length == 2) {
           model.patientReportedStartDateMonth = parseInt(dtParts[0]);
@@ -422,13 +422,14 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       dmt_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
       patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
       reason_stopped: this.medSecondLayerModel.reasonStopped,
+      reason_stopped_text: this.medSecondLayerModel.otherReason,
       provider_id: this.queryParams.provider_id,
       updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
       save_csn: this.queryParams.csn,
       save_csn_status: this.queryParams.csn_status
     }
     if (dmt) {
-      this.brokerService.httpPut(allHttpMessages.httpPutDmt, payload, { dmt });
+      this.brokerService.httpPut(allHttpMessages.httpPutDmt, payload);
     } else {
       this.brokerService.httpPost(allHttpMessages.httpPostDmt, payload);
     }
