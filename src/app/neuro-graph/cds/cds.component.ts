@@ -172,7 +172,6 @@ export class CdsComponent implements OnInit {
     cdsStateData.provider_id = this.neuroGraphService.get('queryParams').provider_id;
     cdsStateData.save_csn = this.neuroGraphService.get('queryParams').csn;
     cdsStateData.save_csn_status = this.neuroGraphService.get('queryParams').csn_status;
-    cdsStateData.updated_instant = this.neuroGraphService.moment().format('MM/DD/YYYY HH:mm:ss');
 
     return (cdsStateData);
   }
