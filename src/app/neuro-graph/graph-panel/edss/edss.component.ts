@@ -103,6 +103,7 @@ export class EdssComponent implements OnInit, OnDestroy {
                 });
             }
             else {
+              this.addScoreError = false;
               this.scoreChartOpType = "Add";
               let dialogConfig = {
                 hasBackdrop: true,
@@ -284,6 +285,9 @@ export class EdssComponent implements OnInit, OnDestroy {
               if (d.data.fetchData) {
                 this.unloadChart();
                 this.brokerService.emit(allMessages.neuroRelated, { artifact: 'edss', checked: true });
+                if (this.virtualCaseloadLoaded) {
+                  this.brokerService.emit(allMessages.toggleVirtualCaseload, { artifact: 'add' })
+                }
               }
               else {
                 this.reloadChart();
@@ -431,6 +435,7 @@ export class EdssComponent implements OnInit, OnDestroy {
   }
 
   onClickSecondLayerScore() {
+    this.addScoreError = false;
     this.scoreChartOpType = "Update";
     this
       .secondLayerDialogRef
