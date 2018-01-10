@@ -45,7 +45,7 @@ export class RelapsesComponent implements OnInit {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
   }
   ngOnInit() {
-    this.years = Array.from(new Array(100), (val, index) => (new Date()).getFullYear() - index)
+    this.years = Array.from(new Array(100), (val, index) => ((new Date()).getFullYear() - index).toString())
     this.subscriptions = this
       .brokerService
       .filterOn(allHttpMessages.httpGetRelapse)
