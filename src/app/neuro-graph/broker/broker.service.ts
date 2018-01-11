@@ -43,7 +43,14 @@ export class BrokerService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.http.post(url, body, { headers: headers })
-      .map(response => response.json())
+      .map((response: any) => {
+        if (response && response.body) {
+          return response.json();
+        }
+        else {
+          return {};
+        }
+      })
       .subscribe(d => {
         this.subject.next({ id: id, data: d, body: body, carryBag: carryBag });
         (--this.counter == 0) && (this.isHide = true);
@@ -61,7 +68,14 @@ export class BrokerService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.http.put(url, body, { headers: headers })
-      .map(response => response.json())
+      .map((response: any) => {
+        if (response && response.body) {
+          return response.json();
+        }
+        else {
+          return {};
+        }
+      })
       .subscribe(d => {
         this.subject.next({ id: id, data: d, body: body, carryBag: carryBag });
         (--this.counter == 0) && (this.isHide = true);
@@ -79,7 +93,14 @@ export class BrokerService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     this.http.delete(url, { headers: headers, body: body })
-      .map(response => response.json())
+      .map((response: any) => {
+        if (response && response.body) {
+          return response.json();
+        }
+        else {
+          return {};
+        }
+      })
       .subscribe(d => {
         this.subject.next({ id: id, data: d, body: body, carryBag: carryBag });
         (--this.counter == 0) && (this.isHide = true);
