@@ -92,7 +92,14 @@ export class CdsComponent implements OnInit {
                 .csn_status;
               this.cdsUserData = this
                 .cdsUserData
-                .find(x => x.save_csn == this.csnState.csn);
+                .filter(x => x.save_csn == this.csnState.csn)
+                if(this.cdsUserData.length > 1)
+                {
+                  this.cdsUserData =  this.cdsUserData.map(d => {
+                    return {
+                      ...d,lastUpdateDate: new Date(d.last_updated_instant)}}) .sort((a, b) => b.lastUpdateDate - a.lastUpdateDate)[0];
+                }
+               
               if (this.cdsUserData) {
                 this.setChkBoxes();
                 this.cdsUserDataExists = true;
