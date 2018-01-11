@@ -44,7 +44,7 @@ export class BrokerService {
     headers.append('Content-Type', 'application/json');
     this.http.post(url, body, { headers: headers })
       .map((response: any) => {
-        if (response && response.body) {
+        if (response && response._body) {
           return response.json();
         }
         else {
@@ -69,7 +69,7 @@ export class BrokerService {
     headers.append('Content-Type', 'application/json');
     this.http.put(url, body, { headers: headers })
       .map((response: any) => {
-        if (response && response.body) {
+        if (response && response._body) {
           return response.json();
         }
         else {
@@ -94,7 +94,7 @@ export class BrokerService {
     headers.append('Content-Type', 'application/json');
     this.http.delete(url, { headers: headers, body: body })
       .map((response: any) => {
-        if (response && response.body) {
+        if (response && response._body) {
           return response.json();
         }
         else {
