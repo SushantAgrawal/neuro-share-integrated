@@ -27,6 +27,7 @@ export const allHttpMessages = {
   'httpGetRelapse': 'http:get:relapse',
   'httpPutRelapse': 'http:put:relapse',
   'httpPostRelapse': 'http:post:relapse',
+  'httpDeleteRelapse': 'http:delete:relapse',
 
   'httpGetDmt': 'http:get:dmt',
   'httpPostDmt': 'http:post:dmt',

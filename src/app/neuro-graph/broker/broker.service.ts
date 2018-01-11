@@ -72,6 +72,24 @@ export class BrokerService {
       });
   };
 
+  httpDelete(id: string, body?: any, carryBag?: any) {
+    this.counter++;
+    this.isHide = false;
+    let url = this.urlMaps[id];
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    this.http.delete(url, { headers: headers, body: body })
+      .map(response => response.json())
+      .subscribe(d => {
+        this.subject.next({ id: id, data: d, body: body, carryBag: carryBag });
+        (--this.counter == 0) && (this.isHide = true);
+      }, err => {
+        this.subject.next({ id: id, error: err, carryBag: carryBag });
+        this.subject.next({ id: this.errorMessageId, error: messages.httpDeleteUnknownError });
+        (--this.counter == 0) && (this.isHide = true);
+      });
+  };
+
   httpGet(id: string, queryParams?: { name: string, value: string }[], headers?: [any], carryBag?: any) {
     try {
       this.counter++;

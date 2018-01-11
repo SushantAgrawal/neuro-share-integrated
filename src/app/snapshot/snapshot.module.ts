@@ -7,8 +7,8 @@ import { SnapshotComponent } from './snapshot.component';
 // Patient Concerns component
 import { PatientConcernsModule } from '@sutterhealth/patient-concerns';
 
-import { NeuroGraphModule } from "@sutterhealth/neuro-graph";
-//import { NeuroGraphModule } from "../neuro-graph/neuro-graph.module";
+//import { NeuroGraphModule } from "@sutterhealth/neuro-graph";
+import { NeuroGraphModule } from "../neuro-graph/neuro-graph.module";
 
 import { FlexLayoutModule } from "@angular/flex-layout";
 //Progress Note

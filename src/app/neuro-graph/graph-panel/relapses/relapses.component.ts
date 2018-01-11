@@ -155,6 +155,23 @@ export class RelapsesComponent implements OnInit {
           })();
       })
 
+    let deleteRelapse = this
+      .brokerService
+      .filterOn(allHttpMessages.httpDeleteRelapse)
+      .subscribe(d => {
+        d.error
+          ? console.log(d.error)
+          : (() => {
+            try {
+              console.log(d.data);
+            }
+            catch (ex) {
+              console.log(ex);
+              this.brokerService.emit(allMessages.showLogicalError, 'relapses');
+            }
+          })();
+      })
+
     let sub1 = relapses
       .filter(t => t.data.checked)
       .subscribe(d => {
@@ -234,35 +251,33 @@ export class RelapsesComponent implements OnInit {
       })();
     })
     //handle overlap with symptoms
-   
+
     let subSympChecked = this
-    .brokerService
-    .filterOn(allMessages.neuroRelated)
-    .filter(t => (t.data.artifact == 'symptoms')).filter(t => t.data.checked).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
-        this.isSymptomsChecked = true;
-        if(this.relapsisChartLoaded)
-        {
-          this.removeChart();
-          this.createChart();
-        }
-      
-      })();
-    });
+      .brokerService
+      .filterOn(allMessages.neuroRelated)
+      .filter(t => (t.data.artifact == 'symptoms')).filter(t => t.data.checked).subscribe(d => {
+        d.error ? console.log(d.error) : (() => {
+          this.isSymptomsChecked = true;
+          if (this.relapsisChartLoaded) {
+            this.removeChart();
+            this.createChart();
+          }
+
+        })();
+      });
 
     let subSympUnchecked = this
-    .brokerService
-    .filterOn(allMessages.neuroRelated)
-    .filter(t => (t.data.artifact == 'symptoms')).filter(t => !t.data.checked).subscribe(d => {
-      d.error ? console.log(d.error) : (() => {
-        this.isSymptomsChecked = false;
-        if(this.relapsisChartLoaded)
-        {
-          this.removeChart();
-          this.createChart();
-        }
-      })();
-    });
+      .brokerService
+      .filterOn(allMessages.neuroRelated)
+      .filter(t => (t.data.artifact == 'symptoms')).filter(t => !t.data.checked).subscribe(d => {
+        d.error ? console.log(d.error) : (() => {
+          this.isSymptomsChecked = false;
+          if (this.relapsisChartLoaded) {
+            this.removeChart();
+            this.createChart();
+          }
+        })();
+      });
     this
       .subscriptions
       .add(sub1)
@@ -271,6 +286,7 @@ export class RelapsesComponent implements OnInit {
       .add(sub4)
       .add(putRelapse)
       .add(postRelapse)
+      .add(deleteRelapse)
       .add(subSympChecked)
       .add(subSympUnchecked);
   }
@@ -282,13 +298,32 @@ export class RelapsesComponent implements OnInit {
   }
 
   deleteChart() {
+    //todo
     this.dialogRef.close();
     let objIndex = this.relapsesData.findIndex((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
     if (objIndex > -1) {
       this.relapsesData.splice(objIndex, 1);
+
+      debugger;
+      // Create the payload from the found object and pass
+      // On sucess of DELETE clode the dialog
+      // Match this payload structure
+      // A new entry added in option .js 
+      let payload = {
+        "pom_id": "84023",
+        "relapse_id": "100",
+        "provider_id": "G00123",
+        "save_csn": "865482572",
+        "save_csn_status": "Open",
+        "deleted_instant": "08/30/2017 10:41:05"
+      }
+      this.brokerService.httpDelete(allHttpMessages.httpDeleteRelapse, payload);
+
     }
     this.removeChart();
     this.createChart();
+
+
   }
 
   updateChart() {
