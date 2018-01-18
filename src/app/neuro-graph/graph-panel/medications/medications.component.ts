@@ -50,6 +50,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   dmtSecondLayerLocalData: Array<any>;
   otherMedsSecondLayerLocalData: Array<any>;
   relapsesLocalData: Array<any>;
+  noOfRelapses: any = "";
   months = [
     'January',
     'February',
@@ -91,7 +92,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             if (this.selectedMed[this.medType.otherMeds]) {
               this.checkForError(this.otherMedsArray);
               this.drawOtherMeds();
-
             }
             this.brokerService.emit(allMessages.checkboxEnable, 'dmt');
           }
@@ -109,17 +109,39 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     this.processMedication(neuroRelated, this.medType.otherMeds);
 
 
-    let subDmtSecondLayer = this.brokerService.filterOn('DMT_SECOND_LAYER').subscribe(d => {
+    let subRelapses = this.brokerService.filterOn("DMT_SECOND_LAYER_RELAPSES").subscribe(d => {
+      d.error
+        ? (() => {
+          this.noOfRelapses = "n/a";
+          console.log(d.error);
+        })()
+        : (() => {
+          let response = d.data[0][allHttpMessages.httpGetRelapse];
+          this.relapsesLocalData = response.relapses || [];
+          let selectedData = d.carryBag;
+          let medOrderedDt = (new Date(selectedData.date.orderDate));
+          medOrderedDt.setDate(1);
+          let medEndDt = (new Date(selectedData.date.medEnd))
+          medEndDt.setDate(1);
+          if (this.relapsesLocalData) {
+            this.noOfRelapses = this.relapsesLocalData.filter(r => {
+              let relapseMonthNo = this.months.indexOf(r.relapse_month);
+              let relapseYear = parseInt(r.relapse_year);
+              let relapseDate = new Date(relapseYear, relapseMonthNo, 1);
+              return (relapseDate >= medOrderedDt) && (relapseDate <= medEndDt);
+            }).length;
+          }
+        })();
+    });
+
+    let subDmtSecondLayer = this.brokerService.filterOn(allHttpMessages.httpGetDmt).subscribe(d => {
       d.error
         ? (() => {
           console.log(d.error);
         })()
         : (() => {
           try {
-            let dmtResponse = d.data[0][allHttpMessages.httpGetDmt];
-            let relapsesLocalData = d.data[1][allHttpMessages.httpGetRelapse];
-            this.dmtSecondLayerLocalData = dmtResponse.DMTs || [];
-            this.relapsesLocalData = relapsesLocalData.relapses || [];
+            this.dmtSecondLayerLocalData = d.data.DMTs || [];
             let selectedData = d.carryBag;
             let dmt;
             this.dmtSecondLayerLocalData && (dmt = this.dmtSecondLayerLocalData.find(x => x.dmt_order_id === selectedData.orderIdentifier.toString()));
@@ -237,6 +259,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     })
 
     this.subscriptions
+      .add(subRelapses)
       .add(subScaleUpdate)
       .add(subDmtPost)
       .add(subDmtPut)
@@ -359,7 +382,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  //Clean up needed
   getSecondLayerModel(data, medType, secondLayerData) {
     let model: any = {
       medicationId: data.medication.id,
@@ -395,22 +417,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       }
     } else {
       model.allowEdit = true;
-    }
-
-    if (medType == this.medType.dmt) {
-      let medOrderedDt = (new Date(data.date.orderDate));
-      medOrderedDt.setDate(1);
-      let medEndDt = (new Date(data.date.medEnd))
-      medEndDt.setDate(1);
-      if (this.relapsesLocalData) {
-        model.noOfRelapses = this.relapsesLocalData.filter(r => {
-          let relapseMonthNo = this.months.indexOf(r.relapse_month);
-          let relapseYear = parseInt(r.relapse_year);
-          let relapseDate = new Date(relapseYear, relapseMonthNo, 1);
-          return (relapseDate >= medOrderedDt) && (relapseDate <= medEndDt);
-        })
-          .length;
-      }
     }
     return model;
   }
@@ -460,16 +466,25 @@ export class MedicationsComponent implements OnInit, OnDestroy {
   drawDmt() {
     let openSecondLayer = (selectedData) => {
       selectedData.dialogPosition = { top: `${d3.event.clientY - 300}px`, left: `${d3.event.clientX - 200}px` };
-      this.brokerService.httpGetMany('DMT_SECOND_LAYER', [
-        {
-          urlId: allHttpMessages.httpGetDmt,
-          queryParams: [
-            {
-              name: 'pom_id',
-              value: this.neuroGraphService.get('queryParams').pom_id
-            }
-          ]
-        },
+      this.noOfRelapses = "";
+      // this.brokerService.httpGet(allHttpMessages.httpGetSilentRelapse, [
+      //   {
+      //     name: 'pom_id',
+      //     value: this.neuroGraphService.get('queryParams').pom_id
+      //   },
+      //   {
+      //     name: 'startDate',
+      //     value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.fromDate).format('MM/DD/YYYY')
+      //   },
+      //   {
+      //     name: 'endDate',
+      //     value: this.neuroGraphService.moment(this.chartState.dataBufferPeriod.toDate).format('MM/DD/YYYY')
+      //   }
+      // ], null, selectedData);
+
+
+
+      this.brokerService.httpGetMany('DMT_SECOND_LAYER_RELAPSES', [
         {
           urlId: allHttpMessages.httpGetRelapse,
           queryParams: [
@@ -488,7 +503,15 @@ export class MedicationsComponent implements OnInit, OnDestroy {
           ]
         }
       ], selectedData);
+
+      this.brokerService.httpGet(allHttpMessages.httpGetDmt, [
+        {
+          name: 'pom_id',
+          value: this.neuroGraphService.get('queryParams').pom_id
+        }
+      ], null, selectedData);
     };
+
     this.drawChart(this.dmtArray, this.medType.dmt, GRAPH_SETTINGS.medications.dmtColor, GRAPH_SETTINGS.medications.dmtOverlapColor, openSecondLayer);
   }
 
