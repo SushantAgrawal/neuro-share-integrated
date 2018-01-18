@@ -37,7 +37,7 @@
         <div class="relapse-container">
             <div class="ns-relapse-row">
                 <div class="ns-relapse-close">
-                    <button md-icon-button (click)="deleteRelapses()">
+                    <button md-icon-button (click)="deleteRelapse()">
                         <md-icon class="material-icons alignImg">clear</md-icon>
                     </button>
                 </div>
@@ -56,7 +56,7 @@
                   
                 </div>
                 <div class="ns-relapse-update" *ngIf="isEditSelected">
-                    <button class="call-out-buttons" (click)="updateChart()">Update</button>
+                    <button class="call-out-buttons" (click)="updateRelapse()">Update</button>
                     
                 </div>
                 <md-error class="ng-error leftMargin" *ngIf="isDateOutOfRange == true">
@@ -105,7 +105,7 @@
             <div class="ns-relapse-row">
 
                 <div class="right-float">
-                    <button class="call-out-buttons" (click)="addChart()">Add</button>
+                    <button class="call-out-buttons" (click)="addRelapse()">Add</button>
                 </div>
 
 

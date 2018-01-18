@@ -389,7 +389,7 @@ export class EdssComponent implements OnInit, OnDestroy {
       provider_id: this.neuroGraphService.get("queryParams").provider_id,
       save_csn: this.neuroGraphService.get("queryParams").csn,
       save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
-      updated_instant: `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`
+      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss')
     }
     return payload;
   }
