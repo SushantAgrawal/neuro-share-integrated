@@ -287,7 +287,8 @@ export class RelapsesComponent implements OnInit {
         save_csn: this.paramData.csn,
         save_csn_status: this.paramData.csn_status,
         updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-        clinician_confirmed: matched.clinician_confirmed
+        //clinician_confirmed: matched.clinician_confirmed
+        clinician_confirmed: this.relapsesDetail.confirm_bool
       };
       this.brokerService.httpPut(allHttpMessages.httpPutRelapse, payload);
     }
