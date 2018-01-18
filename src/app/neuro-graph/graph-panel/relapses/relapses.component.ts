@@ -58,6 +58,7 @@ export class RelapsesComponent implements OnInit {
           : (() => {
             try {
               this.relapsesData = d.data.relapses;
+
               if (d.data && d.data.relapses && d.data.relapses.length > 0) {
                 this.createChart();
               }
@@ -140,7 +141,7 @@ export class RelapsesComponent implements OnInit {
                 last_updated_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year,
                 patient_reported: true,
                 qx_id: "",
-                clinician_confirmed: true,
+                clinician_confirmed: "true",
                 relapseaxis: "2.0"
               }
               this.relapsesData.push(obj);
@@ -172,7 +173,7 @@ export class RelapsesComponent implements OnInit {
               this.dialogRef.close();
               this.removeChart();
               this.createChart();
-          
+
             }
             catch (ex) {
               console.log(ex);
@@ -307,15 +308,15 @@ export class RelapsesComponent implements OnInit {
   }
 
   deleteRelapses() {
-      let payload = {
-        pom_id: this.paramData.pom_id.toString(),
-        relapse_id: this.relapsesDetail.relapse_id,
-        provider_id: this.relapsesDetail.last_updated_provider_id,
-        save_csn: this.paramData.csn,
-        save_csn_status: this.paramData.csn_status,
-        deleted_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year
-      };
-      this.brokerService.httpDelete(allHttpMessages.httpDeleteRelapse, payload);
+    let payload = {
+      pom_id: this.paramData.pom_id.toString(),
+      relapse_id: this.relapsesDetail.relapse_id,
+      provider_id: this.relapsesDetail.last_updated_provider_id,
+      save_csn: this.paramData.csn,
+      save_csn_status: this.paramData.csn_status,
+      deleted_instant: (new Date(this.relapsesDetail.month + "/15/" + this.relapsesDetail.year).getMonth() + 1).toString() + "/15/" + this.relapsesDetail.year
+    };
+    this.brokerService.httpDelete(allHttpMessages.httpDeleteRelapse, payload);
   }
 
   updateChart() {
@@ -364,7 +365,7 @@ export class RelapsesComponent implements OnInit {
   }
 
   showSecondLevel(data) {
-    this.relapsesDetail = { ...data };
+    this.relapsesDetail = { ...data, confirm_bool: data.confirm.toString() == "true" ? true : false };
     if (data.save_csn_status == "Open") {
       this.isEditSelected = false;
       this.isDateOutOfRange = false;
@@ -381,11 +382,13 @@ export class RelapsesComponent implements OnInit {
   }
 
   checkChge() {
-    if (this.relapsesDetail.confirm == true) {
-      this.relapsesDetail.confirm = false;
+    if (this.relapsesDetail.confirm.toString() == "true") {
+      this.relapsesDetail.confirm_bool = false;
+      this.relapsesDetail.confirm = "false";
     }
     else {
-      this.relapsesDetail.confirm = true;
+      this.relapsesDetail.confirm_bool = true;
+      this.relapsesDetail.confirm = "true";
     }
     this.isEditSelected = true;
   }
@@ -467,7 +470,7 @@ export class RelapsesComponent implements OnInit {
       })
       .style("stroke", "red")
       .style("fill", d => {
-        return d.confirm ? 'red' : '#fff';
+        return d.confirm.toString() == "true" ? 'red' : '#fff';
       })
       .on('click', d => {
         this.showSecondLevel(d);

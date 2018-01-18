@@ -5,7 +5,7 @@
 <div class="cds-panel">
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_relapses")' [(ngModel)]='cdsState.review_relapses.checked'>Review relapses</md-checkbox>
+      <md-checkbox (change)='changed($event,"review_relapses")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_relapses.checked'>Review relapses</md-checkbox>
     </div>
     <div class="cds-items-info">
         <span class="custom-i" (click)="openDialog($event,'review_relapses')">i</span>
@@ -14,7 +14,7 @@
 
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_mri_images")' [(ngModel)]='cdsState.review_mri_images.checked'>Review MRI images</md-checkbox>
+      <md-checkbox (change)='changed($event,"review_mri_images")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_mri_images.checked'>Review MRI images</md-checkbox>
     </div>
 
     <div class="cds-items-info">
@@ -24,7 +24,7 @@
 
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_symptom_status")' [(ngModel)]='cdsState.review_symptom_status.checked'> Review symptom status </md-checkbox>
+      <md-checkbox (change)='changed($event,"review_symptom_status")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_symptom_status.checked'> Review symptom status </md-checkbox>
     </div>
     <div class="cds-items-info">
       <span class="custom-i" (click)="openDialog($event,'review_symptom_status')">i</span>
@@ -34,7 +34,7 @@
 
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_ms_type_status")' [(ngModel)]='cdsState.review_ms_type_status.checked'> Review MS type/status </md-checkbox>
+      <md-checkbox (change)='changed($event,"review_ms_type_status")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_ms_type_status.checked'> Review MS type/status </md-checkbox>
     </div>
 
     <div class="cds-items-info">
@@ -44,7 +44,7 @@
 
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_dmts")' [(ngModel)]='cdsState.review_dmts.checked'> Review DMTs </md-checkbox>
+      <md-checkbox (change)='changed($event,"review_dmts")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_dmts.checked'> Review DMTs </md-checkbox>
     </div>
 
     <div class="cds-items-info">
@@ -53,7 +53,7 @@
   </div>
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_monitoring_labs")' [(ngModel)]='cdsState.review_monitoring_labs.checked'> Review monitoring labs </md-checkbox>
+      <md-checkbox (change)='changed($event,"review_monitoring_labs")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_monitoring_labs.checked'> Review monitoring labs </md-checkbox>
     </div>
     <div class="cds-items-info">
       <span class="custom-i" (click)="openDialog($event,'review_monitoring_labs')">i</span>
@@ -61,7 +61,7 @@
   </div>
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_vitamin_d")' [(ngModel)]='cdsState.review_vitamin_d.checked'> Review Vitamin D </md-checkbox>
+      <md-checkbox (change)='changed($event,"review_vitamin_d")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_vitamin_d.checked'> Review Vitamin D </md-checkbox>
     </div>
     <div class="cds-items-info">
       <span class="custom-i" (click)="openDialog($event,'review_vitamin_d')">i</span>
@@ -69,7 +69,7 @@
   </div>
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_other_meds")' [(ngModel)]='cdsState.review_other_meds.checked'> Review other related meds </md-checkbox>
+      <md-checkbox (change)='changed($event,"review_other_meds")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_other_meds.checked'> Review other related meds </md-checkbox>
     </div>
     <div class="cds-items-info">
       <span class="custom-i" (click)="openDialog($event,'review_other_meds')">i</span>
@@ -77,7 +77,7 @@
   </div>
   <div class="cds-items">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_symptoms_referrals")' [(ngModel)]='cdsState.review_symptoms_referrals.checked'>
+      <md-checkbox (change)='changed($event,"review_symptoms_referrals")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_symptoms_referrals.checked'>
       Review symptoms referrals </md-checkbox>
     </div>
     <div class="cds-items-info">
@@ -86,7 +86,7 @@
   </div>
   <div class="cds-items" style="display:none;">
     <div class="cds-items-checkbox">
-      <md-checkbox (change)='changed($event,"review_vaccinations")' [(ngModel)]='cdsState.review_vaccinations.checked'> Review vaccinations </md-checkbox>
+      <md-checkbox (change)='changed($event,"review_vaccinations")' [disabled]="!isEnable" [(ngModel)]='cdsState.review_vaccinations.checked'> Review vaccinations </md-checkbox>
     </div>
     <div class="cds-items-info">
       <span class="custom-i" (click)="openDialog($event,'review_vaccinations')">i</span>

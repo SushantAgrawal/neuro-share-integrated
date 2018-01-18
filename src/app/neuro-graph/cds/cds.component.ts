@@ -16,7 +16,7 @@ export class CdsComponent implements OnInit {
   cdsState: any = {};
   csnState: any = {};
   cdsUserDataExists: boolean = false;
-
+  isEnable: boolean = true;
   constructor(private brokerService: BrokerService, private changeDetector: ChangeDetectorRef, private neuroGraphService: NeuroGraphService, public dialog: MdDialog, private progressNotesGeneratorService: ProgressNotesGeneratorService) {
     this.cdsState = {
       review_relapses: {
@@ -99,7 +99,14 @@ export class CdsComponent implements OnInit {
                     return {
                       ...d,lastUpdateDate: new Date(d.last_updated_instant)}}) .sort((a, b) => b.lastUpdateDate - a.lastUpdateDate)[0];
                 }
-               
+               if(this.csnState.encounterStatus.toString().toUpperCase()!="OPEN")
+               {
+                 this.isEnable = false;
+               }
+               else
+               {
+                this.isEnable = true;
+               }
               if (this.cdsUserData) {
                 this.setChkBoxes();
                 this.cdsUserDataExists = true;

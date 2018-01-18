@@ -16,10 +16,10 @@
                 <div class="ns-relapse-confirmed">Clinician
                     <br/> Confirmed</div>
                 <div class="ns-relapse-checkboxY"> Y
-                    <md-checkbox disabled [checked]="relapsesDetail.confirm"></md-checkbox>
+                    <md-checkbox disabled [checked]="relapsesDetail.confirm_bool"></md-checkbox>
                 </div>
                 <div class="ns-relapse-checkboxN"> N
-                    <md-checkbox disabled [checked]="!relapsesDetail.confirm"></md-checkbox>
+                    <md-checkbox disabled [checked]="!relapsesDetail.confirm_bool"></md-checkbox>
                 </div>
 
             </div>
@@ -66,10 +66,10 @@
             <div class="ns-relapse-row">
                 <div class="ns-relapse-confirmed">Clinician Confirmed</div>
                 <div class="ns-relapse-checkboxY"> Y
-                    <md-checkbox (change)="checkChge()" [checked]="relapsesDetail.confirm"></md-checkbox>
+                    <md-checkbox (change)="checkChge()" [checked]="relapsesDetail.confirm_bool"></md-checkbox>
                 </div>
                 <div class="ns-relapse-checkboxN"> N
-                    <md-checkbox (change)="checkChge()" [checked]="!relapsesDetail.confirm"></md-checkbox>
+                    <md-checkbox (change)="checkChge()" [checked]="!relapsesDetail.confirm_bool"></md-checkbox>
                 </div>
 
             </div>
