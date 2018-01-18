@@ -282,12 +282,13 @@ export class RelapsesComponent implements OnInit {
       let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
       let payload = {
         pom_id: this.paramData.pom_id.toString(),
+        relapse_month: this.relapsesDetail.month,
+        relapse_year: this.relapsesDetail.year,
         relapse_id: matched.relapse_id,
         provider_id: this.paramData.provider_id,
         save_csn: this.paramData.csn,
         save_csn_status: this.paramData.csn_status,
         updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-        //clinician_confirmed: matched.clinician_confirmed
         clinician_confirmed: this.relapsesDetail.confirm_bool
       };
       this.brokerService.httpPut(allHttpMessages.httpPutRelapse, payload);
