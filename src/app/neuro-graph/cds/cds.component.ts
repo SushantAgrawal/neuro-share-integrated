@@ -93,20 +93,18 @@ export class CdsComponent implements OnInit {
               this.cdsUserData = this
                 .cdsUserData
                 .filter(x => x.save_csn == this.csnState.csn)
-                if(this.cdsUserData.length > 1)
-                {
-                  this.cdsUserData =  this.cdsUserData.map(d => {
-                    return {
-                      ...d,lastUpdateDate: new Date(d.last_updated_instant)}}) .sort((a, b) => b.lastUpdateDate - a.lastUpdateDate)[0];
-                }
-               if(this.csnState.encounterStatus.toString().toUpperCase()!="OPEN")
-               {
-                 this.isEnable = false;
-               }
-               else
-               {
-                this.isEnable = true;
-               }
+                
+              if (this.cdsUserData.length > 1) {
+                this.cdsUserData = this.cdsUserData.map(d => {
+                  return {
+                    ...d, 
+                    lastUpdateDate: new Date(d.last_updated_instant)
+                  }
+                }).sort((a, b) => b.lastUpdateDate - a.lastUpdateDate)[0];
+              }
+
+              this.isEnable = this.csnState.encounterStatus && this.csnState.encounterStatus.toUpperCase() === "OPEN";
+              
               if (this.cdsUserData) {
                 this.setChkBoxes();
                 this.cdsUserDataExists = true;
