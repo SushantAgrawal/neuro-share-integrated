@@ -46,7 +46,7 @@ export class LabsComponent implements OnInit {
               if (d.data && d.data.EPIC && d.data.EPIC.labOrder) {
                 this.labsData = d.data.EPIC.labOrder
                   .filter(item => labsConfig.some(f => f["proc_code"] == item.procedureCode))
-                  .filter(item => item.status.toUpperCase() != "CANCELED");
+                  .filter(item => ((item.status && item.status != null) ? item.status.toUpperCase() : '') != "CANCELED");
               }
               if (d.data && d.data.EPIC && d.data.EPIC.labOrder && d.data.EPIC.labOrder.length > 0) {
                 this.createChart();
@@ -173,7 +173,7 @@ export class LabsComponent implements OnInit {
             }
             if (i > 0) {
               if (Number(elems.value) && elems.referenceLow != "")
-                trendArray.push({ "x": i, "y": Number(elems.value), "color": color })
+                trendArray.push({ "x": i, "y": Number(elems.value ? elems.value : 0), "color": color })
 
             }
           });

@@ -347,7 +347,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let clinicianDataSetforAxis = this.walk25FeetData.map(d => {
       return {
         ...d,
-        scoreValue: parseFloat(d.walk_1_score) == 0 ? parseFloat(d.walk_2_score) : parseFloat(d.walk_2_score) == 0 ? parseFloat(d.walk_1_score) : ((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2)
+        scoreValue: parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) == 0 ? parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) : (parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) == 0 ? parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) : ((parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) + parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score)) / 2))
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
     let maxValue = Math.max.apply(Math, clinicianDataSetforAxis.map(function (o) { return o.scoreValue; })) + 10;
@@ -407,10 +407,9 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       return {
         ...d,
         lastUpdatedDate: getParsedDate(d.last_updated_instant),
-        scoreValue: parseFloat(d.walk_1_score) == 0 ? parseFloat(d.walk_2_score) : (parseFloat(d.walk_2_score) == 0 ? parseFloat(d.walk_1_score) : ((parseFloat(d.walk_1_score) + parseFloat(d.walk_2_score)) / 2))
+        scoreValue: parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) == 0 ? parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) : (parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) == 0 ? parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) : ((parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) + parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score)) / 2))
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
-
 
     let oneDecimalFormat = d3.format("10");
 

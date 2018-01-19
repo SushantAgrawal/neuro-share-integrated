@@ -237,7 +237,7 @@ export class SymptomsComponent implements OnInit {
                   }
                   this.questionaireSymptomData.push({
                     questionnaireDate: this.neuroGraphService.moment(element["qx_completed_at"]).format("MM/DD/YYYY"),
-                    status: (element.status.charAt(0).toUpperCase() + element.status.substr(1).toLowerCase()),
+                    status: (((element.status && element.status!=null) ?element.status.charAt(0).toUpperCase():"") + ((element.status && element.status!=null) ?element.status.substr(1).toLowerCase():"")),
                     "qx_id": element["qx_id"],
                     symptoms: symptomsDataLocal
 
@@ -253,7 +253,7 @@ export class SymptomsComponent implements OnInit {
               var isValidDate = true;
               var isComplete = true;
               this.questionaireSymptomData.forEach(obj => {
-                if (obj.status.toUpperCase() != "COMPLETED") {
+                if (((obj.status && obj.status!=null) ?obj.status.toUpperCase():"") != "COMPLETED") {
                   isComplete = false;
                 }
                 if (obj.symptoms.some(symp => symp.score == 'No result'))
