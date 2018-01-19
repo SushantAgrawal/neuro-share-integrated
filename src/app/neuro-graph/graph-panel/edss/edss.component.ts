@@ -175,21 +175,23 @@ export class EdssComponent implements OnInit, OnDestroy {
               }
               if (edssData) {
                 this.clinicianDataSet = edssData.map(d => {
+                  let scoreValue = parseFloat(d.score);
                   return {
                     ...d,
                     lastUpdatedDate: getParsedDate(d.last_updated_instant),
                     reportedBy: "Clinician",
-                    scoreValue: parseFloat(d.score)
+                    scoreValue: isNaN(scoreValue) ? 0 : scoreValue
                   }
                 }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
               }
               if (quesData) {
                 this.patientDataSet = quesData.map(d => {
+                  let scoreValue = parseFloat(d.edss_score);
                   return {
                     ...d,
                     lastUpdatedDate: getParsedDate(d.qx_completed_at),
                     reportedBy: "Patient",
-                    scoreValue: parseFloat(d.edss_score)
+                    scoreValue: isNaN(scoreValue) ? 0 : scoreValue
                   }
                 }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
               }
@@ -225,9 +227,9 @@ export class EdssComponent implements OnInit, OnDestroy {
               var ErrorCode: string = '';
               if (!quesData || quesData.some(m => m.status && m.status.toUpperCase() != "COMPLETED"))
                 ErrorCode = ErrorCode.indexOf('U-004') != -1 ? ErrorCode : ErrorCode == '' ? 'U-004' : ErrorCode + ',' + 'U-004';
-              if (quesData && quesData.some(m => m.edss_score == 'No result' || m.edss_score == ''))
+              if (quesData && quesData.some(m => isNaN(parseFloat(m.edss_score))))
                 ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
-              if (edssData && edssData.some(m => m.score == 'No result' || m.score == ''))
+              if (edssData && edssData.some(m => isNaN(parseFloat(m.score))))
                 ErrorCode = ErrorCode.indexOf('D-002') != -1 ? ErrorCode : ErrorCode == '' ? 'D-002' : ErrorCode + ',' + 'D-002';
               if (ErrorCode != '')
                 this.brokerService.emit(allMessages.showCustomError, ErrorCode);
