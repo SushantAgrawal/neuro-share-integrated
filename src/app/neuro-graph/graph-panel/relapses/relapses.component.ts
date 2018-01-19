@@ -289,7 +289,7 @@ export class RelapsesComponent implements OnInit {
         save_csn: this.paramData.csn,
         save_csn_status: this.paramData.csn_status,
         updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
-        clinician_confirmed: this.relapsesDetail.confirm_bool
+        clinician_confirmed: this.relapsesDetail.confirm
       };
       this.brokerService.httpPut(allHttpMessages.httpPutRelapse, payload);
     }
@@ -320,7 +320,8 @@ export class RelapsesComponent implements OnInit {
   }
 
   showSecondLevel(data) {
-    this.relapsesDetail = { ...data, confirm_bool: data.confirm.toString() == "true" ? true : false };
+    this.relapsesDetail = { ...data };
+
     if (data.save_csn_status == "Open") {
       this.isEditSelected = false;
       this.isDateOutOfRange = false;
@@ -337,13 +338,11 @@ export class RelapsesComponent implements OnInit {
   }
 
   checkChge() {
-    if (this.relapsesDetail.confirm.toString() == "true") {
-      this.relapsesDetail.confirm_bool = false;
-      this.relapsesDetail.confirm = "false";
+    if (this.relapsesDetail.confirm) {
+      this.relapsesDetail.confirm = false;
     }
     else {
-      this.relapsesDetail.confirm_bool = true;
-      this.relapsesDetail.confirm = "true";
+      this.relapsesDetail.confirm = true;
     }
     this.isEditSelected = true;
   }
@@ -365,7 +364,7 @@ export class RelapsesComponent implements OnInit {
         ...d,
         last_updated_instant: d.relapse_month + "/15/" + d.relapse_year,
         lastUpdatedDate: new Date(relYear, relMonth, 15),
-        confirm: d.clinician_confirmed,
+        confirm: d.clinician_confirmed && d.clinician_confirmed.toString().toUpperCase() === 'TRUE',
         month: d.relapse_month,
         year: d.relapse_year
       }
@@ -425,7 +424,7 @@ export class RelapsesComponent implements OnInit {
       })
       .style("stroke", "red")
       .style("fill", d => {
-        return d.confirm.toString() == "true" ? 'red' : '#fff';
+        return d.confirm ? 'red' : '#fff';
       })
       .on('click', d => {
         this.showSecondLevel(d);
