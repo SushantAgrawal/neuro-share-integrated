@@ -56,7 +56,7 @@ export class ImagingComponent implements OnInit {
               if (d.data && d.data.EPIC && d.data.EPIC.patient && d.data.EPIC.patient[0]) {
                 this.imagingData = d.data.EPIC.patient[0].imagingOrders
                   .filter(item => imagingConfig.some(f => f["CPT code"] == item.procedureCPTCode))
-                  .filter(item => ((item.status && item.status != null) ? item.status.toUpperCase() : '') != "CANCELED" && (item.authorizingProvider && item.authorizingProvider != null ? item.authorizingProvider : "") != "");
+                  .filter(item => ((item.status) ? item.status.toUpperCase() : '') != "CANCELED" && (item.authorizingProvider ? item.authorizingProvider : "") != "");
               }
               if (d.data && d.data.EPIC && d.data.EPIC.patient && d.data.EPIC.patient[0] && d.data.EPIC.patient[0].imagingOrders && d.data.EPIC.patient[0].imagingOrders.length > 0) {
                 this.createChart();
@@ -161,7 +161,7 @@ export class ImagingComponent implements OnInit {
           this.imagingDataDetails.push(element);
       }
       else {
-        let compData: Array<any> = findData.filter(item => ((item.status && item.status != null) ? item.status.toUpperCase() : '') == 'COMPLETED')
+        let compData: Array<any> = findData.filter(item => ((item.status ) ? item.status.toUpperCase() : '') == 'COMPLETED')
         if (compData.length > 1) {
           compData.forEach(elem => {
             if (this.imagingDataDetails.filter(item => item.procedureCPTCode == elem.procedureCPTCode).length == 0)
@@ -218,7 +218,7 @@ export class ImagingComponent implements OnInit {
       for (let j = 0; j < this.datasetC.length; j++) {
         if (this.datasetC[i].orderFormatDate == this.datasetC[j].orderFormatDate) {
           if (repeatCount == 0) {
-            if ((this.datasetC[j].status && this.datasetC[j].status != null ? this.datasetC[j].status.toUpperCase() : "") == "COMPLETED") {
+            if ((this.datasetC[j].status ? this.datasetC[j].status.toUpperCase() : "") == "COMPLETED") {
               isComplete = "Full";
             }
             else {
@@ -233,13 +233,13 @@ export class ImagingComponent implements OnInit {
             repeatCount++;
           }
           else {
-            if ((this.datasetC[j].status && this.datasetC[j].status != null ? this.datasetC[j].status.toUpperCase() : "") != "COMPLETED" && isComplete == "Full") {
+            if ((this.datasetC[j].status ? this.datasetC[j].status.toUpperCase() : "") != "COMPLETED" && isComplete == "Full") {
               let filtrdata = this.datasetB[this.datasetB.length - 1].orderDetails.filter(item => item.procedureCPTCode != this.datasetC[j].procedureCPTCode && item.orderDate == this.datasetC[j].orderDate);
               if (filtrdata.length > 0)
                 isComplete = "Half";
               this.datasetB[this.datasetB.length - 1].status = isComplete;
             }
-            else if ((this.datasetC[j].status && this.datasetC[j].status != null ? this.datasetC[j].status.toUpperCase() : "") == "COMPLETED" && isComplete == "Empty") {
+            else if ((this.datasetC[j].status ? this.datasetC[j].status.toUpperCase() : "") == "COMPLETED" && isComplete == "Empty") {
               let filtrdata = this.datasetB[this.datasetB.length - 1].orderDetails.filter(item => item.procedureCPTCode != this.datasetC[j].procedureCPTCode && item.orderDate == this.datasetC[j].orderDate);
               if (filtrdata.length > 0)
                 isComplete = "Half";
