@@ -347,7 +347,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     let clinicianDataSetforAxis = this.walk25FeetData.map(d => {
       return {
         ...d,
-        scoreValue: parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) == 0 ? parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) : (parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) == 0 ? parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) : ((parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) + parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score)) / 2))
+        scoreValue: Number(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) == 0 ? Number(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) : (Number(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) == 0 ? Number(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) : ((Number(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) + Number(isNaN(d.walk_2_score) ? 0 : d.walk_2_score)) / 2))
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
     let maxValue = Math.max.apply(Math, clinicianDataSetforAxis.map(function (o) { return o.scoreValue; })) + 10;
@@ -407,7 +407,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       return {
         ...d,
         lastUpdatedDate: getParsedDate(d.last_updated_instant),
-        scoreValue: parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) == 0 ? parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) : (parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) == 0 ? parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) : ((parseFloat(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) + parseFloat(isNaN(d.walk_2_score) ? 0 : d.walk_2_score)) / 2))
+        scoreValue: Number(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) == 0 ? Number(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) : (Number(isNaN(d.walk_2_score) ? 0 : d.walk_2_score) == 0 ? Number(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) : ((Number(isNaN(d.walk_1_score) ? 0 : d.walk_1_score) + Number(isNaN(d.walk_2_score) ? 0 : d.walk_2_score)) / 2))
       }
     }).sort((a, b) => a.lastUpdatedDate - b.lastUpdatedDate);
 
