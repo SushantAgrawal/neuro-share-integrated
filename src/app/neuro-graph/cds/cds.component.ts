@@ -82,30 +82,22 @@ export class CdsComponent implements OnInit {
           : (() => {
             try {
               this.cdsUserData = d.data.cds || [];
-              this.csnState.csn = this
-                .neuroGraphService
-                .get('queryParams')
-                .csn;
-              this.csnState.encounterStatus = this
-                .neuroGraphService
-                .get('queryParams')
-                .csn_status;
-              this.cdsUserData = this
-                .cdsUserData
+              this.csnState.csn = this.neuroGraphService.get('queryParams').csn;
+              this.csnState.encounterStatus = this.neuroGraphService.get('queryParams').csn_status;
+              this.isEnable = this.csnState.encounterStatus && this.csnState.encounterStatus.toUpperCase() === "OPEN";
+
+              this.cdsUserData = this.cdsUserData
                 .filter(x => x.save_csn == this.csnState.csn)
-                
-              if (this.cdsUserData.length > 1) {
-                this.cdsUserData = this.cdsUserData.map(d => {
+                .map(d => {
                   return {
-                    ...d, 
+                    ...d,
                     lastUpdateDate: new Date(d.last_updated_instant)
                   }
-                }).sort((a, b) => b.lastUpdateDate - a.lastUpdateDate)[0];
-              }
+                })
+                .sort((a, b) => b.lastUpdateDate - a.lastUpdateDate);
 
-              this.isEnable = this.csnState.encounterStatus && this.csnState.encounterStatus.toUpperCase() === "OPEN";
-              
-              if (this.cdsUserData) {
+              if (this.cdsUserData.length > 0) {
+                this.cdsUserData = this.cdsUserData[0];
                 this.setChkBoxes();
                 this.cdsUserDataExists = true;
               }
@@ -160,6 +152,7 @@ export class CdsComponent implements OnInit {
 
   saveChkBoxesState() {
     if (this.cdsUserDataExists) {
+      console.log(JSON.stringify(this.getCdsStateData()));
       this.brokerService.httpPut(allHttpMessages.httpPutCdsUserData, this.getCdsStateData());
     }
     else {
@@ -188,16 +181,10 @@ export class CdsComponent implements OnInit {
     return (cdsStateData);
   }
   setChkBoxes() {
-    Object
-      .keys(this.cdsUserData)
-      .map(x => {
-        this.cdsState[x] && (this.cdsState[x].checked = ((this.cdsUserData[x] == 'Yes') || (this.cdsState[x].checked))
-          ? true
-          : false);
-      });
-    this
-      .changeDetector
-      .detectChanges();
+    Object.keys(this.cdsUserData).map(x => {
+      this.cdsState[x] && (this.cdsState[x].checked = ((this.cdsUserData[x] == 'Yes') || (this.cdsUserData[x] == 'yes') || (this.cdsState[x].checked)) ? true : false);
+    });
+    this.changeDetector.detectChanges();
   }
   changed(event, item) {
     this.saveChkBoxesState();
