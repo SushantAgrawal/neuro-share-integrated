@@ -456,7 +456,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       payload.save_csn_status = this.queryParams.csn_status;
       this.brokerService.httpPost(allHttpMessages.httpPostDmt, payload);
     }
-    console.log(JSON.stringify(payload));
   }
 
   updateOtherMeds() {

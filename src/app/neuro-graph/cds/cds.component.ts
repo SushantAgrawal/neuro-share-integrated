@@ -152,7 +152,6 @@ export class CdsComponent implements OnInit {
 
   saveChkBoxesState() {
     if (this.cdsUserDataExists) {
-      console.log(JSON.stringify(this.getCdsStateData()));
       this.brokerService.httpPut(allHttpMessages.httpPutCdsUserData, this.getCdsStateData());
     }
     else {
