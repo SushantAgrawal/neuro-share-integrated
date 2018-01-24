@@ -454,9 +454,8 @@ export class EdssComponent implements OnInit, OnDestroy {
   }
 
   onUpdateSecondLayer() {
-    let match = this.clinicianDataSet.find(x => x.save_csn == this.edssScoreDetail.save_csn);
+    let match = this.clinicianDataSet.find(x => x.save_csn == this.edssScoreDetail.save_csn && x.score_id === this.edssScoreDetail.score_id);
     if (match) {
-
       let payload: any = {};
       payload.score = this.edssScoreDetail.score.toString();
       payload.pom_id = this.neuroGraphService.get('queryParams').pom_id.toString();
@@ -464,7 +463,8 @@ export class EdssComponent implements OnInit, OnDestroy {
       payload.score_id = match.score_id;
       payload.save_csn = match.save_csn;
       payload.save_csn_status = match.save_csn_status;
-      payload.updated_instant = match.last_updated_instant;
+      payload.last_updated_instant = match.last_updated_instant;
+
       this.brokerService.httpPut(allHttpMessages.httpPutEdss, payload);
     }
   }
