@@ -288,6 +288,9 @@ export class TwentyFiveFootWalkComponent implements OnInit {
           && this.walk25FeetScoreDetail.walk_2_score == 0)) {
         let payload = this.getPayload(this.walk25FeetScoreDetail.walk_1_score, this.walk25FeetScoreDetail.walk_2_score);
         payload.score_id = this.walk25FeetScoreDetail.score_id;
+        payload.save_csn = this.walk25FeetScoreDetail.save_csn;
+        payload.save_csn_status = this.walk25FeetScoreDetail.save_csn_status;
+        payload.updated_instant = this.walk25FeetScoreDetail.last_updated_instant;
         this.brokerService.httpPut(allHttpMessages.httpPutWalk25Feet, payload);
         this.scoreNotValidate = false;
       }
