@@ -263,12 +263,14 @@ export class RelapsesComponent implements OnInit {
   }
 
   deleteRelapse() {
+    let matched = this.relapsesData.find((obj => obj.relapse_id == this.relapsesDetail.relapse_id));
     let payload = {
       pom_id: this.paramData.pom_id.toString(),
       relapse_id: this.relapsesDetail.relapse_id,
       provider_id: this.paramData.provider_id,
-      save_csn: this.paramData.csn,
-      save_csn_status: this.paramData.csn_status,
+      last_updated_provider_id: this.paramData.provider_id,
+      save_csn: matched.save_csn,
+      save_csn_status: matched.save_csn_status,
       deleted_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss')
     };
     this.brokerService.httpDelete(allHttpMessages.httpDeleteRelapse, payload);
@@ -286,8 +288,9 @@ export class RelapsesComponent implements OnInit {
         relapse_year: this.relapsesDetail.year,
         relapse_id: matched.relapse_id,
         provider_id: this.paramData.provider_id,
-        save_csn: this.paramData.csn,
-        save_csn_status: this.paramData.csn_status,
+        last_updated_provider_id: this.paramData.provider_id,
+        save_csn: matched.save_csn,
+        save_csn_status: matched.save_csn_status,
         updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
         clinician_confirmed: this.relapsesDetail.confirm
       };
@@ -310,6 +313,7 @@ export class RelapsesComponent implements OnInit {
           relapse_month: this.relapsesDetail.month,
           relapse_year: this.relapsesDetail.year,
           provider_id: this.paramData.provider_id,
+          last_updated_provider_id: this.paramData.provider_id,
           save_csn: this.paramData.csn,
           save_csn_status: this.paramData.csn_status,
           updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
