@@ -383,19 +383,6 @@ export class EdssComponent implements OnInit, OnDestroy {
     this.edssPopupQuestions[index].checked = true;
   }
 
-  getPayload(score) {
-    let currentDate = new Date();
-    let payload = {
-      pom_id: this.neuroGraphService.get('queryParams').pom_id.toString(),
-      score: score.toString(),
-      provider_id: this.neuroGraphService.get("queryParams").provider_id,
-      save_csn: this.neuroGraphService.get("queryParams").csn,
-      save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
-      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss')
-    }
-    return payload;
-  }
-
   onSubmitChartScore(event) {
     let selectedScore = this
       .edssPopupQuestions
@@ -416,7 +403,15 @@ export class EdssComponent implements OnInit, OnDestroy {
 
       if (!scoreOnThisDate) {
         this.addScoreError = false;
-        this.brokerService.httpPost(allHttpMessages.httpPostEdss, this.getPayload(selectedScore.score));
+
+        let payload: any = {};
+        payload.score = selectedScore.score.toString();
+        payload.pom_id = this.neuroGraphService.get('queryParams').pom_id.toString();
+        payload.provider_id = this.neuroGraphService.get("queryParams").provider_id;
+        payload.save_csn = this.neuroGraphService.get("queryParams").csn;
+        payload.save_csn_status = this.neuroGraphService.get("queryParams").csn_status;
+        payload.updated_instant = this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss');
+        this.brokerService.httpPost(allHttpMessages.httpPostEdss, payload);
         this.scoreChartDialogRef.close();
       }
       else {
@@ -461,9 +456,16 @@ export class EdssComponent implements OnInit, OnDestroy {
   onUpdateSecondLayer() {
     let match = this.clinicianDataSet.find(x => x.save_csn == this.edssScoreDetail.save_csn);
     if (match) {
-      let payload: any = this.getPayload(this.edssScoreDetail.score);
-      payload.score_id = this.edssScoreDetail.score_id;
-      this.brokerService.httpPut(allHttpMessages.httpPutEdss, payload, { selectedScore: match });
+
+      let payload: any = {};
+      payload.score = this.edssScoreDetail.score.toString();
+      payload.pom_id = this.neuroGraphService.get('queryParams').pom_id.toString();
+      payload.provider_id = this.neuroGraphService.get("queryParams").provider_id;
+      payload.score_id = match.score_id;
+      payload.save_csn = match.save_csn;
+      payload.save_csn_status = match.save_csn_status;
+      payload.updated_instant = match.last_updated_instant;
+      this.brokerService.httpPut(allHttpMessages.httpPutEdss, payload);
     }
   }
 
