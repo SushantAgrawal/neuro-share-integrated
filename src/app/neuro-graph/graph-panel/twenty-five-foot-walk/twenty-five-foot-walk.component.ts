@@ -262,9 +262,9 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   getPayload(score1, score2) {
     let currentDate = new Date();
     let payload: any = {
-      pom_id: this.neuroGraphService.get("queryParams").pom_id.toString(),
       walk_1_score: score1.toString(),
       walk_2_score: score2.toString(),
+      pom_id: this.neuroGraphService.get("queryParams").pom_id,
       provider_id: this.neuroGraphService.get("queryParams").provider_id,
       save_csn: this.neuroGraphService.get("queryParams").csn,
       save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
@@ -291,6 +291,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         payload.save_csn = this.walk25FeetScoreDetail.save_csn;
         payload.save_csn_status = this.walk25FeetScoreDetail.save_csn_status;
         payload.updated_instant = this.walk25FeetScoreDetail.last_updated_instant;
+
         this.brokerService.httpPut(allHttpMessages.httpPutWalk25Feet, payload);
         this.scoreNotValidate = false;
       }
@@ -331,12 +332,14 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     this.scoreNotSamedate = false;
     let config = { hasBackdrop: true, panelClass: 'ns-25walk-theme', width: '225px', skipHide: true, preserveScope: true };
     this.walk25FeetScoreDetail = { ...data, recordedDate: this.neuroGraphService.moment(data.last_updated_instant).format("MM/DD/YYYY") };
-    if (this.walk25FeetScoreDetail.save_csn_status == "Closed") {
-      this.dialogRef = this.dialog.open(this.walk25FeetSecondLevelTemplate, config);
-    }
-    else {
+
+    if (!this.walk25FeetScoreDetail.save_csn_status || this.walk25FeetScoreDetail.save_csn_status.toUpperCase() !== "CLOSED") {
       this.dialogRef = this.dialog.open(this.walk25FeetEditSecondLevelTemplate, config);
     }
+    else {
+      this.dialogRef = this.dialog.open(this.walk25FeetSecondLevelTemplate, config);
+    }
+
     this.dialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 120}px` });
   }
   omit_special_char(event) {

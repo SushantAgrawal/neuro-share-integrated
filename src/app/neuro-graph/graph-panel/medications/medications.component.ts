@@ -449,7 +449,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       reason_stopped: this.medSecondLayerModel.reasonStopped,
       reason_stopped_text: this.medSecondLayerModel.otherReason,
       provider_id: this.queryParams.provider_id,
-      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
       save_csn: this.medSecondLayerModel.contactSerialNumber,
     }
 
@@ -472,9 +472,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
       reason_for_med: this.medSecondLayerModel.reasonForMed,
       // last_updated_provider_id: this.queryParams.provider_id,
-      // last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+      // last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
       provider_id: this.queryParams.provider_id,
-      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
       save_csn: this.medSecondLayerModel.contactSerialNumber
     }
     if (otherMed) {
