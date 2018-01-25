@@ -21,12 +21,13 @@ export class EdssComponent implements OnInit, OnDestroy {
   @ViewChild('edssSecondLevelTemplate') edssSecondLevelTemplate: TemplateRef<any>;
   @ViewChild('edssScoreChartTemplate') edssScoreChartTemplate: TemplateRef<any>;
   subscriptions: any;
+  queryStringParams: any;
   secondLayerDialogRef: MatDialogRef<any>;
   scoreChartDialogRef: MatDialogRef<any>;
   edssChartLoaded: boolean = false;
   virtualCaseloadLoaded: boolean = false;
   edssScoreDetail: any;
-  selectedDataPoint: any;
+  //selectedDataPoint: any;
   yScale: any;
   yDomain: Array<number> = [0, GRAPH_SETTINGS.edss.maxValueY];
   clinicianDataSet: Array<any> = [];
@@ -49,6 +50,7 @@ export class EdssComponent implements OnInit, OnDestroy {
 
   constructor(private brokerService: BrokerService, private dialog: MatDialog, private neuroGraphService: NeuroGraphService) {
     this.registerDrag = e => neuroGraphService.registerDrag(e);
+    this.queryStringParams = this.neuroGraphService.get('queryParams');
   }
 
   ngOnInit() {
@@ -403,14 +405,14 @@ export class EdssComponent implements OnInit, OnDestroy {
 
       if (!scoreOnThisDate) {
         this.addScoreError = false;
-
-        let payload: any = {};
-        payload.score = selectedScore.score.toString();
-        payload.pom_id = this.neuroGraphService.get('queryParams').pom_id.toString();
-        payload.provider_id = this.neuroGraphService.get("queryParams").provider_id;
-        payload.save_csn = this.neuroGraphService.get("queryParams").csn;
-        payload.save_csn_status = this.neuroGraphService.get("queryParams").csn_status;
-        payload.updated_instant = this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss');
+        let payload: any = {
+          score: selectedScore.score.toString(),
+          pom_id: this.queryStringParams.pom_id,
+          provider_id: this.queryStringParams.provider_id,
+          save_csn: this.queryStringParams.csn,
+          save_csn_status: this.queryStringParams.csn_status,
+          updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss')
+        };
         this.brokerService.httpPost(allHttpMessages.httpPostEdss, payload);
         this.scoreChartDialogRef.close();
       }
@@ -454,19 +456,16 @@ export class EdssComponent implements OnInit, OnDestroy {
   }
 
   onUpdateSecondLayer() {
-    let match = this.clinicianDataSet.find(x => x.save_csn == this.edssScoreDetail.save_csn && x.score_id === this.edssScoreDetail.score_id);
-    if (match) {
-      let payload: any = {};
-      payload.score = this.edssScoreDetail.score.toString();
-      payload.pom_id = this.neuroGraphService.get('queryParams').pom_id.toString();
-      payload.provider_id = this.neuroGraphService.get("queryParams").provider_id;
-      payload.score_id = match.score_id;
-      payload.save_csn = match.save_csn;
-      payload.save_csn_status = match.save_csn_status;
-      payload.last_updated_instant = match.last_updated_instant;
-
-      this.brokerService.httpPut(allHttpMessages.httpPutEdss, payload);
-    }
+    let payload: any = {
+      score_id: this.edssScoreDetail.score_id,
+      score: this.edssScoreDetail.score.toString(),
+      last_updated_instant: this.edssScoreDetail.last_updated_instant,
+      pom_id: this.queryStringParams.pom_id,
+      provider_id: this.queryStringParams.provider_id,
+      save_csn: this.queryStringParams.csn,
+      save_csn_status: this.queryStringParams.csn_status
+    };
+    this.brokerService.httpPut(allHttpMessages.httpPutEdss, payload);
   }
 
   showSecondLevel(data) {
@@ -477,7 +476,7 @@ export class EdssComponent implements OnInit, OnDestroy {
       width: '200px'
     };
     this.edssScoreDetail = { ...data };
-    this.selectedDataPoint = data;
+    //this.selectedDataPoint = data;
     this.secondLayerDialogRef = this.dialog.open(this.edssSecondLevelTemplate, config);
     if (d3.event) {
       this.secondLayerDialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 100}px` });
@@ -608,7 +607,7 @@ export class EdssComponent implements OnInit, OnDestroy {
         if (match) {
           d.reportedBy = "Patient and Clinician";
         }
-        d.allowEdit = d.save_csn_status !== "Closed";
+        d.allowEdit = !d.save_csn_status || d.save_csn_status.toUpperCase() !== "CLOSED";
         this.showSecondLevel(d);
       });
     //Adds labels for clinician data

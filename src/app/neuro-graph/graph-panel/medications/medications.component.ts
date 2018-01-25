@@ -409,7 +409,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     };
     if (secondLayerData) {
       model.save_csn_status = secondLayerData.save_csn_status;
-      model.allowEdit = secondLayerData.save_csn_status && secondLayerData.save_csn_status.toUpperCase() === 'OPEN';
+      model.allowEdit = !secondLayerData.save_csn_status || secondLayerData.save_csn_status.toUpperCase() !== "CLOSED";
+      //model.allowEdit = secondLayerData.save_csn_status && secondLayerData.save_csn_status.toUpperCase() === 'OPEN';
+
       if (medType == this.medType.dmt) {
         model.reasonStopped = secondLayerData.reason_stopped;
         model.otherReason = secondLayerData.reason_stopped_text;
@@ -428,7 +430,9 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       }
     } else {
       model.save_csn_status = this.queryParams.csn_status;
-      model.allowEdit = this.queryParams.csn_status && this.queryParams.csn_status.toUpperCase() === 'OPEN';
+      model.allowEdit = true;
+      //model.allowEdit = !this.queryParams.csn_status || this.queryParams.csn_status.toUpperCase() !== "CLOSED";
+      //model.allowEdit = this.queryParams.csn_status && this.queryParams.csn_status.toUpperCase() === 'OPEN';
     }
     return model;
   }
@@ -448,7 +452,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
       updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
       save_csn: this.medSecondLayerModel.contactSerialNumber,
     }
-    
+
     if (dmt) {
       payload.save_csn_status = dmt.save_csn_status;
       this.brokerService.httpPut(allHttpMessages.httpPutDmt, payload);
