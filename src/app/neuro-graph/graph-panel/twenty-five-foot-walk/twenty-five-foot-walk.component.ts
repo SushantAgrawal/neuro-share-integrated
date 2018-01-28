@@ -260,21 +260,19 @@ export class TwentyFiveFootWalkComponent implements OnInit {
   }
 
   getPayload(score1, score2) {
-    let currentDate = new Date();
+    let queryStringParams = this.neuroGraphService.get("queryParams");
     let payload: any = {
       walk_1_score: score1.toString(),
       walk_2_score: score2.toString(),
-      pom_id: this.neuroGraphService.get("queryParams").pom_id,
-      provider_id: this.neuroGraphService.get("queryParams").provider_id,
-      save_csn: this.neuroGraphService.get("queryParams").csn,
-      save_csn_status: this.neuroGraphService.get("queryParams").csn_status,
-      updated_instant: this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY')
+      pom_id: queryStringParams.pom_id,
+      provider_id: queryStringParams.provider_id,
+      save_csn: queryStringParams.csn,
+      save_csn_status: queryStringParams.csn_status,
     }
     return payload;
   }
 
   saveWalk25FeetScore(opMode) {
-    let currentDate = new Date();
     if (opMode === 'Update') {
       this.walk25FeetScoreDetail.walk_1_score = this.walk25FeetScoreDetail.walk_1_score || 0;
       this.walk25FeetScoreDetail.walk_2_score = this.walk25FeetScoreDetail.walk_2_score || 0;
@@ -287,7 +285,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         && !(this.walk25FeetScoreDetail.walk_1_score == 0
           && this.walk25FeetScoreDetail.walk_2_score == 0)) {
         let payload = this.getPayload(this.walk25FeetScoreDetail.walk_1_score, this.walk25FeetScoreDetail.walk_2_score);
-        
+
         payload.score_id = this.walk25FeetScoreDetail.score_id;
         payload.updated_instant = this.walk25FeetScoreDetail.last_updated_instant;
 
@@ -299,7 +297,6 @@ export class TwentyFiveFootWalkComponent implements OnInit {
       }
     }
     else {
-
       this.score_1 = this.score_1 || 0;
       this.score_2 = this.score_2 || 0;
       if ((Number(this.score_1) || Number(this.score_2)) && !(this.score_1 == 0 && this.score_2 == 0) && this.score_1 >= 0
@@ -308,20 +305,21 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         && this.score_2 <= 300) {
         let objSelForDate;
 
-        objSelForDate = this.walk25FeetData.filter((obj => this.neuroGraphService.moment(obj.last_updated_instant).format('MM/DD/YYYY') == this.neuroGraphService.moment(currentDate).format('MM/DD/YYYY')));
+        objSelForDate = this.walk25FeetData.filter((obj => this.neuroGraphService.moment(obj.last_updated_instant).format('MM/DD/YYYY') == this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY')));
         if (objSelForDate.length > 0) {
           this.scoreNotSamedate = true;
         }
         else {
           this.scoreNotSamedate = false;
-          this.brokerService.httpPost(allHttpMessages.httpPostWalk25Feet, this.getPayload(this.score_1, this.score_2));
+          let payload = this.getPayload(this.score_1, this.score_2);
+          payload.updated_instant = this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY');
+          this.brokerService.httpPost(allHttpMessages.httpPostWalk25Feet, payload);
         }
         this.scoreNotValidate = false;
       }
       else {
         this.scoreNotValidate = true;
       }
-
     }
   }
 
@@ -341,11 +339,13 @@ export class TwentyFiveFootWalkComponent implements OnInit {
 
     this.dialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 120}px` });
   }
+
   omit_special_char(event) {
     var k;
-    k = event.charCode;  //         k = event.keyCode;  (Both can be used)
+    k = event.charCode;
     return (k == 8 || k == 32 || k == 46 || (k >= 48 && k <= 57));
   }
+  
   drawWalk25FeetAxis() {
     d3.selectAll('.walk25Feet-axis').remove();
 

@@ -476,7 +476,6 @@ export class EdssComponent implements OnInit, OnDestroy {
       width: '200px'
     };
     this.edssScoreDetail = { ...data };
-    //this.selectedDataPoint = data;
     this.secondLayerDialogRef = this.dialog.open(this.edssSecondLevelTemplate, config);
     if (d3.event) {
       this.secondLayerDialogRef.updatePosition({ top: `${d3.event.clientY - 150}px`, left: `${d3.event.clientX - 100}px` });
