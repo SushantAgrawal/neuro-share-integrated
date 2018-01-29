@@ -47,32 +47,33 @@ var gUrlMaps = {
 
 
     //------------------------------------------ Netwoven ----------------------------------------------------------------------------//
+    
+
+    "http:get:walk25Feet": "http://10.10.1.33:3000/25walk/",
+    "http:post:walk25Feet": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk",
+    "http:put:walk25Feet": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk",
+
+    "http:get:edss": "http://10.10.1.33:3000/edss-score/",
+    "http:post:edss": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/edss-score",
+    "http:put:edss": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/edss-score",
+
+    "http:get:relapse": "http://10.10.1.33:3000/relapses/",
+    "http:post:relapse": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapses",
+    "http:put:relapse": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapse",
+    "http:delete:relapse": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/relapse",
+
+    "http:get:dmt": "http://10.10.1.33:3000/dmt/",
+    "http:post:dmt": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt",
+    "http:put:dmt": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/dmt",
 
 
-    "http:get:walk25Feet": "http://10.10.1.33:8081/neuroshare/api/internal/ms/25walk",
-    "http:post:walk25Feet": "http://10.10.1.33:8081/neuroshare/api/internal/ms/25walk",
-    "http:put:walk25Feet": "http://10.10.1.33:8081/neuroshare/api/internal/ms/25walk",
+    "http:get:otherMeds": "http://10.10.1.33:3000/other-meds/",
+    "http:post:otherMeds": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds",
+    "http:put:otherMeds": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/other-meds",
 
-    "http:get:edss": "http://10.10.1.33:8081/neuroshare/api/internal/ms/edss-score",
-    "http:post:edss": "http://10.10.1.33:8081/neuroshare/api/internal/ms/edss-score",
-    "http:put:edss": "http://10.10.1.33:8081/neuroshare/api/internal/ms/edss-score",
-
-    "http:get:relapse": "http://10.10.1.33:8081/neuroshare/api/internal/ms/relapse",
-    "http:post:relapse": "http://10.10.1.33:8081/neuroshare/api/internal/ms/relapse",
-    "http:put:relapse": "http://10.10.1.33:8081/neuroshare/api/internal/ms/relapse",
-    "http:delete:relapse": "http://10.10.1.33:8081/neuroshare/api/internal/ms/relapse",
-
-    "http:get:dmt": "http://10.10.1.33:8081/neuroshare/api/internal/ms/dmt",
-    "http:post:dmt": "http://10.10.1.33:8081/neuroshare/api/internal/ms/dmt",
-    "http:put:dmt": "http://10.10.1.33:8081/neuroshare/api/internal/ms/dmt",
-
-    "http:get:otherMeds": "http://10.10.1.33:8081/neuroshare/api/internal/ms/other-meds",
-    "http:post:otherMeds": "http://10.10.1.33:8081/neuroshare/api/internal/ms/other-meds",
-    "http:put:otherMeds": "http://10.10.1.33:8081/neuroshare/api/internal/ms/other-meds",
-
-    "http:get:cds:user:data": "http://10.10.1.33:8081/neuroshare/api/internal/ms/cds",
-    "http:post:cds:user:data": "http://10.10.1.33:8081/neuroshare/api/internal/ms/cds",
-    "http:put:cds:user:data": "http://10.10.1.33:8081/neuroshare/api/internal/ms/cds",
+    "http:get:cds:user:data": "http://10.10.1.33:3000/cds/",
+    "http:post:cds:user:data": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
+    "http:put:cds:user:data": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/cds/",
 
 
     "http:get:all:questionnaire": "http://10.10.1.33:3000/all-questionnaire-responses/",
@@ -81,7 +82,7 @@ var gUrlMaps = {
 
     "http:get:labs": "http://10.10.1.33:3000/lab-orders/",
 
-    "http:get:virtualCaseLoad": "http://10.10.1.33:8081/neuroshare/api/internal/ms/ms-population-data",
+    "http:get:virtualCaseLoad": "http://10.10.1.33:3000/ms-population-data/",
 
     "http:get:walk25Feet:info": "https://private-anon-34d1685dcf-neuroshareapis.apiary-mock.com/neuroshare/api/ms/25walk-info/",
 
