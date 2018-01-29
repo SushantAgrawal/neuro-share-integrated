@@ -271,7 +271,7 @@ export class RelapsesComponent implements OnInit {
       last_updated_provider_id: this.paramData.provider_id,
       save_csn: this.paramData.csn,// matched.save_csn,
       save_csn_status: this.paramData.csn_status,//matched.save_csn_status,
-      deleted_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY')
+      deleted_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss')
     };
     this.brokerService.httpDelete(allHttpMessages.httpDeleteRelapse, payload);
   }
@@ -290,7 +290,7 @@ export class RelapsesComponent implements OnInit {
         last_updated_provider_id: this.paramData.provider_id,
         save_csn: this.paramData.csn,
         save_csn_status: this.paramData.csn_status,
-        updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
+        updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
         clinician_confirmed: this.relapsesDetail.confirm
       };
       this.brokerService.httpPut(allHttpMessages.httpPutRelapse, payload);
@@ -315,7 +315,7 @@ export class RelapsesComponent implements OnInit {
           last_updated_provider_id: this.paramData.provider_id,
           save_csn: this.paramData.csn,
           save_csn_status: this.paramData.csn_status,
-          updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
+          updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
           patient_qx_reported: false,
           clinician_confirmed: true
         }

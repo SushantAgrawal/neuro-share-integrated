@@ -312,7 +312,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
         else {
           this.scoreNotSamedate = false;
           let payload = this.getPayload(this.score_1, this.score_2);
-          payload.updated_instant = this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY');
+          payload.updated_instant = this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss');
           this.brokerService.httpPost(allHttpMessages.httpPostWalk25Feet, payload);
         }
         this.scoreNotValidate = false;

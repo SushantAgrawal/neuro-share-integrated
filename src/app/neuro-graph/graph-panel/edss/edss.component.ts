@@ -411,7 +411,7 @@ export class EdssComponent implements OnInit, OnDestroy {
           provider_id: this.queryStringParams.provider_id,
           save_csn: this.queryStringParams.csn,
           save_csn_status: this.queryStringParams.csn_status,
-          updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY')
+          updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss')
         };
         this.brokerService.httpPost(allHttpMessages.httpPostEdss, payload);
         this.scoreChartDialogRef.close();

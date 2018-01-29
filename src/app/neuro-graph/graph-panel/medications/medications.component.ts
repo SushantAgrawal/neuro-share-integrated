@@ -145,10 +145,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             let selectedData = d.carryBag;
             let dmt;
             this.dmtSecondLayerLocalData && (dmt = this.dmtSecondLayerLocalData.find(x => {
-              return selectedData.orderIdentifier &&
-                selectedData.contactSerialNumber &&
-                x.dmt_order_id === selectedData.orderIdentifier.toString() &&
-                x.save_csn === selectedData.contactSerialNumber.toString();
+              return selectedData.orderIdentifier && x.dmt_order_id && x.dmt_order_id.toString() === selectedData.orderIdentifier.toString();
             }));
             this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.dmt, dmt);
             this.dialog.openDialogs.pop();
@@ -175,10 +172,7 @@ export class MedicationsComponent implements OnInit, OnDestroy {
             let selectedData = d.carryBag;
             let otherMeds
             this.otherMedsSecondLayerLocalData && (otherMeds = this.otherMedsSecondLayerLocalData.find(x => {
-              return selectedData.orderIdentifier &&
-                selectedData.contactSerialNumber &&
-                x.other_med_order_id === selectedData.orderIdentifier.toString() &&
-                x.save_csn === selectedData.contactSerialNumber.toString();
+              return selectedData.orderIdentifier && x.other_med_order_id && x.other_med_order_id.toString() === selectedData.orderIdentifier.toString();
             }));
             this.medSecondLayerModel = this.getSecondLayerModel(selectedData, this.medType.otherMeds, otherMeds);
             let config = { hasBackdrop: true, panelClass: 'ns-othermeds-theme', width: '400px' };
@@ -226,45 +220,25 @@ export class MedicationsComponent implements OnInit, OnDestroy {
 
     let subDmtPost = this.brokerService.filterOn(allHttpMessages.httpPostDmt).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        try {
-          this.dialogRef.close();
-        } catch (ex) {
-          console.log(ex);
-          this.brokerService.emit(allMessages.showLogicalError, 'treatments');
-        }
+        this.dialogRef.close();
       })();
     })
 
     let subDmtPut = this.brokerService.filterOn(allHttpMessages.httpPutDmt).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        try {
-          this.dialogRef.close();
-        } catch (ex) {
-          console.log(ex);
-          this.brokerService.emit(allMessages.showLogicalError, 'treatments');
-        }
+        this.dialogRef.close();
       })();
     })
 
     let subOtherMedsPost = this.brokerService.filterOn(allHttpMessages.httpPostOtherMeds).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        try {
-          this.dialogRef.close();
-        } catch (ex) {
-          console.log(ex);
-          this.brokerService.emit(allMessages.showLogicalError, 'treatments');
-        }
+        this.dialogRef.close();
       })();
     })
 
     let subOtherMedsPut = this.brokerService.filterOn(allHttpMessages.httpPutOtherMeds).subscribe(d => {
       d.error ? console.log(d.error) : (() => {
-        try {
-          this.dialogRef.close();
-        } catch (ex) {
-          console.log(ex);
-          this.brokerService.emit(allMessages.showLogicalError, 'treatments');
-        }
+        this.dialogRef.close();
       })();
     })
 
@@ -410,7 +384,6 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     if (secondLayerData) {
       model.save_csn_status = secondLayerData.save_csn_status;
       model.allowEdit = !secondLayerData.save_csn_status || secondLayerData.save_csn_status.toUpperCase() !== "CLOSED";
-      //model.allowEdit = secondLayerData.save_csn_status && secondLayerData.save_csn_status.toUpperCase() === 'OPEN';
 
       if (medType == this.medType.dmt) {
         model.reasonStopped = secondLayerData.reason_stopped;
@@ -431,57 +404,50 @@ export class MedicationsComponent implements OnInit, OnDestroy {
     } else {
       model.save_csn_status = this.queryParams.csn_status;
       model.allowEdit = true;
-      //model.allowEdit = !this.queryParams.csn_status || this.queryParams.csn_status.toUpperCase() !== "CLOSED";
-      //model.allowEdit = this.queryParams.csn_status && this.queryParams.csn_status.toUpperCase() === 'OPEN';
     }
     return model;
   }
 
   updateDmt() {
     let dmt = this.dmtSecondLayerLocalData.find(x => {
-      return x.dmt_order_id === this.medSecondLayerModel.orderIdentifier.toString() &&
-        x.save_csn === this.medSecondLayerModel.contactSerialNumber
+      return x.dmt_order_id === this.medSecondLayerModel.orderIdentifier;
     });
     let payload: any = {
       pom_id: this.queryParams.pom_id,
-      dmt_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
+      dmt_order_id: this.medSecondLayerModel.orderIdentifier,
       patient_reported_start: `${this.medSecondLayerModel.patientReportedStartDateMonth}/${this.medSecondLayerModel.patientReportedStartDateYear}`,
       reason_stopped: this.medSecondLayerModel.reasonStopped,
       reason_stopped_text: this.medSecondLayerModel.otherReason,
       provider_id: this.queryParams.provider_id,
-      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
-      save_csn: this.medSecondLayerModel.contactSerialNumber,
+      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+      save_csn: this.queryParams.csn,
+      save_csn_status: this.queryParams.csn_status
     }
-
     if (dmt) {
-      payload.save_csn_status = dmt.save_csn_status;
       this.brokerService.httpPut(allHttpMessages.httpPutDmt, payload);
     } else {
-      payload.save_csn_status = this.queryParams.csn_status;
       this.brokerService.httpPost(allHttpMessages.httpPostDmt, payload);
     }
   }
 
   updateOtherMeds() {
     let otherMed = this.otherMedsSecondLayerLocalData.find(x => {
-      return x.other_med_order_id === this.medSecondLayerModel.orderIdentifier.toString() &&
-        x.save_csn === this.medSecondLayerModel.contactSerialNumber
+      return x.other_med_order_id === this.medSecondLayerModel.orderIdentifier;
     });
     let payload: any = {
       pom_id: this.queryParams.pom_id,
-      other_med_order_id: this.medSecondLayerModel.orderIdentifier.toString(),
+      other_med_order_id: this.medSecondLayerModel.orderIdentifier,
       reason_for_med: this.medSecondLayerModel.reasonForMed,
       // last_updated_provider_id: this.queryParams.provider_id,
       // last_updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
       provider_id: this.queryParams.provider_id,
-      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY'),
-      save_csn: this.medSecondLayerModel.contactSerialNumber
+      updated_instant: this.neuroGraphService.moment(new Date()).format('MM/DD/YYYY HH:mm:ss'),
+      save_csn: this.queryParams.csn,
+      save_csn_status: this.queryParams.csn_status
     }
     if (otherMed) {
-      payload.save_csn_status = otherMed.save_csn_status;
-      this.brokerService.httpPut(allHttpMessages.httpPutOtherMeds, payload, { otherMed });
+      this.brokerService.httpPut(allHttpMessages.httpPutOtherMeds, payload);
     } else {
-      payload.save_csn_status = this.queryParams.csn_status;
       this.brokerService.httpPost(allHttpMessages.httpPostOtherMeds, payload);
     }
   }
