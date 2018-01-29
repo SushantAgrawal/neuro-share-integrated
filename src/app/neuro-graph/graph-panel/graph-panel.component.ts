@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import { ProgressNotesGeneratorService } from '@sutterhealth/progress-notes';
 import { BrokerService } from '../broker/broker.service';
 import { NeuroGraphService } from '../neuro-graph.service';
-import { allMessages, applicationErrorMessages, GRAPH_SETTINGS, errorMessages } from '../neuro-graph.config';
+import { allMessages, GRAPH_SETTINGS, errorMessages } from '../neuro-graph.config';
 import { SharedGridComponent } from '../graph-panel/shared-grid/shared-grid.component';
 import { RelapsesComponent } from '../graph-panel/relapses/relapses.component';
 import { ImagingComponent } from '../graph-panel/imaging/imaging.component';
@@ -96,7 +96,7 @@ export class GraphPanelComponent implements OnInit, OnDestroy {
 
     let sub5 = this.brokerService.filterOn(allMessages.showLogicalError).subscribe(d => {
       setTimeout(() => {
-        let msg = applicationErrorMessages.logicalError.replace('{{component}}', d.data);
+        let msg = errorMessages.logicalError.replace('{{component}}', d.data);
         this.showError(msg);
       }, 3000);
     });

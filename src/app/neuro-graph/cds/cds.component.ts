@@ -84,7 +84,7 @@ export class CdsComponent implements OnInit {
               this.cdsUserData = d.data.cds || [];
               this.csnState.csn = this.neuroGraphService.get('queryParams').csn;
               this.csnState.encounterStatus = this.neuroGraphService.get('queryParams').csn_status;
-              this.isEnable = this.csnState.encounterStatus && this.csnState.encounterStatus.toUpperCase() === "OPEN";
+              this.isEnable = !this.csnState.encounterStatus || this.csnState.encounterStatus.toUpperCase() !== "CLOSED";
 
               this.cdsUserData = this.cdsUserData
                 .filter(x => x.save_csn == this.csnState.csn)

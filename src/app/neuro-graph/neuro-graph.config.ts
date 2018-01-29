@@ -302,18 +302,14 @@ export const GRAPH_SETTINGS = {
 }
 
 export const errorMessages = {
+  'logicalError': 'Error occured while processing {{component}} data',
   'U-006': { type: 'User Error', message: 'User tries to enter in invalid data type, range, or value (ex: date, age, etc.)' },
   'U-004': { type: 'User Error', message: 'Patient did not complete the questionnaire prior to the encounter' },
   'D-001': { type: 'Data Error', message: 'Unexpected data that cannot be plotted - Epic/EHR sometimes contains text values that read "No result" instead of a numeric value' },
   'D-002': { type: 'Data Error', message: 'Unexpected data that cannot be plotted - Source other than Epic sometimes contains text values that read "No result" instead of a numeric value' },
   'M-001': { type: 'Missing Data Notification', message: 'Patient did not complete that question of the questionnaire prior to the encounter and it is not required' },
   'M-002': { type: 'Missing Data Notification', message: 'Data from the access data source (ex: EPIC/EHR) are not available' },
-}
-
-export const applicationErrorMessages = {
-  idNotMappedToUrl: 'Message id is not mapped to http url in config.ts file at application root.',
-  httpGetUnknownError: 'Unknown error encountered while making http get request',
-  logicalError: 'Error occured while processing {{component}} data',
+  'M-003': { type: 'Missing Data Notification', message: 'Not enough cohort data to display for this patient' },
 }
 
 export const edssScoreChart = [{ score: '0.0', title: 'Normal neurological exam.' }

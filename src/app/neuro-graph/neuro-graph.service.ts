@@ -5,7 +5,7 @@ import { URLSearchParams, RequestOptions, Headers } from '@angular/http';
 import * as moment from 'moment';
 import { SdkService, EndpointsService } from '@sutterhealth/data-services';
 import { SessionService } from '@sutterhealth/user-authentication';
-import { urlMaps, allMessages, applicationErrorMessages } from './neuro-graph.config';
+import { urlMaps, allMessages } from './neuro-graph.config';
 import { BrokerService } from './broker/broker.service';
 
 @Injectable()
