@@ -46,12 +46,12 @@
             data: checked,
             type: 'checkbox'
             }" -->
-          <span class="plus-icon" (click)="openDialog('edss')">+</span></li>
+          <span class="plus-icon" [style.color]="getStyle()" (click)="openDialog('edss')">+</span></li>
         <li class="ns-25walk-theme">
-          <md-checkbox [(ngModel)]="checkwalk25Feet" (change)='changed($event,"walk25Feet")' [disabled]="!isWalk25FeetEnable">25' Walk</md-checkbox><span class="plus-icon" (click)="openDialog('walk25Feet')">+</span>
+          <md-checkbox [(ngModel)]="checkwalk25Feet" (change)='changed($event,"walk25Feet")' [disabled]="!isWalk25FeetEnable">25' Walk</md-checkbox><span class="plus-icon" [style.color]="getStyle()" (click)="openDialog('walk25Feet')">+</span>
         </li>
         <li class="ns-relapses-theme">
-          <md-checkbox [(ngModel)]="checkRelapses"  (change)='changed($event,"relapses")' [disabled]="!isRelapsesEnable">Relapses</md-checkbox><span class="plus-icon" (click)="openDialog('relapses')">+</span></li>
+          <md-checkbox [(ngModel)]="checkRelapses"  (change)='changed($event,"relapses")' [disabled]="!isRelapsesEnable">Relapses</md-checkbox><span class="plus-icon" [style.color]="getStyle()" (click)="openDialog('relapses')">+</span></li>
         <li class="ns-images-theme">
           <md-checkbox  (change)='changed($event,"imaging")' [disabled]="!isImagingEnable">Imaging</md-checkbox>
         </li>

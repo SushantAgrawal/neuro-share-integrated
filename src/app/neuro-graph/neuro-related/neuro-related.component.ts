@@ -9,7 +9,7 @@ import { allMessages, allHttpMessages, manyHttpMessages } from '../neuro-graph.c
 // import {RelapsesComponent} from '../graph-panel/relapses/relapses.component';
 import { EvalService } from '@sutterhealth/analytics';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-
+import { NeuroGraphService } from '../neuro-graph.service';
 @Component({ selector: 'app-neuro-related', templateUrl: './neuro-related.component.html', styleUrls: ['./neuro-related.component.scss'], encapsulation: ViewEncapsulation.None })
 export class NeuroRelatedComponent implements OnInit, OnDestroy {
   subscriptions: any;
@@ -26,7 +26,8 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
   isWalk25FeetEnable: boolean = true;
   isImagingEnable: boolean = true;
   isSymptomsEnable: boolean = true;
-  constructor(private brokerService: BrokerService, private evalService: EvalService, private cd: ChangeDetectorRef) { }
+  isAddAllowed: boolean = true;
+  constructor(private brokerService: BrokerService, private evalService: EvalService, private cd: ChangeDetectorRef, private neuroGraphService: NeuroGraphService) { }
 
   ngOnInit() {
     let dmt = this.brokerService.filterOn(allMessages.neuroRelated)
@@ -37,6 +38,10 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
       .filter(t => (t.data.artifact == 'edss'));
     let walk25Feet = this.brokerService.filterOn(allMessages.neuroRelated)
       .filter(t => (t.data.artifact == 'walk25Feet'));
+    let queryStringParams = this.neuroGraphService.get("queryParams");
+    if (queryStringParams.csn_status && queryStringParams.csn_status.toUpperCase() === "CLOSED") {
+      this.isAddAllowed = false;
+    }
 
     let sub0 = dmt.filter(t => t.data.checked)
       .subscribe(d => {
@@ -133,25 +138,35 @@ export class NeuroRelatedComponent implements OnInit, OnDestroy {
       checked: e.checked
     });
   }
-
-  openDialog(type) {
-    switch (type) {
-      case 'relapses':
-        this
-          .brokerService
-          .emit(allMessages.invokeAddRelapses);
-        break;
-      case 'edss':
-        this
-          .brokerService
-          .emit(allMessages.invokeAddEdss);
-        break;
-      case 'walk25Feet':
-        this
-          .brokerService
-          .emit(allMessages.invokeAddWalk25Feet);
-        break;
-      default:
+  getStyle() {
+    if (this.isAddAllowed == false) {
+      return "#b0b0b0";
     }
+    else {
+      return "#000";
+    }
+  }
+  openDialog(type) {
+    if (this.isAddAllowed == true) {
+      switch (type) {
+        case 'relapses':
+          this
+            .brokerService
+            .emit(allMessages.invokeAddRelapses);
+          break;
+        case 'edss':
+          this
+            .brokerService
+            .emit(allMessages.invokeAddEdss);
+          break;
+        case 'walk25Feet':
+          this
+            .brokerService
+            .emit(allMessages.invokeAddWalk25Feet);
+          break;
+        default:
+      }
+    }
+
   }
 }
