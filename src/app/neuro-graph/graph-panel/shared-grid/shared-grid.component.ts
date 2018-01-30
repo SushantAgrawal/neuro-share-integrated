@@ -67,14 +67,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
       .subscribe(d => {
         d.error ? (() => { console.log(d.error) }) : (() => {
           d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes);
-          this.progressNotes.forEach(element => {
-            if (element.text.length > 0 && element.text[0].indexOf('{\\rtf') > -1) {
-              element.text = '<i>Progress note currently unavailable. Please see EPIC.</i>';
-            }
-          });
-          let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
-          this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
-          this.dialogRef.updatePosition({ top: '150px', left: '850px' });
+          this.showNotes();
         })();
       })
     this.subscriptions.add(sub1).add(sub2);
@@ -86,6 +79,17 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   //#endregion
 
   //#region Graph Drawing
+
+  showNotes() {
+    this.progressNotes.forEach(element => {
+      if (element.text.length > 0 && element.text[0].indexOf('{\\rtf') > -1) {
+        element.text = '<i>Progress note currently unavailable. Please see EPIC.</i>';
+      }
+    });
+    let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
+    this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
+    this.dialogRef.updatePosition({ top: '150px', left: '850px' });
+  }
 
   getReferenceLineData() {
     this.brokerService.httpGet(allHttpMessages.httpGetEncounters, [
@@ -105,24 +109,32 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   };
 
   getProgessNoteData(lastVisitDate) {
-    this.brokerService.httpGet(allHttpMessages.httpGetProgressNote, [
-      {
-        name: 'pom-id',
-        value: this.neuroGraphService.get('queryParams').pom_id
-      },
-      {
-        name: 'noteCategory',
-        value: 'Progress Notes'
-      },
-      {
-        name: 'startDate',
-        value: this.neuroGraphService.moment(lastVisitDate).subtract(2, 'days').format('MM/DD/YYYY')
-      },
-      {
-        name: 'endDate',
-        value: this.neuroGraphService.moment(lastVisitDate).format('MM/DD/YYYY')
-      }
-    ]);
+    if (this.dialogRef) {
+      this.dialogRef.close()
+    }
+    if (!this.progressNotes || this.progressNotes.length == 0) {
+      this.brokerService.httpGet(allHttpMessages.httpGetProgressNote, [
+        {
+          name: 'pom-id',
+          value: this.neuroGraphService.get('queryParams').pom_id
+        },
+        {
+          name: 'noteCategory',
+          value: 'Progress Notes'
+        },
+        {
+          name: 'startDate',
+          value: this.neuroGraphService.moment(lastVisitDate).subtract(2, 'days').format('MM/DD/YYYY')
+        },
+        {
+          name: 'endDate',
+          value: this.neuroGraphService.moment(lastVisitDate).format('MM/DD/YYYY')
+        }
+      ]);
+    }
+    else {
+      this.showNotes();
+    }
   };
 
   drawRootElement(state): void {
