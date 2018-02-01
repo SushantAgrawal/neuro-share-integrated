@@ -18,6 +18,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   lastOfficeDateLabel: string;
   encounterData: any;
   progressNotes: Array<any>;
+  previousDateCSN: any;
   constructor(private brokerService: BrokerService, private neuroGraphService: NeuroGraphService, public dialog: MdDialog) {
   }
 
@@ -66,7 +67,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let sub2 = this.brokerService.filterOn(allHttpMessages.httpGetProgressNote)
       .subscribe(d => {
         d.error ? (() => { console.log(d.error) }) : (() => {
-          d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes);
+          d.data && d.data.EPIC && (this.progressNotes = d.data.EPIC.notes.filter((item => ((item.contactSerialNumber) ? item.contactSerialNumber.toString() : '') == this.previousDateCSN.toString())));
           this.showNotes();
         })();
       })
@@ -81,11 +82,11 @@ export class SharedGridComponent implements OnInit, OnDestroy {
   //#region Graph Drawing
 
   showNotes() {
-    this.progressNotes.forEach(element => {
-      if (element.text.length > 0 && element.text[0].indexOf('{\\rtf') > -1) {
-        element.text = '<i>Progress note currently unavailable. Please see EPIC.</i>';
-      }
-    });
+    // this.progressNotes.forEach(element => {
+    //   if (element.text.length > 0 && element.text[0].indexOf('{\\rtf') > -1) {
+    //     element.text = '<i>Progress note currently unavailable. Please see EPIC.</i>';
+    //   }
+    // });
     let dialogConfig = { hasBackdrop: false, panelClass: 'ns-default-dialog', width: '375px', height: '350px' };
     this.dialogRef = this.dialog.open(this.progressNoteTemplate, dialogConfig);
     this.dialogRef.updatePosition({ top: '150px', left: '850px' });
@@ -270,6 +271,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     let previousDate: any;
     if (this.encounterData.length > 1) {
       previousDate = new Date(this.encounterData[1].date)
+      this.previousDateCSN = this.encounterData[1].contactSerialNumber;
     }
     let today = new Date();
     let width = 50;
