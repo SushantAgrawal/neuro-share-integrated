@@ -12,7 +12,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import * as d3 from 'd3';
 import { BrokerService } from '../../broker/broker.service';
 import { NeuroGraphService } from '../../neuro-graph.service';
-import { allMessages, allHttpMessages, medication, GRAPH_SETTINGS, edssScoreChart } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages, GRAPH_SETTINGS, edssScoreChart } from '../../neuro-graph.config';
 
 @Component({ selector: '[app-edss]', templateUrl: './edss.component.html', styleUrls: ['./edss.component.scss'], encapsulation: ViewEncapsulation.None })
 
