@@ -10,7 +10,7 @@ import {
 import { MdDialog, MdDialogRef } from '@angular/material';
 import * as d3 from 'd3';
 import { BrokerService } from '../../broker/broker.service';
-import { allMessages, allHttpMessages, manyHttpMessages, medication, GRAPH_SETTINGS } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages, medication, GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { searchObject } from '../../neuro-graph.helper';
 import { NeuroGraphService } from '../../neuro-graph.service';
 

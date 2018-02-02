@@ -5,7 +5,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import { BrokerService } from '../broker/broker.service';
-import { allMessages, allHttpMessages, manyHttpMessages } from '../neuro-graph.config';
+import { allMessages, allHttpMessages } from '../neuro-graph.config';
 // import {RelapsesComponent} from '../graph-panel/relapses/relapses.component';
 import { EvalService } from '@sutterhealth/analytics';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';

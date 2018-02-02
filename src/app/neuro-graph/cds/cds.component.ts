@@ -3,7 +3,7 @@ import { BrokerService } from '../broker/broker.service';
 import { NeuroGraphService } from '../neuro-graph.service';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
-import { cdsMap, allMessages, manyHttpMessages, allHttpMessages } from '../neuro-graph.config';
+import { cdsMap, allMessages, allHttpMessages } from '../neuro-graph.config';
 import { InfoPopupComponent } from './info-popup/info-popup.component';
 import { ProgressNotesGeneratorService } from '@sutterhealth/progress-notes';
 

@@ -12,9 +12,6 @@ export const allMessages = {
   'showLogicalError': 'show:logical:error'
 };
 
-export const manyHttpMessages = {
-  'httpGetInitialApiCall': 'http:get:initial:api:call',
-};
 export const allHttpMessages = {
   'httpGetWalk25Feet': 'http:get:walk25Feet',
   'httpPostWalk25Feet': 'http:post:walk25Feet',
@@ -52,6 +49,7 @@ export const allHttpMessages = {
   'httpGetEncounters': 'http:get:encounters',
   'httpGetProgressNote': 'http:get:progressNote'
 };
+
 export const urlMaps = window["gUrlMaps"];
 
 export const cdsMap = {
@@ -71,7 +69,7 @@ export const cdsMap = {
 export const medication = {
   dmt: {
     genericNames: [
-      "MitoxantroneHCl",
+      "Mitoxantrone HCl",
       "Glatiramer Acetate",
       "Interferon Beta-1a",
       "Interferon Beta-1b",
@@ -81,9 +79,9 @@ export const medication = {
       "Natalizumab",
       "Dimethyl Fumarate",
       "Dalfampridine",
-      "FingolimodHCl",
+      "Fingolimod HCl",
       "Rituximab IV Soln",
-      "DaclizumabSoln",
+      "Daclizumab Soln",
       "Ocrelizumab"
     ]
   },
@@ -312,7 +310,8 @@ export const errorMessages = {
   'M-003': { type: 'Missing Data Notification', message: 'Not enough cohort data to display for this patient' },
 }
 
-export const edssScoreChart = [{ score: '0.0', title: 'Normal neurological exam.' }
+export const edssScoreChart = [
+    { score: '0.0', title: 'Normal neurological exam.' }
   , { score: '1.0', title: 'No Disability, minimal signs in one FS.' }
   , { score: '1.5', title: 'No disability, minimal signs in more than one FS.' }
   , { score: '2.0', title: 'Minimal disability in one FS.' }
@@ -331,7 +330,8 @@ export const edssScoreChart = [{ score: '0.0', title: 'Normal neurological exam.
   , { score: '8.5', title: 'Essentially restricted to bed most of the day. Has some effective use of arms retains some self-care functions.' }
   , { score: '9.0', title: 'Confined to bed. Can still communicate and eat.' }
   , { score: '9.5', title: 'Confined to bed and totally dependent. Unable to communicate effectively or eat/swallow.' }
-  , { score: '10', title: 'Death due to MS.' }];
+  , { score: '10', title: 'Death due to MS.' }
+];
 
 export const labsConfig = [
   {

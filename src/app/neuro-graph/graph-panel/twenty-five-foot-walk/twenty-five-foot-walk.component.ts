@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild, TemplateRef, Inject, ViewEncapsulation } from '@angular/core';
 import * as d3 from 'd3';
 import { BrokerService } from '../../broker/broker.service';
-import { allMessages, allHttpMessages, manyHttpMessages } from '../../neuro-graph.config';
+import { allMessages, allHttpMessages } from '../../neuro-graph.config';
 import { GRAPH_SETTINGS } from '../../neuro-graph.config';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { NeuroGraphService } from '../../neuro-graph.service';
@@ -345,7 +345,7 @@ export class TwentyFiveFootWalkComponent implements OnInit {
     k = event.charCode;
     return (k == 8 || k == 32 || k == 46 || (k >= 48 && k <= 57));
   }
-  
+
   drawWalk25FeetAxis() {
     d3.selectAll('.walk25Feet-axis').remove();
 
