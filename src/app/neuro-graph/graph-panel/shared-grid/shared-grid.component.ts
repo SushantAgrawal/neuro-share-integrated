@@ -120,15 +120,15 @@ export class SharedGridComponent implements OnInit, OnDestroy {
           value: this.neuroGraphService.get('queryParams').pom_id
         },
         {
-          name: 'noteCategory',
+          name: 'note-category',
           value: 'Progress Notes'
         },
         {
-          name: 'startDate',
+          name: 'start-date',
           value: this.neuroGraphService.moment(lastVisitDate).subtract(2, 'days').format('MM/DD/YYYY')
         },
         {
-          name: 'endDate',
+          name: 'end-date',
           value: this.neuroGraphService.moment(lastVisitDate).format('MM/DD/YYYY')
         }
       ]);
