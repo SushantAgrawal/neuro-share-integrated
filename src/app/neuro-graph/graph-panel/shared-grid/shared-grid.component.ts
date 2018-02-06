@@ -403,23 +403,23 @@ export class SharedGridComponent implements OnInit, OnDestroy {
     }
     else {
       let rect = nodeSelection.append("rect")
-        .attr("x", xScale(currentDate))
-        .attr("y", "50")
+        .attr("x", xScale(currentDate) - 85)
+        .attr("y", "65")
         .attr("width", width)
         .attr("height", height)
         .attr("fill", "#EBEBEB")
         .attr('stroke', '#BCBCBC');
       let axisText = nodeSelection.append('text')
-        .attr('y', 67)
+        .attr('y', 79)
         .style('font-size', '12px')
         .style('font-weight', 'bold')
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) - 58)
+        .attr('x', xScale(currentDate) - 68)
         .attr('dy', 0)
         .text(todayLabel1)
       axisText.append('tspan')
-        .attr('x', xScale(currentDate) - 52)
-        .attr('dy', 15)
+        .attr('x', xScale(currentDate) - 72)
+        .attr('dy', 20)
         .text(todayLastLabel)
     }
   };
