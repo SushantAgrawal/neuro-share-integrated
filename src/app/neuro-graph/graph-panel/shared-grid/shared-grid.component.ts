@@ -419,7 +419,7 @@ export class SharedGridComponent implements OnInit, OnDestroy {
         .text(todayLabel1)
       axisText.append('tspan')
         .attr('x', xScale(currentDate) - 72)
-        .attr('dy', 20)
+        .attr('dy', 17)
         .text(todayLastLabel)
     }
   };
